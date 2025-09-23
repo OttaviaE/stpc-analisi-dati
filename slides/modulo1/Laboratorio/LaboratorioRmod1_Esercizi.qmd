@@ -1,0 +1,113 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format: pdf
+execute:
+  echo: true
+  eval: false
+linestretch: 1.5
+---
+
+# 1. Operazioni aritmetiche
+
+## Esercizio 1
+Risolvere le seguenti espressioni:
+
+1. $$3.5 + \dfrac{(17 \times 3) + 4}{2 + 1/5}$$
+
+2. $$15^{(2 \times 6)} + \dfrac{18}{3}$$
+
+3. $$15^{(2 \times 6)} + \dfrac{18}{3^{1/2}}$$
+
+4. $$(18 - 22.5) \times \sqrt{121} + \dfrac{3}{25}$$
+
+
+# 2. Assegnazione di variabili
+
+## Esercizio 2
+
+Assegnare le seguenti variabili:
+
+* `X = (32.45, 22.16, 0.04, 21.89, 0.00)`  
+* `Y = (3/5, 1/32, 2/9)`  
+* `Z = ("Sebastiano", "Vera", "Giorgio", "Antonio")`  
+
+Visualizzare i contenuti delle variabili
+
+
+## Esercizio 3
+Costruire le variabili a, b, c, d:
+
+- $a = (27 \times 2) - (3 + 12)$
+- $b = (7 \times a) + a/3$
+- $c = b^2 + a/b$
+- $d = \sqrt{a + b - (c \times d)}$
+
+Visualizzare le variabili e poi rimuoverle.
+
+
+## Esercizio 4
+Costruire:
+
+- `a = 24`
+- `b = a`
+- `B = a + 2`
+
+Visualizzare e rimuovere le variabili.
+
+## Esercizio 5
+Assegnare le seguenti variabili e osservare i cambiamenti:
+
+- a = Carlo
+- b = Giovanni
+- c = 7
+- c = 8
+- c = b
+
+# 3. Operazioni relazionali e logiche
+
+## Esercizio 6
+Date le variabili `a = TRUE, b = TRUE, c = FALSE, d = TRUE` verificare le seguenti condizioni logiche (dove $\land, \lor, \neg$ denotano rispettivamente: congiunzione, disgiunzione e negazione logica):
+
+1. $\quad \neg a \lor a$
+
+2. $\quad a \lor (b \land c)$
+
+3. $\quad a \land (b \lor c) \land \neg d$
+
+4. $\quad \neg a \lor (b \land c) \land (\neg d \lor c)$
+
+5. $\quad \neg (a \lor c) \land \neg (\neg (b \land c))$
+
+
+Poi rimuovere le variabili.
+
+## Esercizio 7
+Si assegni `a = 3, b = -3`.  
+Assegnare a `X, Y, Z` i risultati dei confronti:
+
+1. $a > (b + 3)$
+2. $b \geq (a - 6)$
+3. $a \neq \sqrt{b^2}$
+
+Infine verificare $X \land (Y \lor Z)$
+
+# 4. Vettori e funzioni in R
+
+## Esercizio 8
+Costruire i vettori:
+
+* $a = (1, 7, 8, 12, -12, 1)$
+* $b = (2/3, 4/5, -7/2, 12/3, -11/8, 1/4)$
+
+Calcolare:
+
+1. $s_1 = \sum a_i + \sum |b_j|$
+2. $m_1 = \min(a) - \max(b)$
+3. $m_2 = \min(a) - \max(|b|)$
+4. $m_3 = \min(\sum a_i, \sum b_j)$
+5. $n = \bar{a} + \bar{b}$ dove $\bar{x}$ indica la media di x
+6. varianza di $a$ e di $b$ (calcolate separatemente)
+
+Visualizzare tutte le variabili.

@@ -1,0 +1,72 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Esercizi - Parte 2"
+author: "Ottavia Epifania"
+format: pdf
+execute:
+  echo: true
+  eval: false
+---
+
+# 1. Manipolazioni di data frame
+
+## Esercizio 1
+Si costruisca la seguente tabella di dati e la si assegni alla variabile **TABa**
+
+| X1 | X2  | X3 | X4 | X5 |
+|----|-----|----|----|----|
+| 12 | 12.0| 1  | m  | 1  |
+| 13 | 15.3| 1  | m  | 1  |
+| 11 | 13.3| 0  | m  | 2  |
+| 11 | 17.2| 0  | f  | 1  |
+| 13 | 13.6| 1  | f  | 3  |
+|  9 | 12.4| 0  | m  | 4  |
+|  5 | 11.7| 1  | m  | 4  |
+| 11 | 10.0| 0  | f  | 1  |
+| 13 | 11.0| 0  | m  | 2  |
+| 11 | 18.3| 0  | f  | 1  |
+|  6 | 15.3| 1  | m  | 2  |
+
+Le variabili X1, X2, X3 e X5 sono numeriche (X3 è dicotomica 0/1), mentre X4 è testuale (m/f).
+
+1. Visualizzare la terza osservazione di X2 e la quinta osservazione di X4. Modificare con i valori 25 e "m".
+
+2. Visualizzare solo X2. Assegnarla a Y2 e verificare se contiene valori > 10.
+
+3. Visualizzare il profilo della quinta osservazione. Assegnarlo a P5 e verificare che contenga "m".
+
+
+## Esercizio 2
+
+Utilizzare l’operatore di selezione `[]` per filtrare e modificare il contenuto del dataframe.
+
+1. Assegnare X2 a A2 e filtrare i valori $> 13$. Assegnare a B2.
+
+2. Assegnare X4 a A4 e filtrare solo i maschi (m).
+
+3. Visualizzare il contenuto del workspace.
+
+4. Selezionare solo le righe di TABa associate al gruppo femminile. Creare `TABaF`. Fare lo stesso per i maschi creando `TABaM`.
+
+5. Selezionare i profili con $X1 > 10$ e $X3 = 0$. Creare `TABa2`. Ripetere selezionando X1 compresi tra 9 e 12 (inclusi).
+
+6. Sostituire la terza riga di `TABa` con (10, 10, 1, "f", 4 -- un valore per variabili).
+
+
+# 2. Operazioni su data frame
+
+## Esercizio 3
+Utilizzare i dati di `TABa`.
+
+1. Calcolare la media di X1 limitatamente ai valori associati a $X3 = 1$.
+
+
+2. Calcolare la somma di:
+   - Deviazione standard di X1 per le osservazioni con $1\leq X5 \leq 2$
+   - Deviazione standard di X2 per le osservazioni con $X3 + X5\geq 4$
+ 
+3. Calcolare la somma di X2 limitatamente ai valori associati **esclusivamente** a `X4 = "m"` **o** `X3 = 1` (disgiunzione esclusiva).
+
+4. Visualizzare la sottotabella di TABa con $X1 > 10$ e che soddisfi anche la condizione dell’esercizio precedente.
+
+5. Assegnare a U la sottotabella con le colonne X1 e X5, per le righe con X4 = "f" **oppure** $X2 \geq 15$.

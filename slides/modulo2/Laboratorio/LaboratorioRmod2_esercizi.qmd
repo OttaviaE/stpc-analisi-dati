@@ -1,0 +1,91 @@
+---
+title: "Laboratorio di analisi dei dati con R — Traccia esercizi"
+author: "Ottavia Epifania"
+format: pdf
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+---
+
+# Case Study A: Test di selezione universitario
+
+Il case study richiede di eseguire delle procedure di analisi dei dati su un insieme di variabili associate a 70 candidati di un corso di laurea del nord-est.
+
+## Esercizio 1
+
+Scaricare il file `datiTestCR2005.csv` (moodle del corso) e caricarlo nella variabile (data frame) `datitest` in R. Il file contiene un database con 70 osservazioni misurate su 7 variabili distinte:
+
+- `DIPAA` indica l’anno in cui lo studente ha ottenuto il suo diploma di scuola superiore;
+- `VOTO` è il voto di diploma ottenuto dallo studente (espresso in centesimi);
+- `SESSO` codifica il sesso dello studente (1: maschio, 2: femmina);
+- `D1` punteggio complessivo ad un test per la misura del ragionamento deduttivo [0,17];
+- `D2` punteggio complessivo ad un test per la misura del ragionamento spaziale [0,20];
+- `D3` punteggio complessivo ad un test per la misura del pensiero creativo [0,4];
+- `D4` punteggio complessivo ad un test per la comprensione di testi, grafici e tabelle [0,12].
+
+Si eseguano i seguenti controlli.
+
+1. Verificare che **tutte** le variabili  non contengano dei valori scorretti.
+
+
+2. Se vi sono delle variabili che presentano dei valori scorretti, sostituire le osservazioni in `datitest` che presentano tali valori scorretti con la media della variabile di riferimento, escludendo dal calcolo della media i dati scorretti.
+
+
+3. Visualizzare le statistiche descrittive di base (`summary()`) delle variabili VOTO e D1, ..., D4.
+
+
+4. Costruire ed assegnare una variabile `votomedioM` che contiene il voto medio dei candidati maschi. Creare un’analoga variabile `votomedioF` per le femmine.
+
+5. Verificare se il voto medio delle femmine è superiore a quello dei maschi.
+
+
+6. Verificare se la deviazione standard del voto delle femmine è superiore a quella dei maschi.
+
+
+7. Verificare se il voto medio dei diplomati nel 2005 è superiore rispetto a quello dei diplomati nel 2004.
+
+
+8. Verificare se il voto medio dei diplomati maschi nel 2005 è superiore rispetto a quello dei diplomati maschi nel 2004.
+
+
+9. Verificare se il punteggio medio del ragionamento spaziale nei maschi è superiore rispetto a quello delle femmine.
+
+
+10. Verificare se il punteggio medio del ragionamento deduttivo nei maschi è superiore rispetto a quello delle femmine.
+
+
+11. Verificare se il punteggio medio del pensiero creativo nelle femmine è superiore rispetto a quello dei maschi.
+
+
+12. Verificare se il punteggio medio del ragionamento deduttivo nei maschi che hanno avuto un voto di diploma superiore a 80 è superiore rispetto a quello delle femmine con voto di diploma superiore a 90.
+
+
+13. Verificare se il punteggio medio del ragionamento deduttivo nei maschi che hanno avuto un voto di diploma superiore a 80 e che hanno avuto un punteggio inferiore a 2 nel test per la misura del pensiero creativo è superiore rispetto a quello delle femmine con voto di diploma superiore a 85.
+
+
+14. Visualizzare la distribuzione del voto di diploma attraverso un istogramma. Chiudere la finestra del grafico.
+
+
+15. **Nota 1**: utilizzando il comando `par(mfrow=c(n1,n2))` è possibile cambiare i parametri grafici perché appaiano più grafici. Ad esempio, `par(mfrow=c(2,3))` produce una finestra suddivisa in due righe e tre colonne, ogni cella della finestra puo contenere un grafico diverso.
+
+16. Produrre due boxplot dei voti, uno per i maschi ed uno per le femmine. Devono apparire nello stesso grafico (usare il comando `par(mfrow=c(n1,n2))`)
+
+17. Creare quattro grafici di boxplot (disponendoli in una unica finestra grafica) contenenti:
+ - i punteggi del ragionamento deduttivo per i maschi con voto di diploma inferiore a 75,
+ - i punteggi del ragionamento deduttivo per le femmine con voto di diploma inferiore a 75,
+ - i punteggi del ragionamento deduttivo per i maschi con voto di diploma superiore o uguale a 75,
+ - i punteggi del ragionamento deduttivo per le femmine con voto di diploma superiore o uguale a 75.
+
+
+18. Creare una nuova variabile `PTOT` contenente il punteggio complessivo (calcolato come somma dei singoli test D1, ..., D4) per ogni studente.
+
+19. Creare una nuova variabile `PTOTc` che contiene il punteggio totale PTOT corretto per il voto di diploma secondo la seguente formula:
+
+$$PTOTc = PTOT \times \log_2\left(\frac{100}{VOTO}\right)$$
+
+
+20. Visualizzare il grafico di dispersione tra VOTO e PTOT. Il grafico può essere ottenuto con la funzione `plot(X, Y)`, dove X è la variabile che si vuole rappresentare sul grafico delle X e Y la variabile che si vuole rappresentare sull'asse delle Y. 
+
+
+21. Ripetere la procedura utilizzando PTOTc al posto di PTOT.
+

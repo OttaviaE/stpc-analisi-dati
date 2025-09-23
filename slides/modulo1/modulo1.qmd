@@ -1,0 +1,562 @@
+---
+title: "Modulo Didattico 1: Introduzione a `R`"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx}
+   - \usepackage[italian]{babel}
+   - \usepackage{xcolor}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginSection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection, hideallsubsections]
+              \end{frame}
+          }
+   - \AtBeginSubsection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+             \end{frame}
+          }
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+# Il corso 
+
+### 
+
+Lezioni: 
+
+- Martedì: 10:30-12:30 (orario reale: 10:30 - 12:00)
+- Giovedì: 13:00-15:00 (orario reale: 13:30 - 15:00)
+- Venerdì: 10:30-12:30 (orario reale: 10:30 - 12:00)
+
+Ricevimento: su appuntamento, prevalentemente online
+
+\begin{center}
+ottavia.epifania@unitn.it
+\end{center}
+
+# Introduzione
+
+## Evoluzione e storia di R
+
+###
+
+-   Discende da S e S+
+-   Parte del progetto GNU
+-   Software libero sotto licenza GNU GPL
+-   Open Source
+-   <https://www.r-project.org/COPYING>
+
+## Caratteristiche di R
+
+###
+
+:::{.callout-tip}
+## Pros
+
+Linguaggio object-oriented
+
+Più dimestichezza nell'analisi dei dati, più conoscenza del dato, modelli più complessi 
+
+Permette di addentrarsi sempre di più nei linguaggi di programmazione
+
+
+:::
+
+::: {.callout-warning}
+## Cons
+
+Difficile da imparare (all'inizio)
+
+Non è intuitivo (all'inizio) $\rightarrow$ se non si ha già una vaga idea di dove partire non si riesce a fare nulla
+
+
+:::
+
+# RStudio 
+
+### 
+
+\vspace*{-0.5mm}
+
+```{r, echo = FALSE, out.width="110%", fig.align='center'}
+knitr::include_graphics("img/Rstudio.png")
+```
+
+
+### console vs. script
+
+
+:::{.callout-note}
+
+## Console
+
+I comandi nella console vengono eseguiti e non salvati
+
+Per eseguire il comando $\rightarrow$ `Invio`
+
+L'output è immediato ed appare nella console
+:::
+
+
+\pause
+
+:::{.callout-note}
+
+## Script
+
+è possibile salvare gli script con tutti i comandi salvati
+
+Per eseguire il comando $\rightarrow$ `Ctrl + Invio` (`cmd + Enter`)
+
+L'output è restituito nella console
+:::
+
+\small
+Per passare alla console $\rightarrow$ `ctrl + 2`
+
+Per passare allo script $\rightarrow$ `ctr + 1`
+
+
+
+
+
+
+# Operatori 
+
+## Matematici
+
+###
+
+| Simbolo | Significato     |
+|---------|-----------------|
+| \+      | Addizione       |
+| \-      | Sottrazione     |
+| \*      | Moltiplicazione |
+| /       | Divisione       |
+| \^      | Potenza         |
+
+**Esempio**:
+
+``` r
+(((4 * 2) - 7) + 2)^3
+```
+
+. . . 
+
+```{r}
+#| echo: false
+(((4 * 2) - 7) + 2)^3
+```
+
+
+###
+
+| Simbolo | Significato       |
+|---------|-------------------|
+| \<      | Minore            |
+| \>      | Maggiore          |
+| \<=     | Minore o uguale   |
+| \>=     | Maggiore o uguale |
+| ==      | Uguale            |
+| !=      | Diverso           |
+
+\small
+
+**Esempio**:
+
+```{r}
+#| eval: false
+(10 / 2) > 3
+```
+
+
+```{r}
+#| echo: false
+(10 / 2) > 3
+```
+
+## Insiemistici
+
+### 
+
+| Simbolo | Significato        |
+|---------|--------------------|
+| `&`       | AND (congiunzione $\land$) |
+|         |                    |
+| `!`       | NOT (negazione $\lnot$)    |
+| `|`       | OR (Disgiunzione $\lor$)
+
+**Esempio**:
+
+```{r}
+#| eval: false
+(2 > 3) & (5 < 10)
+```
+
+. . . 
+
+
+```{r}
+#| echo: false
+(2 > 3) & (5 < 10)
+```
+
+
+## Tavole di verità 
+
+
+### 
+
+```{r}
+#| echo: false
+#| label: tbl-tables
+#| tbl-cap: "Tavole di verità"
+#| tbl-subcap: 
+#|   - "Congiunzione"
+#|   - "Disgiunzione"
+#|   - "Negazione"
+#| layout-ncol: 2
+#| layout-nrow: 2 
+library(knitr)
+
+congiunzione <- data.frame(
+  a = c("V", "V", "F", "F"),
+  b = c("V", "F", "V", "F"),
+  ab = c("V", "F", "F", "F")
+)
+kable(congiunzione,
+      caption = "Congiunzione",
+      col.names = c("$a$", "$b$", "$a \\land b$"))
+
+# Tabella della disgiunzione
+disgiunzione <- data.frame(
+  a = c("V", "V", "F", "F"),
+  b = c("V", "F", "V", "F"),
+  ab = c("V", "V", "V", "F")
+)
+kable(disgiunzione,
+      caption = "Disgiunzione",
+      col.names = c("$a$", "$b$", "$a \\lor b$"))
+
+# Tabella della negazione
+negazione <- data.frame(
+  a = c("V", "F"),
+  nota = c("F", "V")
+)
+kable(negazione,
+      caption = "Negazione",
+      col.names = c("$a$", "$\\lnot a$"))
+```
+
+## Funzioni matematiche di base
+
+### 
+| Funzione | Significato        |
+|----------|--------------------|
+| `log()`    | Logaritmo naturale |
+| `exp()`    | Esponenziale       |
+| `abs()`    | Valore assoluto    |
+| `sqrt()`   | Radice quadrata    |
+| `round()`  | Arrotondamento     |
+| `mean()`   | Media              |
+| `min()`, `max()`   | Minimo, Massimo              |
+| `sd()`, `var()`   | Deviazione st., Varianza  |
+| `sum()`   | Somma  |
+
+
+**Esempio**:
+
+```{r}
+#| output: fragment
+abs(round(-1 * (10 / 3), 2))
+```
+
+
+# Oggetti 
+
+## Variabili, costanti, assegnazione in R
+
+### Assegnazione e concatenazione
+
+-   Assegnazione: `<-` oppure `=`
+-   Concatenazione: `c()` serve per creare vettori di valori
+
+```{r}
+c(1, 2, 25, 10)
+```
+
+
+. . . 
+
+*   Esempi di variabili: `A`, `a`, `Giorgio`, `X3`
+*   Costanti:
+    +   `pi` (3.14…)
+    +   `TRUE`, `FALSE`
+
+
+### 
+
+
+```{r}
+#| output: fragment
+A <- 12
+a = 6
+(A / a > 0) != TRUE
+```
+
+. . . 
+
+```{r}
+A <- 12.8 # variabile numerica
+nome <- "giorgio"  # variabile character
+b1 <- c(12, 0.3, 5, 778.3) # vettore numerico
+Nomi3 <- c("giorgio", "ugo", "anna") # vettore character
+```
+
+
+
+## Matrici
+
+
+###
+
+Sono dei vettori concatenati di dimensione $r$ (righe) $\times c$ (colonne)
+
+      matrix(data, nrow, ncol, byrow = FALSE)
+
+. . . 
+
+**Creazione matrice:**
+
+```{r}
+#| output: fragment
+A <- c(1, 8, 5, 0)
+M <- matrix(A, 2, 2)
+M
+```
+
+. . . 
+
+\footnotesize
+
+```{r}
+#| eval: false
+?matrix  # Accede alla documentazione della funzione
+```
+
+### Esercizio
+
+-   Scaricare il file `LaboratorioRmod1_Esercizi.pdf` dalla piattaforma Moodle del corso
+-   Il file contiene la traccia degli esercizi
+
+
+## Indicizzare e selezionare 
+
+    vettore[i],     matrice[r, c]
+    
+`[i]`: l'indice (la posizione) dell'oggetto che si vuole selezionare 
+
+`[r, c]`: riga, colonna (restituisce la cella specifica della matrice)
+
+:::: {.columns}
+
+:::{.column width="50%"}
+\small 
+
+```{r}
+#| output: fragment
+peso = c(3.3, 4, 5, 6.4, 3.5, 4.2)
+peso[3]
+```
+
+```{r}
+#| output: fragment
+matrice = matrix(peso, nrow = 2)
+matrice
+```
+
+
+:::
+
+
+:::{.column width="50%"}
+
+\small 
+
+```{r}
+#| output: fragment
+
+matrice[1,]
+matrice[, 2]
+matrice[2,2]
+```
+
+
+:::
+::::
+
+
+## Dataframe 
+
+### 
+
+    data.frame(. . .)
+
+Una matrice con $r$ righe e $c$ colonne
+
+Può contenere variabili di tipo diverso 
+
+\small
+```{r}
+#| output: fragment
+
+sesso = c(rep(c("M","F"), length=length(peso)))
+data = data.frame(peso, sesso)
+data
+```
+
+
+### 
+
+    data[r, c], data$nome_variabile
+
+\pause
+
+:::: {.columns}
+
+:::{.column width="50%"}
+\small
+```{r}
+data
+```
+
+:::
+
+:::{.column width="50%"}
+
+\small
+```{r}
+
+data[2, 1]
+data$peso
+data$peso[2]
+```
+:::
+
+
+::::
+
+## Liste 
+
+
+### 
+
+      list(name1 = obj1, name2 = obj2, name3 = obj3, . . .)
+      
+\small
+
+Permette di creare liste di oggetti diversi (matrici, vettori, variabli) di diverso tipo (`numeric`, `character`, `integer`)
+
+. . . 
+
+\footnotesize
+
+```{r}
+#| output: fragment
+A <- c(1,8,5,0)
+M <- matrix(A, 2, 2)
+Nomi3 <- c("giorgio", "ugo", "anna")
+LV <- c(TRUE, FALSE, TRUE, TRUE)
+OgLista <- list(a = A, Mat = M, nomi = Nomi3, X = LV)
+str(OgLista)
+```
+
+### 
+
+    lista[[i]], lista$nome_oggettpo
+
+`[[i]]`: indice dell'oggetto all'interno della lista a cui si vuole accedere 
+
+\small
+
+```{r}
+
+OgLista[[2]]
+```
+
+
+`$nome_oggetto`
+
+```{r}
+#| output: fragment
+OgLista$Mat
+```
+
+# L'ambiente 
+
+### 
+
+Ogni variabile che viene creata viene salvata nell'ambiente di R, visibile in ogni momento:
+
+```{r}
+ls() # lista tutti gli oggetti nell'ambiente
+rm(OgLista) # rimuove OgLista dall'ambiente
+rm(list=ls()) # rimuove tutto dall'ambiente
+```
+
+
+# Programmazione entry level 
+
+### `function()`
+
+```{r}
+#| eval: false
+
+funzione = function(arg1, arg2, arg3,. . .) {
+  operazione1 = codice che fa cose
+  operazione2 = altro codice che fa cose
+  output = operazione1 e operazione2 fanno cose
+  return(output)
+}
+```
+
+### Esempio 
+
+```{r}
+area = function(lato1, lato2) {
+  if (lato1 == lato2) {
+     warning("è un quadrato") 
+  }
+  area = lato1*lato2
+  return(area)
+}
+```
+
+\pause
+
+```{r}
+area(lato1 = 5, lato2 = 2)
+```
+

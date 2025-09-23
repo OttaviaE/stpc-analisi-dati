@@ -1,0 +1,195 @@
+---
+title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili categoriali"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+lang: it
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginSection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection, hideallsubsections]
+              \end{frame}
+          }
+   - \AtBeginSubsection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+             \end{frame}
+          }
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+# Tabelle di frequenza (contingenza)
+
+## `table()`
+
+###
+
+`table(var1, var2)`: Produce la tabella di frequenza tra due variabili categoriali `var1` e `var2`
+
+\small 
+
+```{r}
+var1 <- as.factor(c("a1","a2","a1","a2","a1","a2","a1"))  
+var2 <- as.factor(c("b1","b1","b1","b2","b1","b2","b2")) 
+table(var1, var2)
+```
+
+---
+
+## `margin.table()`
+
+###
+
+`margin.table(table, margin)`: Frequenze marginali per la tabella a doppia entrata
+> `margin = 1`: Frequenze marginali calcolate **attraverso le colonne**
+> `margin = 2`: Frequenze marginali calcolate **attraverso le righe**
+
+Esempio:
+
+```{r}
+mytab <- table(var1,var2)
+margin.table(mytab,2)  
+```
+
+
+
+## `prop.table()`
+
+### 
+
+`prop.table(T, margin = NULL)`: Probabilità condizionate: 
+>riga (`margin = 1`, attraverso le colonne) o colonna (`margin = 2`, attraverso le righe). 
+> `margin = NULL` frequenze relative 
+
+Esempio:
+
+```{r}
+prop.table(mytab)    # frequenze relative
+prop.table(mytab,1)  # P(B|A)
+prop.table(mytab,2)  # P(A|B)
+```
+
+# Misura di associazione
+
+## $\chi^2$
+
+###
+
+* Quantifica il grado di associazione tra due variabili nominali  
+* Richiede il confronto tra **frequenze osservate** ($f_0$) e **frequenze attese** o **frequenze teoriche** ($f_t$)
+
+Le frequenze teoriche sono calcolate assumendo l'indipendenza tra le variabili. 
+
+:::{.callout-tip}
+
+## $f_t$: Significato 
+
+Data l'ampiezza campionaria ($n$ totale di osservazioni), quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
+
+
+:::
+
+
+### 
+
+:::: {.columns}
+:::{.column width=40%}
+\centering
+\begin{tabular}{|p{2.5cm}|p{1cm}|}
+\hline
+& \\
+& \\
+\multicolumn{1}{|c|}{${f_{ij}}$} & \multicolumn{1}{c|}{$f_{i.}$}\\
+& \\
+& \\
+\hline
+\multicolumn{1}{|c|}{$f_{.j}$} & \\
+\hline
+\end{tabular}
+	
+	
+\vspace{3mm}
+Frequenze osservate
+:::
+
+:::{.column width=10%}
+VS.
+:::
+
+:::{.column width=40%}
+\centering
+\begin{tabular}{|p{2.5cm}|p{1cm}|}
+\hline
+& \\
+& \\
+\multicolumn{1}{|c|}{$\hat{f_{ij}}$} & \multicolumn{1}{c|}{$f_{i.}$}\\
+& \\
+& \\
+\hline
+\multicolumn{1}{|c|}{$f_{.j}$} & \\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+Frequenze teoriche
+:::
+::::
+
+$$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(f_{ij} - \hat{f_{ij}})^2}{\hat{f_{ij}}}$$
+
+
+
+<!-- ###  -->
+
+<!-- :::{.callout-warning} -->
+
+<!-- \pause  -->
+
+<!--  normalizzato -->
+
+<!-- - Permette di esprimere il grado di associazione in scala [0,1]   -->
+
+<!-- ::: -->
+
+<!-- --- -->
+
+<!-- ## Funzione `chisq.test` -->
+
+<!-- Simbolo R | Significato -->
+<!-- ----------|------------ -->
+<!-- `chisq.test(T)$statistic` | Calcola il Chi quadrato osservato -->
+
+<!-- Esempio: -->
+
+<!-- ```{r} -->
+<!-- chisq.test(T)$statistic -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- # Laboratorio 3 -->

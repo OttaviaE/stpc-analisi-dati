@@ -1,0 +1,174 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Soluzioni - Parte 2"
+author: "Ottavia Epifania"
+format: pdf
+execute:
+  echo: true
+  eval: false
+---
+
+# 1. Manipolazioni di data frame
+
+## Esercizio 1
+
+```{r}
+X1 <- c(12,13,11,11,13,9,5,11,13,11,6)
+X2 <- c(12.0,15.3,13.3,17.2,13.6,12.4,11.7,10.0,11.0,18.3,15.3)
+X3 <- c(1,1,0,0,1,0,1,0,0,0,1)
+X4 <- c("m","m","m","f","f","m","m","f","m","f","m")
+X5 <- c(1,1,2,1,3,4,4,1,2,1,2)
+
+TABa <- data.frame(X1,X2,X3,X4,X5)
+
+TABa
+
+```
+
+1. Visualizzare la terza osservazione di X2 e la quinta osservazione di X4. Modificare con i valori 25 e "m".
+
+```{r}
+# terza osservazione di X2
+TABa$X2[3]
+# quinta osservazione di X4
+TABa$X2[4]
+# modificare i valori 
+TABa$X2[3] <- 25
+TABa$X4[5] <- "m"
+```
+
+
+2. Visualizzare solo X2. Assegnarla a Y2 e verificare se contiene valori > 10.
+```{r}
+# visualizza x2
+TABa$X2
+Y2 = TABa$X2
+Y2 > 10
+Y2[Y2 > 10]
+which(Y2 > 10) # posizioni nel vettore dei valori maggiori di 10
+```
+
+
+3. Visualizzare il profilo della quinta osservazione. Assegnarlo a P5 e verificare che contenga "m".
+
+```{r}
+TABa[5,]
+P5 <- TABa[5,]
+P5[4] == 'm'
+```
+
+
+
+## Esercizio 2
+
+Utilizzare l’operatore di selezione `[]` per filtrare e modificare il contenuto del dataframe.
+
+1. Assegnare X2 a A2 e filtrare i valori $> 13$. Assegnare a B2.
+```{r}
+A2 <- TABa$X2
+B2 <- A2[A2>13]
+B2
+```
+
+
+2. Assegnare X4 a A4 e filtrare solo i maschi (m).
+
+```{r}
+A4 <- TABa$X4
+A4 <- A4[A4=='m']
+A4
+
+```
+
+
+3. Visualizzare il contenuto del workspace.
+```{r}
+ls()
+# oppure 
+objects()
+```
+
+
+4. Selezionare solo le righe di TABa associate al gruppo femminile. Creare `TABaF`. Fare lo stesso per i maschi creando `TABaM`.
+
+```{r}
+TABaM <- TABa[TABa$X4=='m',]
+TABaF <- TABa[TABa$X4=='f',]
+TABaM
+TABaF
+
+```
+
+
+5. Selezionare i profili con $X1 > 10$ e $X3 = 0$. Creare `TABa2`. Ripetere selezionando X1 compresi tra 9 e 12 (inclusi).
+
+```{r}
+
+TABa2 <- TABa[TABa$X1>10 & TABa$X3==0,]
+TABa2
+
+TABa2 <- TABa[(TABa$X1>=9 & TABa$X1<=12) & TABa$X3==0,]
+TABa2
+
+```
+
+
+6. Sostituire la terza riga di `TABa` con (10, 10, 1, "f", 4 -- un valore per variabili).
+
+```{r}
+
+TABa[3,1] <- 10
+TABa[3,2] <- 10
+TABa[3,3] <- 1
+TABa[3,4] <- "f"
+TABa[3,5] <- 4
+
+```
+
+
+
+# 2. Operazioni su data frame
+
+## Esercizio 3
+Utilizzare i dati di `TABa`.
+
+1. Calcolare la media di X1 limitatamente ai valori associati a $X3 = 1$.
+
+```{r}
+mean(TABa$X1[TABa$X3==1])
+```
+
+
+2. Calcolare la somma di:
+   - Deviazione standard di X1 per le osservazioni con $1\leq X5 \leq 2$
+```{r}
+sd(TABa$X1[TABa$X5>=1 & TABa$X5<=2])
+```
+ 
+   - Deviazione standard di X2 per le osservazioni con $X3 + X5\geq 4$
+```{r}
+sd(TABa$X2[(TABa$X3+TABa$X5)>=4])
+```
+
+ 
+3. Calcolare la somma di X2 limitatamente ai valori associati **esclusivamente** a `X4 = "m"` **o** `X3 = 1` (disgiunzione esclusiva).
+
+```{r}
+sum(TABa$X2[(TABa$X4=="m" | TABa$X3==1) & !(TABa$X4=="m" & TABa$X3==1)])
+```
+
+
+4. Visualizzare la sottotabella di `TABa` con $X1 > 10$ e che soddisfi anche la condizione dell’esercizio precedente.
+
+```{r}
+TABa[TABa$X1>10 & ((TABa$X4=="m" | TABa$X3==1) & !(TABa$X4=="m" & TABa$X3==1)),]
+```
+
+
+5. Assegnare a U la sottotabella con le colonne X1 e X5, per le righe con X4 = "f" **oppure** $X2 \geq 15$.
+
+```{r}
+U <- TABa[TABa$X4=="f" | TABa$X2>=15,c(1,5)]
+U
+```
+

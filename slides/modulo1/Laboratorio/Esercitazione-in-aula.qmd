@@ -1,0 +1,34 @@
+---
+title: "Esercitazione in Aula"
+author: "Ottavia Epifania"
+format: pdf
+lang: it
+---
+
+# Costruzione di Funzioni definite dall’utente
+
+Si consideri la seguente struttura di dati:
+
+```{r}
+#| tbl-cap: Tabella reddito
+library(knitr)
+#| echo: false
+# Creazione del dataframe D
+D <- data.frame(
+  Genere = c("m","f","f","m","f","m","m","m","f","m",
+             "f","f","f","m","f","m","f","f","m"),
+  Professione = c("LP","INS","IMP","INS","LP","LP","IMP","IMP","IMP","LP",
+                  "LP","LP","INS","INS","INS","LP","IMP","IMP","INS"),
+  Reddito = c(65000,39000,38000,42000,22000,78000,38000,29000,39000,22000,
+              42000,78000,44000,38000,36000,35000,40000,38000,37000)
+)
+
+kable(D)
+```
+
+La Tabella 1 contiene tre variabili (Genere, Professione e Reddito annuale) per un campione di 19 individui.  
+La variabile professione codifica tre tipologie:  
+- **LP = Libero professionista**  
+- **INS = Insegnante**  
+- **IMP = Impiegato/a**
+

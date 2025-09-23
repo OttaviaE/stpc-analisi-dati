@@ -1,0 +1,293 @@
+---
+title: "Laboratorio di analisi dei dati con R — Soluzioni"
+author: "Ottavia Epifania"
+format: pdf
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Case Study A: Test di selezione universitario
+
+Il case study richiede di eseguire delle procedure di analisi dei dati su un insieme di variabili associate a 70 candidati di un corso di laurea del nord-est.
+
+## Esercizio 1
+
+Scaricare il file `datiTestCR2005.csv` (moodle del corso) e caricarlo nella variabile (data frame) `datitest` in R. Il file contiene un database con 70 osservazioni misurate su 7 variabili distinte:
+
+- `DIPAA` indica l’anno in cui lo studente ha ottenuto il suo diploma di scuola superiore;
+- `VOTO` è il voto di diploma ottenuto dallo studente (espresso in centesimi, voto minimo = 60);
+- `SESSO` codifica il sesso dello studente (1: maschio, 2: femmina);
+- `D1` punteggio complessivo ad un test per la misura del ragionamento deduttivo [0,17];
+- `D2` punteggio complessivo ad un test per la misura del ragionamento spaziale [0,20];
+- `D3` punteggio complessivo ad un test per la misura del pensiero creativo [0,4];
+- `D4` punteggio complessivo ad un test per la comprensione di testi, grafici e tabelle [0,12].
+
+```{r}
+datitest <- read.csv2("datiTestCR2005.csv")
+```
+
+
+Appare un warning relativo all'importazione del file. Per controllare se tutto però è andato bene: 
+
+```{r}
+head(datitest)
+```
+
+
+Si eseguano i seguenti controlli.
+
+1. Verificare che **tutte** le variabili  non contengano dei valori scorretti.
+
+```{r}
+# Voto 
+datitest$VOTO >= 60 & datitest$VOTO <= 100
+```
+Attenzione! c'è un valore che `FALSE`, va trovato con la funzione `which()`
+
+
+```{r}
+which(datitest$VOTO < 60 | datitest$VOTO > 100)
+# che voto ha preso? 
+index = which(datitest$VOTO < 60 | datitest$VOTO > 100)
+datitest$VOTO[index]
+```
+
+```{r}
+# sesso 
+datitest$SESSO ==1 | datitest$SESSO == 2
+# per fare prima: sappiamo che ci sono 70 osservazioni. Se tutti i risultati del 
+# test sono veri, il risultato sarà 70, per cui: 
+sum(datitest$SESSO ==1 | datitest$SESSO == 2) == nrow(datitest)
+# controlla le altre varibaili 
+
+sum((datitest$D1>=0) & (datitest$D1<=17)) == nrow(datitest)
+sum((datitest$D2>=0) & (datitest$D2<=20)) == nrow(datitest)
+sum((datitest$D3>=0) & (datitest$D3<=4)) == nrow(datitest)
+sum((datitest$D4>=0) & (datitest$D4<=12))== nrow(datitest)
+
+```
+
+
+2. Se vi sono delle variabili che presentano dei valori scorretti, sostituire le osservazioni in `datitest` che presentano tali valori scorretti con la media della variabile di riferimento, escludendo dal calcolo della media i dati scorretti.
+ 
+```{r}
+# Setp1: calcolare la media della variabile voto SENZA l'osservazione sbagliata
+media_corretta = mean(datitest$VOTO[-index])
+# Setp 2: sostituire il valore
+datitest$VOTO[index] = media_corretta 
+# step 3: controllare che abbia funzionato: 
+which(datitest$VOTO < 60 | datitest$VOTO > 100)
+```
+
+
+3. Visualizzare le statistiche descrittive di base (`summary()`) delle variabili VOTO e D1, ..., D4.
+
+```{r}
+summary(datitest[, c("VOTO", "D1", "D2", "D3", "D4")])
+```
+
+
+
+4. Costruire ed assegnare una variabile `votomedioM` che contiene il voto medio dei candidati maschi. Creare un’analoga variabile `votomedioF` per le femmine. 
+
+```{r}
+votoM = datitest$VOTO[datitest$SESSO == 1]
+votomedioM = mean(votoM)
+
+votoF = datitest$VOTO[datitest$SESSO == 2]
+votomedioF = mean(votoF)
+```
+
+
+5. Verificare se il voto medio delle femmine è superiore a quello dei maschi.
+
+
+```{r}
+votomedioF > votomedioM
+```
+
+
+6. Verificare se la deviazione standard del voto delle femmine è superiore a quella dei maschi.
+
+```{r}
+sdvotoM = sd(votoM)
+sdvotoF = sd(votoF)
+
+sdvotoF > sdvotoM
+```
+
+
+7. Verificare se il voto medio dei diplomati nel 2005 è superiore rispetto a quello dei diplomati nel 2004.
+
+```{r}
+voto2005 = datitest$VOTO[datitest$DIPAA == 2005]
+voto2004 = datitest$VOTO[datitest$DIPAA == 2004]
+
+media2005 = mean(voto2005)
+media2004 = mean(voto2004)
+media2005 > media2004
+```
+
+
+8. Verificare se il voto medio dei diplomati maschi nel 2005 è superiore rispetto a quello dei diplomati maschi nel 2004.
+
+
+```{r}
+M2005 = datitest$VOTO[datitest$DIPAA==2005 & datitest$SESSO==1]
+M2004 = datitest$VOTO[datitest$DIPAA==2004 & datitest$SESSO==1]
+
+media_m2005 = mean(M2005)
+media_m2004 = mean(M2004)
+
+media_m2005 > media_m2004
+```
+
+
+9. Verificare se il punteggio medio del ragionamento spaziale nei maschi è superiore rispetto a quello delle femmine.
+
+```{r}
+votomedioD2M <- mean(datitest$D2[datitest$SESSO==1])
+votomedioD2F <- mean(datitest$D2[datitest$SESSO==2])
+
+votomedioD2M > votomedioD2F
+
+```
+
+
+10. Verificare se il punteggio medio del ragionamento deduttivo nei maschi è superiore rispetto a quello delle femmine.
+
+```{r}
+votomedioD1M <- mean(datitest$D1[datitest$SESSO==1])
+votomedioD1F <- mean(datitest$D1[datitest$SESSO==2])
+
+votomedioD1M > votomedioD1F
+
+```
+
+
+11. Verificare se il punteggio medio del pensiero creativo nelle femmine è superiore rispetto a quello dei maschi.
+
+```{r}
+votomedioD3M <- mean(datitest$D3[datitest$SESSO==1])
+votomedioD3F <- mean(datitest$D3[datitest$SESSO==2])
+
+votomedioD3M < votomedioD3F
+
+```
+
+
+12. Verificare se il punteggio medio del ragionamento deduttivo nei maschi che hanno avuto un voto di diploma superiore a 80 è superiore rispetto a quello delle femmine con voto di diploma superiore a 90.
+
+
+```{r}
+votomedioD1Ms80 <- mean(datitest$D1[datitest$SESSO==1 & datitest$DIPAA>80])
+votomedioD1Fs90 <- mean(datitest$D1[datitest$SESSO==2 & datitest$DIPAA>90])
+
+votomedioD1Ms80 > votomedioD1Fs90
+
+```
+
+
+13. Verificare se il punteggio medio del ragionamento deduttivo nei maschi che hanno avuto un voto di diploma superiore a 80 e che hanno avuto un punteggio inferiore a 2 nel test per la misura del pensiero creativo è superiore rispetto a quello delle femmine con voto di diploma superiore a 85.
+
+```{r}
+mediaF85 = mean(datitest$VOTO[datitest$SESSO == 2 & datitest$VOTO > 85])
+maschi = datitest[datitest$SESSO == 1, ]
+mediaM80 = mean(maschi[maschi$D3 < 2 & maschi$VOTO > 80, "D1"])
+mediaM80 > mediaF85
+```
+
+
+14. Visualizzare la distribuzione del voto di diploma attraverso un istogramma. 
+
+```{r}
+hist(datitest$VOTO)
+hist(datitest$VOTO, freq = FALSE)
+lines(density(datitest$VOTO))
+```
+
+
+
+
+15. **Nota 1**: utilizzando il comando `par(mfrow=c(n1,n2))` è possibile cambiare i parametri grafici perché appaiano più grafici. Ad esempio, `par(mfrow=c(2,3))` produce una finestra suddivisa in due righe e tre colonne, ogni cella della finestra puo contenere un grafico diverso.
+
+16. Produrre due boxplot dei voti, uno per i maschi ed uno per le femmine. Devono apparire nello stesso grafico (usare il comando `par(mfrow=c(n1,n2))`)
+
+```{r}
+par(mfrow=c(1,2))
+boxplot(datitest$VOTO[datitest$SESSO ==1], main = "Voto dei maschi")
+boxplot(datitest$VOTO[datitest$SESSO ==2], main = "Voto delle femmine")
+```
+
+
+```{r}
+par(mfrow=c(1,1)) # riporta normale la finestra
+boxplot(datitest$VOTO ~ datitest$SESSO,
+        col = ifelse(datitest$SESSO == 1, 
+                     "seagreen", "orchid"),
+        xlab = "Sesso", ylab="Voto")
+```
+
+
+17. Creare quattro grafici di boxplot (disponendoli in una unica finestra grafica) contenenti:
+ - i punteggi del ragionamento deduttivo per i maschi con voto di diploma inferiore a 75,
+ - i punteggi del ragionamento deduttivo per le femmine con voto di diploma inferiore a 75,
+ - i punteggi del ragionamento deduttivo per i maschi con voto di diploma superiore o uguale a 75,
+ - i punteggi del ragionamento deduttivo per le femmine con voto di diploma superiore o uguale a 75.
+
+
+```{r}
+par(mfrow=c(2,2))
+boxplot(datitest$D1[datitest$SESSO==1 & datitest$VOTO<75],xlab="D1 Maschi con voto < 75")
+
+boxplot(datitest$D1[datitest$SESSO==2 & datitest$VOTO<75],xlab="D1 Femmine con voto < 75")
+
+boxplot(datitest$D1[datitest$SESSO==1 & datitest$VOTO>=75],xlab="D1 Maschi con voto >= 75")
+
+boxplot(datitest$D1[datitest$SESSO==2 & datitest$VOTO>=75],xlab="D1 Femmine con voto >= 75")
+
+```
+
+
+18. Creare una nuova variabile `PTOT` contenente il punteggio complessivo (calcolato come somma dei singoli test D1, ..., D4) per ogni studente.
+
+```{r}
+datitest$PTOT = apply(datitest[, c("D1", "D2", "D3", "D4")], 1, sum)
+# la funzione rowSums() avrebbe prodotto lo stesso risultato 
+# datitest$PTOT = rowSums(datitest[, c("D1", "D2", "D3", "D4")])
+```
+
+
+19. Creare una nuova variabile `PTOTc` che contiene il punteggio totale PTOT corretto per il voto di diploma secondo la seguente formula:
+
+$$PTOTc = PTOT \times \log_2\left(\frac{100}{VOTO}\right)$$
+```{r}
+datitest$PTOTc <- datitest$PTOT*log2(100/datitest$VOTO)
+
+datitest$PTOTc
+
+```
+
+
+20. Visualizzare il grafico di dispersione tra VOTO e PTOT. Il grafico può essere ottenuto con la funzione `plot(X, Y)`, dove X è la variabile che si vuole rappresentare sul grafico delle X e Y la variabile che si vuole rappresentare sull'asse delle Y. 
+
+
+```{r}
+par(mfrow=c(1,1))
+plot(datitest$VOTO, datitest$PTOT, pch = 19,
+     col = ifelse(datitest$SESSO == 1, "seagreen", "orchid"))
+```
+
+
+21. Ripetere la procedura utilizzando PTOTc al posto di PTOT.
+
+```{r}
+plot(datitest$VOTO, datitest$PTOTc, pch = 19,
+     col = ifelse(datitest$SESSO == 1, "seagreen", "orchid"))
+```
+
