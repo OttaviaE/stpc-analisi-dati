@@ -1,0 +1,162 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Soluzioni - PRIMA SERIE"
+author: "Ottavia Epifania"
+format: pdf
+execute:
+  echo: true
+  eval: false
+linestretch: 1.5
+---
+
+
+
+# Esercizio 1
+```{r}
+
+dati <- read.csv("DataAS.csv", sep=";")
+
+```
+ 
+```{r}
+ECat <- dati$E
+ECat[(dati$E >= 36) & (dati$E <= 43)] <- 1
+ECat[(dati$E >= 44) & (dati$E <= 51)] <- 2
+SM10 <- rep(0,60)
+SM10[(dati$a1b1+dati$a1b2)>=10] <- 1
+myt <- table(ECat,SM10)
+rownames(myt) <- c("[36-43]","[44-51]")
+colnames(myt) <- c("P<10","P>=10")
+myt  # I bambini più grandi hanno una maggiore probabilità di
+   # superare la soglia minima 10
+
+Chi2 <- chisq.test(myt)$statistic # confermato da un valore elevato
+Chi2                            # di Chi2 osservato
+Chi2max <- nrow(dati)*min(c(nrow(mytab)-1, ncol(mytab)-1))                   # chi2max = N * min(I-1,J-1)
+Chi2nor <- Chi2/Chi2max         # Chi2 normalizzato
+Chi2nor
+
+```
+# Esercizio 2
+
+```{r}
+SB10 <- rep(0,60)
+SB10[(dati$a2b1+dati$a2b2)>=10] <- 1
+mytab <- table(ECat,SB10)
+rownames(mytab) <- c("[36-43]","[44-51]")
+colnames(mytab) <- c("P<10","P>=10")
+mytab  # non sembra esserci una grande differenza tra le due età
+
+Chi2 <- chisq.test(mytab)$statistic 
+Chi2                      # nota viene prodotto un warning in
+                          # quanto si osservano delle frequenze in
+                          # mytab molto basse es. mytab[2,1]=0.                          
+Chi2max <- 60                   
+Chi2nor <- Chi2/Chi2max        
+Chi2nor
+
+```
+
+# Esercizio 3 
+
+```{r}
+gen <- dati$S
+myt3 <- table(gen,SM10)
+rownames(myt3) <- c("F","M")
+colnames(myt3) <- c("P<10","P>=10")
+myt4 <- table(gen,SB10)
+rownames(myt4) <- c("F","M")
+colnames(myt4) <- c("P<10","P>=10")
+myt3
+Chi2a <- chisq.test(myt3)$statistic
+Chi2a
+Chi2a/Chi2max
+myt4
+Chi2b <- chisq.test(myt4)$statistic
+Chi2b
+Chi2b/Chi2max
+
+```
+
+# Esercizio 4
+
+```{r}
+PTmacch <- dati$a1b1 + dati$a1b2
+PTbamb <- dati$a2b1+ dati$a2b2
+# altra opzione con funzione rowSums()
+# PTmacch <- rowSums(dati[,c("a1b1", "a1b2")])
+# PTbamb <- rowSums(dati[,c("a2b1", "a2b2")])
+plot(PTmacch,PTbamb, pch = 9, col = ifelse(dati$S == "f", "orangered", "royalblue"), 
+     ylab = "Bamboline", xlab = "Macchinine")
+cor(PTmacch,PTbamb)   # la correlazione è positiva
+
+```
+
+# Esercizio 5
+```{r}
+MR <- lm(PTbamb ~ PTmacch)
+MR
+plot(PTmacch,PTbamb, pch = 9, col = ifelse(dati$S == "f", "orangered", "royalblue"), 
+     ylab = "Bamboline", xlab = "Macchinine")
+abline(MR, col = "red", lwd = 2)   
+
+```
+
+ # Esercizio 6 
+ 
+ 
+```{r}
+R2 <- cor(PTmacch,PTbamb)^2
+R2
+
+E <- MR$residuals
+plot(PTmacch,E)
+abline(0,0)      # i residui sembrano correttamente dispersi 
+                 # rispetto alla soglia 0
+plot(c(1:60),E)
+abline(0,0)      # i residui sembrano correttamente dispersi
+                 # all'ordine naturale di inserimento
+                 # delle unità statistiche
+
+```
+# Esercizio 7 
+
+```{r}
+PTnoR <- dati$a1b1+dati$a2b1
+PTsiR <- dati$a1b2+dati$a2b2
+
+plot(PTnoR,PTsiR)
+cor(PTnoR,PTsiR)      # la correlazione è positiva
+
+```
+
+# Esercizio 8 
+
+```{r}
+MR2 <- lm(PTsiR ~ PTnoR)
+MR2
+plot(PTnoR,PTsiR)
+abline(MR2, col = "red")   
+```
+
+# Esercizio 9 
+
+```{r}
+
+R2b <- cor(PTnoR,PTsiR)^2
+R2b
+
+E2 <- MR2$residuals
+plot(PTnoR,E2)
+abline(0,0)      # i residui sembrano correttamente dispersi 
+                 # rispetto alla soglia 0
+plot(c(1:60),E2)
+abline(0,0)      # i residui sembrano correttamente dispersi
+                 # all'ordine naturale di inserimento
+                 # delle unità statistiche
+
+
+```
+
+
+

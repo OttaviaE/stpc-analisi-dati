@@ -1,0 +1,99 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Esercizi legati al modulo 3 - Seconda SERIE"
+author: "Ottavia Epifania"
+format: 
+  pdf:
+    toc: true
+    toc-title: Lista degli esercizi
+execute:
+  echo: true
+  eval: false
+linestretch: 1.5
+---
+
+\newpage
+
+# Introduzione
+
+Questa nuova serie di esercizi sul terzo modulo didattico sono divisi in due parti: 1) esercizi sulla regressione lineare 2) esercizi sulla statistica Chi quadrato.
+
+
+Queste variabili sono ricavate dal famoso esempio di Anscombe (1973, Graphs in statistical analysis, The American Statistician).
+
+```{r}
+#| echo: true
+
+X1 <- c(10,8,13,9,11,14,6,4,12,7,5)
+Y1 <- c(8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68)
+Y2 <- c(9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74)
+Y3 <- c(7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73)
+X2 <- c(8,8,8,8,8,8,8,19,8,8,8)
+Y4 <- c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89)
+
+```
+
+# Esercizio 1
+
+## 1. 
+
+studiare la relazione tra le seguenti coppie di variabili attraverso dei modelli di regressione. Visualizzare graficamente la relazione tra le varaibili attraverso un grafico a disperisione: 
+ - $(X1,Y1)$ (modello di regressione `MR1`) 
+ - $(X1,Y2)$ (modello di regressione `MR2`)
+ - $(X1,Y3)$ (modello di regressione `MR3`)
+ - $(X2,Y4)$ (modello di regressione `MR4`)
+
+## 2. 
+
+Studia la relazione tra la variabile indipendente ed i residui per ciascun modello utilizzando dei grafici di dispersione. Che tipo di commenti puoi fare circa ciascun grafico di dispersione?
+
+## 3. 
+
+Calcola e visualizza la percentuale di varianza spiegata per ciascun modello
+
+## 4. 
+
+Calcola i valori predetti dal primo modello di regressione (`MR1`) per $X1 = \{-25, 0.25, 44.9, 100.8\}$
+
+# Esercizio 2
+
+## 1. 
+
+Si consideri la seguente coppia di variabili categoriali `A` e `B` con rispettivamente 3 e 2 livelli:
+
+A=(a1,a2,a2,a1,a3,a3,a3,a1,a2,a1,a2,a1,a3,a2,a2,a1,a3,a2,a1)
+
+B=(b1,b1,b1,b1,b1,b1,b1,b1,b1,b2,b2,b2,b2,b2,b2,b2,b2,b2,b2)
+
+Si costruisca la tabella di contingenza `f_o` associata alle due variabili A e B.
+
+
+## 2. 
+
+Costruire la tabella di contingenza, `f_t`, che contenga le frequenze teoriche associate al modello di indipendenza tra `A` e `B`.
+
+## 3. 
+
+Calcola e visualizza il valore del Chi-quadrato osservato ottenuto sulla tabella di contingenza `f_o`.
+
+## 4. 
+
+Calcola l'indice normalizzato del Chi-quadrato osservato: 
+
+$$\chi_N^2 = \dfrac{\chi^2}{N\times \min[(r-1); (c-1)]}$$
+
+Quale conclusione si può trarre dal risultato di tale indice?
+
+## 5. 
+
+Calcola il valore del Chi-quadrato osservato ottenuto sulla tabella di contingenza `f_o` limitata ai soli valori `a1` e `a3` della variabile categoriale A. Su questa nuova tabella di contingenza calcola l'indice normalizzato del Chi-quadrato.
+
+## 6. 
+
+Costruisci una nuova tabella di contingenza sommando i valori della seconda e terza riga di `f_o`. Questa nuova tabella di contingenza esprime l'associazione tra i valori `b1` e `b2` della variabile categoriale `B` e i valori `a1` e ${a2,a3}$ della nuova variabile categoriale `A2`. 
+
+Per questa nuova tabella di contingenza: 
+
+* deriva la tabella di contingenza associata alle frequenze teoriche del modello di indipendenza tra `A2` e `B` 
+* visualizza il valore del Chi-quadrato osservato 
+* calcola il valore del Chi-quadrato normalizzato. 

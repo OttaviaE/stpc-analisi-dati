@@ -1,0 +1,202 @@
+---
+title: "Esercizi Modulo 4 - Prima serie"
+subtitle: "Soluzioni"
+author: "Ottavia Epifania"
+format: pdf
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+editor_options: 
+  chunk_output_type: console
+---
+
+# Variabili casuali
+
+Gli esercizi che di seguito vengono presentati sono relativi all'algebra del calcolo di probabilità di eventi associati a variabili casuali caratterizzate da precise leggi di probabilità come, ad esempio, la distribuzione binomiale o la distribuzione normale. Si utilizzino le opportune funzioni di R per risolvere gli esercizi.
+
+1. Si consideri una variabile casuale $Y$ distribuita binomialmente dove la distribuzione binomiale modella un esperimento casuale dicotomico costituito da $N=9$ distinti esiti dicotomici $X \in \{0, 1\}$ con probabilità $Pr[X=1]=0.3$. Si rammenta che in questo contesto, la variabile casuale $Y$ è definita come la somma dei nove esiti associati alle variabili dicotomiche $X1$, $X2$, $\ldots$, $X9$. Si calcolino le probabilità dei seguenti eventi:
+
+a. $Pr[Y = 5]$
+b. $Pr[Y \leq 5]$
+c. $Pr[Y > 5]$
+d. $Pr[Y \leq 2 \, oppure \, Y \geq 7]$
+e. $Pr[0 \leq Y \leq 2]$
+f. $Pr[0\leq Y \leq 2] + Pr[4 \leq Y \leq 6] + Pr[7 < Y < 9]$
+
+```{r}
+# a Y = 5
+dbinom(5,size=9,prob=0.3)
+# b Y <5
+pbinom(5,size=9,prob=0.3) # oppure
+sum(dbinom(c(0:5),size=9,prob=0.3))
+# c Y > 5
+pbinom(5,size=9,prob=0.3, lower.tail = F) # oppure
+1- pbinom(5,size=9,prob=0.3)
+# oppure 
+pbinom(5,size=9,prob=0.3) # oppure
+sum(dbinom(c(6:9),size=9,prob=0.3))
+# d Pr[Y \leq 2 \, oppure \, Y \geq 7]
+sum(dbinom(c(0:2,7:9),size=9,prob=0.3))
+# e Pr[0 \leq Y \leq 2]
+pbinom(2,size=9,prob=0.3)
+# f. Pr[0\leq Y \leq 2] + Pr[4 \leq Y \leq 6] + Pr[7 < Y < 9]
+pbinom(2,size=9,prob=0.3) + (pbinom(6,size=9,prob=0.3) - pbinom(4,size=9,prob=0.3)) + (pbinom(8,size=9,prob=0.3) - pbinom(6,size=9,prob=0.3))
+
+```
+
+
+2. Considerando sempre la stessa variabile descritta nell'esercizio 1, si producano le seguenti rappresentazioni grafiche:
+
+* Distribuzione di probabilità di Y
+```{r}
+supporto = c(0:9)
+dy = dbinom(supporto, 9, .3)
+plot(supporto, dy, main = "Variabile Casuale Y")
+```
+* Distribuzione di probabilità cumulata di Y
+```{r}
+cum_y <- pbinom(supporto,size=9,prob=0.3)
+
+plot(supporto,cum_y, ylim = c(0,1))
+```
+
+* Si modifichi il valore associato alla probabilità dell'evento target $(X=1)$ che passa da 0.3 a 0.8. Rappresentare graficamente la nuova distribuzione di probabilità di Y e la nuova distribuzione di probabilità cumulata di Y.
+
+```{r}
+dy8 <- dbinom(supporto,size=9,prob=0.8)
+
+plot(supporto,dy8)
+
+cum_y8 <- pbinom(supporto,size=9,prob=0.8)
+
+plot(supporto,cum_y8)
+
+# confronto delle curve 
+plot(supporto,dy, pch = 19, xlim = c(0, 10))
+points(supporto,dy8, pch = 8, col = "red")
+
+plot(supporto,cum_y, pch = 19, xlim = c(0, 10))
+points(supporto,cum_y8, pch = 8, col = "red")
+```
+
+
+3. Facendo riferimento sempre all'esercizio 1, si calcolino i seguenti quantili:
+
+* quantile associato al valore di probabilità 0.5
+
+```{r}
+qbinom(0.5,size=9,prob=0.3)
+```
+
+* quantile associato al valore di probabilità 0.025
+
+```{r}
+qbinom(0.5,size=9,prob=0.3)
+```
+
+* quantile associato al valore di probabilità 0.0975
+
+```{r}
+qbinom(0.0975,size=9,prob=0.3)
+```
+
+
+4. Si consideri una variabile casuale $Z$ distribuita secondo una distribuzione normale standardizzata. Si calcolino le probabilità dei seguenti eventi:
+
+```{r}
+supporto_norm = seq(-4, 4, length.out = 1000) 
+d_norm = dnorm(supporto_norm)
+plot(supporto_norm, d_norm, type ="l", lwd = 2)
+```
+
+
+* $Pr[Z > 0]$
+
+```{r}
+# disegna la curva con solo l'area > 0 colorata
+plot(supporto_norm, d_norm, type ="l", lwd = 2)
+polygon(c(0, supporto_norm[supporto_norm>0], 4), 
+        c(0,  dnorm(supporto_norm[supporto_norm >0]), 0), 
+        col = rgb(1,0,0, 0.3))
+1 - pnorm(0,mean=0,sd=1)   
+# oppure 
+pnorm(0,mean=0,sd=1, lower.tail = F)
+```
+
+* $Pr[Z \leq -1.96  oppure Z \leq 1.96]$
+
+```{r}
+plot(supporto_norm, d_norm, type ="l", lwd = 2)
+polygon(c(-4, supporto_norm[supporto_norm<= -1.96],-1.96), 
+        c(0,  dnorm(supporto_norm[supporto_norm<= -1.96]),0), 
+        col = rgb(0,0,1, 0.3))
+polygon(c(1.96, supporto_norm[supporto_norm>= 1.96], 4), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= 1.96]),0), 
+        col = rgb(0,0,1, 0.3))
+
+pnorm(-1.96,mean=0,sd=1) + (1 - pnorm(1.96,mean=0,sd=1))
+```
+
+
+* $Pr[0 \leq Z \leq 1.5]$
+
+```{r}
+plot(supporto_norm, d_norm, type ="l", lwd = 2)
+polygon(c(0, supporto_norm[supporto_norm>= 0 & supporto_norm <= 1.5],1.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= 0 & supporto_norm <= 1.5]),0), 
+        col = rgb(0,0,1, 0.3))
+pnorm(1.5,mean=0,sd=1) - (pnorm(0,mean=0,sd=1))
+```
+
+
+Dati due intervalli su Z: primo intervallo $[-1,0.5]$ e secondo intervallo $[0,1.5]$, calcolare la probabilità dell'intersezione dei due intervalli.
+
+```{r}
+plot(supporto_norm, d_norm, type ="l", lwd = 2)
+polygon(c(0, supporto_norm[supporto_norm>= 0 & supporto_norm <= 1.5],1.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= 0 & supporto_norm <= 1.5]),0), 
+        col = rgb(0,0,1, 0.3))
+polygon(c(-1, supporto_norm[supporto_norm>= -1 & supporto_norm <= 0.5],0.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= -1 & supporto_norm <= 0.5]),0), 
+        col = rgb(1,0,1, 0.3))
+# intersezione
+polygon(c(0, supporto_norm[supporto_norm>= 0 & supporto_norm <= 0.5],0.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= 0 & supporto_norm <= 0.5]),0), 
+        col = "black")
+
+pnorm(0.5,mean=0,sd=1) - (pnorm(0,mean=0,sd=1))
+```
+
+
+Ripetere il precedente esercizio, questa volta calcolando la probabilità dell'unione dei due intervalli.
+
+```{r}
+plot(supporto_norm, d_norm, type ="l", lwd = 2)
+polygon(c(0, supporto_norm[supporto_norm>= 0 & supporto_norm <= 1.5],1.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= 0 & supporto_norm <= 1.5]),0), 
+        col = rgb(0,0,1, 0.3))
+polygon(c(-1, supporto_norm[supporto_norm>= -1 & supporto_norm <= 0.5],0.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= -1 & supporto_norm <= 0.5]),0), 
+        col = rgb(1,0,1, 0.3))
+# unione
+polygon(c(-1, supporto_norm[supporto_norm>= -1 & supporto_norm <= 1.5],1.5), 
+        c(0,  dnorm(supporto_norm[supporto_norm>= -1 & supporto_norm <= 1.5]),0), 
+        col = "firebrick")
+pnorm(1.5,mean=0,sd=1) - pnorm(-1,mean=0,sd=1)
+
+```
+
+
+5. Fare la somma tra il quantile associato alla probabilità 0.5 di una variabile casuale $T$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.5 di una variabile casuale $S$ distribuita normalmente con media 20 e deviazione standard 10.
+
+```{r}
+qnorm(0.5,mean=10,sd=5) + qnorm(0.5,mean=20,sd=10)
+```
+
+
+6. Fare la somma tra il quantile associato alla probabilità 0.2 di una variabile casuale $T2$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.8 di una variabile casuale S2 distribuita normalmente con media 20 e deviazione standard 10.
+
+```{r}
+qnorm(0.2,mean=10,sd=5) + qnorm(0.8,mean=20,sd=10)
+```
+

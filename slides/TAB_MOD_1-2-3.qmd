@@ -1,0 +1,178 @@
+---
+title: "Analisi dei dati con applicazioni informatiche"
+subtitle: "Tabella riassuntiva Moduli 1-2-3"
+format: 
+  pdf: 
+   toc: true
+---
+
+\newpage
+
+# Operatori
+
+## Artitmetici
+
+| Simbolo | Significato      | Osservazioni/Esempi |
+|---------|------------------|----------------------|
+| +       | Addizione        |                      |
+| -       | Sottrazione      |                      |
+| *       | Moltiplicazione  |                      |
+| /       | Divisione        |                      |
+| ^       | Elevamento a potenza |                 |
+
+## Di confronto
+
+| Simbolo | Significato      | Osservazioni/Esempi |
+|---------|------------------|----------------------|
+| <       | Minore           |                      |
+| >       | Maggiore         |                      |
+| <=      | Minore uguale    |                      |
+| >=      | Maggiore uguale  |                      |
+| ==      | Uguale           |                      |
+| !=      | Diverso          |                      |
+
+## Logici
+
+| Simbolo | Significato       | Osservazioni/Esempi |
+|---------|-------------------|----------------------|
+| &       | Congiunzione      | Intersezione tra insiemi $\land$ ($\cap$) |
+| \|     | Disgiunzione      | Unione tra insiemi  $\lor$ $\cup$ |
+| !       | Negazione         |                    $\lnot$  |
+| &!      | Disgiunzione esclusiva |                |
+
+# Valori di verità
+
+| Valore | Significato | Osservazioni/Esempi |
+|--------|-------------|----------------------|
+| TRUE   | Vero        | Es. X>2 confronta ogni valore di X con 2 |
+| FALSE  | Falso       |                      |
+
+# Operatori e funzioni utili
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `<-`       | Operatore di assegnazione | Uguale a `assign()` oppure `=` |
+| `c(...)`   | Concatenazione di valori | `c(1:n)` restituisce valori da 1 a n con passo 1; `c(1,n)` restituisce solo 1 e n |
+| `vettore[i]`    | Operatore di selezione per i vettori, dove `i` è l'indice della posizione a cui si vuole accedere  | Es. `A<-c(1,8,5,0)`; `A[c(1,4)]` restituisce valori in posizione 1 e 4 |
+| `dati[i, j]`    | Operatore di selezione per strutture di dati (matrici, dataframe), dove `i` è l'indice della riga, `j`  della colonna  | Es. `data[4, 12]` restituisce il valore della cella che si trova all'incrocio tra la quarta riga e la dodicesima colonna|
+| `data$variabile`        | Visualizza la variabile richiamata |  |
+| `read.csv2("")` | Legge un file di dati esterno | `sep =";", dec =",", header = TRUE"` |
+
+# Convertitori
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `as.numeric(A)` | Converte in variabile numerica | |
+| `as.factor(A)` | Converte in variabile categoriale/nominale | Richiede variabile testuale |
+| `factor(A, levels=c("a1",...,"ak"), ordered=TRUE)` | Converte in variabile ordinale | Va inserito ordine dei livelli teorici |
+| `as.matrix(data.frame)` | Converte un data.frame in oggetto numerico | |
+
+# Strumenti
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `remove(...)` | Rimuove valori assegnati | |
+| `rm(...)` | Rimuove oggetti | |
+| `rm(list=ls())` | Rimuove tutto ciò che è in memoria | |
+| `ls()` | Visualizza oggetti in memoria | |
+| `example(comando)` | Fornisce esempio d'uso | |
+| `?comando` | Mostra guida | |
+
+# Funzioni matematiche
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `log(...)` | Logaritmo naturale | |
+| `exp(...)` | Esponenziale | |
+| `abs(...)` | Valore assoluto | |
+| `sqrt(...)` | Radice quadrata | |
+| `round(...)` | Arrotondamento | |
+| `sign(...)` | Funzione segno | |
+| `pi` | Costante pi greco | |
+| `max(...)` | Valore massimo | |
+| `min(...)` | Valore minimo | |
+| `sum(...)` | Somma | |
+| `mean(...)` | Media | |
+| `mean(..., trim=n)` | Media troncata | Elimina outlier con 0<=n<=0.5 |
+| `sd(...)` | Deviazione standard | |
+| `var(...)` | Varianza | |
+| `median(...)` | Mediana (2° quartile) | |
+| `quantile(X, probs)` | Calcola quantile | |
+| `IQR(...)` | Differenza interquartilica, $Q_3-Q_1$|
+| `range(...)` | Intervallo (min e max) | Identico a `c(min(X),max(X))` |
+| `rep(n, k) | Replica `n` per `k` volte | |
+| `dim(...)` | Dimensioni oggetto tabellare | `dim(...)[1]` righe, `dim(...)[2]` colonne |
+| `cumsum(...)` | Somma cumulata | |
+| `length(...)` | Numero elementi di un vettore | |
+| `which(...) | Posizione di valori che soddisfano condizione | Es. `which(x<3)` |
+| `levels(...)` | Etichette assegnate a fattori | |
+| `numeric(n)` | Vettore vuoto lunghezza n | |
+| `rownames(...)` | Nomi righe | |
+| `colnames(...)` | Nomi colonne | |
+| `summary(...) | Riassume contenuto | Anche modelli `lm(...)` |
+| `str(X)` | Controlla struttura oggetto | |
+| `cov(X,Y)` | Covarianza campionaria | |
+| `cor(X,Y)` | Correlazione lineare | $-1\leq r \leq 1$ |
+
+# Matrici
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `matrix(y, r, c)` | Matrice $r \times c$ con valori `y` | Riempimento per colonne |
+| `matrix(y, r, c, byrow=TRUE)` | Matrice con riempimento per righe | |
+| `t(M)` | Trasposta di M | |
+| `*` | Prodotto tra matrici | |
+
+# Liste e Data Frame
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `list()` | Costruisce lista di oggetti | Prima creare oggetti, poi richiamarli nella lista |
+| `data.frame(...)` | Costruisce tabella di variabili | Variabili devono avere stessa lunghezza |
+| `apply(DATI,MARGIN,FUN)` | Applica funzione per righe (`1`)/colonne (`2`) | Es. `apply(DATI,1,sum)` |
+| `cbind(...)` | Unisce colonne | Variabili devono avere stessa lunghezza |
+| `rbind(...)` | Unisce righe | |
+| `head(df)` | Mostra prime 6 righe dataframe | |
+| `tail(df)` | Mostra ultime 6 righe dataframe | |
+
+# Distribuzioni di frequenza
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `table(A)` | Tabella frequenze di variabile | |
+| `table(A,B)` | Tabella di contingenza | |
+| `margin.table(T,margin)` | Frequenze marginali  | `1` righe, `2` colonne |
+| `T/sum(T)` | Frequenze relative | |
+| `prop.table(T,margin)` | Probabilità condizionate | |
+| `cumsum(table(X))` | Frequenze cumulate assolute | |
+| `cumsum(table(X)/length(X))` | Frequenze cumulate relative | |
+| `table(...)/length(...)` | Frequenze relative | |
+
+# Funzioni grafiche
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `hist(X,breaks)` | Istogramma | `breaks=` Calcolo ampiezza bin |
+| `boxplot(X)` | Boxplot | anche `boxplot(X,Y,names=c("X","Y"))` |
+| `runif(N,0,1)` | `N` valori casuali presi da distribuzione uniforme | tra 0 e 1 |
+| `density(X,bw)` | Stima densità | Usare `plot(density(...))` |
+| `par(mfrow=c(n1,n2))` | Imposta finestra grafica multipla | `n1`=righe, `n2`=colonne |
+| `skew(...)` | Misura asimmetria | |
+| `kurt(...)` | Misura curtosi | |
+| `plot(X,Y)` | Grafico di dispersione | |
+
+# Associazione variabili categoriali
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `chisq.test(T)$statistic` | Calcola chi-quadrato osservato | |
+| `chisq.test(T)$expected` | Calcola frequenze teoriche | |
+
+# Regressione lineare
+
+| Funzione | Significato | Osservazioni/Esempi |
+|----------|-------------|----------------------|
+| `lm(Y~X)` | Modello regressione lineare | Y dipendente, X indipendente |
+| `abline(retta,...) `| Traccia retta sul grafico | `abline(lm(Y~X))` |
+| `cor(X,Y)^2` | Bontà di adattamento (R^2) | |
+| `retta$residuals` | Residui modello | Es. `plot(X,E); abline(0,0)` |

@@ -1,0 +1,79 @@
+---
+title: "Esercizi Modulo 2 - Seconda serie"
+author: "Ottavia Epifania"
+format: pdf
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+---
+
+# Dati 
+
+Si consideri la seguente struttura di dati contenente 4 variabili quantitative: 
+
+```{r}
+#| echo: false
+dati <- data.frame(
+  X1 = c(41.61,46.93,50.33,53.93,51.33,51.55,52.31,53.07,53.00,51.07,
+         51.98,44.96,46.17,54.63,45.53,51.23,54.07,46.25,51.04,55.17),
+  X2 = c(48.87,54.81,38.10,43.16,38.52,40.35,53.18,54.50,55.66,46.45,
+         50.53,58.63,62.26,50.17,57.76,64.68,49.38,42.64,57.46,34.93),
+  X3 = c(64.50,51.73,72.01,27.77,64.81,69.12,50.44,44.83,59.05,63.12,
+         65.14,53.67,58.58,54.73,51.61,46.07,52.12,41.23,60.84,56.50),
+  X4 = c(56.46,64.31,58.61,59.59,61.36,58.10,56.34,56.01,59.54,57.65,
+         54.71,61.24,56.67,59.40,53.78,63.97,61.91,54.86,62.88,56.14)
+)
+knitr::kable(dati)
+```
+
+# Esercizi 
+
+## 1
+
+Costruire un dataframe `D` riproducente la tabella sopra riportata e rimuovere le singole variabili dal workspace. 
+
+Utilizzare la funzione `summary()` per visualizzare i risultati delle principali statistiche descrittive per ciascuna delle quattro variabili separatamente.
+
+## 2
+
+Costruire un grafico con iù pannelli (si faccia riferimento al punto 15 del laboratorio del modulo 2) che contenga i quattro istogrammi associati rispettivamente alle variabili `X1`, `X2`, `X3` e `X4`. 
+
+Per confrontare meglio i quattro grafici fare in modo che: 
+
+* l'ascissa di ciascun istogramma sia variabile sullo stesso dominio di valori per tutti e 4 gli istogrammi (si utilizzi il parametro `xlim` all'interno della funzione per la costruzione dell'istogramma)
+
+* il numero di bin dell'istogramma sia scelto in automatico dalla funzione grafica (utilizzare la rappresentazione grafica di default).
+
+## 3 
+
+Per ciascuna variabile separatamente esplorare l'effetto di rappresentazione dell'istogramma in funzione di un differente numero di bin. Allo scopo utilizzare il parametro opportuno nella funzione di rappresentazione grafica dell'istogramma per variare il numero di bin dello stesso. Provare a commentare qualitativamente il risultato di tali variazioni.
+
+## 4. 
+
+Utilizzando la funzione `quantile()`, visualizzare i principali quantili delle quattro variabili di `D`. 
+
+Per la sola variabile `X2` visualizzare i quantili associati ai valori di probabilità 0.15, 0.33, 0.46, 0.89, 0.98, 0.99, 1.0; hai alcune osservazioni da fare sui risultati dei quantili di `X2`?
+
+## 5 
+
+Costruire un grafico unico che contiene i quattro grafici boxplot associati rispettivamente alle variabili `X1`, `X2`, `X3` e `X4`.
+
+# Adavanced
+
+## 6
+
+Per ciascuna variabile in D verificare se vi siano o meno dei valori anomali (outliers) nella corrispettiva distribuzione. 
+
+Creare un vettore di tipo logico di lunghezza 4 che codifica per ciascuna variabile la presenza o meno di valori anomali (secondo i valori TRUE/FALSE). Nota: per questo tipo di esercizio l'assegnazione dei valori logici va fatta manualmente.
+
+## 7 
+
+Verificare (separamente per ogni caso, vedi in sequito) attraverso la sola ispezione grafica dei differenti boxplot se 
+
+* la distribuzione di `X1` sia inclusa in quella di `X2` 
+* la mediana di `X1` sia superiore alla mediana di `X3` 
+* il minimo di `X2` sia superiore al minimo di `X3` 
+* la differenza interquartilica di `X1` sia superiore a quella di `X4` 
+* il baffo superiore di `X3` coincida con il valore massimo di `X3` 
+* il baffo inferiore di `X3` coincida con il minimo di X3 
+* Individuare quale tra le 4 variabili presenti un qualche livello di asimmetria a destra e quale tra le 4 variabili presenti un qualche livello di asimmetria a sinistra.

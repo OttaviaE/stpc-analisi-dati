@@ -185,8 +185,8 @@ votomedioD3M < votomedioD3F
 
 
 ```{r}
-votomedioD1Ms80 <- mean(datitest$D1[datitest$SESSO==1 & datitest$DIPAA>80])
-votomedioD1Fs90 <- mean(datitest$D1[datitest$SESSO==2 & datitest$DIPAA>90])
+votomedioD1Ms80 <- mean(datitest$D1[datitest$SESSO==1 & datitest$VOTO>80])
+votomedioD1Fs90 <- mean(datitest$D1[datitest$SESSO==2 & datitest$VOTO>90])
 
 votomedioD1Ms80 > votomedioD1Fs90
 
@@ -228,8 +228,7 @@ boxplot(datitest$VOTO[datitest$SESSO ==2], main = "Voto delle femmine")
 ```{r}
 par(mfrow=c(1,1)) # riporta normale la finestra
 boxplot(datitest$VOTO ~ datitest$SESSO,
-        col = ifelse(datitest$SESSO == 1, 
-                     "seagreen", "orchid"),
+        col = c("seagreen", "orchid"),
         xlab = "Sesso", ylab="Voto")
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili categoriali"
+title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -21,6 +21,7 @@ header-includes:
    - \usepackage{xcolor}
    - \usepackage{tikz}
    - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
@@ -59,17 +60,15 @@ var2 <- as.factor(c("b1","b1","b1","b2","b1","b2","b2"))
 table(var1, var2)
 ```
 
----
 
 ## `margin.table()`
 
 ###
 
 `margin.table(table, margin)`: Frequenze marginali per la tabella a doppia entrata
+
 > `margin = 1`: Frequenze marginali calcolate **attraverso le colonne**
 > `margin = 2`: Frequenze marginali calcolate **attraverso le righe**
-
-Esempio:
 
 ```{r}
 mytab <- table(var1,var2)
@@ -83,39 +82,40 @@ margin.table(mytab,2)
 ### 
 
 `prop.table(T, margin = NULL)`: Probabilità condizionate: 
->riga (`margin = 1`, attraverso le colonne) o colonna (`margin = 2`, attraverso le righe). 
-> `margin = NULL` frequenze relative 
 
-Esempio:
+* riga (`margin = 1`, attraverso le colonne) o colonna (`margin = 2`, attraverso le righe). 
+* `margin = NULL` frequenze relative 
+
+::::{.columns}
+:::{.column width=50%}
+\small
 
 ```{r}
-prop.table(mytab)    # frequenze relative
+prop.table(mytab)    
 prop.table(mytab,1)  # P(B|A)
+```
+:::
+
+:::{.column width=50%}
+```{r}
 prop.table(mytab,2)  # P(A|B)
 ```
+:::
+::::
 
-# Misura di associazione
+
+# Associazione (Variabili qualitative)
 
 ## $\chi^2$
 
 ###
 
-* Quantifica il grado di associazione tra due variabili nominali  
-* Richiede il confronto tra **frequenze osservate** ($f_0$) e **frequenze attese** o **frequenze teoriche** ($f_t$)
+\small
+Quantifica il grado di associazione tra due variabili nominali: 
 
-Le frequenze teoriche sono calcolate assumendo l'indipendenza tra le variabili. 
-
-:::{.callout-tip}
-
-## $f_t$: Significato 
-
-Data l'ampiezza campionaria ($n$ totale di osservazioni), quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
-
-
-:::
-
-
-### 
+* A con $I$ categorie,
+* B con $J$ categorie
+Richiede il confronto tra **frequenze osservate** ($n_{ij}$) e **frequenze attese** o **frequenze teoriche** ($n_{ij}^*$)
 
 :::: {.columns}
 :::{.column width=40%}
@@ -123,12 +123,10 @@ Data l'ampiezza campionaria ($n$ totale di osservazioni), quali sono le frequenz
 \begin{tabular}{|p{2.5cm}|p{1cm}|}
 \hline
 & \\
-& \\
-\multicolumn{1}{|c|}{${f_{ij}}$} & \multicolumn{1}{c|}{$f_{i.}$}\\
-& \\
+\multicolumn{1}{|c|}{${n_{ij}}$} & \multicolumn{1}{c|}{$n_{i.}$}\\
 & \\
 \hline
-\multicolumn{1}{|c|}{$f_{.j}$} & \\
+\multicolumn{1}{|c|}{$n_{.j}$} & \\
 \hline
 \end{tabular}
 	
@@ -146,12 +144,10 @@ VS.
 \begin{tabular}{|p{2.5cm}|p{1cm}|}
 \hline
 & \\
-& \\
-\multicolumn{1}{|c|}{$\hat{f_{ij}}$} & \multicolumn{1}{c|}{$f_{i.}$}\\
-& \\
+\multicolumn{1}{|c|}{$n_{ij}^*$} & \multicolumn{1}{c|}{$n_{i.}$}\\
 & \\
 \hline
-\multicolumn{1}{|c|}{$f_{.j}$} & \\
+\multicolumn{1}{|c|}{$n_{.j}$} & \\
 \hline
 \end{tabular}
 
@@ -160,36 +156,582 @@ Frequenze teoriche
 :::
 ::::
 
-$$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(f_{ij} - \hat{f_{ij}})^2}{\hat{f_{ij}}}$$
+
+$$n_{ij}^* = \dfrac{n_{i.} \times n{.j}}{N}$$
+$N = \sum_{i=1}^I \sum_{j=1}^J n_{ij}$
+
+### 
+
+Le frequenze teoriche $n_{ij}^*$ sono calcolate assumendo l'indipendenza tra le variabili. 
+
+:::{.callout-tip}
+
+## $n_{ij}^*$: Significato 
+
+Data l'ampiezza campionaria $N$, quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
+
+
+:::
 
 
 
-<!-- ###  -->
+$$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(n_{ij} - n_{ij}^*)^2}{n_{ij}^*}$$
 
-<!-- :::{.callout-warning} -->
 
-<!-- \pause  -->
+###
 
-<!--  normalizzato -->
 
-<!-- - Permette di esprimere il grado di associazione in scala [0,1]   -->
 
-<!-- ::: -->
+$\chi^2 = 0$: $n_{ij} = n_{ij}^*$ Indipendenza stocastica
 
-<!-- --- -->
+$\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 = N \times \min[(I-1); (J-1)]$)
 
-<!-- ## Funzione `chisq.test` -->
+\pause
 
-<!-- Simbolo R | Significato -->
-<!-- ----------|------------ -->
-<!-- `chisq.test(T)$statistic` | Calcola il Chi quadrato osservato -->
+$$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
 
-<!-- Esempio: -->
+$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
 
-<!-- ```{r} -->
-<!-- chisq.test(T)$statistic -->
-<!-- ``` -->
 
-<!-- --- -->
 
-<!-- # Laboratorio 3 -->
+## `chisq.test()`
+
+###
+
+
+`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza `table`
+
+```{r}
+#| warning: false
+chisq.test(mytab)$statistic
+```
+
+Per calcolare il $\tilde{\chi}^2$:
+
+```{r}
+#| warning: false
+chisq.test(mytab)$statistic/sum(mytab)
+```
+
+
+# Associazione (variabili quantitative)
+
+## Indice di covarianza campionaria
+
+###
+
+```{r}
+#| echo: false
+dati <- data.frame(
+  X = c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5),
+  Y = c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
+)
+
+```
+
+:::: {.columns}
+
+:::{.column width=60%}
+```{r}
+#| echo:  false
+#| fig-cap: Grafico a dispersione delle variabili X e Y
+#| fig-align: center
+plot(dati$X, dati$Y, cex = 2, cex.axis =3)
+abline(v = mean(dati$X), lty=2)
+abline(h = mean(dati$Y), lty=2)
+points(mean(dati$X), mean(dati$Y), pch=19, cex = 4)
+```
+
+:::
+
+:::{.column width=40%}
+\small
+\flushright
+```{r}
+#| echo: false
+dati
+
+```
+
+:::
+::::
+
+## `plot()`
+
+### 
+
+`plot(x, y)`: Grafico di dispersione di due variabili quantitative appaiate `(x,y)` aventi lo stesso numero di osservazioni
+
+\small
+
+```{r}
+#| out-width: 60%
+#| fig-align: center
+X <- c(9,8,12,9,10,14,5,4,13,7,5)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4)
+plot(X,Y,main="Grafico di dispersione", xlim=c(0,20),ylim=c(0,15))
+```
+
+## Covarianza campionaria 
+
+### 
+
+Misura il grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{X}$ e $\bar{Y}$
+
+:::: {.columns}
+
+:::{.column width=50%}
+$x = (x_1, x_2, \ldots, x_n)$
+
+$y = (y_1, x_2, \ldots, y_n)$
+:::
+
+:::{.column width=50%}
+$$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
+:::
+::::
+
+$$\cov(x,y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i
+-\bar{y})$$
+
+
+
+###
+
+```{r}
+#| echo: false
+
+set.seed(123)  # per riproducibilità
+
+# --- dataset 1: cov ~ 0 (indipendenti con rumore) ---
+X1 <- 1:50
+Y1 <- rnorm(length(X1), mean = 10, sd = 2)
+df1 <- data.frame(X = X1, Y = Y1)
+
+# --- dataset 2: cov > 0 (relazione positiva + rumore) ---
+X2 <- X1
+Y2 <- 2*X2 + rnorm(length(X1), mean = 0, sd = 2)
+df2 <- data.frame(X = X2, Y = Y2)
+
+# --- dataset 3: cov < 0 (relazione negativa + rumore) ---
+X3 <- X1
+Y3 <- -1.5*X3 + rnorm(length(X1), mean = 0, sd = 10)
+df3 <- data.frame(X = X3, Y = Y3)
+
+# --- dataset 4: cov ~ 0 ma relazione NON lineare ---
+X4 <- X1
+Y4 <- (X4 - mean(X4))^2 + rnorm(length(X1), mean = 0, sd = 10)  # parabola con rumore
+df4 <- data.frame(X = X4, Y = Y4)
+
+# Visualizzo i dataframe e le covarianze campionarie
+mycov = list(
+  df1 = df1,
+  cov_df1 = cov(df1$X, df1$Y),
+  df2 = df2,
+  cov_df2 = cov(df2$X, df2$Y),
+  df3 = df3,
+  cov_df3 = cov(df3$X, df3$Y),
+  df4 = df4,
+  cov_df4 = cov(df4$X, df4$Y)
+)
+```
+
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| layout-nrow: 2
+#| out-width: 60%
+#| fig-cap: "Covarianza"
+#| fig-subcap: 
+#|   - "Cov = 0"
+#|   - "Cov = 0" 
+#|   - "Cov > 0"
+#|   - "Cov < 0"
+
+plot(df1$X, df1$Y, pch = 19, col = "royalblue", cex = 3)
+plot(df4$X, df4$Y, pch = 19, col = "royalblue", cex = 3)
+plot(df2$X, df2$Y, pch = 19, col = "royalblue", cex = 3)
+plot(df3$X, df3$Y, pch = 19, col = "royalblue", cex = 3)
+```
+
+
+## `cov()`
+
+### 
+
+`cov()`: Restituisce la covarianza campionaria tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
+
+```{r}
+X <- c(9,8,12,9,10,14,5,4,13,7,5)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4)
+Z <- -Y
+cov(X,Y) 
+cov(X,Z) 
+```
+
+## Correlazione campionaria
+
+
+### 
+
+$-sd(x)s(y) \leq\cov(X,Y)\leq + sd(x)s(y)$
+
+\pause
+
+$$r  = \dfrac{\cov(X,Y)}{sd(x)s(y)}$$
+
+$1 \leq r \leq 1$
+
+## `cor()`
+
+### 
+
+`cor()`: Restituisce la correlazione (lineare) campionaria tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
+
+```{r}
+#| echo: true
+X <- c(9,8,12,9,10,14,5,4,13,7,5)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4)
+Z <- -Y
+cor(X,Y) 
+cor(X,Z)
+```
+
+
+###
+
+```{r}
+#| echo: false
+library(MASS)
+
+set.seed(123)  # per riproducibilità
+
+n <- 100  # numero di osservazioni
+
+# --- 1. Cov > 0 (correlazione positiva) ---
+mu1 <- c(10, 10)                 # medie
+Sigma1 <- matrix(c(20, 15,       # var(X), cov(X,Y)
+                   15, 20), 2)   # cov(Y,X), var(Y)
+pos <- mvrnorm(n, mu = mu1, Sigma = Sigma1)
+
+# --- 2. Cov < 0 (correlazione negativa) ---
+mu2 <- c(10, 10)
+Sigma2 <- matrix(c(20, -15,
+                  -15, 20), 2)
+neg <- mvrnorm(n, mu = mu2, Sigma = Sigma2)
+
+# --- 3. Cov ~ 0 (nessuna correlazione) ---
+mu3 <- c(10, 10)
+Sigma3 <- matrix(c(20, 0,
+                    0, 20), 2)
+null <- mvrnorm(n, mu = mu3, Sigma = Sigma3)
+
+# Controllo covarianze e correlazioni
+mylist = list(
+  cov_pos  = cov(pos)[1,2],
+  cor_pos  = cor(pos)[1,2],
+  cov_neg  = cov(neg)[1,2],
+  cor_neg  = cor(neg)[1,2],
+  cov_null = cov(null)[1,2],
+  cor_null = cor(null)[1,2]
+)
+
+# Grafici
+par(mfrow=c(1,3))
+plot(pos, xlab="X1", ylab="Y1", main=paste("cov = ",  round(mylist$cov_pos, 2), ", r = ", round(mylist$cor_pos, 2)), pch = 19, cex = 2, cex.main = 2)
+plot(neg, xlab="X2", ylab="Y2", main=paste("cov = ",  round(mylist$cov_neg, 2), ", r = ", round(mylist$cor_neg, 2)), pch = 19, cex = 2, cex.main = 2)
+plot(null, xlab="X3", ylab="Y3", main=paste("cov = ",  round(mylist$cov_null, 2), ", r = ", round(mylist$cor_null, 2)), pch = 19, cex = 2, cex.main = 2)
+```
+
+
+# Previsione variabili quantitative
+
+## Regressione lineare
+
+### 
+
+
+:::: {.columns}
+
+:::{.column width=60%}
+```{r}
+#| echo:  false
+#| fig-align: center
+
+par(mfrow=c(1,1))
+plot(dati$X, dati$Y, pch=19, cex=2)
+abline(v = mean(dati$X), lty=2)
+abline(h = mean(dati$Y), lty=2)
+points(mean(dati$X), mean(dati$Y), pch=19, cex = 4, col ="firebrick")
+```
+
+:::
+
+:::{.column width=40%}
+\small
+\flushright
+```{r}
+#| echo: false
+dati
+
+```
+
+:::
+::::
+
+
+
+### 
+
+```{r}
+#| echo:  false
+#| fig-align: center
+plot(dati$X, dati$Y, pch=19, cex =2)
+mod <- lm(Y ~ X, data = dati)
+
+# Scatterplot con retta
+abline(mod, col = "blue", lwd = 2)
+
+# Aggiunta delle linee degli scarti
+pred <- fitted(mod)
+segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
+```
+
+
+### 
+
+La regressione lineare tra una *variabile indipendente* $X$ (predittore) ed una *variabile dipendente* $Y$ (criterio) calcola la migliore approssimazione lineare che identifica il legame tra le due variabili utilizzando la struttura di dati bivariata $(x,y)$ osservata su un campione di $n$ osservazioni.
+
+:::: {.columns}
+
+:::{.column width=50%}
+$x = (x_1, x_2, \ldots, x_n)$
+
+$y = (y_1, x_2, \ldots, y_n)$
+:::
+
+:::{.column width=50%}
+$$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
+:::
+::::
+
+$$Y = \beta_0 + \beta X $$
+$$y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)$$
+
+## Principio dei minimi quadrati 
+
+### 
+
+$$SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = SQE = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2  = \sum_{i=1}^n e_i^2$$
+\footnotesize
+
+dove $y_i^* = \beta_0 + \beta x_i$, e $e_i = y_i - y_i^*$.  \normalsize
+
+Per il principio dei minimi quadrati si può dimostrare che lo stimatore ottimale per $\beta$ è
+
+
+$$\hat{\beta} = \frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
+= \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$$
+
+mentre per $\beta_0$ è
+
+
+$$\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$$
+
+## Indice di adattamento $R^2$
+
+### 
+
+$$R^2 = 1 - \dfrac{SQE/n-1}{Var(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
+
+$\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della componente di errore
+
+$0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto, $R^2 = r^2$
+
+## Relazione $R^2$ e $r$
+
+### 
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+
+set.seed(123)  # per riproducibilità
+
+# Parametri della simulazione
+n <- 50
+beta0 <- 2
+beta1 <- 1.5
+
+# Genero X da una normale
+X <- rnorm(n, mean = 10, sd = 5)
+
+# Genero il rumore
+epsilon <- rnorm(n, mean = 0, sd = 10)
+
+# Costruisco Y
+Y <- beta0 + beta1 * X + epsilon
+
+# Regressione lineare
+fit <- lm(Y ~ X)
+
+# Predizioni
+Y_hat <- fitted(fit)
+
+# Grafico
+plot(X, Y, pch = 19, col = "black", 
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+abline(fit)
+
+# Aggiungo i residui
+segments(X, Y, X, Y_hat, lty = 2)
+```
+
+$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+
+###
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+set.seed(123)  # per riproducibilità
+
+# Parametri della simulazione
+n <- 50
+beta0 <- 2
+beta1 <- -2
+
+# Genero X da una normale
+X <- rnorm(n, mean = 10, sd = 5)
+
+# Genero il rumore
+epsilon <- rnorm(n, mean = 0, sd = 5)
+
+# Costruisco Y
+Y <- beta0 + beta1 * X + epsilon
+
+# Regressione lineare
+fit <- lm(Y ~ X)
+
+# Predizioni
+Y_hat <- fitted(fit)
+
+# Grafico
+plot(X, Y, pch = 19, col = "black", 
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+abline(fit)
+
+# Aggiungo i residui
+segments(X, Y, X, Y_hat, lty = 2)
+```
+
+$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+
+
+### 
+
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+
+
+set.seed(123)  # per riproducibilità
+
+# Parametri della simulazione
+n <- 50
+beta0 <- 2
+beta1 <- 3
+
+# Genero X da una normale
+X <- rnorm(n, mean = 10, sd = 5)
+
+# Genero il rumore
+epsilon <- rnorm(n, mean = 0, sd = 3)
+
+# Costruisco Y
+Y <- beta0 + beta1 * X + epsilon
+
+# Regressione lineare
+fit <- lm(Y ~ X)
+
+# Predizioni
+Y_hat <- fitted(fit)
+
+# Grafico
+plot(X, Y, pch = 19, col = "black", 
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+abline(fit)
+
+# Aggiungo i residui
+segments(X, Y, X, Y_hat, lty = 2)
+```
+
+$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+
+### 
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+set.seed(123)  # per riproducibilità
+
+# Parametri della simulazione
+n <- 50
+beta0 <- 2
+beta1 <- -0.2
+
+# Genero X da una normale
+X <- rnorm(n, mean = 10, sd = 5)
+
+# Genero il rumore
+epsilon <- rnorm(n, mean = 0, sd = 10)
+
+# Costruisco Y
+Y <- beta0 + beta1 * X + epsilon
+
+# Regressione lineare
+fit <- lm(Y ~ X)
+
+# Predizioni
+Y_hat <- fitted(fit)
+
+# Grafico
+plot(X, Y, pch = 19, col = "black", 
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+abline(fit)
+
+# Aggiungo i residui
+segments(X, Y, X, Y_hat, lty = 2)
+```
+
+
+
+$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+
+
+## `lm()`
+
+### 
+
+
+\small
+
+`lm(Y ~ X)`: Retituisce la stima dei parametri del modello di regressione lineare dove si predicono i valori di $Y$ a seconda dei valori di $X$
+
+`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5` (fonte non verificata)
+
+
+```{r}
+X <- c(9,8,12,9,10,14,5,4,13,7,5)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4)
+lm(Y~X)
+```
+
+
+

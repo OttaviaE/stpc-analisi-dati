@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 0  -->
+  <question type="category">
+    <category>
+      <text>$module$/top/Default per Quiz moduli 1,2 e prima parte modulo 3</text>
+    </category>
+    <info format="moodle_auto_format">
+      <text>La categoria default per le domande condivise nel contesto 'Quiz moduli 1,2 e prima parte modulo 3'.</text>
+    </info>
+    <idnumber></idnumber>
+  </question>
+
+<!-- question: 215594  -->
+  <question type="multichoice">
+    <name>
+      <text>1</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>
+</p>
+<h4><pre></pre></h4><h4><pre></pre></h4><h5>Considerando un dataframe di nome D, contenente la variabile “genere” a due livelli “M” e “F”; la variabile “condizione” a due livelli “sperimentale” e “controllo” e la variabile quantitativa “tempo”. Indicare la sintassi che permette di selezionare quei valori della variabile tempo che siano associati ai maschi (“M”) nella condizione “sperimentale” o alle femmine (“F”) nella condizione di “controllo”.</h5><pre><h5></h5></pre><br>
+<p></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>D$tempo[(D$genere=="m"&amp;D$condizione=="sperimentale")|(D$genere=="f"&amp;D$condizione=="controllo")]</pre><br><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>D$tempo[(D$genere=="M"&amp;D$condizione=="Sperimentale")|(D$genere=="F"&amp;D$condizione=="Controllo")]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<pre>D$tempo[(D$genere=="M"&amp;D$condizione=="sperimentale")|(D$genere=="F"&amp;D$condizione=="controllo")]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>D[(D$genere=="M"&amp;D$condizione=="sperimentale")|(D$genere=="F"&amp;D$condizione=="controllo")]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>D$tempo[(D$genere="M"&amp;D$condizione="sperimentale")|(D$genere="F"&amp;D$condizione="controllo")]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 219234  -->
+  <question type="multichoice">
+    <name>
+      <text>10</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p></p><p>
+Identifica la sintassi corretta per
+selezionare all'interno del dataframe X il valore contenuto nella riga 6 e colonna 5.</p><br><p></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>X[c(5,6)]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<pre>X[6,5]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>Xc(5,6)</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>X &lt;- 5,6</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>X[5,6]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215604  -->
+  <question type="multichoice">
+    <name>
+      <text>11</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><p>
+Indicare l’opzione che spiega
+perchè la seguente sintassi produce un errore</p>
+<pre style="text-align: center;">
+dati$VAR1 =&lt; 30</pre><pre style="text-align: center;">
+Errore: Unexpected '&lt;' in “dati$VAR1 =&lt;”</pre>
+<p style="text-align: center;"><br></p></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+nel dataframe dati non è presente
+la variabile VAR1</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p><p>
+il simbolo di uguaglianza dovrebbe
+seguire il simbolo di minore</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+non dovrebbe essere presente il
+simbolo di minore</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p>
+VAR1 non ha valori minori o uguali
+a 30</p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+la sintassi ha prodotto comunque un
+risultato presente nel workspace di R.</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215595  -->
+  <question type="multichoice">
+    <name>
+      <text>2</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p></p><p>
+Quale delle seguenti sintassi
+permette di eliminare la riga 7 e la riga 36 del dataframe “data”.</p><br><p></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>datac([-7,-36,])</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>data[-7,-36,]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<pre>data[c(-7,-36),]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>data$c(-7,-36))</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>data[7,36]</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215596  -->
+  <question type="multichoice">
+    <name>
+      <text>3</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p></p><p>
+Quale delle seguenti sintassi
+permette di tradurre la variabile nominale “istruzione”, inclusa
+nel dataframe dati, in una variabile ordinale con 5 livelli:
+elementari, medie, superiori, triennale, magistrale.</p><br><p></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>factor(dati$istruzione,levels = elementari,medie,superiori,universita,ordered = TRUE)</pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>dati$istruzione&lt;-as.factor(dati$istruzione,levels =c("elementari","medie","superiori","triennale","magistrale"),ordered
+<pre>= TRUE)</pre></pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<pre>dati$istruzione &lt;- factor(dati$istruzione,levels = c("elementari","medie","superiori","triennale","magistrale"),ordered
+<pre>= TRUE)</pre></pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>dati$istruzione &lt;- factor(dati$istruzione,levels = c("elementari","medie","superiori","triennale","magistrale"),ordered
+= FALSE)</pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>istruzione &lt;- factor(dati$istruzione,levels = c("elementari","medie","superiori","triennale","magistrale"),ordered
+<pre>= TRUE)</pre></pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215597  -->
+  <question type="multichoice">
+    <name>
+      <text>4</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><p>
+Quale delle seguenti sintassi
+permette di visualizzare la struttura del dataframe “dati”.</p><br></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p><pre>str(dati)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>summary(dati)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>which(dati)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<pre>
+<pre>ls(dati)</pre></pre>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p>
+nessuna delle precedenti</p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215598  -->
+  <question type="multichoice">
+    <name>
+      <text>5</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p></p><p>
+Sia Dati un dataframe composto da 3
+colonne denominate “x”,”y” e “z” e 36 righe
+corrispondenti a 36 soggetti. Quale sintassi permette di aggiungere
+al dataframe una quarta variabile, denominata “Media”, derivante
+dalla media dei valori attribuiti da ogni soggetto alle tre variabili
+esistenti (“x”,”y”,”z”).</p><br><p></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p></p><pre>Dati$Media &lt;-apply(Dati[,1:3],1,mean)</pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>Dati$Media &lt;-summary(Dati)[mean]</pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>Dati$Media &lt;- mean(c(x,y,z))</pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>Dati$Media &lt;- Dati$mean</pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p></p><pre>mean(dati$x,dati$y,dati$z)</pre><p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215599  -->
+  <question type="multichoice">
+    <name>
+      <text>6</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><p>
+Quale delle seguenti sintassi
+permette di creare un grafico boxplot che mostri i valori di VAR3
+divisi per genere. Il dataframe cui appartengono le variabili VAR3 e
+GENERE è denominato “dati”.</p><br></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>boxplot(dati$VAR3[dati$GENERE])</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p><pre>boxplot(dati$VAR3~dati$GENERE)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>boxplot(dati$VAR3,dati$GENERE)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>boxs(dati$VAR3&amp;dati$GENERE)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+è necessario utilizzare la
+funzione par() prima della sintassi del boxplot</p><br></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215600  -->
+  <question type="multichoice">
+    <name>
+      <text>7</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><p>
+Sia D un dataframe composto da 5
+variabili, quale delle seguenti sintassi permette di aggiungere al
+dataframe una sesta variabile denominata VAR6</p><br></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>D$VAR5 &lt;- D$VAR6</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>D + VAR6</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p><pre>D$VAR6 &lt;- VAR6 </pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>D &lt;- D + VAR6</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><pre>D &lt;- c(D,VAR6)</pre></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215601  -->
+  <question type="multichoice">
+    <name>
+      <text>8</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p></p><p>
+Considerando il seguente grafico
+definire, in termini approssimativi, la numerosità campionaria:</p><p><br></p><img src="data:image/png;base64,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" alt="" width="700" height="357" role="presentation" class="img-responsive atto_image_button_text-bottom"><br><p></p><p><br></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text>40</text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p>100</p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p>130</p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p>150</p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text>non è possibile stabilirlo osservando il grafico</text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+<!-- question: 215602  -->
+  <question type="multichoice">
+    <name>
+      <text>9</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><p>
+Assumiamo di voler indagare
+l'effetto del genere sul tempo di risposta in un compito di
+percezione visiva. Quale delle seguenti affermazioni è corretta:</p><br></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>123</answernumbering>
+    <showstandardinstruction>1</showstandardinstruction>
+    <correctfeedback format="html">
+      <text>Risposta corretta.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Risposta parzialmente esatta.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>Risposta errata.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+sia il genere che il tempo di
+risposta sono variabili dipendenti.</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="100" format="html">
+      <text><![CDATA[<p><p>
+il genere è la variabile
+indipendente mentre il tempo di risposta è la variabile dipendente.</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+il genere non è una variabile.</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+il genere è la variabile
+dipendente mentre il tempo di risposta è la variabile indipendente.</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer fraction="-25" format="html">
+      <text><![CDATA[<p><p>
+nessuna delle precedenti.</p></p>]]></text>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+  </question>
+
+</quiz>

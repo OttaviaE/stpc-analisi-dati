@@ -1,0 +1,304 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Soluzioni modulo 3 - Seconda SERIE"
+author: "Ottavia Epifania"
+format: 
+  pdf:
+    toc: true
+    toc-title: Lista degli esercizi
+execute:
+  echo: true
+  eval: false
+linestretch: 1.5
+editor_options: 
+  chunk_output_type: console
+---
+
+\newpage
+
+# Introduzione
+
+Questa nuova serie di esercizi sul terzo modulo didattico sono divisi in due parti: 1) esercizi sulla regressione lineare 2) esercizi sulla statistica Chi quadrato.
+
+
+Queste variabili sono ricavate dal famoso esempio di Anscombe (1973, Graphs in statistical analysis, The American Statistician).
+
+```{r}
+#| echo: true
+
+X1 <- c(10,8,13,9,11,14,6,4,12,7,5)
+Y1 <- c(8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68)
+Y2 <- c(9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74)
+Y3 <- c(7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73)
+X2 <- c(8,8,8,8,8,8,8,19,8,8,8)
+Y4 <- c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89)
+
+```
+
+# Esercizio 1
+
+## 1. 
+
+studiare la relazione tra le seguenti coppie di variabili attraverso dei modelli di regressione. Visualizzare graficamente la relazione tra le varaibili attraverso un grafico a disperisione: 
+ - $(X1,Y1)$ (modello di regressione `MR1`) 
+ - $(X1,Y2)$ (modello di regressione `MR2`)
+ - $(X1,Y3)$ (modello di regressione `MR3`)
+ - $(X2,Y4)$ (modello di regressione `MR4`)
+
+
+
+```{r}
+par(mfrow=c(2,2))
+
+
+
+plot(X1,Y1, main = "X1,Y1")
+
+MR1 <- lm(Y1 ~ X1)
+
+abline(MR1)
+
+
+
+plot(X1,Y2)
+
+MR2 <- lm(Y2 ~ X1, main = "X1,Y2")
+
+abline(MR2)
+
+
+
+plot(X1,Y3, main = "X1,Y3")
+
+MR3 <- lm(Y3 ~ X1)
+
+abline(MR3)
+
+
+
+plot(X2,Y4, main = "X2,Y4")
+
+MR4 <- lm(Y4 ~ X2)
+
+abline(MR4)
+```
+
+## 2. 
+
+Studia la relazione tra la variabile indipendente ed i residui per ciascun modello utilizzando dei grafici di dispersione. Che tipo di commenti puoi fare circa ciascun grafico di dispersione?
+
+
+```{r}
+# calcolo dei residui per tutti i modelli con la funzione residulas()
+e1 = residuals(MR1)
+e2 = residuals(MR2)
+e3 = residuals(MR3)
+e4 = residuals(MR4)
+
+par(mfrow = c(2,2))
+plot(X1,e1)
+abline(0,0)
+
+plot(X1,e2)
+abline(0,0)
+
+plot(X1,e3)
+abline(0,0)
+
+plot(X2,e4)
+abline(0,0)
+
+```
+
+## 3. 
+
+Calcola e visualizza la percentuale di varianza spiegata per ciascun modello
+
+```{r}
+R2MR1 <- 1-(var(e1)/var(Y1))
+# R2MR1 <- cor(X1,Y1)^2 # alternativa di calcolo
+# R2MR1 <- summary(MR1)$r.squared # alternativa di calcolo
+R2MR1
+
+R2MR2 <- 1-(var(e2)/var(Y2))
+# R2MR2 <- cor(X1,Y2)^2 # alternativa di calcolo
+# R2MR2 <- summary(MR2)$r.squared # alternativa di calcolo
+R2MR2
+
+R2MR3 <- 1-(var(e3)/var(Y3))
+# R2MR3 <- cor(X1,Y3)^2 # alternativa di calcolo
+# R2MR3 <- summary(MR3)$r.squared # alternativa di calcolo
+R2MR3
+
+R2MR4 <- 1-(var(e4)/var(Y4))
+# R2MR4 <- cor(X2,Y4)^2 # alternativa di calcolo
+# R2MR4 <- summary(MR4)$r.squared # alternativa di calcolo
+R2MR4
+```
+
+
+## 4. 
+
+Calcola i valori predetti dal primo modello di regressione (`MR1`) per $X1 = \{-25, 0.25, 44.9, 100.8\}$
+
+```{r}
+predict(MR1,data.frame(X1=c(-25,0.25,44.9,100.8)))
+
+# usando l'equazione della retta  
+coef(MR1)[1] + coef(MR1)[2]*c(-25,0.25,44.9,100.8)
+```
+
+
+## Esercizio 2
+
+## 1. 
+
+Si consideri la seguente coppia di variabili categoriali `A` e `B` con rispettivamente 3 e 2 livelli:
+
+A=(a1,a2,a2,a1,a3,a3,a3,a1,a2,a1,a2,a1,a3,a2,a2,a1,a3,a2,a1)
+
+B=(b1,b1,b1,b1,b1,b1,b1,b1,b1,b2,b2,b2,b2,b2,b2,b2,b2,b2,b2)
+
+Si costruisca la tabella di contingenza `f_o` associata alle due variabili A e B.
+
+
+```{r}
+A <- factor(c("a1","a2","a2","a1","a3","a3","a3","a1","a2","a1","a2","a1","a3","a2","a2","a1","a3","a2","a1"))
+B <- factor(c(rep("b1",9),rep("b2",10)))
+f_o <- table(A,B)
+f_o
+
+
+```
+
+
+## 2. 
+
+Costruire la tabella di contingenza, `f_t`, che contenga le frequenze teoriche associate al modello di indipendenza tra `A` e `B`.
+
+```{r}
+mA <- margin.table(f_o,1) # marginali di riga
+mB <- margin.table(f_o,2) # marginali di colonna
+n <- sum(f_o) # totale osservazioni
+
+f_t = matrix(nrow = 3, ncol = 2) # crea una matrice vuota da "riempire" con le frequenze teoriche
+
+f_t[1,1] <- (mA[1]*mB[1])/n
+
+f_t[1,2] <- (mA[1]*mB[2])/n
+
+f_t[2,1] <- (mA[2]*mB[1])/n
+
+f_t[2,2] <- (mA[2]*mB[2])/n
+
+f_t[3,1] <- (mA[3]*mB[1])/n
+
+f_t[3,2] <- (mA[2]*mB[1])/n
+f_t
+
+rownames(f_t) <- c("a1","a2","a3")
+colnames(f_t) <- c("b1","b2")
+
+# soluzione con ciclo for, solo se avete idea di come funzioni
+# for(i in 1:nrow(f_t)) {
+#   for (j in 1:ncol(f_o)) {
+#     f_t[i, j] = (mA[i]*mB[j])/n
+#   }
+# }
+
+
+```
+
+
+## 3. 
+
+Calcola e visualizza il valore del Chi-quadrato osservato ottenuto sulla tabella di contingenza `f_o`.
+
+```{r}
+chisq.test(f_o)$statistic
+```
+
+
+## 4. 
+
+Calcola l'indice normalizzato del Chi-quadrato osservato: 
+
+$$\chi_N^2 = \dfrac{\chi^2}{N\times \min[(r-1); (c-1)]}$$
+
+
+
+Quale conclusione si può trarre dal risultato di tale indice?
+
+```{r}
+MaxChiQ <- n*min(dim(f_o)[1]-1,dim(f_o)[2]-1)
+
+ChiQOss <- chisq.test(f_o)$statistic
+
+ChiQNorm <- ChiQOss/MaxChiQ
+
+ChiQNorm
+
+```
+
+
+
+## 5. 
+
+Calcola il valore del Chi-quadrato osservato ottenuto sulla tabella di contingenza `f_o` limitata ai soli valori `a1` e `a3` della variabile categoriale A. Su questa nuova tabella di contingenza calcola l'indice normalizzato del Chi-quadrato.
+
+```{r}
+f_o1 <- f_o[c(1,3),]
+
+MaxChiQ2 <- n*min(dim(f_o1)[1]-1,dim(f_o1)[2]-1)
+
+
+
+ChiQOss2 <- chisq.test(f_o1)$statistic
+ChiQNorm2 <- ChiQOss2/MaxChiQ2
+
+ChiQNorm2
+
+
+```
+
+
+## 6. 
+
+Costruisci una nuova tabella di contingenza sommando i valori della seconda e terza riga di `f_o`. Questa nuova tabella di contingenza esprime l'associazione tra i valori `b1` e `b2` della variabile categoriale `B` e i valori `a1` e ${a2,a3}$ della nuova variabile categoriale `A2`. 
+
+Per questa nuova tabella di contingenza: 
+
+* deriva la tabella di contingenza associata alle frequenze teoriche del modello di indipendenza tra `A2` e `B` 
+* visualizza il valore del Chi-quadrato osservato 
+* calcola il valore del Chi-quadrato normalizzato. 
+
+```{r}
+A2 <- as.character(A)
+A2[A2=="a2" | A2=="a3"] <- "a23"
+
+f_o2 <- table(A2,B)
+
+f_o2
+
+mA2 <- margin.table(f_o2,1)
+mB <- margin.table(f_o2,2)
+n <- sum(f_o2)
+
+
+
+f_t2 <- matrix(rep(0,4),2,2)
+for(i in 1:nrow(f_t2)) {
+  for (j in 1:ncol(f_t2)) {
+    f_t2[i, j] = (mA2[i]*mB[j])/n
+  }
+}
+
+f_t2
+MaxChiQ3 <- n*min(dim(f_o2)[1]-1,dim(f_o2)[2]-1)
+
+ChiQOss3 <- chisq.test(f_o2)$statistic
+ChiQNorm3 <- ChiQOss3/MaxChiQ3
+
+ChiQNorm3
+```
+

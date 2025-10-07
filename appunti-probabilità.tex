@@ -1,0 +1,233 @@
+\documentclass[a4paper,12pt]{article}
+
+% Pacchetti utili
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Variabili casuali continue, densità e distribuzione cumulativa}
+\author{}
+\date{}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section*{Distribuzioni di probabilità discrete}
+	
+	\subsection*{Definizioni generali}
+	
+	Sia $X$ una variabile casuale discreta che assume valori in un insieme numerabile $S \subset \mathbb{R}$.
+	La \textit{funzione di probabilità} (o \textit{funzione di massa di probabilità}) di $X$ è indicata con
+	\[
+	f_X(x|\theta) = \Pr[X = x], \qquad \forall x \in S.
+	\]
+	
+	\noindent
+	In altre parole, la funzione $f_X$ assegna ad ogni possibile valore $x$ assunto dalla variabile casuale $X$ la probabilità che $X$ assuma proprio quel valore.
+	
+	Se un certo valore $x$ non appartiene all’insieme dei valori possibili $S$, allora
+	\[
+	f_X(x|\theta) = 0.
+	\]
+	
+	In generale considereremo funzioni $f_X$ \textbf{parametriche}, cioè funzioni che dipendono da un insieme di parametri $\theta \in \Theta$. Formalmente possiamo scrivere:
+	\[
+	f_X : \mathbb{R} \times \Theta \longrightarrow [0,1],
+	\]
+	cioè una funzione che, dati un valore reale $x$ ed un valore di parametro $\theta$, restituisce un numero compreso fra $0$ e $1$ (una probabilità).
+	
+	\subsection*{Esempio: distribuzione binomiale}
+	
+	Un esempio importante di distribuzione di probabilità discreta è la \textbf{distribuzione binomiale}.  
+	In questo caso la funzione di probabilità è data da:
+	\[
+	f_X(x|\theta) = \binom{n}{x} \, \theta^x \, (1-\theta)^{\,n-x}, 
+	\qquad x = 0,1,\ldots,n,
+	\]
+	dove $\theta \in [0,1]$.
+	
+	\bigskip
+	
+	\noindent
+	\textbf{Come leggere questa formula:}
+	\begin{itemize}
+		\item $\binom{n}{x}$ è il coefficiente binomiale, che indica il numero di modi in cui si possono scegliere $x$ successi su un totale di $n$ prove.
+		\item $\theta^x$ è la probabilità di osservare $x$ successi (dato che $\theta$ rappresenta la probabilità di successo in una singola prova).
+		\item $(1-\theta)^{n-x}$ è la probabilità di osservare i restanti $n-x$ fallimenti.
+		\item Complessivamente, la formula dà la probabilità che in $n$ prove indipendenti, ciascuna con probabilità di successo $\theta$, si osservino esattamente $x$ successi.
+	\end{itemize}
+	
+	\subsection*{Funzione di probabilità cumulata}
+	
+	La \textit{funzione di probabilità cumulata} di una variabile casuale discreta $X$ si indica con $F_X(x|\theta)$ ed è definita come:
+	\[
+	F_X(x|\theta) = \Pr[X \leq x]
+	= \sum_{s \in S: \, s \leq x} f_X(s).
+	\]
+	
+	In altre parole, $F_X(x|\theta)$ rappresenta la probabilità che $X$ assuma un valore minore o uguale a $x$.  
+	Chiaramente,
+	\[
+	F_X : \mathbb{R} \times \Theta \longrightarrow [0,1].
+	\]
+	
+	\subsection*{Esempio: distribuzione binomiale cumulata}
+	
+	Se $X \sim \text{Bin}(n,\theta)$, allora la funzione di probabilità cumulata è:
+	\[
+	F_X(x|\theta) = \sum_{z=0}^{x} \binom{n}{z}\, \theta^z (1-\theta)^{\,n-z}, 
+	\qquad x = 0,1,\ldots,n,
+	\]
+	dove $\theta \in [0,1]$.
+	
+	\bigskip
+	
+	\noindent
+	\textbf{Interpretazione del simbolo $z$:}
+	\begin{itemize}
+		\item La lettera $z$ è l'\textit{indice di somma}.  
+		\item La funzione cumulata richiede la probabilità che $X \leq x$, quindi bisogna sommare tutte le probabilità degli eventi $\{X=0\}, \{X=1\}, \ldots, \{X=x\}$.
+		\item Per questo compare la sommatoria da $z=0$ fino a $z=x$: ad ogni valore di $z$ corrisponde la probabilità di osservare esattamente $z$ successi.
+		\item In pratica, $z$ è una variabile “fittizia” che serve a scorrere tutti i possibili valori fino a $x$. Non è un parametro né una variabile casuale “nuova”, ma solo l’indice che ci permette di sommare le probabilità.
+	\end{itemize} 
+	
+	\section*{Variabile casuale continua e funzione di densità}
+	
+	Sia $X$ una variabile casuale continua distribuita secondo la 
+	\textit{funzione di densità} $f_X(x|\theta)$:
+	\[
+	f_X : \mathbb{R} \times \Theta \to \mathbb{R}^+
+	\]
+	
+	$f_X$ è una funzione di densità parametrica con parametri $\theta \in \Theta$.
+	
+$f_X(x|\theta)$: densità di probabilità della variabile $X$ dato un insieme di parametri $\theta$. 
+
+$\Theta$ rappresenta lo spazio dei parametri 
+
+
+$f_X$ fornisce la densità di X dati i parametri in $\theta$, non la probabilità. per ottenerla va integrata l'area sotto la curva
+
+
+
+La densità $f_X$ descrive come la probabilità cambia lungo i valori reali. 
+
+La funzione di ripartizione (la probabilità comulata) accumula quella probabilità fino a un certo valore $x$ 
+
+
+\section*{Cos'è la densità di probabilità?}
+	
+	Per una variabile discreta (ad esempio il lancio di un dado) si assegna
+	direttamente la probabilità a ciascun valore, ad esempio
+	\[
+	P(X=3) = \tfrac{1}{6}.
+	\]
+	
+	Per una variabile continua (ad esempio l'altezza di una persona), la probabilità
+	che $X$ assuma esattamente un valore $x$ è nulla. 
+	Perciò non ha senso dire $P(X=1.75)$.
+	
+	Al posto di una probabilità puntuale, si usa la \textbf{densità di probabilità}.
+	
+	\subsection*{Definizione}
+	La \textbf{densità di probabilità} $f_X(x)$ è una funzione tale che
+	\[
+	P(a \leq X \leq b) = \int_a^b f_X(x)\,dx.
+	\]
+	
+	\subsection*{Proprietà}
+	\begin{itemize}
+		\item $f_X(x) \geq 0 \quad \forall x$ (non negatività);
+		\item $\int_{-\infty}^{+\infty} f_X(x)\,dx = 1$ (normalizzazione);
+		\item $f_X(x)$ non è una probabilità diretta: può anche assumere valori $>1$.
+	\end{itemize}
+	
+	\subsection*{Esempio: distribuzione normale}
+	La densità della variabile casuale normale standard è
+	\[
+	f_X(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}.
+	\]
+	
+	\begin{itemize}
+		\item Ha la tipica forma a campana.
+		\item L'area sotto tutta la curva è pari a 1.
+		\item La probabilità che $X$ cada tra $-1$ e $1$ è
+		\[
+		P(-1 \leq X \leq 1) = \int_{-1}^1 f_X(x)\,dx \approx 0.68.
+		\]
+	\end{itemize}
+	
+	\section*{Funzione di distribuzione cumulativa (CDF)}
+	
+	La \textbf{funzione di distribuzione cumulativa} (o \textit{CDF}, Cumulative Distribution Function) è definita come
+	\[
+	F_X(x|\theta) = \Pr[X \leq x] = \int_{-\infty}^x f_X(z|\theta)\,dz.
+	\]
+	
+	\subsection*{Interpretazione intuitiva}
+	La CDF restituisce la probabilità che la variabile casuale $X$ assuma un valore 
+	minore o uguale a $x$. In pratica, rappresenta l'``area sotto la curva'' della densità $f_X$ fino al punto $x$.
+	
+	\subsection*{Proprietà della CDF}
+	\begin{itemize}
+		\item $F_X(x)$ è una funzione \textbf{crescente} (non decrescente);
+		\item $0 \leq F_X(x) \leq 1$ per ogni $x$;
+		\item $\lim_{x \to -\infty} F_X(x) = 0$;
+		\item $\lim_{x \to +\infty} F_X(x) = 1$;
+		\item $F_X$ è continua se $X$ è continua.
+	\end{itemize}
+	
+	\subsection*{Esempio: distribuzione normale}
+	Per una variabile normale standard $X \sim \mathcal{N}(0,1)$, la CDF è
+	\[
+	F_X(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} e^{-z^2/2}\,dz.
+	\]
+	
+	Questa funzione non ha una formula chiusa semplice, ma è tabulata e disponibile in tutti i software statistici.
+	
+\section*{Funzione quantile}
+
+La \textbf{funzione quantile} è l'inversa della funzione di distribuzione cumulativa $F_X$.  
+
+\begin{itemize}
+	\item La CDF $F_X(x|\theta)$ prende un valore $x$ e restituisce una probabilità $p \in [0,1]$.  
+	\item La funzione quantile $q_X(p|\theta)$ fa il contrario: prende una probabilità $p$ e restituisce il valore $x$ corrispondente.  
+\end{itemize}
+
+Formalmente:
+\[
+q_X(p|\theta) = \inf \{ x \in \mathbb{R} : F_X(x|\theta) \geq p \}.
+\]
+
+\subsection*{Interpretazione}
+\begin{itemize}
+	\item Se $p=0.5$, allora $q_X(0.5|\theta)$ è la \textbf{mediana} della distribuzione.  
+	\item Se $p=0.25$, otteniamo il \textbf{primo quartile}.  
+	\item Se $p=0.975$, otteniamo il \textbf{quantile al 97.5\%}, che si usa ad esempio negli intervalli di confidenza.  
+\end{itemize}
+
+\subsection*{Proprietà}
+\begin{itemize}
+	\item La funzione quantile mappa l'intervallo delle probabilità $[0,1]$ nei possibili valori reali della variabile casuale:
+	\[
+	q_X : [0,1] \times \Theta \to \mathbb{R}.
+	\]
+	\item È l'inversa della CDF, quindi
+	\[
+	q_X(p|\theta) = F_X^{-1}(p|\theta)
+	\]
+	se e solo se $F_X$ è strettamente crescente e invertibile.
+\end{itemize}
+
+\subsection*{Esempio pratico}
+Per una variabile normale standard $X \sim \mathcal{N}(0,1)$:
+\begin{itemize}
+	\item $q_X(0.5) = 0$ (mediana).  
+	\item $q_X(0.975) \approx 1.96$, valore che si usa nella statistica inferenziale per gli intervalli di confidenza al 95\%.  
+\end{itemize}
+
+	
+\end{document}

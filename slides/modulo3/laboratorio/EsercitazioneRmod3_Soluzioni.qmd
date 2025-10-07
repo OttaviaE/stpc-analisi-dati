@@ -1,0 +1,115 @@
+---
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Soluzioni - PRIMA SERIE"
+author: "Ottavia Epifania"
+format: pdf
+execute:
+  echo: true
+  eval: false
+linestretch: 1.5
+---
+
+# Introduzione
+
+```{r}
+#| echo: true
+
+X1 <- c(10,8,13,9,11,14,6,4,12,7,5)
+Y1 <- c(8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68)
+Y2 <- c(9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74)
+Y3 <- c(7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73)
+X2 <- c(8,8,8,8,8,8,8,19,8,8,8)
+Y4 <- c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89)
+
+```
+
+
+1. Si costruisca un dataframe, D, che contenga le sei variabili del set di dati di Anscombe. Rimuovere dalla memoria tutte le variabili escluso il dataframe D.
+
+```{r}
+D = data.frame(X1, Y1, Y2, Y3, X2, Y4)
+rm(list = ls()[ls() != "D"]) # rimuove tutto tranne D
+# controlla 
+ls()
+```
+
+
+2. Si calcoli il valore della covarianza tra X1 e Y1. Nel calcolo della covarianza si utilizzi la formula matematica: 
+
+$$Cov(X,Y) = \dfrac{1}{n}\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})$$
+
+
+
+Nel riprodurre tale formula si sostituisca il fattore moltiplicativo $\dfrac{1}{n}$ con il fattore moltiplicativo corretto \$dfrac{1}{n-1}$.
+
+
+```{r}
+mediaX = mean(D$X1)
+scartiX = D$X1 - mediaX
+mediaY = mean(D$Y1)
+scartiY = D$Y1 - mediaY
+prodScarti = scartiX*scartiY
+sommaProdotti = sum(prodScarti)
+n = nrow(D)
+(1/(n-1))*sommaProdotti
+```
+
+3. Ripetere l'esercizio 2, questa volta utilizzando la formula predefinita in R, `cov()`, per il calcolo della covarianza. Verificare che i risultati ottenuti con le due modalità (esercizio 2 e 3) siano uguali
+
+```{r}
+cov(D$X1, D$Y2) 
+cov(D$X1, D$Y2)  == (1/(n-1))*sommaProdotti
+```
+```{r}
+round(cov(D$X1, D$Y2), 2)  == round((1/(n-1))*sommaProdotti, 2)
+```
+
+
+4. Costruire un nuovo dataframe `Dcov` che contenga rispettivamente tre variabili (ovvero tre colonne): 
+  - a) una variabile `scartiX1` contenente lo scarto dalla media di `X1` dei punteggi di `X1`,
+  - b) una variabile `scartiY1` contenente lo scarto dalla media di `Y1` dei punteggi di `Y1`, 
+  - c) una variabile `prodScarti` contenente il prodotto degli scarti rispetto a `X1` e `Y1` (per maggiori dettagli si veda la formula a p. 113).
+
+```{r}
+Dcov = data.frame(scartiX1 = scartiX, 
+                  scartiY1 = scartiY, 
+                  prodScarti = prodScarti)
+Dcov
+
+```
+
+
+5. Visualizzare il contenuto di `Dcov` e concentrarsi sui valori di `prodScarti`. Quali osservazioni potresti fare circa i valori contenuti in `prodScarti`? Nello specifico circa il segno di tali scarti (quale è il loro significato e come vanno ad incidere sul risultato finale della misura di covarianza)?
+
+Il prodotto degli scarti è positivo per tutte le osservazioni. Questo vuol dire che, tendenzialmente a uno scarto dalla media di X positivo, corrisponde uno scarto dalla media di Y positivo. La covarianza ha quindi sgeni positivo. 
+
+
+6. Calcolare la covarianza della variabile `Y1` con se stessa. Nella procedura di calcolo utilizzare sia la modalità descritta nell'Es. 2 che quella indicata nell'Es. 3. Verificare la concordanza dei risultati delle due procedure. Infine tabulare i valori del dataframe corrispondente a `Dcov` per questa nuova coppia di variabili (variabile ripetuta). Quali osservazioni puoi fare sui risultati del valore della covarianza di `Y1` con se stessa? A cosa viene a coincidere tale particolare covarianza?
+
+```{r}
+prodScartiY1Y1 = scartiY*scartiY
+cov(D$Y1, D$Y1) 
+cov(D$Y1, D$Y1)  == (1/(n-1))*sum(prodScartiY1Y1)
+```
+```{r}
+Dcov1 = data.frame(scartiY, prodScartiY1Y1)
+Dcov1
+```
+
+
+7. Calcolare la correlazione lineare tra `X1` e `Y1`. Per il calcolo della correlazione utilizzare la formula descritta a p. 114 del manuale: 
+
+$$\rho_{xy} = \dfrac{\sigma_{xy}}{\sigma_x \sigma_y}$$
+
+
+e confrontarla con il calcolo della funzione predefinita in R, ovvero la funzione `cor(X1,Y1)` ($\sigma_{xy} = Cox(X,Y$).
+
+
+```{r}
+covx1y1 = (1/(n-1))*sum(prodScarti)
+rx1y1 = covx1y1/(sd(D$X1)*sd(D$Y1))
+rx1y1
+cor(D$X1, D$Y1)
+```
+
+

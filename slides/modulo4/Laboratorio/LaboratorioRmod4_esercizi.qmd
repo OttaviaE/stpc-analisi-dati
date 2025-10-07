@@ -1,0 +1,266 @@
+---
+title: "Laboratorio Modulo 4"
+subtitle: "Soluzioni"
+author: "Ottavia Epifania"
+format: pdf
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+myvar = TRUE
+knitr::opts_chunk$set(include = myvar)
+```
+
+
+# Calcolo di eventi di probabilita su distribuzioni di probabilita parametriche
+
+In questo laboratorio sara richiesto di applicare le apposite funzioni di R per eseguire calcoli di probabilita di eventi associati a variabili casuali continue distribuite secondo distribuzioni di densita parametriche. 
+
+
+## Esercizio 1
+
+Sia $X$ una variabile casuale continua distribuita secondo una funzione di densita normale $ N(x|\mu_X, \sigma_X)$ dove $\mu_X =100$ e $\mu_X =35$. 
+Si considerino i seguenti quattro eventi associati ad X: $E_1 = \{ x \in \mathbb{R} : x \leq 75\}$, $E_2 = \{ x \in \mathbb{R} : 50 \leq x \leq 70\}$, 
+$E_3 = \{ x \in \mathbb{R} : x \geq 110\}$, $E_4 = \{ x \in \mathbb{R} : x \geq 125\}$. Sicalcolino le probabilita dei seguenti eventi combinati: 
+
+1. $P[E_1 \cup E_3]$
+2. $P[E_1 \cup E_4]$ 
+3. $P[E_1 \cap E_2]$ 
+4. $P[E_1 \cap E_3]$.
+
+```{r}
+#| include: true
+#| echo: false
+#| layout-ncol: 2
+#| layout-nrow: 2
+#| fig-cap: "Illustrazione degli eventi relativi all'esercizio 1"
+#| fig-subcap: 
+#|  - "E1"
+#|  - "E2"
+#|  - "E3"
+#|  - "E4"
+values=seq(0,200) 
+mx=100;sx=35 
+dx= dnorm(values,mx,sx) 
+plot(values,dx,type="l") 
+#e1:x<=75 
+plot(values,dx,type="l")
+polygon(c(values[values <=75],75),c(dx[values<=75],0),col= rgb(.2,.2,.2,alpha=.4))
+
+plot(values,dx,type="l")
+polygon(c(50, values[values >= 50 & values <= 70], 70), c(0, dx[values >= 50 & values <= 70], 0), col = rgb(.2, .2,.2, alpha = .4))
+plot(values, dx, type = "l") 
+polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), col = rgb(.2, .2,.2, alpha = .4))
+plot(values, dx, type = "l")
+polygon(c(values[values >= 125], 125), c(dx[values>= 125], 0), col = rgb(.2, .2,.2, alpha = .4))
+```
+
+```{r}
+pe1=pnorm(75,mx,sx)
+pe2 = pnorm(70, mx, sx)- pnorm(50, mx, sx)
+pe3 = 1- pnorm(110, mx, sx)
+pe4 = 1- pnorm(125, mx, sx)
+
+# unione e1 ed e3
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), col = rgb(.2, .2,.2, alpha = .4))
+pe1 + pe3
+
+# 1.2: unione e1 e4 
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(values[values >= 125], 125), c(dx[values>= 125], 0), col = rgb(.2, .2,.2, alpha = .4))
+pe1 + pe4
+
+# 1.3: intersezione e1, e2 
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(50, values[values >= 50 & values <= 70], 70), c(0, dx[values >= 50 & values <= 70], 0), col = rgb(.2, .6,.1, alpha = .4))
+
+# 1.4 intersezione e1 e3 
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), col = rgb(.2, .2,.2, alpha = .4))
+```
+
+## Esercizio 2
+
+Sia $X$ una variabile casuale continua distribuita secondo una funzione di densita normale standardizzata $N(x| \mu_X, \sigma_X)$ (dove chiaramente $\mu_X = 0$ e $\sigma_X = 1$). Si considerino i seguenti due eventi associati ad X: $E_1 = \{x \in \mathbb{R}: x  \leq 05\}$ e $E_2 = x \in \mathbb{R} : x \geq -0.5$. 
+Si calcolino le probabilita dei seguenti eventi combinati: 
+
+1. $P[E1 \cup E2]$. 
+2. $P[E1 \cap E2]$. 
+3. $P[E1 \triangle E2]$.
+
+```{r}
+#| include: true
+#| echo: false
+#| layout-ncol: 2
+#| layout-nrow: 2
+#| fig-cap: "Illustrazione degli eventi relativi all'esercizio 2"
+#| fig-subcap: 
+#|  - "E1"
+#|  - "E2"
+values = seq(-3, 3, length.out = 100) 
+dx = dnorm(values) 
+plot(values, dx, type = "l") 
+# e1: <= 0.5 
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
+# e2. x >=-0.5 
+plot(values, dx, type = "l") 
+polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
+```
+
+
+```{r}
+# esrecizio 2.1: unione e1 ed e2 
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5)) 
+polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), col = rgb(.1, .1, .1, alpha =.5))
+pe1 = pnorm(0.5) 
+pe2 = 1- pnorm(-0.5) 
+pe1 + pe2
+pe1intere2 = pnorm(0.5)- pnorm(-0.5) 
+pe1 + pe2- pe1intere2
+
+plot(values, dx, type = "l") 
+polygon(c(-0.5, values[values >=-0.5 & values <= 0.5], 0.5), c(0, dx[values >=-0.5 & values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
+pnorm(0.5)- pnorm(-0.5)
+
+# esrecizio 2.3 differenza simmetrica e1 ed e2 
+plot(values, dx, type = "l") 
+polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5)) 
+polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), col = rgb(.1, .1, .1, alpha =.5)) 
+polygon(c(-0.5, values[values >=-0.5 & values <= 0.5], 0.5), c(0, dx[values >=-0.5 & values <= 0.5], 0), col = "white")
+
+pnorm(-0.5) + (1-pnorm(0.5))
+```
+
+## Esercizio 3
+
+Siano $X$ ed $Y$ due variabili casuali continue distribuite secondo le seguenti funzioni di densità normale: $N(x | \mu_X, \sigma_X)$ (con $\mu_X = 10$ e $\sigma_X = 5$) e $N(y | \mu_Y, \sigma_Y)$ (con $\mu_Y = 7$ e $\sigma_Y = 8$). Inoltre si assuma che le due variabili casuali $X$ ed $Y$ siano anche indipendenti, cioè a dire:
+
+$$P(X,Y) = P(X) P(Y)$$
+
+Si considerino i seguenti due eventi associati ad $X$: $E_1 = \{x \in \mathbb{R} : 5 \le x \le 9\}$ e $E_2 = \{x \in \mathbb{R} : 6.5 \le x \le 13\}$. Per $Y$ si ha un solo evento: $G_1 = \{y \in \mathbb{R} : 4 \le y \le 8.5\}$. Si calcolino le probabilità dei seguenti eventi combinati:
+
+1. $P[E_1 \cup G_1]$.
+2. $P[E_2 \cap G_1]$.
+
+
+
+```{r}
+mx = 10
+sx = 5 
+my = 7 
+sy = 8 
+values = seq(-20, 40, length.out = 200) 
+dx = dnorm(values, mx, sx) 
+dy = dnorm(values, my, sy) 
+plot(values, dx, type = "l", main = "x (linea nera) e y (linea rossa)") 
+lines(values, dy, type = "l", col = "red")
+
+# e 1 sulla x
+plot(values, dx, type = "l") 
+polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values>=5 & values <= 9], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(values[values <= 9], 9), c(dx[values <= 9], 0), col = rgb(.2,.2,.2, alpha = .4))
+e1 = pnorm(9, mx, sx)- pnorm(5, mx, sx)
+
+# e2 6.5 leq x leq 13 
+plot(values, dx, type = "l") 
+polygon(c(6.5, values[values>=6.5 & values <= 13], 13), c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+e2 = pnorm(13, mx, sx)- pnorm(6.5, mx, sx)
+
+# evento y 
+# g 4 \leq x leq 8.5 
+plot(values, dy, type = "l") 
+polygon(c(4, values[values>=4 & values <= 8.5], 8.5), c(0, dy[values>=4 & values <= 8.5], 0), col = rgb(.2,.2,.2, alpha = .4))
+g1 = pnorm(8.5, my, sy)- pnorm(4, my, sy)
+
+# 3.1:unione e1 e g1 
+plot(values, dx, type = "l") 
+lines(values, dy, type = "l", col = "red") 
+polygon(c(4, values[values>=4 & values <= 8.5], 8.5), c(0, dy[values>=4 & values <= 8.5], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values>=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
+
+e1 + g1- (e1*g1)
+
+# 3.2 intesrezione e2 g1 
+plot(values, dx, type = "l") 
+lines(values, dy, type = "l", col = "red") 
+polygon(c(6.5, values[values>=6.5 & values <= 13], 13), c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values>=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
+e2*g1
+
+# differenza simmetrica evento e1 ed e2 riferiti alla variabile x 
+plot(values, dx, type = "l")
+polygon(c(6.5, values[values>=6.5 & values <= 13], 13), c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values >=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
+polygon(c(6.5, values[values>=6.5 & values <= 9], 9), c(0, dx[values>=6.5 & values <= 9], 0), col = "white")
+rosa = pnorm(6.5, mx, sx)- pnorm(5, mx, sx) 
+grigio = pnorm(13, mx, sx)- pnorm(9, mx, sx)
+rosa + grigio
+```
+
+## Esercizio 4 
+
+Sia $W$ una variabile casuale continua distribuita secondo una funzione di densità $t$ di Student $t(w | gdl)$ (dove $gdl = 35$). Si considerino i seguenti valori dei quantili di $W$:
+
+
+1. $q_W(0.33)$.
+2. $q_W(0.75) + q_W(0.25)$.
+3. $q_W(0.75) - q_W(0.25)$.
+4. $q_W(0.975)$.
+
+```{r}
+# Esercizio 4.1 
+
+qt(0.33,35)
+
+# Esercizio 4.2 
+
+qt(0.75,35) + qt(0.25,35)
+
+# Esercizio 4.3
+
+qt(0.75,35) - qt(0.25,35) 
+
+# Esercizio 4.4 
+
+qt(0.975,35)  
+```
+
+## Esercizio 5
+
+Sia $U$ una variabile casuale continua distribuita secondo una funzione di densità Chi quadrato $\chi^2(u | gdl)$ ($gdl = 4$). Si calcolino le probabilità dei seguenti eventi di $U$:
+
+1. $P[U \ge 1.5]$.
+2. $P[1.1 \le U \le 2.5]$.
+3. $P[U \ge q_U(0.950)]$.
+
+
+```{r}
+values = seq(0, 20, length.out = 200) 
+chid = dchisq(values, 4) 
+plot(values, chid, type = "l") 
+
+# es 5. x >= 1.5 
+plot(values, chid, type = "l") 
+polygon(c(values[values >= 1.5], 1.5), c(chid[values >= 1.5], 0), col = "pink")
+1- pchisq(1.5, 4)
+
+# 5.2 1.1 \leq x \leq 2.5 
+plot(values, chid, type = "l") 
+polygon(c(1.1, values[values >= 1.1 & values <= 2.5], 2.5), c(0, chid[values >= 1.1 & values <= 2.5], 0), col = "pink")
+pchisq(2.5, 4)- pchisq(1.1, 4)
+# esercizio 5.3 
+1- pchisq(qchisq(0.95, 4), 4)
+```
+

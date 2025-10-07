@@ -1,0 +1,147 @@
+---
+title: "Esercizi Modulo 2 - Prima serie"
+author: "Ottavia Epifania"
+format: pdf
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+---
+
+# Dati
+
+Si consideri la seguente struttura di dati (tabella) contenente cinque distinte variabili:
+
+
+```{r}
+#| echo: false
+dati <- data.frame(
+  GEN = c("m","f","f","f","f","m","m","m","m",
+          "m","f","f","f","f","m","m","m","m"),
+  RT  = c(652,721,753,625,801,700,521,601,593,
+          862,850,873,750,905,803,642,722,705),
+  CS  = c("A","A","A","A","A","A","A","A","A",
+          "B","B","B","B","B","B","B","B","B"),
+  TP  = c(68,72,81,69,79,59,71,60,45,
+          64,74,82,65,76,60,67,63,51),
+  SC  = c("M","S","S","U","U","U","M","M","S",
+          "U","U","M","M","S","S","S","M","U")
+)
+knitr::kable(dati)
+```
+
+
+GEN identifica la variabile categoriale genere sessuale a due livelli (m,f); 
+
+RT la misura dei tempi di risposta dell'individuo; 
+
+CS la condizione sperimentale (variabile categoriale a due livelli: A e B); 
+
+TP il punteggio ottenuta dall'individuo ad un test psicologico; 
+
+SC il livello di scolarità dell'individuo (variabile categoriale ordinale a tre livelli: media M, superiore S, universitaria U). 
+
+# Esercizi base
+
+## 1
+
+Costruire la tabella inserendo i dati della stessa in un foglio di calcolo (es. Excel) secondo la procedura di inserimento, controllo e salvataggio descritta a lezione. Caricare infine il file di dati esterno così ottenuto in R ed assegnarlo ad un data frame di nome dati
+
+```{r}
+dati = read.csv2("dati-es-prima-parte.csv")
+```
+
+
+## 2
+
+Fare la **somma** tra la media dei RT del gruppo delle donne e la media dei TP sempre nel gruppo delle donne.
+
+```{r}
+mean(dati$RT[dati$GEN=="f"]) + mean(dati$TP[dati$GEN=="f"])
+```
+
+
+## 3 
+
+Controllare (semplicemente visualizzando i rispettivi risultati) se la deviazione standard dei TP del gruppo delle donne appartenenti alla condizione sperimentale (CS) di tipo A sia superiore alla deviazione standard dei TP del gruppo dei maschi appartenenti alla condizione sperimentale (CS) di tipo B.
+
+```{r}
+sd(dati$TP[dati$GEN=="f" & dati$CS=="A"]) > sd(dati$TP[dati$GEN=="m" & dati$CS=="B"]) 
+```
+
+
+## 4
+
+Costruire due nuove strutture di dati, `datiSub1` e `datiSub2` contenenti rispettivamente: 
+
+* `datiSub1` la porzione di `dati` limitata esclusivamente alle variabili quantitative `RT` e `TP`; 
+
+* `datiSub2` la porzione di `dati` limitata esclusivamente alle variabili qualitative o ordinali `GEN`, `CS` e `SC`. Cancellare dalla memoria del sistema SOLO la struttura di dati dati
+
+
+```{r}
+datiSub1 <- dati[,c(2,4)]
+datiSub2 <- dati[,c(1,3,5)]
+rm(dati)
+# soluzione ugualmente valida 
+# datiSub1 <- dati[,c("RT","TP")]
+# datiSub2 <- dati[,c("GEN","CS", "SC")]
+
+```
+
+
+## 5
+
+Visualizzare la tabella di frequenza relativa alla variabile `GEN` di `datiSub2`. 
+
+```{r}
+table(datiSub2$GEN)
+```
+
+
+Ripetere la procedura questa volta visualizzando la **percentuale** di donne e quella degli uomini.
+
+```{r}
+table(datiSub2$GEN)/sum(table(datiSub2$GEN))
+```
+
+
+## 6 
+
+Visualizzare la tabella di frequenza relativa alla variabile `SC` di `datiSub2`. 
+
+```{r}
+table(datiSub2$SC)
+```
+
+
+Ripetere la procedura questa volta visualizzando la tabella con le frequenze relative dei tre livelli di scolarizzazione.
+
+```{r}
+table(datiSub2$SC)/sum(table(datiSub2$SC))
+```
+
+
+# Esercizi advanced
+
+## 7
+
+Costruire una tabella di contingenza `TC` di dimensione $2 \times 3$ tra la variabile `GEN` e `SC`. Visualizzare i valori percentuali di TC.
+
+La sintassi per ottenere una tabella di contingenza $r \times c$ è: `table(var1, va2)` dove `var1` è la variabile che si vuole mettere sulle righe e `var2` quella sulle colonne
+
+
+```{r}
+TC = table(datiSub2$GEN, datiSub2$SC)
+(TC/sum(TC))*100
+```
+
+
+## 8 
+
+A partire dai dati contenuti in `datiSub2` e `datiSub1` costruire una tabella di contingenza tra `GEN` e `CS` che sia limitata a soli quegli individui che abbiano ottenuto un punteggio di `TP` strettamente maggiore ($>$) di 55.
+
+```{r}
+TC2 <- table(datiSub2$GEN[datiSub1$TP>55],datiSub2$SC[datiSub1$TP>55])
+TC2
+```
+

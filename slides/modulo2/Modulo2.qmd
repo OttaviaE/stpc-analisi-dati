@@ -288,11 +288,11 @@ table(diagnosi)
 
 
 
-# Generazione di variabili casuali e grafici 
+# Generazione di variabili casuali 
 
-## Generazioni di variabili 
+## `set.seed()`
 
-### `set.seed()`
+### 
 
 Permette di settare un seed comune a tutt
 
@@ -347,6 +347,28 @@ hist(y)
 
 :::
 ::::
+
+# Grafici 
+
+### 
+
+\begin{center}
+\Large
+Graphs remind us that the process of statistical inference is
+not mechanical. This process often involves subjective decisions (e.g., the
+evaluation, exploration, and/or deletion of outliers) which are an
+integral part of the analysis. Thus, graphs are among the most
+appropriate tools to enhance transparency and confer plausibility
+to such decisions.
+
+\end{center}
+
+\vspace{10mm}
+\begin{flushright}
+Pastore et al. (2017)
+\end{flushright}
+
+
 
 ## Istogrammi 
 
@@ -617,21 +639,22 @@ lines(density(x), col = "blue", lwd = 2)
 
 ### 
 
-\small
 
 Funzione che "assegna" una probabilità attorno a ogni singolo dato osservato
 
 `density(X, bw)`: Stima della densitità di una variabile a partire da un vettore `X` di osservazioni quantitative. `bw`: Larghezza della banda con cui viene stimato il kernel attorno a ogni dato: 
 
-* Più è stretto attorno al dato: Si vede bene la struttura del dato, ma si rischia di essere in overfitting (quella stima va bene SOLO per quel dato)
+### 
 
-* Più è largo attorno al dato: La curva è ben definita e liscia, ma si rischia di perdere dettagli per questi specifici dati (underfitting)
+Più è stretto attorno al dato: Si vede bene la struttura del dato, ma si rischia di essere in overfitting (quella stima va bene SOLO per quel dato)
+
+Più è largo attorno al dato: La curva è ben definita e liscia, ma si rischia di perdere dettagli per questi specifici dati (underfitting)
 
 
 
 ```{r}
 #| echo: false
-#| out-width: 50%
+#| out-width: 70%
 #| fig-align: center
 set.seed(123)
 x <- c(2.1, 2.3, 2.5, 2.7, 2.9)
@@ -675,13 +698,95 @@ plot(density(x))
 ### 
 \small
 
-va imposto all'istogramma che costruisca i bin con la densità e non con la frequenza: 
+va imposto all'istogramma che costruisca i bin con la densità $d_i = \dfrac{f_i}{n * w_i}$ 
+
+\small
 
 ```{r}
-#| out-width: 70%
+#| out-width: 60%
 #| fig-align: center
 
 hist(x, freq = FALSE)
 lines(density(x), lwd = 2, col ="blue")
 ```
 
+# Da Execel a `R`
+
+## Crea
+
+###
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/excel.png")
+```
+
+
+## Salva 
+
+###
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/save.png")
+```
+
+## Importa 
+
+### 
+
+\small
+```{r}
+#| echo: true
+dati = read.csv2("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/dati.csv")
+head(dati)
+```
+
+## Importa alternativa 1
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("img/import0.png")
+```
+
+###
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("img/import1.png")
+```
+
+###
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("img/import2.png")
+```
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("img/import3.png")
+```
+
+## Importa alternativa 2
+
+###
+
+```{r}
+#| echo: true
+dati = read.csv("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/dati.csv", 
+                sep =";", dec =",", header = TRUE)
+head(dati)
+```

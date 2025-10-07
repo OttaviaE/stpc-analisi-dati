@@ -1,0 +1,141 @@
+---
+title: "Esercizi aggiuntivi modulo 1"
+subtitle: "Soluzioni"
+author: "Ottavia Epifania"
+format: pdf
+linestretch: 1.5
+---
+
+```{r include=FALSE}
+myvar = TRUE
+knitr::opts_chunk$set(include = myvar)
+```
+
+
+# Trsposizione di una matrice 
+
+La definizione di trasposizone di una matrice vi serve per lo svolgimento degli esercizi. 
+
+La trasposta di una matrice $M$ di dimensioni $I \times J$ (dove $I$ indica le righe e $J$ le colonne) 
+è una matrice in cui le righe si scambiano con le colonne.  
+Di conseguenza, la matrice trasposta $M^T$ avrà dimensioni $J \times I$.
+
+Considerate la seguente matrice $M = 3 \times 2$:
+
+$M = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}$
+
+La sua trasposta $M^T$ avrà dimensioni $2 \times 3$:
+
+$M^T = \begin{bmatrix}
+1 & 3 & 5 \\
+2 & 4 & 6
+\end{bmatrix}$
+
+Come si nota dall'esempio, oltre ad essersi invertita la dimensione della matrice ($M =  3 \times 2$ e $M^T = 2 \times 3$) si nota che i valori che erano nella prima colonna ora sono sulla prima riga, mentre i valori che erano nella prima riga ora sono nella prima colonna. 
+
+In R, la trasposta di una matrice si ottiene con il comando `t()` (dove dentro le parentesi va scritto il nome della matrice che si vuole invertire).
+
+## Esercizi
+
+## 1 
+
+Costruire una matrice denominata `a`  $5 \times 5$ contenente nella prima colonna il valore numerico 1, nella seconda colonna il valore 2, ..., nella quinta colonna il valore 5. In pratica ogni colonna contiene lo stesso valore numerico replicato per cinque volte.
+
+```{r}
+# per costuire la matrice si può usare il comando rep() settando l'agomento 
+# each = 5 perché vogliamo ripetere ogni numero 5 volte 
+
+a = matrix(rep(1:5, each=5), 5,5)
+a
+```
+
+
+## 2
+
+Selezionare la prima e l'ultima riga di `a` ed assegnarla ad una nuova matrice B di dimensione $2 \times 5$.
+
+```{r}
+# Va usato un vettore che indicizzi le righe della matrice 
+b = a[c(1, 5), ]
+b
+```
+
+
+## 3
+
+Creare una nuova matrice `m` di dimensione $5 \times 2$ contenente i primi 10 numeri naturali (secondo l'ordine naturale). 
+Fare la somma tra la matrice *trasposta* di `b` e la matrice `m`. 
+Il risultato di questa somma va assegnato ad una nuova matrice `d`. 
+
+```{r}
+m = matrix(1:10, 5, 2)
+m
+t(b) # trasposta di b
+d = t(b) + m
+```
+
+
+## 4
+
+Visualizzare il valore contenuto nella posizione (riga 3, colonna 2) della matrice `d`.
+
+```{r}
+d[3,2]
+```
+
+
+## 5
+
+Fare la somma tra la media degli elementi nella prima riga di `a` e la media di tutti i valori di `d` (va usata la funzione `mean()`). 
+
+```{r}
+mean(a[1, ]) + mean(d) 
+```
+
+
+### 6
+
+Costruire una variabile lista dal nome `SchedaPersonale` che contenga:
+
+1. una variabile con un nome e un cognome (va bene quello personale o uno di pura fantasia) 
+
+2. una variabile con i nomi dei tuoi gruppi musicali preferiti - dal più importante a quello meno importante - 
+
+3. una variabile che contenga il numero di concerti a cui hai assistito dal vivo 
+
+4. una variabile logica (`TRUE` vs. `FALSE`) che codifichi se ti piace viaggiare o meno. Visualizzare il contentuo di `SchedaPersonale` 
+
+```{r}
+nc = c("Jane", "Doe")
+gruppi = c("Giancane", "IDLES", "Misfits", "Rancid", "Punkreas", "Ramones")
+concerti = 20
+viaggi = TRUE
+SchedaPersonale = list(nome = nc, gruppi = gruppi, concerti = concerti, 
+                       viaggi = viaggi)
+SchedaPersonale
+```
+
+
+### 7
+
+Visualizzare con un unico comando il nome del gruppo più importante e quello meno importante nella tua SchedaPersonale.
+
+```{r}
+SchedaPersonale$gruppi[c(1, length(SchedaPersonale$gruppi))]
+```
+
+
+### 8
+
+Cancellare dalla memoria del sistema tutte le variabili costruite nella sessione di lavoro.
+
+```{r}
+ls() # vede quali variabili sono nell'ambiente
+rm(list = ls()) # pulisce l'ambiente
+```
+
+

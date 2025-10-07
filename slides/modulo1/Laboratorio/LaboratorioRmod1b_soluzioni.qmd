@@ -2,11 +2,25 @@
 title: "Laboratorio di Analisi dei Dati con R"
 subtitle: "Soluzioni - Parte 2"
 author: "Ottavia Epifania"
-format: pdf
+format: 
+   pdf: 
+    toc: true
+    toc-title: Gli esercizi
 execute:
   echo: true
-  eval: false
+  eval: true
+  warning: false
+  message: false
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+editor_options: 
+  chunk_output_type: console
 ---
+
+\newpage
 
 # 1. Manipolazioni di data frame
 
@@ -172,3 +186,249 @@ U <- TABa[TABa$X4=="f" | TABa$X2>=15,c(1,5)]
 U
 ```
 
+# Dettagli e spiegazione esercizio 3.3 (Disgiunzione Esclusiva `XOR`)
+
+Per risolvere l'esrecizio è necessario comprendere il concetto di disgiunzione esclusiva $\rightarrow$ è vera **se e solo se** uno dei due valori è vero **ma non entrambi**. 
+In insiemistica, la disgiunzione esclusiva equivale alla **differena simmetrica**, ovvero a tutti gli elementi che fanno parte O di A o di B **ma non di entrambi**.
+
+Di seguito, la tavola di verità della disgiunzione esclusiva: 
+
+$$\begin{array}{|c|c|c|}
+\hline
+p & q & (p \lor q) \land \lnot(p \land q) \\
+\hline
+\text{F} & \text{F} & \text{F} \\
+\text{F} & \text{V} & \text{V} \\
+\text{V} & \text{F} & \text{V} \\
+\text{V} & \text{V} & \text{F} \\
+\hline
+\end{array}$$
+
+dove: 
+
+- $(p \lor q)$: Gli elementi che o soddisfano $p$ O soddisfano $q$
+- $p \land q$: Gli elementi che soddisfano contemporanemanete $p$ E $q$
+- $\lnot(p \land q)$: I complementari di $p \land q$
+
+## Intersezione insiemistica `AND`
+
+
+\begin{center}
+
+\begin{tikzpicture}
+  % Area di intersezione riempita di grigio
+  \begin{scope}
+    \clip (-1,0) circle (1.5cm);
+    \fill[gray!40] (1,0) circle (1.5cm);
+  \end{scope}
+
+  % Cerchio A
+  \draw[thick] (-1,0) circle (1.5cm);
+  \node at (-1,1.8) {$A$};
+
+  % Cerchio B
+  \draw[thick] (1,0) circle (1.5cm);
+  \node at (1,1.8) {$B$};
+
+  % Etichetta nell'intersezione
+  \node at (0,0) {$A \cap B$};
+\end{tikzpicture}
+\end{center}
+
+
+Nell'insieme $A \cap B$ si trovano gli elementi che sono presenti sia in $A$ sia in $B$
+
+### Tavola di verità
+
+| $A$    | $B$    | $A \cap B$ ($a \land b$) |
+|--------|--------|--------------------------|
+| F  | F  | F                    |
+| F  | V   | F                    |
+| V   | F  | F                    |
+| V   | V   | V                     |
+
+
+## Unione insiemistica `OR`
+
+\begin{center}
+\begin{tikzpicture}
+  % Area di unione riempita di grigio
+  \fill[gray!40] (-1,0) circle (1.5cm);
+  \fill[gray!40] (1,0) circle (1.5cm);
+
+
+
+  % Cerchio A
+  \draw[thick] (-1,0) circle (1.5cm);
+  \node at (-1,1.8) {$A$};
+
+  % Cerchio B
+  \draw[thick] (1,0) circle (1.5cm);
+  \node at (1,1.8) {$B$};
+
+  % Etichetta nell'intersezione
+  \node at (0,0) {$A \cap B$};
+  
+  % Etichetta per l'unione (opzionale)
+  \node at (0,-2) {$A \cup B$};
+\end{tikzpicture}
+\end{center}
+
+
+Nell'insieme $A \cup B$ si torveranno gli elementi che sono presenti o in $A$ o in $B$
+
+
+### Tavola di verità 
+
+| $A$    | $B$    | $A \cup B$ ($a \lor b$) |
+|--------|--------|--------------------------|
+| F  | F  | F                    |
+| F  | V   | V                     |
+| V   | F  | V                     |
+| V   | V   | V                     |
+
+## Differenza simmetrica `XOR`
+
+\begin{center}
+\begin{tikzpicture}
+  % Riempimento: A senza B
+  \begin{scope}
+    \clip (-1,0) circle (1.5cm);
+    \fill[gray!20] (-3,-2) rectangle (3,3);
+  \end{scope}
+
+  % Riempimento: B senza A
+  \begin{scope}
+    \clip (1,0) circle (1.5cm);
+    \fill[gray!20] (-3,-2) rectangle (3,3);
+  \end{scope}
+
+  \begin{scope}
+    \clip (-1,0) circle (1.5cm);
+    \fill[white] (1,0) circle (1.5cm);
+  \end{scope}
+
+  % Disegno dei cerchi
+  \draw[thick] (-1,0) circle (1.5cm);
+  \draw[thick] (1,0) circle (1.5cm);
+
+  % Etichette insiemi
+  \node at (-1,1.8) {$A$};
+  \node at (1,1.8) {$B$};
+
+  % Etichette nelle parti colorate
+  \node at (-1.7,0) {$A \setminus B$};
+  \node at (1.7,0) {$B \setminus A$};
+
+  % Etichetta finale sotto
+  \node at (0,-2) {$A \triangle B$};
+\end{tikzpicture}
+\end{center}
+
+Nell'insieme $A \triangle B$ si trovano gli elementi di A che non sono in B e gli elementi di B che non sono in A. 
+
+In altri termini: 
+
+$A \triangle B = (A \setminus B) \cup (B \setminus A) = (A \cup B) \cap (A \cap B)^c$
+
+### Tavola di verità 
+
+| $A$    | $B$    | $A \triangle B$ $( (A \lor B) \land \lnot(A \land B))$ |
+|--------|--------|--------------------------------|
+| F  | F  | F                          |
+| F  | V   | V                           |
+| V   | F  | V                           |
+| V   | V   | F                          |
+
+
+## Operatori booleani e operatori insiemistici
+
+| Insiemistica       | Logica        | Significato             |
+|-------------------|---------------|------------------------|
+| $A \cap B$        | $a \land b$   | Intersezione           |
+| $A \cup B$        | $a \lor b$    | Unione                 |
+| $(A \cap B)^c$    | $\lnot(a \lor b)$ | Complementare / Negazione |
+
+## Nell'esercizio 3.3 
+
+| $a$ | $b$ | $a \land b$ | $a \lor b$ | $\neg(a \land b)$ | $(a \lor b) \land \neg(a \land b)$ |
+|-------|-------|-------|-------|-----------|-------------------|
+| V  | V  | V  | V  | F     | F             |
+| V  | F | F | V  | V      | **V**              |
+| F | V  | F | V  | V      | **V**              |
+| F | F | F | F | V      | F             |
+
+che corrisponde a (nel dataset per risponder al quesito 3.3 - nel leggere la tabella ricordate che il simbolo "!" in R indica la negazione $\lnot$ o il complementare di un insieme). La condizione che viene testata è che vengano selezionati SOLO i valori di `X4 = 'm'` OPPURE `X3 = '1'` . In altri termini, vogliamo prendere dal nostro dataset quelle osservazioni che o sono maschi MA CHE NON HANNO X3=1 oppure quelle osservazioni che hanno X3 = 1 MA CHE NON SONO MASCHI. 
+
+```{r}
+#| eval: true
+#| echo: false 
+b = cbind(TABa[, c("X4", "X3")], (TABa$X4=="m" & TABa$X3==1), (TABa$X4=="m" | TABa$X3==1), !(TABa$X4=="m" & TABa$X3==1), ((TABa$X4=="m" | TABa$X3==1) & !(TABa$X4=="m" & TABa$X3==1)))
+
+colnames(b) = c("X4", "X3", "AND", "OR", "! AND", "XOR")
+b
+
+```
+
+# `AND`, `OR`, `XOR`
+
+```{r}
+#| echo: false
+library(matRiks)
+mand = mat_apply(cof(square4(), size(dice(), 2), size(dot(), 2)), hrules = "AND")
+
+draw(mand, hide = TRUE)
+
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+par(mfrow=c(1,3))
+draw(correct(mand))
+draw(wp(mand)$wp_copy)
+draw(repetition(mand)$r_left)
+```
+
+
+\newpage
+
+```{r}
+#| echo: false
+library(matRiks)
+par(mfrow=c(1,1))
+mor = mat_apply(cof(square4(), size(dice(), 2), size(dot(), 2)), hrules = "OR") 
+draw(mor, hide = TRUE)
+```
+
+```{r}
+#| echo: false
+#| out-width: 70%
+#| fig-align: center
+par(mfrow=c(1,3))
+draw(repetition(mor)$r_left)
+draw(correct(mor))
+draw(repetition(mor)$r_diag)
+```
+
+
+\newpage
+
+```{r}
+#| echo: false
+library(matRiks)
+
+mxor = mat_apply(cof(square4(), size(dice(), 2), size(dot(), 2)), hrules = "XOR")
+draw(mxor, hide = TRUE)
+```
+
+```{r}
+#| echo: false
+#| out-width: 70%
+#| fig-align: center
+par(mfrow=c(1,3))
+draw(correct(mxor))
+draw(repetition(mxor)$r_diag)
+draw(repetition(mxor)$r_top)
+```

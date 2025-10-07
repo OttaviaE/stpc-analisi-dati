@@ -1,0 +1,606 @@
+---
+title: "Modulo Didattico 4: Principali distribuzioni di probabilità"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+lang: it
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginSection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection, hideallsubsections]
+              \end{frame}
+          }
+   - \AtBeginSubsection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+             \end{frame}
+          }
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+# Funzioni di probabilità discrete
+
+## Definizioni generali 
+
+### 
+
+
+Sia $X$ una variabile casuale discreta che assume valori in un insieme numerabile $S \subset \mathbb{R}$. 
+La *funzione di probabilità (massa)* di $X$ è indicata con $f_X(x|\theta)$ e definita come:
+
+$$f_X(x|\theta) = \Pr[X = x], \qquad \forall x \in S,$$
+
+al contrario $f_X(x|\theta) = 0$ per tutti gli $x \notin S$. 
+In generale noi considereremo funzioni $f_X$ parametriche con parametri $\theta \in \Theta$:
+
+$$f_X : \mathbb{R} \times \Theta \to [0,1].
+$$
+
+### Distribuzione di probabilità binomiale
+
+$$f_X(x|\theta) = \binom{n}{x}\, \theta^x (1-\theta)^{\,n-x}, 
+\qquad x = 0,1,\ldots,n,$$
+
+dove $\theta \in [0,1]$.
+
+$\binom{n}{x} = \dfrac{n!}{x!(n-x)!}$ e 
+$$n! =
+\begin{cases} 
+1 & \text{se } n = 0, \\[2mm]
+n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1 & \text{se } n > 0.
+\end{cases}$$
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+x = 0:6
+plot(x, dbinom(x,6, prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.3), lwd = 2)
+
+plot(x, dbinom(x,6, prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.5), lwd = 2)
+
+plot(x, dbinom(x,6, prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.85), lwd = 2)
+
+```
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 10 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+x = 0:10
+plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.3), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.5), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
+
+```
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 20 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+x = 0:20
+plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.3), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.5), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
+
+```
+
+### 
+
+La *funzione di probabilità cumulata* di una variabile casuale discreta $X$ si indica con $F_X(x|\theta)$ ed è definita come:
+
+$$F_X(x|\theta) = \Pr[X \leq x]
+= \sum_{s \in S: \, s \leq x} f_X(s).$$
+
+In altre parole, $F_X(x|\theta)$ rappresenta la probabilità che $X$ assuma un valore minore o uguale a $x$.  
+Chiaramente,
+$$F_X : \mathbb{R} \times \Theta \longrightarrow [0,1].$$
+
+### Distribuzione binomiale cumulata
+
+Se $X \sim \text{Bin}(n,\theta)$, allora la funzione di probabilità cumulata è:
+
+$$F_X(x|\theta) = \sum_{z=0}^{x} \binom{n}{z}\, \theta^z (1-\theta)^{\,n-z}, 
+\qquad x = 0,1,\ldots,n,$$
+
+dove $\theta \in [0,1]$.
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+x = 0:6
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19,  cex = 2,
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5), cex = 2,pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .85), cex = 2,pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+```
+
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 10 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+x = 0:10
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19,  
+     cex.main = 3, cex.axis = 2,cex =2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5),cex =2, pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .85),cex =2, pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+```
+
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 20 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+x = 0:20
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19, cex =2, 
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
+plot(x, pbinom(x, length(x), prob = .85), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
+```
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dbinom(x, size, prob)` | Restituisce i *valori di massa* associati al vettore discreto `x` di una distribuzione binomiale con `n` esperimenti bernoulliani e probabilità `prob` per l’evento target. Con `lower.tail=FALSE` calcola la probabilità complementare. |
+| `pbinom(x, size, prob)` | Restituisce i *valori di probabilità cumulata* associati al vettore discreto `x`. |
+| `qbinom(p, size, prob)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rbinom(n, size, prob)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione binomiale. |
+
+# Funzioni di probabilità Continue
+
+## Definizioni generali 
+
+### 
+
+Sia $X$ una variabile casuale continua distribuita secondo la funzione di densità $f_X(x|\theta)$:
+
+$$f_X : \mathbb{R} \times \Theta \to \mathbb{R}^+$$
+
+$f_X$ è una funzione di densità parametrica con parametri $\theta \in \Theta$.
+
+La *funzione di densità cumulata* $F_X(x|\theta)$ è definita come
+
+$$F_X(x|\theta) = \Pr[X \leq x]
+= \int_{-\infty}^x f_X(z|\theta)\,dz$$
+
+dove chiaramente
+
+$$F_X : \mathbb{R} \times \Theta \to [0,1]$$
+
+
+### 
+
+Infine, la *funzione quantile+* $q_X(p|\theta)$ è definita come la funzione inversa di $F_X$:
+
+$$q_X(p|\theta) = F_X^{-1}(p|\theta)
+= x \in \mathbb{R} \ \ \text{tale che} \ \ p = F_X(x|\theta)$$
+
+dove
+
+$$q_X : [0,1] \times \Theta \to \mathbb{R}$$
+
+Nota che in generale
+
+$$q_X(p|\theta) = F_X^{-1}(p|\theta) 
+\quad \text{sse} \quad 
+F_X(x|\theta) = q_X^{-1}(x|\theta).$$
+
+
+###
+
+```{r}
+#| echo: false
+#| fig-cap: "Distribuzione normale"
+#| layout-ncol: 3
+#| fig-subcap: 
+#|   - "Densità"
+#|   - "Cumulata"
+#|   - "Quantile"
+set.seed(999)
+x = seq(-4, 4, length.out = 1000)
+plot(x, dnorm(x), type = "l", lwd = 2, 
+     cex.axis = 2, ylab = "f(x)", xlab = "x")
+
+plot(x, pnorm(x), type = "l", lwd = 2, 
+     cex.axis = 2, ylab = "F(x)", xlab = "x")
+
+plot(pnorm(x), qnorm(pnorm(x)), type = "l", lwd = 2,  xlab = "F(x)", ylab = "qX",
+     cex.axis = 2)
+```
+
+## Normale 
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dnorm(x, mean, sd)` | Restituisce i *valori di densità associati* al valore quantitativo `x` di una distribuzione normale con media e deviazione standard. |
+| `pnorm(x, mean, sd)` | Restituisce i *valori di probabilità cumulata* associati al vettore `x`. |
+| `qnorm(p, mean, sd)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p` di una distribuzione normale (`0 <= p <= 1`). |
+| `rnorm(n, mean, sd)` | Genera un vettore casuale di `n` osservazioni indipendenti campionate da una nomrale con media e deviazione standard. |
+
+
+### 
+
+$\theta = (\mu, \sigma^2)$, $\Theta = (\mathbb{R} \times \mathbb{R}^+)$
+
+:::: {.columns}
+
+
+::: {.column width="80%"}
+```{r}
+#| echo: false
+source("DisegnaNormale-code.R")
+Media <- 10
+Ds <- 5
+limInfX <- qnorm(0.001,Media,Ds)
+limSupX <- qnorm(0.999,Media,Ds)
+X <- c(3,8,12,19,14)
+disegnaNorm(limInfX,limSupX,Media,Ds,X)
+
+
+```
+:::
+
+:::{.column width="20%"}
+
+\small
+
+$f(3) = 0.0299$ 
+
+$f(8) = 0.0737$
+
+$f(12) = 0.0737$ 
+
+$f(14) = 0.0579$ 
+
+$f(19) = 0.0158$
+
+:::
+
+::::
+
+
+### 
+
+:::: {.columns}
+
+
+::: {.column width="75%"}
+```{r}
+#| echo: false
+source("DisegnaNormale-code.R")
+Media <- 10
+Ds <- 5
+limInfX <- qnorm(0.001,Media,Ds)
+limSupX <- qnorm(0.999,Media,Ds)
+X <- c(3,8,12,19,14)
+disegnaNormC(limInfX,limSupX,Media,Ds,X)
+
+
+```
+:::
+
+:::{.column width="25%"}
+
+\small
+
+$F(3) = 0.0808$ 
+
+$F(8) = 0.3446$ 
+
+$F(12) = 0.6554$ 
+
+$F(14) = 0.7881$ 
+
+$F(19) = 0.9641$ 
+
+\vspace{5mm}
+
+$q(0.0808) = 3$ 
+
+$q(0.3446) = 8$ 
+
+$q(0.6554) = 12$ 
+
+$q(0.7881) = 14$ 
+
+$q(0.9641) = 19$ 
+
+:::
+
+::::
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "Stessa media, diversa SD"
+#| fig-subcap: 
+#|    - "Densità"
+#|    - "Cumulata"
+
+mysd = c(2, 3, 6)
+mycol = c("seagreen","royalblue", "orange", "orchid")
+plot(x, dnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(mu, " = 0")), cex.main = 4)
+for (i in 1:length(mysd)) {
+  lines(x, dnorm(x, 0, mysd[i]), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("sd = ", mysd)), cex = 2)
+
+plot(x, pnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(mu, " = 0")), cex.main = 4)
+for (i in 1:length(mysd)) {
+  lines(x, pnorm(x, 0, mysd[i]), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("sd = ", mysd)), cex = 2)
+
+```
+
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "Stessa SD, media diversa"
+#| fig-subcap: 
+#|    - "Densità"
+#|    - "Cumulata"
+
+mymean = c(-2, 1, 3)
+mycol = c("seagreen","royalblue", "orange", "orchid")
+plot(x, dnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(sigma, " = 1")), cex.main = 4)
+for (i in 1:length(mymean)) {
+  lines(x, dnorm(x, mymean[i], 1), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("M = ", mymean)), cex = 2)
+
+plot(x, pnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(sigma, " = 0")), cex.main = 4)
+for (i in 1:length(mymean)) {
+  lines(x, pnorm(x, mymean[i], 1), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("M = ", mymean)), cex = 2)
+
+```
+
+
+## $t$ di Student
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dt(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione t con gradi di libertà (`df`). |
+| `pt(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
+| `qt(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rt(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione t di Student con `df`. |
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "$\\theta = df$, $\\Theta = R^+$"
+#| fig-subcap: 
+#|  - "Densità"
+#|  - "Cumulata"
+mydf = c(3,6,8)
+plot(x, dt(x, 1), type = "l", lwd = 2, 
+     ylab = "f(x)", cex.axis = 2, ylim= c(0, 0.5))
+
+for (i in 1:length(mydf)) {
+  lines(x, dt(x, mydf[i]), col = mycol[i])
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+
+plot(x, pt(x, 1), type = "l", lwd = 2, 
+     ylab = "F(x)", cex.axis = 2)
+
+for (i in 1:length(mydf)) {
+  lines(x, pt(x, mydf[i]), col = mycol[i])
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+```
+
+## Distribuzione $\chi^2$
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dchisq(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione Chi-quadrato con gradi di libertà (`df`). |
+| `pchisq(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
+| `qchisq(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rchisq(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione chi-quadrato con `df`. |
+
+
+###
+
+
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "$\\theta = df$, $\\Theta = R^+$"
+#| fig-subcap: 
+#|  - "Densità"
+#|  - "Cumulata"
+mydf = c(2,4,9)
+x = seq(0, 15, length.out= 1000)
+plot(x, dchisq(x, 1), type = "l", lwd = 2, 
+     ylab = "f(x)", cex.axis = 2, ylim = c(0,0.5))
+
+for (i in 1:length(mydf)) {
+  lines(x, dchisq(x, mydf[i]), col = mycol[i], lwd = 2)
+}
+legend("topright", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+
+plot(x, pchisq(x, 1), type = "l", lwd = 2, 
+     ylab = "F(x)", cex.axis = 2)
+
+for (i in 1:length(mydf)) {
+  lines(x, pchisq(x, mydf[i]), col = mycol[i], lwd = 2)
+}
+legend("bottomright", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+```
+
+## Altre distribuzioni continue 
+
+###
+
+:::{.callout-tip}
+## Esponenziale `exp`
+
+`dexp(x, lambda)`, `pexp(x, lambda)`, `qexp(p, lambda)`,  `rexp(n, lambda)`
+
+`lambda` è il rate della distribuzione esponenziale
+
+:::
+
+
+:::{.callout-tip}
+## Uniforme `unif`
+
+`dunif(x, min, max)`, `punif(x, min, max)`, `qunif(p, min, max)`,  `runif(n, min, max)`
+
+`min, max` valore minimo e massimo della distribuzione 
+
+:::
+
+###
+
+:::{.callout-tip}
+## Gamma `gamma`
+
+`dgamma(x, shape, scale)`, `pgamma(x, shape, scale)`, `qgamma(p, shape, scale)`,  `rgamma(n, shape, scale)`
+
+`shape`: regola la forma della distribzuione, `scale` regola la varianza
+:::
+
