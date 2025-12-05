@@ -1,0 +1,99 @@
+---
+title: "Analisi dei dati con applicazioni informatiche"
+subtitle: "STATISTICA INFERENZIALE"
+format: 
+  pdf: 
+   toc: true
+lang: it
+---
+
+\newpage
+
+# `t` test
+
+Di default, l'intervallo di confidenza per il test a due code è calcolato facendo riferimento a una confidenza .95. Questo parametro è modificabile con l'argomento `conf.level`
+
+## Un campione
+
+| **Test / Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `t.test(x, mu = mu0)` | *Test a due code* | $gdl = N - 1$  $\mu \neq \mu_0$ |
+| `t.test(x, mu = mu0, alternative="less")` | *Test a  una coda sinistra* | $gdl = N - 1$  $\mu < \mu_0$ |
+| `t.test(x, mu = mu0, alternative="greater")` | *Test a una coda destra* | $gdl = N - 1$  $\mu > \mu_0$ |
+
+
+
+## Due campioni
+
+| **Test / Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `t.test(x, y, var.equal=TRUE)` | *Due campioni indipendenti, test a due code* | $gdl = N - 2<$, $\mu_1 \neq \mu_2$|
+| `t.test(x, y, var.equal=TRUE, alternative = "less")` | *Due campioni indipendenti, test una coda sinistra* | $gdl = N - 2<$, $\mu_1 < \mu_2$|
+| `t.test(x, y, var.equal=TRUE, alternative = "greater")` | *Due campioni indipendenti, test una coda destra* | $gdl = N - 2<$, $\mu_1 > \mu_2$|
+| `t.test(x, y, paired=TRUE)` | *t-test per due campioni appaiati test a due code* | $gdl = N - 1$, $\mu_D \neq 0$|
+| `t.test(x, y, paired=TRUE, alternative = "less")` | *t-test per due campioni appaiati test a una coda sinistra* | $gdl = N - 1$, $\mu_D < 0$|
+| `t.test(x, y, paired=TRUE, alternative = "greater")` | *t-test per due campioni appaiati test a una coda destra* | $gdl = N - 1$, $\mu_D > 0$|
+
+
+## p-value e valori critici
+
+*Calcolo manuale p-value o t critico* 
+
+`2*(1-pt(abs(to), gdl))` $\rightarrow$ $p$-value bidirezionale
+
+`1-pt(to, gdl)` $\rightarrow$  monodirezionale dx 
+
+`pt(to, gdl)` $\rightarrow$  monodirezionale sx 
+
+`qt((1-`$\alpha$`/2), gdl)` $\rightarrow$ t critico a due 
+
+`qt((1-`$\alpha$`), gdl)` $\rightarrow$  t critico a una coda dx
+
+`qt(`$\alpha$`, gdl)` $\rightarrow$  t critico a una coda sx |
+
+# Chi-quadro
+
+Gradi di libertà del test chi-quadro: 
+
+- Misura di associazione tra variabili categoriali: $gdl = (r-1)\times (c-1)$, dove $r$ e $c$ sono il numero di righe e di colonne della tavola delle frequenze congiunte, rispettivamente 
+
+- Omogeneità delle proporzioni nelle categorie di una variabile nominale: $gdl = I - 1$ ($I$ è il numero di categorie)
+
+| **Test / Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `chisq.test(tab)` | *Test Chi-quadro* | `tab` è la tabella di contingenza $r \times c$ oppure le proporizioni nelle $I$ categorie|
+| `chisq.test(tab)$expected` | Frequenze attese | |
+|`qchisq((1-p.value),gdl)` | Calcola chi osservato| |
+|`qchisq((1-`$\alpha$`),gdl)`| Calcola chi critico| |
+|`1-pchisq((1-chi osservato),gdl)`| Calcola p value| |
+
+
+# Test delle proporzioni 
+
+$x$: Numero di esiti dicotomici positivi
+
+$n$: Totale di eventi 
+
+$\pi$: Probabilità a priori 
+
+$gdl =1$
+
+Specificando l'argomento `corr = FALSE` non viene applicata la correzione di Yates.
+
+| **Test / Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| **prop.test(x, n, p)** | *Test inferenziale a due code* | $x/n \neq \pi$  |
+| **prop.test(x, n, p, alternative = "less")** | *Test inferenziale a una coda sinistra* | $x/n < \pi$  |
+| **prop.test(x, n, p, alternative = "greater")** | *Test inferenziale a una coda destra* | $x/n > \pi$  |
+| **prop.test(c(x1,x2), c(n1,n2))** | *Test inferenziale a due code per due proporzioni* | $\pi_1 \neq \pi_2$ |
+| **prop.test(c(x1,x2), c(n1,n2), alternative = "less")** | *Test inferenziale a una coda (sinistra) per due proporzioni* | $\pi_1 < \pi_2$ |
+| **prop.test(c(x1,x2), c(n1,n2), alternative = "greater")** | *Test inferenziale a una coda (destra) per due proporzioni* | $\pi_1 > \pi_2$ |
+
+
+# Altri test
+
+| **Test / Funzione R** | **Descrizione** | **Formule e Parametri Principali** |
+|------------------------|----------------|------------------------------------|
+| **var.test(x, y)** | *Test F per confronto varianze* | Confronta varianze di due campioni normali<br>Destra: `alternative="greater"`<br>Sinistra: `alternative="less"`<br>gdl = N - 1 |
+| **binom.test(x, n)** | *Test esatto con la distribuzione binomiale* | A due code<br>Destra: `alternative="greater"`<br>Sinistra: `alternative="less"` |
+
