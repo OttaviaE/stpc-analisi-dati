@@ -1,0 +1,14 @@
+---
+title: "Analisi dei dati con applicazioni informatiche"
+author: "Ottavia M. Epifania"
+format:
+  html:
+    toc: true
+    number-sections: true
+    toc-title: "Struttura del corso"
+    theme: yeti
+lang: it
+---
+
+
+[Installare R e R Studio](guida-R.html)
