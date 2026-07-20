@@ -1,0 +1,192 @@
+---
+title: "Laboratorio Modulo 5"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format: 
+  pdf: 
+   toc: true
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+---
+
+
+```{r include=FALSE}
+thevalue = F
+myvar = thevalue
+echovar = thevalue
+evalvar = thevalue
+knitr::opts_chunk$set(include = myvar, 
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+
+# Introduzione
+
+Questo laboratorio utilizza un set di dati associato a variabili legate ad una ricerca di psicologia cognitiva applicata. 
+Nello specifico, in questa ricerca sono state raccolte delle misure di performance legate a due task (compiti) specifici per l’utilizzo di uno sportwatch. 
+Ad un gruppo di *48 persone* (che non avevano mai utilizzato uno sportwatch in precedenza) è stato chiesto di eseguire i due compiti dopo una prima fase di familiarizzazione con l’oggetto durata 15’. Nel primo task (compito di sincronizzazione) veniva richiesto alla persona di sincronizzare il workout “corsa” dello sportwatch attraverso il Bluetooth Smart del proprio smarthphone. Nel secondo task (compito di selezione) veniva richiesto di attivare nell’interfaccia grafica dello sportwatch 3 campi specifici (distanza percorsa, misura battito cardiaco, lap time). Per ciascuno dei due task venivano misurate le seguenti variabili di performance: 1) Successo (codificata come variabile dicotomica 0/1: il valore 1 indica che la persona aveva correttamente eseguito il compito) 2) Time-on-task (tempo di esecuzione del compito, inteso come tempo impiegato dall’individuo per completare corretamente il task o per abbandonare senza successo il task), questa variabile era misurata in secondi. Infine, la prova veniva eseguita in due fasi temporali distinte (t1 e t2). Nello specifico, nella seconda fase (t2) i due task venivano ripetuti per una seconda volta a distanza di 24h dalla prima prova (questo per valutare se vi fosse stato un qualche grado di apprendimento legato all’uso dello smartwatch). 
+
+Le variabili nel file di dati `DATASW2.csv` sono le seguenti: 
+
+1. `Gender` (sesso della persona): `m` oppure `f`
+2. `Age` (età espressa in anni) 
+3. `SuccT1t1` (variabile successo del primo task nella fase temporale 1) 
+4. `SuccT1t2` (variabile successo del primo task nella fase temporale 2) 
+5. `SuccT2t1` (variabile successo del secondo task nella fase temporale 1) 
+6. `SuccT2t2` (variabile successo del secondo task nella fase temporale 2) 
+7. `TT1t1` (time-on-task del primo task nella fase temporale 1) 
+8. `TT1t2` (time-on-task del primo task nella fase temporale 2) 
+9. `TT2t1` (time-on-task del secondo task nella fase temporale 1) 
+10. `TT2t2` (time-on-task del secondo task nella fase temporale 2) 
+
+# Esercizi
+
+Negli esercizi che seguono precedere le analisi statistico-inferenziali con opportuni metodi grafici. 
+
+## Esercizio 1: 
+Si assegni il dataset al data frame `D` (utilizzare la funzione `read.csv()` e non `read.csv2()` in quanto il file di dati è stato creato in un Excel che utilizzava il “.” come separatore decimale). 
+Visualizzare le statistiche descrittive di base delle variabili del data frame.
+
+```{r}
+D <- read.csv("DATASW2.csv")
+head(D)
+D$Gender = as.factor(D$Gender)
+
+summary(D)
+
+```
+
+
+## Esercizio 2: 
+
+Verificare se l’età media delle donne sia significativamente differente da quella dei maschi.  
+
+```{r}
+boxplot(D$Age[D$Gender=="f"],
+        D$Age[D$Gender=="m"],names=c("Femmine","Maschi"),ylab="Age")
+# in alternativa 
+# boxplot(D$Age ~ D$Gender,ylab="Et?")
+t.test(D$Age[D$Gender=="f"],D$Age[D$Gender=="m"])
+```
+
+## Esercizio 3: 
+
+Verificare se il tempo medio impiegato dal gruppo dei maschi nel primo task al tempo t1 sia significativamente differente da quello impiegato (per lo stesso task e allo stesso tempo) dal gruppo delle donne. Ripetere le analisi per il secondo task. 
+
+```{r}
+boxplot(D$TT1t1 ~ D$Gender,ylab="Time-on-task (sec)",main="Task 1, t1")
+t.test(D$TT1t1[D$Gender=="f"],D$TT1t1[D$Gender=="m"])
+
+boxplot(D$TT2t1 ~ D$Gender,ylab="Time-on-task (sec)",main="Task 2, t1")
+t.test(D$TT2t1[D$Gender=="f"],D$TT2t1[D$Gender=="m"])
+```
+
+
+## Esercizio 4: 
+
+Valutare se il tempo complessivo nel primo task sia significativamente superiore nel gruppo delle persone con età superiore ai 40 anni (rispetto a $\leq 40$). Qui per tempo complessivo si intende la somma dei time-on-task nei due tempi t1 e t2. 
+
+```{r}
+TCT1 <- D$TT1t1 + D$TT1t2
+
+boxplot(TCT1[D$Age <= 40],TCT1[D$Age > 40],names=c("<= 40",">40"),ylab="Tempo complessivo Task 1 (sec)")
+t.test(TCT1[D$Age <= 40],TCT1[D$Age > 40],alternative="less")
+# in alternativa
+# t.test(TCT1[D$Age > 40],TCT1[D$Age <= 40],alternative="greater")
+```
+
+
+## Esercizio 5: 
+
+Il tempo impiegato dalle persone che hanno successo nel secondo task al tempo t1 è significativamente inferiore rispetto a coloro che falliscono (nel secondo task al tempo t1)? 
+
+
+```{r}
+boxplot(D$TT2t1 ~ D$SuccT2t1,ylab="Time-on-task (sec)",main="Task 2, t1")
+t.test(D$TT2t1[D$SuccT2t1==1],D$TT2t1[D$SuccT2t1==0],alternative="less")
+abline(mean(D$TT2t1[D$SuccT2t1==1]),0,lty=3)   # posizione media campionaria per gruppo successo
+abline(mean(D$TT2t1[D$SuccT2t1==0]),0,lty=3,col="blue") # posizione media campionaria per gruppo insuccesso
+# notare come le posizioni di queste medie differiscano dalle posizioni delle mediane dei boxplot
+
+```
+
+## Esercizio 6: 
+
+Verificare se il tempo medio impiegato nel secondo task al tempo t1 sia significativamente superiore rispetto al valore della mediana campionaria calcolata sui tempi registrati al secondo task sempre al tempo t1.
+
+```{r}
+boxplot(D$TT2t1,ylab="Time-on-task (sec)",main="Task 2, t1")
+points(mean(D$TT2t1),pch=13, cex = 2)  # posizione della media campionaria
+t.test(D$TT2t1,mu=median(D$TT2t1),alternative="greater")
+```
+
+
+## Esercizio 7: 
+
+Vi è un miglioramento statisticamente significativo nella performance temporale (time-on-task) del primo compito (task) nel passare dalla fase t1 alla t2? Ripetere l’analisi anche per il secondo compito (task).
+
+
+```{r}
+TT1D <- D$TT1t1 - D$TT1t2
+boxplot(TT1D,main="Tempo differenziale Task 1 (t1 - t2)",ylab="Sec.")
+abline(0,0,lty=3)
+t.test(D$TT1t1,D$TT1t2,paired=T,alternative="greater")
+
+TT2D <- D$TT2t1 - D$TT2t2
+boxplot(TT2D,main="Tempo differenziale Task 2 (t1 - t2)",ylab="Sec.")
+abline(0,0,lty=3)
+t.test(D$TT2t1,D$TT2t2,paired=T,alternative="greater")
+```
+
+
+## Esercizio 8: 
+
+Ripetere l’esercizio 7, questa volta limitatamente al solo gruppo delle donne. 
+
+```{r}
+TT1Df <- D$TT1t1[D$Gender=="f"] - D$TT1t2[D$Gender=="f"]
+boxplot(TT1Df,main="Tempo differenziale Task 1 (t1 - t2) - Donne",ylab="Sec.")
+abline(0,0,lty=3)
+t.test(D$TT1t1[D$Gender=="f"],D$TT1t2[D$Gender=="f"],paired=T,alternative="greater")
+
+TT2Df <- D$TT2t1[D$Gender=="f"] - D$TT2t2[D$Gender=="f"]
+boxplot(TT2Df,main="Tempo differenziale Task 2 (t1 - t2) - Donne",ylab="Sec.")
+abline(0,0,lty=3)
+t.test(D$TT2t1[D$Gender=="f"],D$TT2t2[D$Gender=="f"],paired=T,alternative="greater")
+
+```
+
+
+## Esercizio 9: 
+
+Verificare se vi sia una associazione statisticamente significativa tra età (espressa in due classi: $\leq 40$ e $> 40£) e l’ottenimento di un successo nel completamento del primo task alla fase t1. Ripetere l’analisi, questa volta relativamente alla fase t2. 
+
+```{r}
+# Eta categoriale
+Ecat <- D$Age
+Ecat[D$Age <= 40] <- 1
+Ecat[D$Age > 40] <- 2
+Ecat <- as.factor(Ecat)
+TAB <- table(Ecat,D$SuccT1t1)
+chisq.test(TAB)
+TAB2 <- table(Ecat,D$SuccT1t2)
+chisq.test(TAB2)
+```
+
+
+## Esercizio 10: 
+
+Vi è una qualche relazione tra successo al task 2 alla fase t2 rispetto al genere della persona? E rispetto al task 1 alla fase 1? 
+
+
+```{r}
+
+TAB3 <- table(D$Gender,D$SuccT2t2)
+chisq.test(TAB3)
+
+TAB4 <- table(D$Gender,D$SuccT1t1)
+chisq.test(TAB4)
+```
+

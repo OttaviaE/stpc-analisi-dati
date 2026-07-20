@@ -1,0 +1,10 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\beamer@sectionintoc {1}{Test di ipotesi}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Null Hyphothesis Significance Testing}{5}{0}{1}
+\beamer@sectionintoc {2}{Distribuzioni campionarie}{13}{0}{2}
+\beamer@subsectionintoc {2}{1}{Distribuzione campionaria della media}{15}{0}{2}
+\beamer@sectionintoc {3}{Valore critico}{28}{0}{3}
+\beamer@subsectionintoc {3}{1}{Errori di I e II tipo}{32}{0}{3}
+\beamer@subsectionintoc {3}{2}{Regola Decisionale}{36}{0}{3}
+\beamer@subsectionintoc {3}{3}{Cos'è il $p$-value?}{38}{0}{3}

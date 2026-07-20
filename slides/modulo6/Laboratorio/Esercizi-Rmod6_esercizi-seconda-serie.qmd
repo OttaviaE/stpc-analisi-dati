@@ -1,0 +1,317 @@
+---
+title: "Modulo 6 - Seconda serie"
+subtitle: "Soluzioni"
+author: "Ottavia Epifania"
+format: 
+  pdf: 
+   toc: true
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+myvar = T
+echovar = T
+evalvar = T
+knitr::opts_chunk$set(include = myvar, 
+                      echo = echovar,
+                      eval = evalvar)
+data = read.csv("regressione-completa.csv")
+```
+
+
+
+\newpage
+
+# Il dataset
+
+Il dataset si chaiama `regressione-completa.csv`. 
+Viene valutata l'ansia e nello specifico le variabili ad essa connessa, in questo caso specifico la flessibilità cognitiva, la pratica di mindfullness quotidiana e l'attività sportiva praticata.
+
+```{r}
+#| eval: true
+str(data)
+```
+
+Sono presenti le seguenti variabili: :
+
+- ``r colnames(data)[1]``: Punteggio di ansia, maggiore è il punteggio maggiore è l'ansia
+
+- ``r colnames(data)[2]``: punteggio di flessbilità cognitiva, più alto è il punteggio maggiore è la flessibilità
+
+- ``r colnames(data)[3]``: Chi pratica attività di mindfulness quotidianamente, `no` vs. `si`
+
+- ``r colnames(data)[4]``: Il tipo di attività sportiva praticata, `r unique(data$attivita)`
+
+
+
+# Esercizi
+
+
+Tutte le analisi devono essere precedute dalle opportune rappresentazioni grafiche. 
+
+Lo scopo dell'indagine è di investigare il rapporto di relazione tra la flessibilità cognitiva e l'ansia, prendendo in considerazione l'influenza di altre variabili di tipo categoriale (la pratica di mindfulness e il tipo di attività)
+
+```{r}
+data = read.csv("regressione-completa.csv")
+head(data)
+```
+
+
+
+## Esercizio 1
+
+## a 
+
+Investigare la relazione tra ansia (vd) e flessibilità cognitiva (Vi)
+
+```{r}
+plot(data$ansia ~ data$flessibilita, pch = 12)
+```
+
+```{r}
+#| echo: false
+
+cat("Dal grafico si inutisce una relazione di tipo negativo")
+```
+
+```{r}
+m = lm(ansia ~ flessibilita, data = data)
+summary(m)
+```
+
+```{r}
+#| echo: false 
+
+cat("entrambi i parametri del modello sono significativi. Il coefficiente \n angolare negativo conferma la relazione negativa tra le variabili. Il modello spiega circa \n il 20% della varianza della y")
+```
+
+
+```{r}
+plot(data$ansia ~ data$flessibilita, pch = 12)
+abline(m$coefficients[1], m$coefficients[2], 
+       col ="darkred", lwd = 2)
+```
+
+## b 
+
+Calcolare l'IC al 90% attorno ai parametri del modello 
+
+```{r}
+modelcoef = data.frame(summary(m)$coefficients)
+qquantile90 = qt(.95, 298)
+deltaB0 = qquantile90*modelcoef$Std..Error[1]
+deltaB = qquantile90*modelcoef$Std..Error[2]
+ic = data.frame(limInf = c(modelcoef$Estimate[1] - deltaB0, 
+                           modelcoef$Estimate[2] - deltaB), 
+                 limSup = c(modelcoef$Estimate[1] + deltaB0, 
+                           modelcoef$Estimate[2] + deltaB) )
+ic
+```
+
+
+## c
+
+Commentare i residui del modello 
+
+```{r}
+plot(m$fitted.values, m$residuals)
+abline(h = 0, col ="red")
+```
+
+
+```{r}
+#| echo: false
+cat("I residui non presentano una correlazione con i valori \n stimati dal modello")
+```
+
+
+## Esercizio 2
+
+Investigare la relazione tra ansia (vd) e flessibilità cognitiva (Vi), inserendo anche l'effetto della pratica di mindfulness
+
+## a 
+
+Modello parallelo con equazioni di stima (nel grafico)
+
+```{r}
+plot(data$ansia ~ data$flessibilita, 
+     pch = ifelse(data$mindfulness == "no", 5, 14), 
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"))
+```
+
+```{r}
+mparall = lm( ansia ~ flessibilita + mindfulness, 
+              data = data)
+summary(mparall)
+```
+
+
+```{r}
+#| echo: true
+
+cat("Il modello è significativo, insieme a tutti i parametri stimati. \n il modello con tutti i predittori spiega più del 60% della variabilità dei dati")
+```
+
+
+```{r}
+plot(data$ansia ~ data$flessibilita, 
+     pch = ifelse(data$mindfulness == "no", 5, 14), 
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"))
+abline(mparall$coefficients[1], mparall$coefficients[2], col = "salmon")
+abline((mparall$coefficients[1]+mparall$coefficients[3]), 
+       mparall$coefficients[2], col = "orchid")
+```
+
+## b 
+
+Modello con interazione con equazioni di stima (nel grafico)
+
+
+```{r}
+plot(data$ansia ~ data$flessibilita, 
+     pch = ifelse(data$mindfulness == "no", 5, 14), 
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"))
+```
+
+```{r}
+minter = lm( ansia ~ flessibilita * mindfulness, 
+              data = data)
+summary(minter)
+```
+
+
+```{r}
+#| echo: true
+
+cat("Il modello è significativo, insieme a tutti i parametri stimati ad eccezione \n dell'effetto principale della mindfulness per cui non sembra ci siano differenze \n tra chi pratica e non pratica mindfulness nel livello di ansia. \n il modello con tutti i predittori spiega più del 65% della variabilità dei dati")
+```
+
+
+```{r}
+#| echo: false
+```
+
+
+```{r}
+plot(data$ansia ~ data$flessibilita, 
+     pch = ifelse(data$mindfulness == "no", 5, 14), 
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"))
+abline(minter$coefficients[1], minter$coefficients[2], col = "salmon")
+abline((minter$coefficients[1]+minter$coefficients[3]), 
+       mparall$coefficients[2]+minter$coefficients[4], col = "orchid")
+```
+
+## Esercizio 3
+
+## a 
+
+Selezionare solo i dati dei soggetti che praticano yoga e che praticano mindfulness
+
+Assegnare il nuovo dataset alla variabile `d1`
+
+```{r}
+d1 = data[data$attivita == "yoga", ]
+```
+
+
+
+## b 
+
+Invetsigare la relazione tra ansia e flessibilità sul sottocampione
+
+```{r}
+plot(ansia ~ flessibilita, data = d1)
+```
+
+
+
+
+```{r}
+myoga = lm(ansia ~ flessibilita, data = d1)
+summary(myoga)
+
+```
+
+## Esercizio 4
+
+Le seguenti analisi vanno effettuate sull'intero campione
+
+## a
+
+Le persone che praticano mindfulness presentano minori livelli di ansia rispetto a quelle che non lo praticano? 
+
+```{r}
+boxplot(ansia ~ mindfulness, data = data)
+```
+
+```{r}
+#| echo: false
+cat("Dai boxplot sembra che le persone che non pratciano mindulness \n presentino livelli maggiori di ansia")
+```
+
+
+
+```{r}
+t.test(data$ansia[data$mindfulness == "sì"], 
+       data$ansia[data$mindfulness == "no"], alternative = "less", 
+       var.equal = TRUE)
+```
+
+
+```{r}
+#| echo: false
+
+cat("Si rifiuta H0, le persone che praticano mindfulness hanno livelli minori \n ansia")
+```
+
+## b
+
+Le persone che praticano mindfulness presentano livelli diversi di flessibilità rispetto a quelle che non lo praticano? 
+
+```{r}
+boxplot(flessibilita ~ mindfulness, data = data)
+```
+
+```{r}
+#| echo: false
+#| eval: true
+cat("Dai boxplot non sembrano esserci differenze tra le persone che praticano e \n non praticano mindulness sul livello di flessibilita")
+```
+
+
+```{r}
+t.test(data$flessibilita[data$mindfulness == "sì"], 
+       data$flessibilita[data$mindfulness == "no"], 
+       var.equal = TRUE)
+```
+
+
+```{r}
+#| echo: false
+
+cat("Non si rifiuta H0, non ci sono differenze significative nella flessibilità \n tra persone che praticano e non praticano mindfulness")
+```
+
+## c 
+
+Calcolare gli intervalli di confidenza al 92%  per l'ultimo test svolto 
+
+```{r}
+mytest = t.test(data$flessibilita[data$mindfulness == "sì"], 
+       data$flessibilita[data$mindfulness == "no"], var.equal = TRUE)
+alpha = .08
+q92 = qt(1-(alpha/2), mytest$parameter)
+diff_medie = mytest$estimate[1] -  mytest$estimate[2]
+se = mytest$stderr
+
+diff_medie - q92*se
+diff_medie + q92*se
+
+```
+
+

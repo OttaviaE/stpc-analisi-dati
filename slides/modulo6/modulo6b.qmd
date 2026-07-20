@@ -1,0 +1,410 @@
+---
+title: "Modulo Didattico 6: Modelli di regressione multipla"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+lang: it
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginSection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection, hideallsubsections]
+              \end{frame}
+          }
+   - \AtBeginSubsection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+             \end{frame}
+          }
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+# Modello di regressione due predittori quantitativi
+
+
+
+### 
+::: {.callout-note appearance="default"}
+## Scopo
+
+Stimare la dipendenza lineare tra la coppia di variabili indipendenti ($X_1$, $X_2$) e una variabile dipendente ($Y$)
+
+:::
+
+Siano $\mathbf{x_1} = (x_{11}, x_{12}, \dots, x_{1n})$ e $\mathbf{x_2} = (x_{21}, x_{22}, \dots, x_{2n})$ i due campioni empirici associati, rispettivamente, alla prima variabile indipendente $X_1 \in \mathbb{R}$ e alla seconda variabile indipendente $X_2 \in \mathbb{R}$. Sia $\mathbf{y_1} = (y_1, \dots, y_n)$ il campione di dati empirici associati alla variabile dipendente $Y$.
+
+:::: {.columns}
+
+::: {.column width=60%}
+$y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i}+ \varepsilon_i \quad$ $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$
+:::
+
+::: {.column width=40%}
+$$(i = 1, \ldots, n)$$
+:::
+
+::::
+
+Dove $\beta_0$ è l'intercetta, $\beta_1$ e $\beta_2$ sono i coefficienti angolari associati alle variabili indipendenti $X_1$ e $X_2$ e  $\varepsilon$ è la componente d'errore del modello di regressione lineare
+
+### 
+
+:::{.callout-note}
+## Sistema di ipotesi sull'intercetta
+
+$H_0^1 : \beta_0 = 0$: L'intercetta interseca l'origine $(0,0)$ 
+
+$H_A^1 : \beta_0 \ne 0$: L'intercetta NON interseca l'origine $(0,0)$ 
+:::
+
+::: {.callout-note}
+## Sistema di ipotesi sul primo coefficiente angolare
+
+$H_0^2 : \beta = 0$: Modello di indipendenza lineare tra $X_1$ e $Y$
+
+$H_A^2 : \beta \ne 0$: Modello di associazione lineare tra $X_1$ e $Y$
+:::
+
+::: {.callout-note}
+## Sistema di ipotesi sul secondo coefficiente angolare
+
+$H_0^3 : \beta_2 = 0$: Modello di indipendenza lineare tra $X_2$ e $Y$
+
+$H_A^3 : \beta_2 \ne 0$: Modello di associazione lineare tra $X_2$ e $Y$
+:::
+
+
+## In R 
+
+### 
+
+| **Simbolo R**                                       | **Significato**                                                                                                                                         |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lm(y ~ x1 + x2)`                              | Fitta un modello lineare dove si spiega la `y` in funzione della combinazione lineare `x1 + x2`                       |
+| `summary(lm(y ~ x1 + x2))`                              | Restituisce l'output inferenziale del modello lineare                    |
+
+## Esempi 
+
+### 
+
+\small 
+
+```{r}
+#| results: hide
+#| eval: false
+
+X1 <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+X2 <- c(0,1,15,8,2,6,5,1,2,7,15,2.1,10.3,1.3)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
+LM <- lm(Y~X1+X2)
+plot(data.frame(X1,X2,Y))
+summary(LM)
+
+```
+
+
+### {.plain}
+
+```{r}
+#| echo: false
+
+X1 <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+X2 <- c(0,1,15,8,2,6,5,1,2,7,15,2.1,10.3,1.3)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
+LM <- lm(Y~X1+X2)
+plot(data.frame(X1,X2,Y), pch = 8)
+```
+
+
+### {.plain}
+
+\footnotesize
+
+```{r}
+summary(LM)
+```
+
+
+# Stima dei parametri 
+
+### 
+
+:::{.callout-note}
+
+## Stima dei parametri
+
+$$
+\hat{\beta}_1
+=
+\frac{\hat{\sigma}_y}{\hat{\sigma}_{x_1}}
+\left(
+\frac{
+\operatorname{cor}(y, x_1)
+-
+\operatorname{cor}(y, x_2)\operatorname{cor}(x_1, x_2)
+}{
+1 - \operatorname{cor}(x_1, x_2)^2
+}
+\right)
+$$
+
+$$
+\hat{\beta}_2
+=
+\frac{\hat{\sigma}_y}{\hat{\sigma}_{x_2}}
+\left(
+\frac{
+\operatorname{cor}(y, x_2)
+-
+\operatorname{cor}(y, x_1)\operatorname{cor}(x_1, x_2)
+}{
+1 - \operatorname{cor}(x_1, x_2)^2
+}
+\right)
+$$
+
+$$
+\hat{\beta}_0
+=
+\bar{y} - \hat{\beta}_1 \bar{x}_1 - \hat{\beta}_2 \bar{x}_2
+$$
+::: 
+
+
+### 
+
+::: {.callout-tip}
+## Statistica test 
+
+$t_{\beta_j}^0 = \dfrac{\hat{\beta_j} - \beta_j}{\hat{SE(\beta_j)}} = \dfrac{\hat{\beta_j} - 0}{\hat{SE(\beta_j)}} = \dfrac{\hat{\beta}_j}{\hat{SE(\beta_j)}}$
+
+con $H_0^j$: $\beta_j = 0$, $j = 0,1,2$
+:::
+
+
+Sotto l'ipotesi nulla, $t_{\beta_j}^0$ è distribuito secondo una distribuzione $t$ di student con $gdl = n-3$
+
+# Modello di regressione misto 
+
+###
+
+::: {.callout-note appearance="default"}
+## Scopo
+
+Stimare la dipendenza lineare tra la coppia di variabili indipenti ($X_1$, $A$) con $A$ fattore categoriale a 2 livelli e una variabile dipendente ($Y$)
+
+:::
+
+
+<!-- \small -->
+<!-- :::{.callout-warning} -->
+<!-- ## Attenzione! -->
+
+<!-- I modelli di regressione lineare multipla non sono necessariamente limitati a predittori misurati su scala ad intervallo (o a rapporto), cioè a dire a predittori continui. Si possono costruire dei modelli di regressione che contengano predittori etereogenei per scala di misura. Un caso di particolare interesse è quello di regressioni multiple con predittori continui e nominali. Ci occuperemo del caso più elementare con 1 predittore quantitativo ed 1 predittore categoriale (chiamato fattore) -->
+
+<!-- ::: -->
+
+## Modello parallelo 
+
+
+###
+
+Modello di regressione con un predittore continuo $X_1$ e un predittore nominale $A$ a due livelli ($a_1$ e $a_2$)
+
+Il fattore $A$ viene tradotto in una variabile dicotomica (variabile dummy) $X_2$ con valori 0,1: 
+
+
+$$
+X_2 =
+\begin{cases}
+0, & \text{se } A = a_1 \\
+1, & \text{se } A = a_2
+\end{cases}
+$$
+
+Per cui il modello di regressione è: 
+
+$$y_i = \beta_0 + \beta X_{1i} + \beta X_{2i} + \varepsilon_i \quad i = 1, \ldots, n$$
+
+e $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. $X_i \in \mathbb{R}$ e $X_2 \in \{0,1\}$
+
+### 
+
+Il modello è esprimibile come due modelli distinti ma paralleli $\rightarrow$ non cambia la pendenza delle rette di regressione (definita dal coefficiente $\beta_1$) ma cambia il punto in cui le rette intersecano l'asse y (cambia intercetta a seconda del fattore di A)
+
+$$
+y_i =
+\begin{cases}
+\beta_0 + \beta_1 X_{1i} + \varepsilon_i, & \text{se } X_{2i} = 0 \\
+(\beta_0 + \beta_2) + \beta_1 X_{1i} + \varepsilon_i, & \text{se } X_{2i} = 1 \\
+\end{cases}
+$$
+
+* Per $X_{2i} = 0$ ($A = a_1$): $y_i = \beta_0 + \beta_1 X_{1i} + \varepsilon_i$
+* Per $X_{2i} = 1$ ($A = a_2$): $y_i = \beta_0^* + \beta_1 X_{1i} + \varepsilon_i$
+
+dove $\beta_0^* = \beta_0 + \beta_2$
+
+## In R 
+
+| **Simbolo R**                                       | **Significato**                                                                                                                                         |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lm(y ~ x1 + A)`                              | Fitta un modello lineare dove si spiega la `y` in funzione della combinazione lineare di `x1` con il fattore $A$                       |
+| `summary(lm(y ~ x1 + A))`                              | Restituisce l'output inferenziale del modello lineare                    |
+
+
+## Esempi 
+
+###
+
+```{r}
+#| results: hide
+
+X1 <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+A <- c("a1","a2","a1","a1","a2","a1","a2","a2","a2",
+"a1","a2","a2","a1","a1")
+A <- as.factor(A)
+Y <- c(9,4,8,9,4.5,10,6,3,9.8,5,4,2,11.6,8.6)
+LM <- lm(Y~X1+A)
+summary(LM)
+
+```
+
+
+### 
+
+```{r}
+#| echo: false 
+mycof = coef(LM)
+plot(Y ~ X1, pch = 19, cex = 2, col = ifelse(A == "a1", 
+                                             "darkorange",
+                                             "darkgreen"))
+legend("topleft", fill = c("darkorange", "darkgreen"), 
+       legend = levels(A), cex = 3)
+abline(mycof[1], mycof[2], col = "darkorange", lwd = 2)
+abline(mycof[1] + mycof[3], mycof[2], col = "darkgreen", lwd = 2)
+```
+
+### {.plain}
+
+\footnotesize
+
+```{r}
+summary(LM)
+```
+
+## Modello con interazione
+
+###
+
+Modello di regressione con un predittore continuo $X_1$ e un predittore nominale $A$ a due livelli ($a_1$ e $a_2$) *con interazione* $X_1 \times A$
+
+Trasformando il fattore $A$ nella variabile dummy, il modello di regressione con intereazione è esprimibile come: 
+
+
+$$y_i = \beta_0 + \beta X_{1i} + \beta X_{2i} + \beta_3 X_{1i}X_{2i} + \varepsilon_i \quad i = 1, \ldots, n$$
+
+e $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. 
+
+$X_i \in \mathbb{R}$ e $X_2 \in {0,1}$
+
+### 
+
+Il modello è esprimibile come due modelli distinti e *non necessariamente* paralleli: 
+
+$$
+y_i =
+\begin{cases}
+\beta_0 + \beta_1 X_{1i} + \varepsilon_i, & \text{se } X_{2i} = 0 \\
+(\beta_0 + \beta_2) + (\beta_1 + \beta_3) X_{1i} + \varepsilon_i, & \text{se } X_{2i} = 1 \\
+\end{cases}
+$$
+
+* Per $X_{2i} = 0$ ($A = a_1$): $y_i = \beta_0 + \beta_1 X_{1i} + \varepsilon_i$
+* Per $X_{2i} = 1$ ($A = a_2$): $y_i = \beta_0^* + \beta_1^* X_{1i} + \varepsilon_i$
+
+dove $\beta_0^* = \beta_0 + \beta_2$ e $\beta_1^* = \beta_1 + \beta_3$
+
+## In R 
+
+| **Simbolo R**                                       | **Significato**                                                                                                                                         |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lm(y ~ X1 + A + X1*A)`                              | Fitta un modello lineare dove si spiega la `y` in funzione della combinazione lineare di `x1` con il fattore $A$  e la loro interazione                     |
+| `summary(lm(y ~ x1 + A + X1 * A))`                              | Restituisce l'output inferenziale del modello lineare                    |
+
+:::{.callout-warning}
+## Attenzione!
+
+In realtà è sufficiente specificare: 
+
+`lm(y ~ X1*A)` 
+
+e R stima direttamente anche gli effetti principali legati a $X1$ e $A$
+:::
+
+## Esempi 
+
+###
+
+```{r}
+#| results: hide
+
+X1 <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+A <- c("a1","a2","a1","a1","a2","a1","a2","a2","a2",
+"a1","a2","a2","a1","a1")
+A <- as.factor(A)
+Y <- c(9,4,8,9,1,10,0,-2,-3,5,0,-4,11.6,8.6)
+LM <- lm(Y~X1+A+X1*A)
+summary(LM)
+```
+
+
+### 
+
+```{r}
+#| echo: false 
+mycof = coef(LM)
+plot(Y ~ X1, pch = 19, cex = 2, col = ifelse(A == "a1", 
+                                             "darkorange",
+                                             "darkgreen"))
+legend("topleft", fill = c("darkorange", "darkgreen"), 
+       legend = levels(A), cex = 3)
+abline(mycof[1], mycof[2], col = "darkorange", lwd = 2)
+abline((mycof[1] + mycof[3]), (mycof[2] + mycof[4]), col = "darkgreen", lwd = 2)
+```
+
+### {.plain}
+
+\footnotesize
+
+```{r}
+summary(LM)
+```
+
+
+

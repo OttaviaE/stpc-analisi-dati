@@ -1,0 +1,248 @@
+---
+title: "Laboratorio Modulo 6"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format: 
+  pdf: 
+   toc: true
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+editor_options: 
+  chunk_output_type: console
+code-annotations: below
+---
+
+
+```{r include=FALSE}
+thevalue = F
+myvar = thevalue
+echovar = thevalue
+evalvar = thevalue
+knitr::opts_chunk$set(include = myvar, 
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+
+# Introduzione
+
+```{r}
+#| echo: false
+#| eval: true
+dati = read.csv2("~/GitHub/stpc-analisi-dati/slides/modulo6/Laboratorio/DATIBASE.csv")
+```
+
+
+Il dataset `DATIBASE.CSV` è composto da `r nrow(dati)` osservazioni relative alle seguenti variabili: 
+
+* `r colnames(dati)[1]`: misura quantitativa che esprime il punteggio dell’individuo ad un test di personalità
+* `r colnames(dati)[2]`: una variabile di classificazione 0/1 che indica se l’individuo appartiene alla classe di ingresso 2016 con codice 0, oppure 2018 con codice 1
+* `r colnames(dati)[3]`: misura quantitativa che esprime il livello di compatibilità atteso dell’individuo ad una specifica mansione lavorativa
+
+
+# Esercizi
+
+Negli esercizi che seguono precedere le analisi statistico-inferenziali con opportuni metodi grafici. 
+
+## Esercizio 1 
+
+Importare il dataset ed assegnarlo alla variabile `dati`
+
+```{r}
+dati = read.csv2("~/GitHub/stpc-analisi-dati/slides/modulo6/Laboratorio/DATIBASE.csv")
+```
+
+## Esercizio 2
+
+Studiare la relazione tra la variabile dipendente `MC` e la variabile indipendente `TEST` tenendo conto eventualmente della modulazione della variabile di classificazione `ANNOcat`. Nello specifico:
+
+### 2a
+
+Produrre una adeguata rappresentazione grafica della relazione tra le variabili in gioco.
+
+
+```{r}
+plot(dati$MC ~ dati$TEST, 
+     pch = ifelse(dati$ANNOcat == 0, 17, 19), 
+     col = ifelse(dati$ANNOcat == 0, "darkred", 
+                  "darkblue")) 
+legend("topleft", pch = c(17, 19), 
+       col = c("darkred", "darkblue"), 
+       legend = c("Annocat = 0", "Annocat = 1"))
+```
+
+
+
+### 2b 
+
+Identificare i diversi modelli di regressione applicabili ai dati e specificarne la loro interpretazione.
+
+
+```{r}
+#| echo: false
+cat("
+1) Modello di regressione semplice: MC in funzione di TEST
+
+2) Modello di regressione misto in condizione di parallelismo:
+   MC in funzione di TEST e ANNOcat
+
+3) Modello di regressione misto con interazione:
+   MC in funzione di TEST, ANNOcat e interazione TEST × ANNOcat
+
+Il primo modello non distingue tra i due gruppi (0 e 1).
+Il secondo modello permette di assegnare due rette di regressione,
+una per ciascun gruppo, ma vincola un coefficiente angolare comune.
+Il terzo modello permette di assegnare due rette di regressione
+una per ciascun gruppo senza vincoli.
+")
+```
+
+
+
+### 2c 
+
+Stimare il modello di regressione parallelo: 
+
+```{r}
+mParallel = lm(MC ~ TEST + ANNOcat, data = dati)
+mParallel
+```
+
+
+* Ricostruire le equazioni di riferimento del modello. 
+
+```{r}
+paraellCoef = coef(mParallel) # estrae coefficienti
+paraellCoef
+# M0: 
+paraellCoef[1] + paraellCoef[2] #*test
+# M1
+(paraellCoef[1] + paraellCoef[3]) + paraellCoef[2] # * test
+```
+
+Rappresentare graficamente le rette di regressioni associate. 
+
+```{r}
+plot(dati$MC ~ dati$TEST, 
+     pch = ifelse(dati$ANNOcat == 0, 17, 19), 
+     col = ifelse(dati$ANNOcat == 0, "darkred", 
+                  "darkblue")) 
+legend("topleft", pch = c(17, 19), 
+       col = c("darkred", "darkblue"), 
+       legend = c("Annocat = 0", "Annocat = 1"))
+abline(paraellCoef[1],paraellCoef[2], col = "darkred", 
+       lwd = 2)
+abline((paraellCoef[1] + paraellCoef[3]),
+       paraellCoef[2], col = "darkblue", 
+       lwd = 2)
+
+```
+
+
+* Calcolare la misura di correlazione lineare tra la variabile dipendente osservata e la variabile dipendente ricostruita dal modello.
+
+
+```{r}
+cor(dati$MC, predict(mParallel))
+```
+
+### 2d	
+
+Ripetere l’analisi descritta nel punto c questa volta utilizzando il modello di regressione con componente di interazione.
+
+```{r}
+mInter = lm(MC ~ TEST*ANNOcat, data = dati)
+mInter
+```
+
+
+
+* Ricostruire le equazioni di riferimento del modello. 
+
+```{r}
+interCoef = coef(mInter) # estrae coefficienti
+interCoef
+# M0: 
+interCoef[1] + interCoef[2] #*test
+# M1
+(interCoef[1] + interCoef[3]) + (interCoef[2] + 
+                                   interCoef[4]) # * test
+```
+
+Rappresentare graficamente le rette di regressioni associate. 
+
+```{r}
+plot(dati$MC ~ dati$TEST, 
+     pch = ifelse(dati$ANNOcat == 0, 17, 19), 
+     col = ifelse(dati$ANNOcat == 0, "darkred", 
+                  "darkblue")) 
+legend("topleft", pch = c(17, 19), 
+       col = c("darkred", "darkblue"), 
+       legend = c("Annocat = 0", "Annocat = 1"))
+abline(interCoef[1],interCoef[2], col = "darkred", 
+       lwd = 2)
+abline((interCoef[1] + interCoef[3]),
+       (interCoef[2] + interCoef[4]), 
+       col = "darkblue", 
+       lwd = 2)
+
+```
+
+
+* Calcolare la misura di correlazione lineare tra la variabile dipendente osservata e la variabile dipendente ricostruita dal modello.
+
+
+```{r}
+cor(dati$MC, predict(mInter))
+```
+
+
+### 2e	
+
+Utilizzando i risultati ottenuti nel punto d verificare se la stima del coefficiente angolare associato alla condizione anno 2016 risulti significativamente differente da 0.5 (assunto una probabilità di Errore di I tipo pari a 0.05).
+
+```{r}
+# calcolo t osservato a partire dalle stime 
+summary(mInter)
+interCoef[2] # media attesa per l'anno 2016
+t_oss = (interCoef[2] -0.50)/ 0.05512
+# calcolo p-value per alpha .05
+2*pt(t_oss, 95)
+```
+
+```{r}
+#| echo: false
+cat("Si può rigettare H0")
+```
+
+
+### 2f 
+	
+Stimare gli intervalli di confidenza al 95% per i parametri stimati nel punto d.
+
+```{r}
+# calcolo valore critico 
+quant975 = qt(.975, 95)
+se = summary(mInter)$coefficients[,2]
+
+deltab0 = se[1] * quant975
+deltab1 = se[2] * quant975
+deltab2 = se[3] * quant975
+deltab3 = se[4] * quant975
+
+ic = data.frame(lim_inf = interCoef-c(deltab0, deltab1, deltab2, deltab3), 
+                lim_sup = interCoef+c(deltab0, deltab1, deltab2, deltab3))
+
+ic
+```
+
+
+```{r}
+#| echo: false
+
+cat("Solo l'intercetta e l'effetto di TEST sono significativi (lo 0 non è incluso")
+```
+
+
+

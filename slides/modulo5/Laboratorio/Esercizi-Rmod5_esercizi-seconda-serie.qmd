@@ -1,0 +1,136 @@
+---
+title: "Modulo 5 - Seconda serie"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format: 
+  pdf: 
+   toc: true
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+---
+
+
+```{r include=FALSE}
+myvar = F
+echovar = F
+evalvar = F
+knitr::opts_chunk$set(include = myvar, 
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+# Introduzione
+
+In questa serie di esercizi si dovrà rianalizzare i dati presentati nel Laboratorio del Modulo didattico 3 (LABM3: Abilità spazio-simboliche in età infantile: 3-4 anni) questa volta sostituendo l'analisi statistica descrittiva con la corrispondente analisi inferenziale. I dati sono i dati chiamati `DataAS.csv`
+
+# Esercizi 
+Ripetere le analisi degli esercizi da 1 a 3 descritti nel LABM3 utilizzando le opportune tecniche inferenziali.
+
+## Es 1
+
+
+Studiare se vi sia una qualche associazione tra le due fasce di età ed il fatto che la persona (il bambino o la bambina) ottenga un numero di risposte corrette superiori o uguali alla soglia minima 10 per quanto riguarda gli stimoli nello scenario macchinine. 
+
+```{r}
+dati <- read.csv2("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/modulo3/laboratorio/DataAS.csv")
+
+head(dati)
+
+ECat <- dati$E
+ECat[(dati$E >= 36) & (dati$E <= 43)] <- 1
+ECat[(dati$E >= 44) & (dati$E <= 51)] <- 2
+SM10 <- rep(0,60)
+SM10[(dati$a1b1+dati$a1b2)>=10] <- 1
+myT <- table(ECat,SM10)
+rownames(myT) <- c("[36-43]","[44-51]")
+colnames(myT) <- c("P<10","P>=10")
+myT  # I bambini più grandi hanno una maggiore probabilità di
+   # superare la soglia minima 10
+
+chisq.test(myT)
+
+```
+
+
+## Es 2
+
+Ripetere l’analisi questa volta utilizzando come riferimento gli stimoli associati allo scenario casa delle bambole (si consideri sempre la stessa soglia minima pari a 10).
+
+
+```{r}
+SB10 <- rep(0,60)
+SB10[(dati$a2b1+dati$a2b2)>=10] <- 1
+myT1 <- table(ECat,SB10)
+rownames(myT1) <- c("[36-43]","[44-51]")
+colnames(myT1) <- c("P<10","P>=10")
+myT1  # non sembra esserci una grande differenza tra le due età
+
+chisq.test(myT1)
+
+
+```
+
+
+## Es 3
+
+Ripetere le analisi precedenti questa volta considerando la variabile genere sessuale al posto della variabile fasce di età.
+
+```{r}
+GEN <- dati$S
+myT2 <- table(GEN,SM10)
+myT3 <- table(GEN,SB10)
+rownames(myT2) <- c("F","M")
+colnames(myT2) <- c("P<10","P>=10")
+rownames(myT3) <- c("F","M")
+colnames(myT3) <- c("P<10","P>=10")
+myT2
+chisq.test(myT2)
+myT3
+chisq.test(myT3)
+
+```
+
+
+## ES 4 
+
+Verificare se vi sia una differenza statisticamente significativa tra il numero di risposte corrette ottenute dai partecipanti nello scenario macchinine ed il numero di risposte corrette ottenute dai partecipanti nello scenario casa delle bambole (con $\alpha = 0.05$).
+
+```{r}
+RCa1 <- dati$a1b1 + dati$a1b2
+RCa2 <- dati$a2b1 + dati$a2b2
+
+t.test(RCa1,RCa2,paired=T)
+boxplot(RCa1, RCa2, names = c("Macchinine", "Bambole"))
+```
+
+
+## Es 5 
+
+Verificare se il numero di risposte corrette ottenute dai partecipanti nello scenario senza repliche sia significativamente superiore al numero di risposte corrette ottenute dai partecipanti nello scenario con repliche (nota: con $\alpha = 0.20$).
+
+```{r}
+RCb1 <- dati$a1b1 + dati$a2b1
+RCb2 <- dati$a1b2 + dati$a2b2
+
+t.test(RCb1,RCb2,paired=T,alternative="greater")
+boxplot(RCb1, RCb2, names = c("Senza repliche", "Con repliche"))
+```
+
+
+## Es 6 
+
+
+Verificare se la proporzione di bambine che superano la soglia minima 10 nello scenario macchinine sia significativamente inferiore alla proporzione di bambini che superano la soglia minima 10 nello stesso scenario (con $\alpha = 0.05$).
+
+
+```{r}
+nFa1 <- sum(RCa1[dati$S=="f"] > 10)
+nMa1 <- sum(RCa1[dati$S=="m"] > 10)
+
+nFa1
+nMa1
+
+prop.test(c(nFa1,nMa1),c(30,30),alternative="less")
+```
+

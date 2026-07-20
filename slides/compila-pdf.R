@@ -1,12 +1,11 @@
 # funzione per rederizzare i file ---- 
 library(rmarkdown)   # per yaml_front_matter()
 
-name_file = "LaboratorioRmod4_esercizi.qmd"
-mydir = "/slides/modulo4/Laboratorio/"
+name_file = "Esercizi-Rmod6_esercizi-seconda-serie.qmd"
+mydir = "/slides/modulo6/Laboratorio/"
+thedir = paste0("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati", mydir)
 
-setwd(paste0(getwd(), mydir))
-
-myfile = name_file
+myfile = paste0(thedir, name_file)
 
 # leggi il YAML dal file
 meta <- rmarkdown::yaml_front_matter(myfile)

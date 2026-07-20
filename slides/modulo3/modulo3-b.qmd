@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili"
+title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili - Seconda Parte"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -43,175 +43,6 @@ editor_options:
 execute: 
   echo: true
 ---
-
-# Tabelle di frequenza (contingenza)
-
-## `table()`
-
-###
-
-`table(var1, var2)`: Produce la tabella di frequenza tra due variabili categoriali `var1` e `var2`
-
-\small 
-
-```{r}
-var1 <- as.factor(c("a1","a2","a1","a2","a1","a2","a1"))  
-var2 <- as.factor(c("b1","b1","b1","b2","b1","b2","b2")) 
-table(var1, var2)
-```
-
-
-## `margin.table()`
-
-###
-
-`margin.table(table, margin)`: Frequenze marginali per la tabella a doppia entrata
-
-> `margin = 1`: Frequenze marginali calcolate **attraverso le colonne**
-> `margin = 2`: Frequenze marginali calcolate **attraverso le righe**
-
-```{r}
-mytab <- table(var1,var2)
-margin.table(mytab,2)  
-```
-
-
-
-## `prop.table()`
-
-### 
-
-`prop.table(T, margin = NULL)`: Probabilità condizionate: 
-
-* riga (`margin = 1`, attraverso le colonne) o colonna (`margin = 2`, attraverso le righe). 
-* `margin = NULL` frequenze relative 
-
-::::{.columns}
-:::{.column width=50%}
-\small
-
-```{r}
-prop.table(mytab)    
-prop.table(mytab,1)  # P(B|A)
-```
-:::
-
-:::{.column width=50%}
-```{r}
-prop.table(mytab,2)  # P(A|B)
-```
-:::
-::::
-
-
-# Associazione (Variabili qualitative)
-
-## $\chi^2$
-
-###
-
-\small
-Quantifica il grado di associazione tra due variabili nominali: 
-
-* A con $I$ categorie,
-* B con $J$ categorie
-Richiede il confronto tra **frequenze osservate** ($n_{ij}$) e **frequenze attese** o **frequenze teoriche** ($n_{ij}^*$)
-
-:::: {.columns}
-:::{.column width=40%}
-\centering
-\begin{tabular}{|p{2.5cm}|p{1cm}|}
-\hline
-& \\
-\multicolumn{1}{|c|}{${n_{ij}}$} & \multicolumn{1}{c|}{$n_{i.}$}\\
-& \\
-\hline
-\multicolumn{1}{|c|}{$n_{.j}$} & \\
-\hline
-\end{tabular}
-	
-	
-\vspace{3mm}
-Frequenze osservate
-:::
-
-:::{.column width=10%}
-VS.
-:::
-
-:::{.column width=40%}
-\centering
-\begin{tabular}{|p{2.5cm}|p{1cm}|}
-\hline
-& \\
-\multicolumn{1}{|c|}{$n_{ij}^*$} & \multicolumn{1}{c|}{$n_{i.}$}\\
-& \\
-\hline
-\multicolumn{1}{|c|}{$n_{.j}$} & \\
-\hline
-\end{tabular}
-
-\vspace{3mm}
-Frequenze teoriche
-:::
-::::
-
-
-$$n_{ij}^* = \dfrac{n_{i.} \times n{.j}}{N}$$
-$N = \sum_{i=1}^I \sum_{j=1}^J n_{ij}$
-
-### 
-
-Le frequenze teoriche $n_{ij}^*$ sono calcolate assumendo l'indipendenza tra le variabili. 
-
-:::{.callout-tip}
-
-## $n_{ij}^*$: Significato 
-
-Data l'ampiezza campionaria $N$, quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
-
-
-:::
-
-
-
-$$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(n_{ij} - n_{ij}^*)^2}{n_{ij}^*}$$
-
-
-###
-
-
-
-$\chi^2 = 0$: $n_{ij} = n_{ij}^*$ Indipendenza stocastica
-
-$\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 = N \times \min[(I-1); (J-1)]$)
-
-\pause
-
-$$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
-
-$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
-
-
-
-## `chisq.test()`
-
-###
-
-
-`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza `table`
-
-```{r}
-#| warning: false
-chisq.test(mytab)$statistic
-```
-
-Per calcolare il $\tilde{\chi}^2$:
-
-```{r}
-#| warning: false
-chisq.test(mytab)$statistic/sum(mytab)
-```
 
 
 # Associazione (variabili quantitative)
@@ -375,13 +206,13 @@ cov(X,Z)
 
 ### 
 
-$-sd(x)s(y) \leq\cov(X,Y)\leq + sd(x)s(y)$
+$-sd(x)sd(y) \leq\cov(X,Y)\leq + sd(x)sd(y)$
 
 \pause
 
-$$r  = \dfrac{\cov(X,Y)}{sd(x)s(y)}$$
+$$r  = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
 
-$1 \leq r \leq 1$
+$-1 \leq r \leq 1$
 
 ## `cor()`
 
@@ -439,15 +270,32 @@ mylist = list(
 
 # Grafici
 par(mfrow=c(1,3))
-plot(pos, xlab="X1", ylab="Y1", main=paste("cov = ",  round(mylist$cov_pos, 2), ", r = ", round(mylist$cor_pos, 2)), pch = 19, cex = 2, cex.main = 2)
-plot(neg, xlab="X2", ylab="Y2", main=paste("cov = ",  round(mylist$cov_neg, 2), ", r = ", round(mylist$cor_neg, 2)), pch = 19, cex = 2, cex.main = 2)
-plot(null, xlab="X3", ylab="Y3", main=paste("cov = ",  round(mylist$cov_null, 2), ", r = ", round(mylist$cor_null, 2)), pch = 19, cex = 2, cex.main = 2)
+plot(pos, xlab="X1", ylab="Y1", main=paste("cov = ",  round(mylist$cov_pos, 2), ", r = ", round(mylist$cor_pos, 2)), pch = 19, cex = 2, cex.main = 2, xlim=c(-0.20,20))
+plot(neg, xlab="X2", ylab="Y2", main=paste("cov = ",  round(mylist$cov_neg, 2), ", r = ", round(mylist$cor_neg, 2)), pch = 19, cex = 2, cex.main = 2, xlim=c(-0.20,20))
+plot(null, xlab="X3", ylab="Y3", main=paste("cov = ",  round(mylist$cov_null, 2), ", r = ", round(mylist$cor_null, 2)), pch = 19, cex = 2, cex.main = 2, xlim=c(-0.20,20))
+```
+
+
+### 
+
+```{r}
+#| echo: false
+knitr::include_graphics("cor2.jpg")
 ```
 
 
 # Previsione variabili quantitative
 
 ## Regressione lineare
+
+### Quanto varia $y$ in funzione di $x$?
+
+La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$: **modello simmetrico** per determinare *l'intensità della relazione*
+
+Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione
+
+La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale)
+
 
 ### 
 
@@ -481,22 +329,38 @@ dati
 ::::
 
 
+$$r = `r round(cor(X, Y), 2)`$$
+
+
+###
+
+```{r}
+#| echo: false
+set.seed(999)
+mymodel = lm(Y ~ X)
+plot(X, Y, pch = 19, cex = 2)
+abline(mymodel, col = "firebrick", lwd = 2)
+```
 
 ### 
 
 ```{r}
-#| echo:  false
-#| fig-align: center
-plot(dati$X, dati$Y, pch=19, cex =2)
-mod <- lm(Y ~ X, data = dati)
+#| echo: false
+plot(X, Y, pch = 19, cex = 2)
 
-# Scatterplot con retta
-abline(mod, col = "blue", lwd = 2)
-
-# Aggiunta delle linee degli scarti
-pred <- fitted(mod)
-segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
+y1 = rnorm(20, sd = 2)
+x1 = rnorm(20, sd = 2)
+abline(mymodel, col = "firebrick", lwd = 2)
+for (i in 1:length(x1)) {
+  abline(mymodel$coefficients[1] + y1[i],
+         mymodel$coefficients[2], col = i, lty = 2)
+}
 ```
+
+
+\footnotesize 
+
+Caso estremamente semplice dove varia solo l'intercetta 
 
 
 ### 
@@ -539,6 +403,23 @@ mentre per $\beta_0$ è
 
 $$\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$$
 
+### 
+
+```{r}
+#| echo:  false
+#| fig-align: center
+plot(dati$X, dati$Y, pch=19, cex =2)
+mod <- lm(Y ~ X, data = dati)
+
+# Scatterplot con retta
+abline(mod, col = "blue", lwd = 2)
+
+# Aggiunta delle linee degli scarti
+pred <- fitted(mod)
+segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
+```
+
+
 ## Indice di adattamento $R^2$
 
 ### 
@@ -550,6 +431,18 @@ $\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della com
 $0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto, $R^2 = r^2$
 
 ## Relazione $R^2$ e $r$
+
+###
+
+```{r}
+#| echo: false
+
+r = seq(-1,1, length.out= 1000)
+plot(r, r^2, pch = 19, xlab = "r", ylab = expression(r^2), 
+     cex.lab =4, cex.axis=2)
+```
+
+
 
 ### 
 
@@ -668,7 +561,7 @@ plot(X, Y, pch = 19, col = "black",
 abline(fit)
 
 # Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+segments(X, Y, X, Y_hat, lty = 1.2)
 ```
 
 $R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
@@ -733,5 +626,103 @@ Y <- c(9,6,8,9,7,10,8,4,11,5,4)
 lm(Y~X)
 ```
 
+## I residui 
+
+### 
+
+**Indipendenza dei predittori dall'errore**
+
+\vspace{1.5mm}
+ 
+> I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
+
+\begin{center}
+\emph{Analisi dei residui}
+\end{center}
+
+I residui e il predittore **non devono essere correlati tra di loro**
 
 
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+set.seed(123)
+n <- 100
+beta0 <- 1
+beta1 <- 2
+rho <- 1.0
+sigma_u <- 1
+x = rnorm(n)
+e = rnorm(length(x), sd= 3)
+y <- beta0 + beta1 * x + e
+
+fit <- lm(y ~ x)
+plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+     cex.axis = 2, cex.lab = 2)
+abline(0,0, lwd = 2, col ="firebrick")
+
+```
+
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+set.seed(123)
+n <- 100
+beta0 <- 1
+beta1 <- 2
+rho <- 1.0
+sigma_u <- 1
+x = rnorm(n)
+e = rnorm(length(x), sd= 3)
+y <- beta0 + beta1 * x + e
+
+fit <- lm(y ~ x)
+plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+     cex.axis = 2, cex.lab = 2)
+abline(0,0, lwd = 2, col ="firebrick")
+abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
+```
+
+$$r = `r round(cor(e, x),2)`$$
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+ecorr = x+rnorm(length(x), sd= 1)
+ycorr <- beta0 + beta1 * x + ecorr
+
+fitcorr <- lm(ycorr ~ x)
+plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
+abline(0,0, lwd = 2, col ="firebrick")
+```
+
+
+### 
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+ecorr = x+rnorm(length(x), sd= 1)
+ycorr <- beta0 + beta1 * x + ecorr
+
+fitcorr <- lm(ycorr ~ x)
+plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
+abline(0,0, lwd = 2, col ="firebrick")
+abline(lm(ecorr ~x), col ="royalblue4", lwd = 2, lty = 2)
+```
+
+$$r = `r round(cor(ecorr, x),2)`$$

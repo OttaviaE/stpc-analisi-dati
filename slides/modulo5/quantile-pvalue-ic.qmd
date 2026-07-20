@@ -1,0 +1,236 @@
+---
+title: "Calcolo p value, t critico e IC"
+author: "Ottavia Epifania"
+format: 
+   pdf: 
+    toc: true
+lang: it
+editor_options: 
+  chunk_output_type: console
+code-annotations: below
+---
+
+\newpage
+
+# Introduzione
+
+In questo file vengono illustrati i principi per calcolare i $p$ value a partire dalla statistica test $t_o$, i valori di t critico $t_c$ dato un valore di $\alpha$ per diversi tipi di ipotesi (bidirezionale, monodirezionale sx, monodirezionale destra) e infine il calcolo degli intervalli di confidenza. 
+
+Intanto, viene generato un vettore $x$ si osservazioni estrando a caso 11 valori da una distribuzione normale con media 12 e deviazione standard 7.5. Si vuole sapere se il campione appartiene a una popolazione dove con $\mu_0 = 12$. Vengono applicati sia test bidirezionali che monodirezionali.
+
+```{r}
+set.seed(999) 
+x = rnorm(11, mean = 12, sd = 7.5)
+mu0 = 10
+t.test(x, mu = mu0) # test a due code
+t.test(x, mu = mu0,
+       alternative = "greater") # test a una coda destra
+t.test(x, mu = mu0,
+       alternative = "less") # test a una coda sinistra
+```
+# Calcolo p-value 
+
+
+Come prima cosa, salviamo i risultati di uno dei test per avere la statistica test sempre disponibile
+
+:::{.callout-warning}
+## ATTENZIONE!
+
+La statistica $t_o$ è sempre la stessa, indipendentemente dall'ipotesi, fintanto che $N$ (e quindi $gdl$) e $\mu_0$ sono invariati
+:::
+
+```{r}
+mytest = t.test(x, mu = mu0) # test a due code
+mytest$statistic
+
+
+```
+
+## Ipotesi bidirezionale 
+
+
+```{r}
+#| echo: false
+
+val = seq(-3,3, length.out = 100)
+d = dt(val, df = 10)
+
+plot(val, d, type = "l", lwd = 2)
+polygon(c(val[val <= mytest$statistic], mytest$statistic), 
+        c(d[val <= mytest$statistic], 0), col ="darkgreen")
+polygon(c(abs(mytest$statistic), val[val >= abs(mytest$statistic)]), 
+        c(0, d[val >= abs(mytest$statistic)]), col ="darkorange")
+```
+
+L'area sottesa alla curva evidenziata in verde è: 
+
+$$\int_{-\infty}^{-t_0} f_T(t \mid \theta) \, dt$$
+e si ottiene con il codice: 
+
+```{r}
+pt(mytest$statistic, 10)
+```
+
+L'area sottesa alla curva evidenziata in arancione è: 
+
+$$\int_{+t_0}^{+\infty} f_T(t \mid \theta) \, dt$$
+
+e si ottiene con il codice: 
+
+```{r}
+1-pt(abs(mytest$statistic), 10) # il valore assoluto è necessario perché la
+                               # statistica test è negativa
+```
+
+Ma sono uguali per la simmetria della distribuzione di probabilità di riferimento. 
+Per il calcolo del p-value del test quindi si può applicare il codice: 
+
+```{r}
+2*(1-pt(abs(mytest$statistic), 10))
+```
+
+che è uguale al valore del $p$ value ottenuto mediante l'applicazione del test: 
+
+```{r}
+mytest$p.value
+```
+
+## Ipotesi monodirezionale sinistra 
+
+
+```{r}
+#| echo: false
+
+val = seq(-3,3, length.out = 100)
+d = dt(val, df = 10)
+
+plot(val, d, type = "l", lwd = 2)
+polygon(c(val[val <= mytest$statistic], mytest$statistic), 
+        c(d[val <= mytest$statistic], 0), col ="darkgreen")
+```
+
+L'area sottesa alla curva evidenziata in verde è: 
+
+$$\int_{-\infty}^{-t_0} f_T(t \mid \theta) \, dt$$
+
+che si ottiene con il codice: 
+
+
+```{r}
+pt(mytest$statistic, 10)
+```
+
+che infatti è coerente con il valore del p-value ottenuto per il test a una coda sinistra: 
+
+```{r}
+testmonosx = t.test(x, mu = mu0,
+       alternative = "less") 
+testmonosx$p.value
+```
+
+## Ipotesi monodirezionale destra 
+
+
+```{r}
+#| echo: false
+
+plot(val, d, type = "l", lwd = 2)
+polygon(c((mytest$statistic), val[val >= (mytest$statistic)]), 
+        c(0, d[val >= (mytest$statistic)]), col ="darkorange")
+```
+
+L'area sottesa alla curva evidenziata in arancione è: 
+
+$$\int_{t_0}^{+\infty} f_T(t \mid \theta) \, dt$$
+
+e si ottiene con il codice: 
+
+```{r}
+1-pt(mytest$statistic, 10) # il valore assoluto è necessario perché la
+                               # statistica test è negativa
+```
+
+che infatti è coerente con il valore del p-value ottenuto per il test a una coda destra: 
+
+```{r}
+testmonodx = t.test(x, mu = mu0,
+       alternative = "greater") 
+testmonodx$p.value
+```
+
+# Calcolo del t critico $t_c$
+
+Il valore del critico viene definito a seconda di: 
+
+- $\alpha$
+- Ipotesi alternativa
+- Gradi di libertà della distribuzione $t$ di Student
+
+Per il loro calcolo, va usata la funzione `qt(p, df)`, dove $p$ è il valore di probabilità definito da $\alpha$ in base al tipo di ipotesi alternativa (mono vs. bidirezionale) e $df$ sono i gradi di libertà legati alla distribuzione. 
+
+## Ipotesi bidirezionale
+
+Per $\alpha = .05$ e ipotesi bidirezionale, con la distribuzione di riferimento con $gdl = 10$, $t_c$ si ottiene con: 
+
+```{r}
+qt(.025, df = 10) # <1> 
+qt(.975, df = 10) # <2>
+```
+
+1. Restituisce il valore del quantile che è preceduto dallo .025 di probabilità
+2. Restituisce il valore del quantile che è preceduto dallo .975 di probabilità
+
+
+## Ipotesi monodirezionale sx
+
+Per $\alpha = .05$ e ipotesi monodirezionale sx, con la distribuzione di riferimento con $gdl = 10$, $t_c$ si ottiene con: 
+
+```{r}
+qt(.025, df = 10) 
+```
+
+
+## Ipotesi monodirezionale dx
+
+Per $\alpha = .05$ e ipotesi monodirezionale dx, con la distribuzione di riferimento con $gdl = 10$, $t_c$ si ottiene con: 
+
+```{r}
+qt(.975, df = 10) 
+```
+
+## In generale
+
+Cambiando i valori di probabilità $p$ si esplicita il valore di $\alpha$ di riferimento: 
+
+```{r}
+qt(.90, 10) # <1>
+qt(.10, 10) # <2>
+```
+
+1. $\alpha = .10$ e ipotesi monodirezionale destra
+1. $\alpha = .10$ e ipotesi monodirezionale sinistra
+
+# Intervallo di confidenza 
+
+L'intervallo di confidenza viene calcolato come: 
+
+$$IC_p = \bar{x}\pm t_c * \sigma_{\bar{x}}$$
+Dove $p$ è la probabilità determinata come $1 -\alpha$, $t_p$ è il valore di $t$ critico per $\alpha$ (con hp bidirezionale) e $\sigma_{\bar{x}}$ è l'errore standard ottenuto come: 
+
+$$\sigma_{\bar{x}} = \dfrac{\bar{x} - \mu_0}{\sqrt{var(x)/N}}$$
+Ad esempio, per calcolare l'intervallo di confidenza al 90% (quindi $\alpha = .10$) sui dati campionari di prima: 
+
+```{r}
+mx = mean(x) # <1>
+se = sqrt(var(x)/length(x)) # <2>
+tc = qt((1-.10/2), df = 10) # <3>
+mx - tc*se  # <5>
+mx + tc*se # <6>
+```
+
+1. Media di $x$
+2. Standard error
+3. Quantile inferiore di $t$
+4. Quantile superiore di $t$
+5. Limite inferiore dell'intervallo 
+5. Limite superiore dell'intervallo 

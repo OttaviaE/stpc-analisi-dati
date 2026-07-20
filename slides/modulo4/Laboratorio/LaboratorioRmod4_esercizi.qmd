@@ -1,19 +1,22 @@
 ---
 title: "Laboratorio Modulo 4"
-subtitle: "Soluzioni"
+subtitle: "Esercizi"
 author: "Ottavia Epifania"
-format: pdf
+format: 
+  pdf: 
+   toc: true
 header-includes:
   - \usepackage{hyperref}
   - \usepackage{eforms}
 editor_options: 
   chunk_output_type: console
+lang: it 
 ---
 
 
 ```{r include=FALSE}
-myvar = TRUE
-knitr::opts_chunk$set(include = myvar)
+myvar = F
+knitr::opts_chunk$set(include = myvar, tidy = TRUE, width= 80)
 ```
 
 
@@ -24,9 +27,9 @@ In questo laboratorio sara richiesto di applicare le apposite funzioni di R per 
 
 ## Esercizio 1
 
-Sia $X$ una variabile casuale continua distribuita secondo una funzione di densita normale $ N(x|\mu_X, \sigma_X)$ dove $\mu_X =100$ e $\mu_X =35$. 
+Sia $X$ una variabile casuale continua distribuita secondo una funzione di densita normale $N(x|\mu_X, \sigma_X)$ dove $\mu_X =100$ e $\mu_X =35$. 
 Si considerino i seguenti quattro eventi associati ad X: $E_1 = \{ x \in \mathbb{R} : x \leq 75\}$, $E_2 = \{ x \in \mathbb{R} : 50 \leq x \leq 70\}$, 
-$E_3 = \{ x \in \mathbb{R} : x \geq 110\}$, $E_4 = \{ x \in \mathbb{R} : x \geq 125\}$. Sicalcolino le probabilita dei seguenti eventi combinati: 
+$E_3 = \{ x \in \mathbb{R} : x \geq 110\}$, $E_4 = \{ x \in \mathbb{R} : x \geq 125\}$. Si calcolino le probabilita dei seguenti eventi combinati: 
 
 1. $P[E_1 \cup E_3]$
 2. $P[E_1 \cup E_4]$ 
@@ -40,10 +43,10 @@ $E_3 = \{ x \in \mathbb{R} : x \geq 110\}$, $E_4 = \{ x \in \mathbb{R} : x \geq 
 #| layout-nrow: 2
 #| fig-cap: "Illustrazione degli eventi relativi all'esercizio 1"
 #| fig-subcap: 
-#|  - "E1"
-#|  - "E2"
-#|  - "E3"
-#|  - "E4"
+#|       - "E1"
+#|       - "E2"
+#|       - "E3"
+#|       - "E4"
 values=seq(0,200) 
 mx=100;sx=35 
 dx= dnorm(values,mx,sx) 
@@ -61,6 +64,8 @@ polygon(c(values[values >= 125], 125), c(dx[values>= 125], 0), col = rgb(.2, .2,
 ```
 
 ```{r}
+#| tidy: true
+#| width: 80
 pe1=pnorm(75,mx,sx)
 pe2 = pnorm(70, mx, sx)- pnorm(50, mx, sx)
 pe3 = 1- pnorm(110, mx, sx)
@@ -68,25 +73,34 @@ pe4 = 1- pnorm(125, mx, sx)
 
 # unione e1 ed e3
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
-polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), col = rgb(.2, .2,.2, alpha = .4))
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), 
+        col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), 
+        col = rgb(.2, .2,.2, alpha = .4))
 pe1 + pe3
 
 # 1.2: unione e1 e4 
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
-polygon(c(values[values >= 125], 125), c(dx[values>= 125], 0), col = rgb(.2, .2,.2, alpha = .4))
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), 
+        col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(values[values >= 125], 125), c(dx[values>= 125], 0), 
+        col = rgb(.2, .2,.2, alpha = .4))
 pe1 + pe4
 
 # 1.3: intersezione e1, e2 
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
-polygon(c(50, values[values >= 50 & values <= 70], 70), c(0, dx[values >= 50 & values <= 70], 0), col = rgb(.2, .6,.1, alpha = .4))
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), 
+        col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(50, values[values >= 50 & values <= 70], 70), 
+        c(0, dx[values >= 50 & values <= 70], 0), 
+        col = rgb(.2, .6,.1, alpha = .4))
 
 # 1.4 intersezione e1 e3 
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), col = rgb(.2, .2,.2, alpha = .4)) 
-polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), col = rgb(.2, .2,.2, alpha = .4))
+polygon(c(values[values <= 75], 75), c(dx[values<= 75], 0), 
+        col = rgb(.2, .2,.2, alpha = .4)) 
+polygon(c(values[values >= 110], 110), c(dx[values>= 110], 0), 
+        col = rgb(.2, .2,.2, alpha = .4))
 ```
 
 ## Esercizio 2
@@ -112,18 +126,22 @@ dx = dnorm(values)
 plot(values, dx, type = "l") 
 # e1: <= 0.5 
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
+polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), 
+        col = rgb(.2, .2, .2, alpha =.5))
 # e2. x >=-0.5 
 plot(values, dx, type = "l") 
-polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
+polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), 
+        col = rgb(.2, .2, .2, alpha =.5))
 ```
 
 
 ```{r}
 # esrecizio 2.1: unione e1 ed e2 
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5)) 
-polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), col = rgb(.1, .1, .1, alpha =.5))
+polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), 
+        col = rgb(.2, .2, .2, alpha =.5)) 
+polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), 
+        col = rgb(.1, .1, .1, alpha =.5))
 pe1 = pnorm(0.5) 
 pe2 = 1- pnorm(-0.5) 
 pe1 + pe2
@@ -131,14 +149,18 @@ pe1intere2 = pnorm(0.5)- pnorm(-0.5)
 pe1 + pe2- pe1intere2
 
 plot(values, dx, type = "l") 
-polygon(c(-0.5, values[values >=-0.5 & values <= 0.5], 0.5), c(0, dx[values >=-0.5 & values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
+polygon(c(-0.5, values[values >=-0.5 & values <= 0.5], 0.5), 
+        c(0, dx[values >=-0.5 & values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5))
 pnorm(0.5)- pnorm(-0.5)
 
 # esrecizio 2.3 differenza simmetrica e1 ed e2 
 plot(values, dx, type = "l") 
-polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), col = rgb(.2, .2, .2, alpha =.5)) 
-polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0), col = rgb(.1, .1, .1, alpha =.5)) 
-polygon(c(-0.5, values[values >=-0.5 & values <= 0.5], 0.5), c(0, dx[values >=-0.5 & values <= 0.5], 0), col = "white")
+polygon(c(values[values <= 0.5], 0.5), c(dx[values <= 0.5], 0), 
+        col = rgb(.2, .2, .2, alpha =.5)) 
+polygon(c(values[values >=-0.5],-0.5), c(dx[values >=-0.5], 0),
+        col = rgb(.1, .1, .1, alpha =.5)) 
+polygon(c(-0.5, values[values >=-0.5 & values <= 0.5], 0.5), 
+        c(0, dx[values >=-0.5 & values <= 0.5], 0), col = "white")
 
 pnorm(-0.5) + (1-pnorm(0.5))
 ```
@@ -169,41 +191,52 @@ lines(values, dy, type = "l", col = "red")
 
 # e 1 sulla x
 plot(values, dx, type = "l") 
-polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values>=5 & values <= 9], 0), col = rgb(.2,.2,.2, alpha = .4)) 
-polygon(c(values[values <= 9], 9), c(dx[values <= 9], 0), col = rgb(.2,.2,.2, alpha = .4))
+polygon(c(5, values[values>=5 & values <= 9], 9),
+        c(0, dx[values>=5 & values <= 9], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(values[values <= 9], 9), c(dx[values <= 9], 0), 
+        col = rgb(.2,.2,.2, alpha = .4))
 e1 = pnorm(9, mx, sx)- pnorm(5, mx, sx)
 
 # e2 6.5 leq x leq 13 
 plot(values, dx, type = "l") 
-polygon(c(6.5, values[values>=6.5 & values <= 13], 13), c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(6.5, values[values>=6.5 & values <= 13], 13), 
+        c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
 e2 = pnorm(13, mx, sx)- pnorm(6.5, mx, sx)
 
 # evento y 
 # g 4 \leq x leq 8.5 
 plot(values, dy, type = "l") 
-polygon(c(4, values[values>=4 & values <= 8.5], 8.5), c(0, dy[values>=4 & values <= 8.5], 0), col = rgb(.2,.2,.2, alpha = .4))
+polygon(c(4, values[values>=4 & values <= 8.5], 8.5),
+        c(0, dy[values>=4 & values <= 8.5], 0), col = rgb(.2,.2,.2, alpha = .4))
 g1 = pnorm(8.5, my, sy)- pnorm(4, my, sy)
 
 # 3.1:unione e1 e g1 
 plot(values, dx, type = "l") 
 lines(values, dy, type = "l", col = "red") 
-polygon(c(4, values[values>=4 & values <= 8.5], 8.5), c(0, dy[values>=4 & values <= 8.5], 0), col = rgb(.2,.2,.2, alpha = .4)) 
-polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values>=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
+polygon(c(4, values[values>=4 & values <= 8.5], 8.5), 
+        c(0, dy[values>=4 & values <= 8.5], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(5, values[values>=5 & values <= 9], 9), 
+        c(0, dx[values>=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
 
 e1 + g1- (e1*g1)
 
 # 3.2 intesrezione e2 g1 
 plot(values, dx, type = "l") 
 lines(values, dy, type = "l", col = "red") 
-polygon(c(6.5, values[values>=6.5 & values <= 13], 13), c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
-polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values>=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
+polygon(c(6.5, values[values>=6.5 & values <= 13], 13), 
+        c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(5, values[values>=5 & values <= 9], 9), 
+        c(0, dx[values>=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
 e2*g1
 
 # differenza simmetrica evento e1 ed e2 riferiti alla variabile x 
 plot(values, dx, type = "l")
-polygon(c(6.5, values[values>=6.5 & values <= 13], 13), c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
-polygon(c(5, values[values>=5 & values <= 9], 9), c(0, dx[values >=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
-polygon(c(6.5, values[values>=6.5 & values <= 9], 9), c(0, dx[values>=6.5 & values <= 9], 0), col = "white")
+polygon(c(6.5, values[values>=6.5 & values <= 13], 13), 
+        c(0, dx[values>=6.5 & values <= 13], 0), col = rgb(.2,.2,.2, alpha = .4)) 
+polygon(c(5, values[values>=5 & values <= 9], 9), 
+        c(0, dx[values >=5 & values <= 9], 0), col = rgb(.9,.1,.1, alpha = .4))
+polygon(c(6.5, values[values>=6.5 & values <= 9], 9), 
+        c(0, dx[values>=6.5 & values <= 9], 0), col = "white")
 rosa = pnorm(6.5, mx, sx)- pnorm(5, mx, sx) 
 grigio = pnorm(13, mx, sx)- pnorm(9, mx, sx)
 rosa + grigio
@@ -258,7 +291,8 @@ polygon(c(values[values >= 1.5], 1.5), c(chid[values >= 1.5], 0), col = "pink")
 
 # 5.2 1.1 \leq x \leq 2.5 
 plot(values, chid, type = "l") 
-polygon(c(1.1, values[values >= 1.1 & values <= 2.5], 2.5), c(0, chid[values >= 1.1 & values <= 2.5], 0), col = "pink")
+polygon(c(1.1, values[values >= 1.1 & values <= 2.5], 2.5), 
+        c(0, chid[values >= 1.1 & values <= 2.5], 0), col = "pink")
 pchisq(2.5, 4)- pchisq(1.1, 4)
 # esercizio 5.3 
 1- pchisq(qchisq(0.95, 4), 4)

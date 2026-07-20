@@ -1,47 +1,66 @@
 ---
-title: "Esercizi Modulo 4 - Prima serie"
+title: "Esercizi Modulo 4"
+subtitle: "Esercizi"
 author: "Ottavia Epifania"
-format: pdf
+format: 
+   pdf: 
+    toc: true
 header-includes:
   - \usepackage{hyperref}
   - \usepackage{eforms}
+lang: it
 ---
 
 # Variabili casuali
 
 Gli esercizi che di seguito vengono presentati sono relativi all'algebra del calcolo di probabilità di eventi associati a variabili casuali caratterizzate da precise leggi di probabilità come, ad esempio, la distribuzione binomiale o la distribuzione normale. Si utilizzino le opportune funzioni di R per risolvere gli esercizi.
 
-1. Si consideri una variabile casuale $Y$ distribuita binomialmente dove la distribuzione binomiale modella un esperimento casuale dicotomico costituito da $N=9$ distinti esiti dicotomici $X \in \{0, 1\}$ con probabilità $Pr[X=1]=0.3$. Si rammenta che in questo contesto, la variabile casuale $Y$ è definita come la somma dei nove esiti associati alle variabili dicotomiche $X1$, $X2$, $\ldots$, $X9$. Si calcolino le probabilità dei seguenti eventi:
+# Esercizi
+
+
+## 1
+
+Si consideri una variabile casuale $Y$ distribuita binomialmente dove la distribuzione binomiale modella un esperimento casuale dicotomico costituito da $N=9$ distinti esiti dicotomici $X \in \{0, 1\}$ con probabilità $Pr[X=1]=0.3$. Si rammenta che in questo contesto, la variabile casuale $Y$ è definita come la somma dei nove esiti associati alle variabili dicotomiche $X1$, $X2$, $\ldots$, $X9$. Si calcolino le probabilità dei seguenti eventi:
 
 a. $Pr[Y = 5]$
 b. $Pr[Y \leq 5]$
 c. $Pr[Y > 5]$
-d. $Pr[Y \leq 2 \, oppure \, Y \geq 7]$
+d. $Pr[Y \leq 2 \; \text{oppure} \; Y \geq 7]$
 e. $Pr[0 \leq Y \leq 2]$
 f. $Pr[0\leq Y \leq 2] + Pr[4 \leq Y \leq 6] + Pr[7 < Y < 9]$
 
-2. Considerando sempre la stessa variabile descritta nell'esercizio 1, si producano le seguenti rappresentazioni grafiche:
+## 2
+
+Considerando sempre la stessa variabile descritta nell'esercizio 1, si producano le seguenti rappresentazioni grafiche:
 
 * Distribuzione di probabilità di Y
 * Distribuzione di probabilità cumulata di Y
 * Si modifichi il valore associato alla probabilità dell'evento target $(X=1)$ che passa da 0.3 a 0.8. Rappresentare graficamente la nuova distribuzione di probabilità di Y e la nuova distribuzione di probabilità cumulata di Y.
 
-3. Facendo riferimento sempre all'esercizio 1, si calcolino i seguenti quantili:
+## 3
+
+Facendo riferimento sempre all'esercizio 1, si calcolino i seguenti quantili:
 
 * quantile associato al valore di probabilità 0.5
 * quantile associato al valore di probabilità 0.025
 * quantile associato al valore di probabilità 0.0975
 
-4. Si consideri una variabile casuale $Z$ distribuita secondo una distribuzione normale standardizzata. Si calcolino le probabilità dei seguenti eventi:
+## 4
+
+Si consideri una variabile casuale $Z$ distribuita secondo una distribuzione normale standardizzata. Si calcolino le probabilità dei seguenti eventi:
 
 * $Pr[Z > 0]$
-* $Pr[Z \leq -1.96  oppure Z \leq 1.96]$
+* $Pr[Z \leq -1.96  \; \text{oppure} \; Z \leq 1.96]$
 * $Pr[0 \leq Z \leq 1.5]$
 
 Dati due intervalli su Z: primo intervallo $[-1,0.5]$ e secondo intervallo $[0,1.5]$, calcolare la probabilità dell'intersezione dei due intervalli.
 
 Ripetere il precedente esercizio, questa volta calcolando la probabilità dell'unione dei due intervalli.
 
-5. Fare la somma tra il quantile associato alla probabilità 0.5 di una variabile casuale $T$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.5 di una variabile casuale $S$ distribuita normalmente con media 20 e deviazione standard 10.
+## 5
 
-6. Fare la somma tra il quantile associato alla probabilità 0.2 di una variabile casuale $T2$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.8 di una variabile casuale S2 distribuita normalmente con media 20 e deviazione standard 10.
+Fare la somma tra il quantile associato alla probabilità 0.5 di una variabile casuale $T$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.5 di una variabile casuale $S$ distribuita normalmente con media 20 e deviazione standard 10.
+
+## 6
+
+Fare la somma tra il quantile associato alla probabilità 0.2 di una variabile casuale $T2$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.8 di una variabile casuale S2 distribuita normalmente con media 20 e deviazione standard 10.

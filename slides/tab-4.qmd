@@ -4,6 +4,7 @@ subtitle: "Distribuzioni di Probabilità in R"
 format: 
   pdf: 
    toc: true
+lang: it
 ---
 
 \newpage
@@ -13,13 +14,13 @@ format:
 Le funzioni per le distribuzioni di probabilità in R si distinguono in base all'obiettivo con cui vengono usate. La loro forma è tendenzialmente `obiettivo + distribuzione`. Ad esempio, la funzione `rnorm()` genera valori casuali (random, da cui la `r`) da una distribuzione normale (`norm`). Gli obiettivi e le lettere ad essi associati sono i seguenti: 
 
 * `d`: funzione di densità 
-* `p`: distribuzione della probabilità cumulate
+* `p`: distribuzione della probabilità cumulata
 * `q`: quantili della distribuzione
 * `r`: valori casuali (random) estratti dalla distribuzione di riferimento
 
 Le caratteristiche delle diverse distribuzioni (`norm`, `binom`, `t`, `chisq`, `f`), come ad esempio la media, la deviazione standard, gradi di libertà eccetera, possono essere definite tramite gli argomenti interni delle funzioni. 
 
-# Distribuzione Binomiale
+# Distribuzione Binomiale `binom`
 
 | Funzione | Descrizione |
 |----------|-------------|
@@ -30,7 +31,7 @@ Le caratteristiche delle diverse distribuzioni (`norm`, `binom`, `t`, `chisq`, `
 
 ---
 
-# Distribuzione Normale
+# Distribuzione Normale `norm`
 
 | Funzione | Descrizione |
 |----------|-------------|
@@ -41,7 +42,7 @@ Le caratteristiche delle diverse distribuzioni (`norm`, `binom`, `t`, `chisq`, `
 
 ---
 
-# Distribuzione Chi-Quadrato
+# Distribuzione Chi-Quadrato `chisq`
 
 | Funzione | Descrizione |
 |----------|-------------|
@@ -52,7 +53,7 @@ Le caratteristiche delle diverse distribuzioni (`norm`, `binom`, `t`, `chisq`, `
 
 ---
 
-# Distribuzione t di Student
+# Distribuzione t di Student `t`
 
 | Funzione | Descrizione |
 |----------|-------------|
@@ -63,7 +64,7 @@ Le caratteristiche delle diverse distribuzioni (`norm`, `binom`, `t`, `chisq`, `
 
 ---
 
-# Distribuzione F
+# Distribuzione F `f`
 
 | Funzione | Descrizione |
 |----------|-------------|

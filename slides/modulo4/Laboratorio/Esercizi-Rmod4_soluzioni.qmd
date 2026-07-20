@@ -2,10 +2,13 @@
 title: "Esercizi Modulo 4 - Prima serie"
 subtitle: "Soluzioni"
 author: "Ottavia Epifania"
-format: pdf
+format: 
+   pdf: 
+    toc: true
 header-includes:
   - \usepackage{hyperref}
   - \usepackage{eforms}
+lang: it
 editor_options: 
   chunk_output_type: console
 ---
@@ -14,7 +17,11 @@ editor_options:
 
 Gli esercizi che di seguito vengono presentati sono relativi all'algebra del calcolo di probabilità di eventi associati a variabili casuali caratterizzate da precise leggi di probabilità come, ad esempio, la distribuzione binomiale o la distribuzione normale. Si utilizzino le opportune funzioni di R per risolvere gli esercizi.
 
-1. Si consideri una variabile casuale $Y$ distribuita binomialmente dove la distribuzione binomiale modella un esperimento casuale dicotomico costituito da $N=9$ distinti esiti dicotomici $X \in \{0, 1\}$ con probabilità $Pr[X=1]=0.3$. Si rammenta che in questo contesto, la variabile casuale $Y$ è definita come la somma dei nove esiti associati alle variabili dicotomiche $X1$, $X2$, $\ldots$, $X9$. Si calcolino le probabilità dei seguenti eventi:
+# Esercizi
+
+## 1 
+
+Si consideri una variabile casuale $Y$ distribuita binomialmente dove la distribuzione binomiale modella un esperimento casuale dicotomico costituito da $N=9$ distinti esiti dicotomici $X \in \{0, 1\}$ con probabilità $Pr[X=1]=0.3$. Si rammenta che in questo contesto, la variabile casuale $Y$ è definita come la somma dei nove esiti associati alle variabili dicotomiche $X1$, $X2$, $\ldots$, $X9$. Si calcolino le probabilità dei seguenti eventi:
 
 a. $Pr[Y = 5]$
 b. $Pr[Y \leq 5]$
@@ -45,7 +52,9 @@ pbinom(2,size=9,prob=0.3) + (pbinom(6,size=9,prob=0.3) - pbinom(4,size=9,prob=0.
 ```
 
 
-2. Considerando sempre la stessa variabile descritta nell'esercizio 1, si producano le seguenti rappresentazioni grafiche:
+## 2
+
+Considerando sempre la stessa variabile descritta nell'esercizio 1, si producano le seguenti rappresentazioni grafiche:
 
 * Distribuzione di probabilità di Y
 ```{r}
@@ -80,7 +89,9 @@ points(supporto,cum_y8, pch = 8, col = "red")
 ```
 
 
-3. Facendo riferimento sempre all'esercizio 1, si calcolino i seguenti quantili:
+## 3. 
+
+Facendo riferimento sempre all'esercizio 1, si calcolino i seguenti quantili:
 
 * quantile associato al valore di probabilità 0.5
 
@@ -101,7 +112,9 @@ qbinom(0.0975,size=9,prob=0.3)
 ```
 
 
-4. Si consideri una variabile casuale $Z$ distribuita secondo una distribuzione normale standardizzata. Si calcolino le probabilità dei seguenti eventi:
+## 4
+
+Si consideri una variabile casuale $Z$ distribuita secondo una distribuzione normale standardizzata. Si calcolino le probabilità dei seguenti eventi:
 
 ```{r}
 supporto_norm = seq(-4, 4, length.out = 1000) 
@@ -187,14 +200,19 @@ pnorm(1.5,mean=0,sd=1) - pnorm(-1,mean=0,sd=1)
 ```
 
 
-5. Fare la somma tra il quantile associato alla probabilità 0.5 di una variabile casuale $T$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.5 di una variabile casuale $S$ distribuita normalmente con media 20 e deviazione standard 10.
+## 5. 
+
+Fare la somma tra il quantile associato alla probabilità 0.5 di una variabile casuale $T$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.5 di una variabile casuale $S$ distribuita normalmente con media 20 e deviazione standard 10.
 
 ```{r}
 qnorm(0.5,mean=10,sd=5) + qnorm(0.5,mean=20,sd=10)
 ```
 
 
-6. Fare la somma tra il quantile associato alla probabilità 0.2 di una variabile casuale $T2$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.8 di una variabile casuale S2 distribuita normalmente con media 20 e deviazione standard 10.
+## 6. 
+
+
+Fare la somma tra il quantile associato alla probabilità 0.2 di una variabile casuale $T2$ distribuita normalmente con media 10 e deviazione standard 5, ed il quantile associato alla probabilità 0.8 di una variabile casuale S2 distribuita normalmente con media 20 e deviazione standard 10.
 
 ```{r}
 qnorm(0.2,mean=10,sd=5) + qnorm(0.8,mean=20,sd=10)

@@ -1,0 +1,69 @@
+---
+title: "Analisi dei dati con applicazioni informatiche"
+subtitle: "Regressione Lineare"
+format: 
+  pdf: 
+   toc: true
+lang: it
+code-annotations: below
+---
+
+\newpage
+
+```{r}
+#| echo: false
+X <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+Y <- c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
+LM <- lm(Y~X)
+```
+
+
+# Regressione
+
+In generale, i gradi di libertà ($gdl$) sono dati dall'ampiezza campionaria $n$ a cui va sottratto il numero di parametri $k$ inclusi nel modello ($gdl = n-k$). Ad esempio, in un modello di regressione semplcice con un predittore, si hanno $k = 2$ parametri ($\beta_0$ e $\beta$)
+
+La funzione `coef()` estrae i coefficienti di un modello di regressione e li salva in un vettore di lunghezza pari al numero di parametri del modello. Ad esempio, in un modello lineare semplice $y_i = \beta_0 + \beta_1X_1 + \varepsilon_i$ si avranno due parametri, $\beta_0$ e $\beta_1$. 
+
+```{r}
+LM <- lm(Y~X)
+coef(LM) # <1> 
+```
+
+1. Il primo valore estratto dalla funzione `coef()` è sempre relativo all'intercetta. I restanti valori sono relativi ai coefficienti associati agli altri predittori. L'ordine seguito è: (i) effetti principali, (ii) effetti di interezione.
+
+## Lineare semplice
+
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+|  `lm(y ~ x)`  | Variabile y spiegata in funzione di x, $gdl = n -2$ | $y = \beta_0 + \beta_1 X_{1i} + \varepsilon_i$ |
+| `summary(LM)` | Output inferenziale del modello lineare fittato con `lm()` i cui risultati sono salvati nell'oggetto `LM` | `LM = lm(y ~ x)` |
+| `plot(x, y)` | scatterplot di (x, y)| |
+| `abline(LM)` | Aggiunge la retta di regressione stimata con `lm()` al grafico| |
+
+
+## Due predittori quantitativi
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+|  `lm(y ~ x1 + x2)`  | Variabile y spiegata in funzione della combinazione lineare di due predittori quantitativi `x1` e `x2`, $gdl = n -3$ | $y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i}  + \varepsilon_i$ |
+
+
+## Modello misto (parallelo)
+
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+|  `lm(y ~ x1 + A)`  | Variabile y spiegata in funzione della combinazione lineare del predittore quantitativo `x1` e di quello fattoriale $A$, $gdl = n -3$ | $y_i = \beta_0 + \beta_1 X_{1i}  + \varepsilon_i$ se $X_2 = 0$ |
+|| $y_i = (\beta_0 + \beta_2) + \beta_1 X_{1i}  + \varepsilon_i$ se $X_2 =1$|
+
+## Modello misto (interazione)
+
+
+| **Test / Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+|  `lm(y ~ x1 + A + x1*A)`  | Variabile y spiegata in funzione della combinazione lineare del predittore quantitativo `x1`, di quello fattoriale $A$ e della loro interazione, $gdl = n -4$ | $y_i = \beta_0 + \beta_1 X_{1i}  + \varepsilon_i$ se $X_2 = 0$ |
+|| $y_i = \beta_0 + \beta_2) + (\beta_1 + \beta_3) X_{1i} + \varepsilon_i$ se $X_2 =1$|
+
+
+

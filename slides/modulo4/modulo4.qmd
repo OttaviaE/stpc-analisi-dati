@@ -24,20 +24,17 @@ header-includes:
    - \newcommand{\cov}{\mathrm{Cov}}
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
    - \AtBeginSubsection{}
-   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ Univeristà di Trento \\\texttt{ottavia.epifania@unitn.it}}}
    - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
    - \AtBeginSection[]
           {
              \begin{frame}[plain]
              \tableofcontents[currentsection, hideallsubsections]
               \end{frame}
-          }
-   - \AtBeginSubsection[]
           {
              \begin{frame}[plain]
              \tableofcontents[currentsection,currentsubsection,hideothersubsections]
              \end{frame}
-          }
 editor_options: 
   chunk_output_type: console
 execute: 
@@ -85,20 +82,19 @@ n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1 & \text{se } n > 0.
 #|   - "$\\theta = .30$"
 #|   - "$\\theta = .50$"
 #|   - "$\\theta = .85$"
-
+library(ggplot2)
 x = 0:6
-plot(x, dbinom(x,6, prob =.3), pch = 19,  
+plot(x, dbinom(x,6, prob =.3), pch = 19,
      cex.main = 3, cex.axis = 2, ylab = "f(x)")
 segments(x,0, x, dbinom(x,6, prob =.3), lwd = 2)
 
-plot(x, dbinom(x,6, prob =.5), pch = 19, 
+plot(x, dbinom(x,6, prob =.5), pch = 19,
      cex.main = 3, cex.axis = 2, ylab = "f(x)")
 segments(x,0, x, dbinom(x,6, prob =.5), lwd = 2)
 
-plot(x, dbinom(x,6, prob =.85), pch = 19, 
+plot(x, dbinom(x,6, prob =.85), pch = 19,
      cex.main = 3, cex.axis = 2, ylab = "f(x)")
 segments(x,0, x, dbinom(x,6, prob =.85), lwd = 2)
-
 ```
 
 
@@ -284,6 +280,186 @@ $$q_X(p|\theta) = F_X^{-1}(p|\theta)
 \quad \text{sse} \quad 
 F_X(x|\theta) = q_X^{-1}(x|\theta).$$
 
+## Normale 
+
+### 
+
+:::: {.columns}
+
+:::{.column width=50%}
+Distribuzione Normale
+
+$$f(x) = {\displaystyle {\dfrac {1}{\sigma {\sqrt {2\pi }}}}e^{-{\dfrac {1}{2}}\left({\dfrac {x-\mu }{\sigma }}\right)^{2}}}$$
+
+$\theta = (\mu, \sigma^2)$, $\Theta = (\mathbb{R} \times \mathbb{R}^+)$
+:::
+
+:::{.column width=50%}
+Distribuzione Normale Standard
+
+
+$$f(z) = \dfrac{1}{\sqrt{2\pi}} e^{-\dfrac{1}{2}z^2}$$
+
+$\theta = z$, $\Theta = (\mathbb{R})$
+:::
+
+
+::::
+
+### 
+
+\small
+
+**VALORI**: 
+
+
+> vanno da $-\infty$ a $+ \infty$ (in ascissa si trovano tutti i valori di $x$; in ordinata le frequenze $f(x)$ di ciascun valore)
+	
+	
+**SIMMETRICA** 
+
+
+> rispetto alla $Y$ massima ($f(x)=$ punto più alto $\Rightarrow x = \mu$)
+		(solo un valore centrale ha la frequenza massima; i valori più bassi e più alti compaiono rispettivamente con frequenza crescente e decrescente)
+	
+**UNIMODALE**
+
+$\mu = Mo=Me$
+
+	
+**ASINTOTICA**: 
+
+>	si avvicina all’asse delle $X$ senza mai toccarlo.
+>	La curva mostra due **PUNTI DI FLESSO**: da concava diventa convessa nella metà sinistra e da convessa diventa concava nella metà destra (in corrispondenza di valori di x uguali alla media meno o più una ds)
+
+
+### 
+
+L’area sottesa alla curva normale rappresenta la PROBABILITA’ degli intervalli
+	
+$$\int_{-\infty}^{+\infty} f(x) dX =1$$
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 50%
+library(ggplot2)
+x=seq(-4,4, length.out=1000)
+dx = dnorm(x)
+myd = data.frame(x, dx)
+
+ggplot(myd, 
+       aes(x = x, y = dx)) + 
+  geom_line(linewidth = 1.5) +  geom_area(fill = "grey80", alpha = 0.8) +
+  theme_bw() + xlab("X") + ylab("Densità") + 
+    scale_x_continuous(
+    breaks = c(min(myd$x), max(myd$x)),
+    labels = c(expression(-infinity), expression(+infinity))
+  ) + 
+  theme(axis.title = element_text(size = 20), 
+        axis.text = element_text(size = 18))
+```
+
+### {.plain}
+
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| layout-nrow: 2
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "100%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(x, rev(x)), c(dx, rep(0, length(dx))), 
+        col = "grey80", border = NA)
+
+# Ridisegno della curva sopra l'area
+lines(x, dx, lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "68.26%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(-1, x[x >= -1 & x <= 1],1),
+        c(0, dx[x >= -1 & x <= 1], 0),col= rgb(.2,.2,.2,alpha=.4))
+segments(-1, 0, -1, dnorm(-1), lwd = 2)
+segments(1, 0, 1, dnorm(1), lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "95.45%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(-2, x[x >= -2 & x <= 2],2),
+        c(0, dx[x >= -2 & x <= 2], 0),col= rgb(.2,.2,.2,alpha=.4))
+segments(-2, 0, -2, dnorm(-2), lwd = 2)
+segments(2, 0, 2, dnorm(2), lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "99.73%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(-3, x[x >= -3 & x <= 3],2),
+        c(0, dx[x >= -3 & x <= 3], 0),col= rgb(.2,.2,.2,alpha=.4))
+segments(-3, 0, -3, dnorm(-3), lwd = 2)
+segments(3, 0, 3, dnorm(3), lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+```
+
 
 ###
 
@@ -298,16 +474,19 @@ F_X(x|\theta) = q_X^{-1}(x|\theta).$$
 set.seed(999)
 x = seq(-4, 4, length.out = 1000)
 plot(x, dnorm(x), type = "l", lwd = 2, 
-     cex.axis = 2, ylab = "f(x)", xlab = "x")
+     cex.axis = 2, ylab = "f(x)", xlab = "x", cex.lab = 3, 
+     cex.axis = 2.5)
 
 plot(x, pnorm(x), type = "l", lwd = 2, 
-     cex.axis = 2, ylab = "F(x)", xlab = "x")
+     cex.axis = 2, ylab = "F(x)", xlab = "x", cex.lab = 3, 
+     cex.axis = 2.5)
 
 plot(pnorm(x), qnorm(pnorm(x)), type = "l", lwd = 2,  xlab = "F(x)", ylab = "qX",
-     cex.axis = 2)
+     cex.lab = 3, 
+     cex.axis = 2.5)
 ```
 
-## Normale 
+
 
 ### 
 
@@ -336,8 +515,6 @@ limInfX <- qnorm(0.001,Media,Ds)
 limSupX <- qnorm(0.999,Media,Ds)
 X <- c(3,8,12,19,14)
 disegnaNorm(limInfX,limSupX,Media,Ds,X)
-
-
 ```
 :::
 
@@ -470,7 +647,7 @@ legend("topleft",
        legend = c(paste("M = ", mymean)), cex = 2)
 
 plot(x, pnorm(x, 0, 1), type = "l", lwd = 2,
-     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(sigma, " = 0")), cex.main = 4)
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(sigma, " = 1")), cex.main = 4)
 for (i in 1:length(mymean)) {
   lines(x, pnorm(x, mymean[i], 1), 
         col = mycol[i], lwd = 2)
@@ -484,14 +661,44 @@ legend("topleft",
 
 ## $t$ di Student
 
+
 ### 
 
-| Funzione | Descrizione |
-|----------|-------------|
-| `dt(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione t con gradi di libertà (`df`). |
-| `pt(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
-| `qt(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
-| `rt(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione t di Student con `df`. |
+Definita da un unico parametro $\theta = df$, $\Theta = (\mathbb{R}^+)$ (dove $df = N-1$)
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+plot(x, dnorm(x), lty = 4, col = "red", type = "l",xaxt = "n", lwd = 2, ylab = "f(x)", xlab = "x", 
+     cex.lab = 2)
+lines(x, dt(x, df = 5), lwd =2, col ="royalblue")
+legend("topleft", col = c("red", "royalblue"), lty = c(2,1), 
+       legend = c("t di Student (df = 5)", "Normale standard"), 
+       cex = 1.2, bty = "n")
+axis(1, at = c(min(x),0, max(x)), 
+     labels = c(expression(-infinity),0, expression(+infinity)), cex.axis = 3)
+```
+
+
+
+### 
+
+		
+$$\int_{-\infty}^{+\infty} f(t_v) dt = 1$$
+		
+		
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+plot(x,dt(x, df = 5), col ="royalblue", type = "l", lwd = 2, ylab = "f(x)", xlab = "x", cex.lab = 2, main = "df = 5", cex.main = 2)
+polygon(x, dt(x, df=5), col = rgb(0.5,0.5, 0.5, alpha = .30))
+```
+
+
 
 
 ### 
@@ -525,16 +732,20 @@ legend("topleft",
        legend = c(paste("df = ", mydf)), cex = 2)
 ```
 
-## Distribuzione $\chi^2$
+
 
 ### 
 
 | Funzione | Descrizione |
 |----------|-------------|
-| `dchisq(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione Chi-quadrato con gradi di libertà (`df`). |
-| `pchisq(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
-| `qchisq(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
-| `rchisq(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione chi-quadrato con `df`. |
+| `dt(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione t con gradi di libertà (`df`). |
+| `pt(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
+| `qt(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rt(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione t di Student con `df`. |
+
+
+## Distribuzione $\chi^2$
+
 
 
 ###
@@ -570,6 +781,17 @@ legend("bottomright",
        fill = c( mycol[-length(mycol)]), 
        legend = c(paste("df = ", mydf)), cex = 2)
 ```
+
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dchisq(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione Chi-quadrato con gradi di libertà (`df`). |
+| `pchisq(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
+| `qchisq(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rchisq(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione chi-quadrato con `df`. |
+
 
 ## Altre distribuzioni continue 
 

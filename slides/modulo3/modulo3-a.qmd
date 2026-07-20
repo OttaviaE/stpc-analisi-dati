@@ -1,0 +1,513 @@
+---
+title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili - Prima Parte"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+lang: it
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginSection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection, hideallsubsections]
+              \end{frame}
+          }
+   - \AtBeginSubsection[]
+          {
+             \begin{frame}[plain]
+             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+             \end{frame}
+          }
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+# Tabelle di frequenza (contingenza)
+
+## `table()`
+
+###
+
+`table(var1, var2)`: Produce la tabella di frequenza tra due variabili categoriali `var1` e `var2`
+
+\small 
+
+```{r}
+var1 <- as.factor(c("a1","a2","a1","a2","a1","a2","a1"))  
+var2 <- as.factor(c("b1","b1","b1","b2","b1","b2","b2")) 
+table(var1, var2)
+```
+
+
+## `margin.table()`
+
+###
+
+`margin.table(table, margin)`: Frequenze marginali per la tabella a doppia entrata
+
+> `margin = 1`: Frequenze marginali calcolate **attraverso le colonne**
+> `margin = 2`: Frequenze marginali calcolate **attraverso le righe**
+
+```{r}
+mytab <- table(var1,var2)
+margin.table(mytab,2)  
+```
+
+
+
+## `prop.table()`
+
+### 
+
+`prop.table(T, margin = NULL)`: Probabilità condizionate: 
+
+* riga (`margin = 1`, attraverso le colonne) o colonna (`margin = 2`, attraverso le righe). 
+* `margin = NULL` frequenze relative 
+
+::::{.columns}
+:::{.column width=50%}
+\small
+
+```{r}
+prop.table(mytab)    
+prop.table(mytab,1)  # P(B|A)
+```
+:::
+
+:::{.column width=50%}
+```{r}
+prop.table(mytab,2)  # P(A|B)
+```
+:::
+::::
+
+
+# Associazione (Variabili qualitative)
+
+## $\chi^2$
+
+###
+
+\small
+Quantifica il grado di associazione tra due variabili nominali: 
+
+* A con $I$ categorie,
+* B con $J$ categorie
+Richiede il confronto tra **frequenze osservate** ($n_{ij}$) e **frequenze attese** o **frequenze teoriche** ($n_{ij}^*$)
+
+:::: {.columns}
+:::{.column width=40%}
+\centering
+\begin{tabular}{|p{2.5cm}|p{1cm}|}
+\hline
+& \\
+\multicolumn{1}{|c|}{${n_{ij}}$} & \multicolumn{1}{c|}{$n_{i.}$}\\
+& \\
+\hline
+\multicolumn{1}{|c|}{$n_{.j}$} & \\
+\hline
+\end{tabular}
+	
+	
+\vspace{3mm}
+Frequenze osservate
+:::
+
+:::{.column width=10%}
+VS.
+:::
+
+:::{.column width=40%}
+\centering
+\begin{tabular}{|p{2.5cm}|p{1cm}|}
+\hline
+& \\
+\multicolumn{1}{|c|}{$n_{ij}^*$} & \multicolumn{1}{c|}{$n_{i.}$}\\
+& \\
+\hline
+\multicolumn{1}{|c|}{$n_{.j}$} & \\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+Frequenze teoriche
+:::
+::::
+
+
+$$n_{ij}^* = \dfrac{n_{i.} \times n{.j}}{N}$$
+$N = \sum_{i=1}^I \sum_{j=1}^J n_{ij}$
+
+### 
+
+Le frequenze teoriche $n_{ij}^*$ sono calcolate assumendo l'indipendenza tra le variabili. 
+
+:::{.callout-tip}
+
+## $n_{ij}^*$: Significato 
+
+Data l'ampiezza campionaria $N$, quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
+
+
+:::
+
+
+
+$$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(n_{ij} - n_{ij}^*)^2}{n_{ij}^*}$$
+
+
+###
+
+
+
+$\chi^2 = 0$: $n_{ij} = n_{ij}^*$ Indipendenza stocastica
+
+$\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 = N \times \min[(I-1); (J-1)]$)
+
+\pause
+
+$$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
+
+$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
+
+
+
+## `chisq.test()`
+
+###
+
+
+`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza `table`
+
+```{r}
+#| warning: false
+chisq.test(mytab)$statistic
+```
+
+Per calcolare il $\tilde{\chi}^2$:
+
+```{r}
+#| warning: false
+chisq.test(mytab)$statistic/sum(mytab)
+```
+
+# Riflessioni 
+
+## Frequenze percentuali
+
+### 
+
+::::{.columns}
+
+:::{.column width="50%"}
+\footnotesize
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+donne = read.csv2("laboratorio/datiDonne.csv")
+donne$Istruzione = factor(donne$Istruzione, levels = c("Basso", "Medio", "Alto"))
+tabella = addmargins(table(donne$Occupazione, donne$Istruzione))
+rownames(tabella)[nrow(tabella)] <- "Totale"
+colnames(tabella)[ncol(tabella)] <- "Totale"
+knitr::kable(
+  tabella,
+  booktabs = TRUE,
+  align = "c"
+)
+
+```
+
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+tab = table(donne$Occupazione, donne$Istruzione)
+mosaicplot(
+  tab,
+  color = c("skyblue", "lightcoral", "seagreen4"),
+  cex = 3
+)
+```
+
+:::
+
+:::: 
+
+
+
+
+## $P(\text{Titolo}|\text{Occupazione})$ (Frequenze percentuali di **riga**)
+
+### 
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+percRiga = (round(prop.table(table(donne$Occupazione, donne$Istruzione), 1), 2))*100
+percRiga = addmargins(percRiga)
+percRiga = percRiga[-nrow(percRiga), ]
+knitr::kable(
+  percRiga,
+  booktabs = TRUE,
+  align = "c"
+)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+
+tab = table(donne$Istruzione, donne$Occupazione)
+barplot(
+  tab,
+  beside = TRUE,          # barre affiancate (non impilate)
+  col = c("yellow2", "seagreen2", "darkgreen"),
+  legend = TRUE,
+  ylim = c(0, max(tab) + 10),
+  main = "Frequenze assolute per Occupazione e Livello di Istruzione",
+  ylab = "Frequenza assoluta", cex.names = 3,args.legend = list(cex = 2.5, x = "topright", bty = "n")
+)
+```
+
+:::
+
+::::
+
+*X% delle donne lavoratici/casalinghe hanno un titolo di studio basso/medio/alto*
+
+## $P(\text{Occupazione}|\text{Titolo})$ (Frequenze percentuali di **colonna**)
+
+### 
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+percColonna = (round(prop.table(table(donne$Occupazione, donne$Istruzione), 2), 2))*100
+percColonna = addmargins(percColonna)
+percColonna = percColonna[,-ncol(percColonna) ]
+knitr::kable(
+  percColonna,
+  booktabs = TRUE,
+  align = "c"
+)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+
+tab = table(donne$Occupazione, donne$Istruzione)
+barplot(
+  tab,
+  beside = TRUE,          # barre affiancate (non impilate)
+  col = c("yellow2",  "darkgreen"),
+  legend = TRUE,
+  ylim = c(0, max(tab) + 10),
+  main = "Frequenze assolute per Occupazione e Livello di Istruzione",cex.names = 3,
+  ylab = "Frequenza assoluta",args.legend = list(cex = 2.5, x = "topright", bty = "n")
+)
+```
+
+:::
+
+::::
+
+*X% delle donne con titolo di studio basso/medio/alto che sono lavoratici/casalinghe*
+
+##
+
+### 
+
+```{r}
+#| echo: false
+preferenze_tab <- matrix(
+  c(18, 24, 30, 12,   # mare
+    12, 16, 20, 8,    # monti
+    6, 8, 10, 4),     # città d’arte
+  nrow = 3,
+  byrow = TRUE
+)
+
+# Assegna nomi di righe e colonne
+rownames(preferenze_tab) <- c("mare", "monti", "città d'arte")
+colnames(preferenze_tab) <- c("adolescenti", "giovani", "adulti", "anziani")
+knitr::kable(preferenze_tab)
+
+```
+
+```{r}
+#| echo: false
+#| out-width: 50%
+#| fig-align: center
+barplot(preferenze_tab, beside = T,
+        legend.text = T, col = c("seagreen2", "darkgreen", "royalblue"),
+        args.legend = list(cex = 2.5, x = "topright", bty = "n"), cex.names = 2,
+        ylim=c(0, 40), main ="Frequenze assolute",cex.main =4)
+```
+
+
+###
+
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+# barplot(preferenze_tab, beside = T, 
+#         legend.text = T, col = c("seagreen2", "darkgreen", "royalblue"), 
+#         args.legend = list(cex = 2.5, x = "topright", bty = "n"), cex.names = 2, 
+#         ylim=c(0, 40), main ="Frequenze assolute",cex.main =4)
+
+barplot(round(prop.table(preferenze_tab, 2),2)*100, beside = T, 
+        legend.text = T, col = c("seagreen2", "darkgreen", "royalblue"), 
+        args.legend = list(cex = 2.5, x = "topright", bty = "n"), cex.names = 2, 
+        ylim=c(0,100), main ="Percentuali di colonna",cex.main =4)
+
+barplot(round(prop.table(t(preferenze_tab), 1),2)*100, beside = T, 
+        legend.text = T, col = c("seagreen2", "darkgreen", "royalblue"), 
+        args.legend = list(cex = 2.5, x = "topright", bty = "n"), cex.names = 2, 
+        ylim=c(0,100), main = "Percentuali di riga",cex.main =4)
+
+
+```
+
+
+## Osservato vs. Teorico
+
+###
+
+```{r}
+#| echo: false
+knitr::kable(preferenze_tab, caption = "Frequenze osservate")
+
+friga = apply(preferenze_tab,1,sum)
+fcolonna = apply(preferenze_tab,2,sum)
+
+prefT = matrix(nrow = nrow(
+  preferenze_tab), ncol = ncol(preferenze_tab))
+colnames(prefT) = colnames(preferenze_tab)
+rownames(prefT) = rownames(preferenze_tab)
+
+for (i in 1:nrow(prefT)) {
+  for (j in 1:ncol(prefT)) {
+    prefT[i,j] = (friga[i]*fcolonna[j])/sum(preferenze_tab)
+  }
+}
+
+knitr::kable(prefT, caption = "Frequenze Teoriche")
+```
+
+## Massima dipendenza 
+
+###
+
+```{r}
+#| echo: false
+preferenze_dep <- matrix(
+  c(84, 0, 0,    # mare → solo adolescenti
+    0, 64, 0,    # monti → solo giovani
+    0, 0, 20),  # città d’arte → solo adulti
+  nrow = 3,
+  byrow = TRUE
+)
+
+rownames(preferenze_dep) <- c("mare", "monti", "città d'arte")
+colnames(preferenze_dep) <- c("adolescenti", "giovani", "adulti")
+
+knitr::kable(addmargins(preferenze_dep))
+
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 40%
+
+
+barplot(round(prop.table(preferenze_dep, 2),2)*100, beside = T, 
+        legend.text = T, col = c("seagreen2", "darkgreen", "royalblue"), 
+        args.legend = list(cex = 2.5, x = "topright", bty = "n"), cex.names = 2, 
+        ylim=c(0,100), main ="Percentuali di colonna",cex.main =4)
+```
+
+
+###
+
+:::: {.columns}
+
+::: {.column width=70%}
+```{r}
+#| echo: false
+#| warning: false
+knitr::kable(preferenze_dep, caption = "Frequenze osservate")
+
+friga = apply(preferenze_dep,1,sum)
+fcolonna = apply(preferenze_dep,2,sum)
+
+prefT = matrix(nrow = nrow(
+  preferenze_dep), ncol = ncol(preferenze_dep))
+colnames(prefT) = colnames(preferenze_dep)
+rownames(prefT) = rownames(preferenze_dep)
+
+for (i in 1:nrow(prefT)) {
+  for (j in 1:ncol(prefT)) {
+    prefT[i,j] = (friga[i]*fcolonna[j])/sum(preferenze_dep)
+  }
+}
+
+knitr::kable(prefT, caption = "Frequenze Teoriche")
+
+```
+
+:::
+
+::: {.column width=30%}
+$\chi^2 = `r chisq.test(preferenze_dep)$statistic`$
+
+$\chi_{Max}^2 = N* \min[(i-i);(c-1)] = `r sum(preferenze_dep)` * \min[(3-1); (3-1)] = 336$
+
+:::
+::::
+
+
+

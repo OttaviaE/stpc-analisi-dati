@@ -1,0 +1,233 @@
+---
+title: "Modulo 5 - Prima serie"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format: 
+  pdf: 
+   toc: true
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+myvar = F
+echovar = F
+evalvar = F
+knitr::opts_chunk$set(include = myvar, 
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+# Esercizi 
+
+##  1
+
+Caricare nel workspace di R il file di dati dal nome `DataAS.csv` assegnato al Laboratorio R del modulo didattico 3. Si assegni il file di dati ad una variabile chiamata `DAS`. Fare riferimento al testo del laboratorio del modulo 3 per la descrizione delle variabili. 
+
+```{r}
+DAS = read.csv2("DataAS.csv")
+```
+
+## 2
+
+A partire dal dataframe `DAS`, ricavare due nuove variabili: 
+
+* `a1`: Per ogni soggetto: la somma dei suoi valori sulle variabili `a1b1` e `a1b2`
+* `a2`. Per ogni soggetto: la somma dei suoi valori sulle variabili `a2b1` e `a2b2`
+
+```{r}
+DAS$a1 = DAS$a1b1 + DAS$a1b2
+DAS$a2 = DAS$a2b1 + DAS$a2b2
+```
+
+
+## 3
+
+Prima di effettuare le analisi inferenziali valutare qualitativamente la relazione tra le variabili in gioco nei modelli utilizzando idonee rappresentazioni grafiche.
+Studiare utilizzando due modelli di regressione separati: 
+
+1. la relazione tra la variabile dipendente `a1` e la variabile indipendente `E`
+
+```{r}
+#| echo: false
+plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E", ylim=c(0, 20))
+
+```
+
+```{r}
+#| echo: false 
+cat("Il grafico sembra indicare una relazione di tipo positivo tra E e a1")
+```
+
+
+2. la relazione tra la variabile dipendente `a2` e la variabile indipendente `E`  
+
+```{r}
+plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E", ylim=c(0, 20))
+
+```
+
+```{r}
+#| echo: false
+cat("Il grafico sembra indicare una relazione (debole) di tipo positivo tra E e a2")
+```
+
+ 
+Successivamente, per ciascun modello di regressione riportare i risultati statisticamente significativi e indicare il tipo di relazione lineare che lega la variabile indipendente alla variabile dipendente. 
+
+```{r}
+ma1 = lm(a1 ~ E, data = DAS)
+summary(ma1)
+```
+```{r}
+#| echo: false
+cat("entrambi i parametri risultano statisticamente significativi (alfa=0.05). \n Il coefficiente angolare indica relazione +")
+```
+
+
+```{r}
+ma2 = lm(a2 ~ E, data = DAS)
+summary(ma2)
+```
+
+
+```{r}
+#| echo: false
+cat("solo il coefficinete angolare è statisticamente significativo (alfa=0.05). \n Il coefficiente angolare indica relazione +")
+```
+
+
+
+Infine, calcolare gli intervalli di confidenza al 95% per i parametri dei modelli di regressione. Confrontare il significato dei risultati associati agli intervalli di confidenza con quelli dell’inferenza statistica basata sul confronto tra p-value e $\alpha$ (probabilità dell’errore di I tipo con valore $0.05$).
+
+```{r}
+quantile95 = qt(0.975, 58)
+# modello con a1 vd
+deltab0 = 3.52647*quantile95
+deltab1 = 0.08185*quantile95
+ic95b0 = c(-9.53928-deltab0,-9.53928+deltab0 )
+ic95b0
+ic95b1 = c(0.45872-deltab1,0.45872+deltab1)
+ic95b1
+```
+```{r}
+# modello con a2 vd 
+deltab0 = 2.9553*quantile95
+deltab1 = 0.0686*quantile95
+ic95b0 = c( -1.9230-deltab0,-1.9230+deltab0 )
+ic95b0
+ic95b1 = c(0.3630-deltab1,0.3630+deltab1)
+ic95b1
+```
+
+
+## 4
+
+Ripetere le analisi specificate nel punto 3 questa volta impostando dei modelli di regressione mista che includano anche la variabile di classificazione `S`. 
+
+
+```{r}
+plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E", ylim=c(0, 20), 
+     col =ifelse(DAS$S == "f", "darkred", "darkgreen"))
+```
+
+```{r}
+#| echo: false
+cat("non è evidente che i due gruppi si distinguano per le rette di regressione")
+```
+
+```{r}
+ma1se = lm(a1 ~ E + S, data = DAS)
+summary(ma1se)
+```
+
+```{r}
+#| echo: false
+
+cat("b0 e bE sono significativi, bSm no")
+```
+
+
+```{r}
+# prendo i coefficienti del modello 
+coefa1 = coef(ma1se)
+coefa1
+
+plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E", ylim=c(0, 20), 
+     col =ifelse(DAS$S == "f", "darkred", "darkgreen"))
+abline(coefa1[1], coefa1[2], col ="darkred") # retta di regressione per il gruppo f
+abline(coefa1[1] + coefa1[3], coefa1[2], 
+       col = "darkgreen") # retta di regressione per il gruppo m
+```
+
+
+```{r}
+plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E", ylim=c(0, 20), 
+     col =ifelse(DAS$S == "f", "darkred", "darkgreen"))
+```
+
+```{r}
+#| echo: false
+cat("non è evidente che i due gruppi si distinguano per le rette di regressione")
+```
+
+
+```{r}
+# calcolo degli intervalli di confidenza
+quantile95 = qt(0.975, 57)
+# isolo i valori degli errori standard del modello 
+se = summary(ma1se)$coefficients[,2]
+se
+# ottengo un vettore di delta da aggiungere/togliere ai rispettivi parametri
+deltacoef =se*quantile95
+ic = rbind(coefa1-deltacoef,
+coefa1+deltacoef)
+rownames(ic) = c("Lim.Inf", "Lim.Sup")
+ic
+```
+
+
+Si parta prima con delle analisi impostando dei semplici modelli misti in condizione di parallelismo e si prosegua in un secondo momento con un’analisi basata su modelli di regressione misti con componente di interazione.
+
+
+```{r}
+ma1se_inter = lm(a1 ~ E * S, data = DAS)
+summary(ma1se_inter)
+```
+
+```{r}
+#| echo: false
+
+cat("Solo bE è significativo")
+```
+
+
+```{r}
+# prendo i coefficienti del modello 
+coefa1_inter = coef(ma1se_inter)
+coefa1_inter
+
+plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E", ylim=c(0, 20), 
+     col =ifelse(DAS$S == "f", "darkred", "darkgreen"))
+# retta di regressione per il gruppo f
+abline(coefa1_inter[1], coefa1_inter[2], col ="darkred")  
+abline(coefa1_inter[1] + coefa1_inter[3], coefa1_inter[2]+coefa1_inter[4], 
+       col = "darkgreen") # retta di regressione per il gruppo m
+```
+
+
+
+```{r}
+#| echo: false
+cat("Sebbene le rette si intersechino, i parametri del modello \n ci dicono che non è significativo")
+```
+
+
+```{r}
+plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E", ylim=c(0, 20), 
+     col =ifelse(DAS$S == "f", "darkred", "darkgreen"))
+```
