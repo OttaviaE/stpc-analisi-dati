@@ -17,7 +17,6 @@ callout-icon: false
 code-annotations: below
 header-includes: 
    - \usepackage{graphicx}
-   - \usepackage[italian]{babel}
    - \usepackage{xcolor}
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
@@ -514,49 +513,9 @@ OgLista[[2]]
 OgLista$Mat
 ```
 
-# L'ambiente 
+
 
 ### 
 
-Ogni variabile che viene creata viene salvata nell'ambiente di R, visibile in ogni momento:
 
-```{r}
-ls() # lista tutti gli oggetti nell'ambiente
-rm(OgLista) # rimuove OgLista dall'ambiente
-rm(list=ls()) # rimuove tutto dall'ambiente
-```
-
-
-# Programmazione entry level 
-
-### `function()`
-
-```{r}
-#| eval: false
-
-funzione = function(arg1, arg2, arg3,. . .) {
-  operazione1 = codice che fa cose
-  operazione2 = altro codice che fa cose
-  output = operazione1 e operazione2 fanno cose
-  return(output)
-}
-```
-
-### Esempio 
-
-```{r}
-area = function(lato1, lato2) {
-  if (lato1 == lato2) {
-     warning("è un quadrato") 
-  }
-  area = lato1*lato2
-  return(area)
-}
-```
-
-\pause
-
-```{r}
-area(lato1 = 5, lato2 = 2)
-```
 
