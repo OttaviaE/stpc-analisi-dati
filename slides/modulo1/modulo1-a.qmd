@@ -23,7 +23,7 @@ header-includes:
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
-   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
    - \AtBeginSection[]
           {
@@ -48,7 +48,75 @@ myinclude = TRUE
 ```
 
 
+# Organizzazione 
 
+### Orario 
+
+* Martedì: 10:45 - 12:30 (Inizio reale: 11:00 - fine reale 12:30) 
+* Giovedì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale 12:00) 
+* Venerdì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale in base alle esigenze didattiche)
+
+:::{.callout-caution}
+## Lezioni cancellate
+
+Il 24 settembre e il 5 novembre non ci sarà lezione perché non abbiamo le aule. 
+
+Esiste la possibilità che vengano cancellate altre lezioni a causa delle lauree. Controllate sempre easyroom.
+:::
+
+
+### 
+
+Tutto il materiale del corso sarà presente sulla piattaforma Moodle e sul sito disponibile a questo link: 
+
+<https://ottaviae.github.io/stpc-analisi-dati/>
+
+Ricevimento: Va concordato via mail (ottavia.epifania@unitn.it), può essere online o in presenza
+
+:::{.callout-tip}
+## Regole di convivenza civile 
+
+Preferisco che vengano rispettati gli orari di lezioni e vorrei evitare il via vai continuo di gente. 
+
+Preferisco ancora di più che le persone non interessate escano senza disturbare quelle che provano a seguire quello che dico.
+
+Se non capite qualcosa, fermatemi subito, rispiego la stessa cosa anche fino alla nausea.
+:::
+
+###
+
+:::{.callout-tip}
+
+## Tipologia di lezione 
+
+Tutte le lezioni avranno uno stampo molto pratico (è caldamente raccomandato l'uso del computer personale). 
+
+Le lezioni del martedì e mercoledì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
+:::
+
+:::{.callout-note}
+
+## Esercitazioni in itinere
+
+Durante il corso verranno effetuate due esercitazioni che faranno punteggio per l'esame. 
+
+**Le esercitazioni sono obbligatorie per tutt3, sia frequentanti che non e vanno consegnate almeno una settimana prima dell'appello d'esame**
+
+Ogni esercitazione permette di guadgnare 1.5 punti, da sommare al punteggio raggiunto all'esame. 
+Le due esercitazioni verranno fatte alla fine della parte sulla statistica descrittiva e alla fine della parte sulla statistica inferenziale, in due lezioni di laboratorio dedicate. 
+:::
+
+### 
+
+**Come specificato nel syllabus**, l'esame si compone di 3 parti: 
+
+* 13 domande a scelta multipla (1 risposta corretta, 3 sbagliate): $+1$ punto per ogni risposta corretta, $0$ punti per ogni risposta errata o non data. 
+* Esercizi su R per un totale di 15 punti
+* Esercitazioni in intinere **obbligatorie** per un totale di 3 punti
+
+L'esame si considera superato solo se si raggiunge un punteggio di 18 **senza contare le esrecitazioni in intinere**. 
+
+Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esame nell'apposito spazio dedicato su moodle. **La mancata consegna nei tempi previsti preclude la partecipazione all'esame**. 
 
 
 # Rstudio
@@ -133,25 +201,25 @@ setwd("C:/Users/Ottavia/Documents/altro-percorso")
 
 Crea automaticamente una working directory in cui potete trovare tutto il materiale necessario per delle analisi
 
-\small
+\footnotesize
 
 Struttura tipica
 
 ```text
 my-project/
-│
-├── index.qmd
-├── data/
-│   └── mydata.csv
-├── img/
-│   ├── logo.png
-│   ├── plot.jpg
-│   └── illustration.svg
-├── bibliography/
-│   └── references.bib
-└── slides/
-    ├── intro.qmd
-    └── advanced-topics.qmd
+|
++-- index.qmd
++-- data/
+|   +-- mydata.csv
++-- img/
+|   +-- logo.png
+|   +-- plot.jpg
+|   +-- illustration.svg
++-- bibliography/
+|   +-- references.bib
++-- slides/
+    +-- intro.qmd
+    +-- advanced-topics.qmd
 ```
 
 
@@ -177,6 +245,17 @@ knitr::include_graphics("img/project2.png")
 knitr::include_graphics("img/project3.png")
 ```
 
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-cap: Indica il nome del progetto
+knitr::include_graphics("img/progetto.png")
+```
+
+
 ### 
 
 
@@ -194,36 +273,29 @@ Oppure la seguenza di tasti: `Ctrl + shift + n`
 
 Per salvare uno script: Click sull'icona del salvataggio 
 
-### 
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| fig-cap: Indica il nome del progetto
-knitr::include_graphics("img/progetto.png")
-```
-
 
 # Reporting con quarto 
 
 ### 
 
-quarto è un markup language integarte con RStudio. 
+quarto è un markup language integrato con RStudio. 
 
 Permette la creazione di documenti (sia pdf sia html) che possono contenre chunk di codice, ovvero delle parti dove viene eseguito il codice R, per ottenere risultati, tabelle e grafici.
 
 In questo corso, useremo quarto per tutti gli esercizi.
 
-Una parte dell'esame prevede l'utilizzo di quarto per lo svolgimento degli esercizi. 
+Una parte dell'esame prevede l'utilizzo di quarto per lo svolgimento degli esercizi. le esercitazioni in intinere sono da svolgere su quarto. 
 
-A [questo link](https://arca-dpss.github.io/shine-with-quarto/) trovate maggiori informazioni su quarto e una guida veloce sul suo funzionamento 
+A \color{blue}[questo link](https://arca-dpss.github.io/shine-with-quarto/) \normalcolor trovate maggiori informazioni su quarto e una guida veloce sul suo funzionamento 
 
-### 
+### {.plain}
 
 
 ```{r}
 #| echo: false
 #| fig-align: center
+#| fig-cap-location: top
+#| out-width: 80%
 #| label: fig-quarto
 #| fig-cap: Crea un nuovo file quarto
 #| layout-ncol: 2
@@ -240,6 +312,11 @@ include_graphics("img/quarto1.png")
 
 ###
 
+
+::::{.columns}
+
+:::{.column width="70%"}
+
 ```{r}
 #| echo: false
 #| fig-align: center
@@ -248,9 +325,16 @@ library(knitr)
 include_graphics("img/quarto2.png")
 ```
 
+:::
+
+:::{.column width="30%"}
 In verde, lo YAML che controlla l'aspetto generale del documento 
 
 In rosso, un chunk di codice eseguibile 
+
+:::
+
+::::
 
 ### 
 
@@ -263,7 +347,7 @@ title: "Il mio file"
 author: "Nome Cognome"
 format: 
   html: 
-   self-contained: true
+   embed-resources: true
 editor: visual
 ---
 ```
@@ -434,7 +518,9 @@ knitr::include_graphics("img/work.png")
 
 2. Compilare il documento
 
-### L'ambiente 
+## L'ambiente 
+
+###
 
 Gli oggetti finisco nell'ambiente (`environment`) di R. 
 
@@ -523,7 +609,7 @@ knitr::include_graphics("img/mean.png")
 
 ###
 
-Ne eistono di predefinite all'installazione di R, se ne possono definire di nuove autonomamente, si possono installare dei "pacchetti" dal CRAN (comprehensive R archive network) o da un file locale, a seconda delle operazioni che si vogliono svolgere.
+Ne esistono di predefinite all'installazione di R, se ne possono definire di nuove autonomamente, si possono installare dei "pacchetti" dal CRAN (comprehensive R archive network) o da un file locale, a seconda delle operazioni che si vogliono svolgere.
 
 ```{r}
 #| lst-label: lst-install
@@ -623,7 +709,7 @@ x = 30
 
 ### {.plain}
 
-\small
+\footnotesize
 
 ```{r}
 #| echo: false
