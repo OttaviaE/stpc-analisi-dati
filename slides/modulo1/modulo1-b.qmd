@@ -23,7 +23,7 @@ header-includes:
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
-   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
    - \AtBeginSection[]
           {
@@ -520,7 +520,7 @@ OgLista$Mat
 
     read.csv2("file_path", header = T, sep = ";")
 
-Il default della funzione prvede che la prima riga contenga i nomi delle variabili e che il separatore di colonne sia ";".
+Il default della funzione prevede che la prima riga contenga i nomi delle variabili e che il separatore di colonne sia ";".
 
 Se si possiede un dataset chiamato "dati" nella cartella "data", questo codice lo importerà all'interno dell'ambiente
 
