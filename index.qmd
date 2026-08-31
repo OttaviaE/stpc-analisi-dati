@@ -10,5 +10,80 @@ format:
 lang: it
 ---
 
+# Caratteristiche del corso
 
-[Installare R e R Studio](guida-R.html)
+* Martedì: 10:45 - 12:30 (Inizio reale: 11:00 - fine reale 12:30) 
+* Giovedì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale 12:00) 
+* Venerdì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale in base alle esigenze didattiche)
+
+
+:::{.callout-caution}
+## Lezioni cancellate
+
+Il 24 settembre e il 5 novembre non ci sarà lezione perché non abbiamo le aule. 
+:::
+
+:::{.callout-tip}
+
+## Tipologia di lezione 
+
+Tutte le lezioni avranno uno stampo molto pratico (è caldamente raccomandato l'uso del computer personale). 
+
+Le lezioni del martedì e mercoledì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
+
+
+:::
+
+:::{.callout-warning}
+
+## Frequenza delle lezioni
+
+La frequenza **non è obbluigatoria** e il materiale presente su questo sito è più che sufficiente per permettervi di preparare l'esame. 
+
+Tuttavia, la frequenza delle lezioni è caldamente consigliuata data la natura tecnica del corso. Inoltre, lo studio di questo esame è molto più affrontabile in gruppo che singolarmente.
+
+
+:::
+
+
+## Esercitazioni in itinere
+
+**Come indicato nel syllabus**, durante il corso verranno effetuate due esercitazioni che faranno punteggio per l'esame. 
+
+**Le esercitazioni sono obbligatorie per tutt3, sia frequentanti che non e vanno consegnate almeno una settimana prima dell'appello d'esame**
+
+Ogni esercitazione permette di guadgnare 1.5 punti, da sommare al punteggio raggiunto all'esame. 
+
+Per superare l'esame, è necessario ottenere un punteggio di **almeno** 18 (ovvero, non è possibile arrivare alla sufficienza considerando i punti delle esercitazioni). 
+
+Le due esercitazioni verranno fatte alla fine della parte sulla statistica descrittiva e alla fine della parte sulla statistica inferenziale, in due lezioni di laboratorio dedicate. 
+
+Il vantaggio di svolgerle in aula è di avere a disposizione il supporto mio e dell'assistente ai laboratori. 
+
+## Esame 
+
+**Come specificato nel syllabus**, l'esame si compone di 3 parti: 
+
+* 13 domande a scelta multipla (1 risposta corretta, 3 sbagliate): $+1$ punto per ogni risposta corretta, $0$ punti per ogni risposta errata o non data. 
+* Esercizi su R per un totale di 15 punti
+* Esercitazioni in intinere **obbligatorie** per un totale di 3 punti
+
+L'esame si considera superato solo se si raggiunge un punteggio di 18 **senza contare le esrecitazioni in intinere**. 
+
+Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esame nell'apposito spazio dedicato su moodle. **La mancata consegna nei tempi previsti preclude la partecipazione all'esame**. 
+
+
+# Usare R
+
+* [Installare R e R Studio](guida-R.html)
+
+* [Guida e dispensa di R](introduzione-a-R-IT.html)
+
+# Il corso 
+
+## Modulo 1 
+
+## Modulo 2
+
+## Modulo 3
+

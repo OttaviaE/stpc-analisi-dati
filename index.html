@@ -36,14 +36,60 @@ ul.task-list li input[type="checkbox"] {
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-d52944aba65896723476039ba24686d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
 <body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-  
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Struttura del corso</h2>
+   
+  <ul>
+  <li><a href="#caratteristiche-del-corso" id="toc-caratteristiche-del-corso" class="nav-link active" data-scroll-target="#caratteristiche-del-corso"><span class="header-section-number">1</span> Caratteristiche del corso</a>
+  <ul class="collapse">
+  <li><a href="#esercitazioni-in-itinere" id="toc-esercitazioni-in-itinere" class="nav-link" data-scroll-target="#esercitazioni-in-itinere"><span class="header-section-number">1.1</span> Esercitazioni in itinere</a></li>
+  <li><a href="#esame" id="toc-esame" class="nav-link" data-scroll-target="#esame"><span class="header-section-number">1.2</span> Esame</a></li>
+  </ul></li>
+  <li><a href="#usare-r" id="toc-usare-r" class="nav-link" data-scroll-target="#usare-r"><span class="header-section-number">2</span> Usare R</a></li>
+  <li><a href="#il-corso" id="toc-il-corso" class="nav-link" data-scroll-target="#il-corso"><span class="header-section-number">3</span> Il corso</a>
+  <ul class="collapse">
+  <li><a href="#modulo-1" id="toc-modulo-1" class="nav-link" data-scroll-target="#modulo-1"><span class="header-section-number">3.1</span> Modulo 1</a></li>
+  <li><a href="#modulo-2" id="toc-modulo-2" class="nav-link" data-scroll-target="#modulo-2"><span class="header-section-number">3.2</span> Modulo 2</a></li>
+  <li><a href="#modulo-3" id="toc-modulo-3" class="nav-link" data-scroll-target="#modulo-3"><span class="header-section-number">3.3</span> Modulo 3</a></li>
+  </ul></li>
+  </ul>
+</nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -72,7 +118,94 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="guida-R.html">Installare R e R Studio</a></p>
+<section id="caratteristiche-del-corso" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Caratteristiche del corso</h1>
+<ul>
+<li>Martedì: 10:45 - 12:30 (Inizio reale: 11:00 - fine reale 12:30)</li>
+<li>Giovedì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale 12:00)</li>
+<li>Venerdì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale in base alle esigenze didattiche)</li>
+</ul>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lezioni cancellate
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il 24 settembre e il 5 novembre non ci sarà lezione perché non abbiamo le aule.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tipologia di lezione
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tutte le lezioni avranno uno stampo molto pratico (è caldamente raccomandato l’uso del computer personale).</p>
+<p>Le lezioni del martedì e mercoledì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Frequenza delle lezioni
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La frequenza <strong>non è obbluigatoria</strong> e il materiale presente su questo sito è più che sufficiente per permettervi di preparare l’esame.</p>
+<p>Tuttavia, la frequenza delle lezioni è caldamente consigliuata data la natura tecnica del corso. Inoltre, lo studio di questo esame è molto più affrontabile in gruppo che singolarmente.</p>
+</div>
+</div>
+<section id="esercitazioni-in-itinere" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="esercitazioni-in-itinere"><span class="header-section-number">1.1</span> Esercitazioni in itinere</h2>
+<p><strong>Come indicato nel syllabus</strong>, durante il corso verranno effetuate due esercitazioni che faranno punteggio per l’esame.</p>
+<p><strong>Le esercitazioni sono obbligatorie per tutt3, sia frequentanti che non e vanno consegnate almeno una settimana prima dell’appello d’esame</strong></p>
+<p>Ogni esercitazione permette di guadgnare 1.5 punti, da sommare al punteggio raggiunto all’esame.</p>
+<p>Per superare l’esame, è necessario ottenere un punteggio di <strong>almeno</strong> 18 (ovvero, non è possibile arrivare alla sufficienza considerando i punti delle esercitazioni).</p>
+<p>Le due esercitazioni verranno fatte alla fine della parte sulla statistica descrittiva e alla fine della parte sulla statistica inferenziale, in due lezioni di laboratorio dedicate.</p>
+<p>Il vantaggio di svolgerle in aula è di avere a disposizione il supporto mio e dell’assistente ai laboratori.</p>
+</section>
+<section id="esame" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="esame"><span class="header-section-number">1.2</span> Esame</h2>
+<p><strong>Come specificato nel syllabus</strong>, l’esame si compone di 3 parti:</p>
+<ul>
+<li>13 domande a scelta multipla (1 risposta corretta, 3 sbagliate): <span class="math inline">\(+1\)</span> punto per ogni risposta corretta, <span class="math inline">\(0\)</span> punti per ogni risposta errata o non data.</li>
+<li>Esercizi su R per un totale di 15 punti</li>
+<li>Esercitazioni in intinere <strong>obbligatorie</strong> per un totale di 3 punti</li>
+</ul>
+<p>L’esame si considera superato solo se si raggiunge un punteggio di 18 <strong>senza contare le esrecitazioni in intinere</strong>.</p>
+<p>Le esercitazioni vanno consegnate almeno una settimana prima dell’appello d’esame nell’apposito spazio dedicato su moodle. <strong>La mancata consegna nei tempi previsti preclude la partecipazione all’esame</strong>.</p>
+</section>
+</section>
+<section id="usare-r" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Usare R</h1>
+<ul>
+<li><p><a href="guida-R.html">Installare R e R Studio</a></p></li>
+<li><p><a href="introduzione-a-R-IT.html">Guida e dispensa di R</a></p></li>
+</ul>
+</section>
+<section id="il-corso" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Il corso</h1>
+<section id="modulo-1" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="modulo-1"><span class="header-section-number">3.1</span> Modulo 1</h2>
+</section>
+<section id="modulo-2" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="modulo-2"><span class="header-section-number">3.2</span> Modulo 2</h2>
+</section>
+<section id="modulo-3" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="modulo-3"><span class="header-section-number">3.3</span> Modulo 3</h2>
+</section>
+</section>
 
 </main>
 <!-- /main column -->
