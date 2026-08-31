@@ -7,13 +7,14 @@ format:
     number-sections: true
     toc-title: "Contenuti"
     theme: serif
+    embed-resources: true
 lang: it
 ---
 
 
 :::{.callout-warning}
 
-Questo materiale è riadattato dal materiale preparato dall Dott.ssa Margherita Calderan
+Questo materiale è riadattato dal materiale preparato dalla Dott.ssa Margherita Calderan
 
 :::
 
@@ -77,14 +78,89 @@ Dopo aver installato R, puoi procedere con l'installazione di RStudio. RStudio r
 
 # Come usare Posit Cloud (Alternativa senza installazione)
 
-Se preferisci non installare nulla sul tuo computer o se hai problemi di compatibilità (ad esempio su un Chromebook o un tablet), puoi utilizzare **Posit Cloud**. 
+
+**Posit Cloud** è una valida alternativa nel caso in cui non si voglia installare nuovi programmi o ci siano problemi di compatibilità (ad esempio su un Chromebook o un tablet).
 
 Posit Cloud è la versione cloud di RStudio: funziona interamente nel tuo browser ed è gratuita per un uso base.
 
 ## Passaggi per iniziare con Posit Cloud:
+ [https://posit.cloud/](https://posit.cloud/)
+ 
+```{r}
+#| label: fig-posit 
+#| fig-cap: Registrazione su posit
+#| fig-subcap: 
+#|   - "Home page di Posit - cliccare su sign up"
+#|   - "Selezione del piano gratuito"
+#|   - "Registrazione con il proprio account unitn"
+#|   - "Creazione di un nuovo progetto RStudio"
+#| echo: false
+library(knitr)
+include_graphics("img/posit0.png")
+include_graphics("img/posit1.png")
+include_graphics("img/posit2.png")
+include_graphics("img/posit3.png")
+```
+ 
+A questo punto, si ha la stessa interfaccia di RStudio che si ha in locale usando un PC e si possono svolgere le stesse identiche operazioni con gli stessi comandi. 
 
-1. **Registrazione**: Vai su [https://posit.cloud/](https://posit.cloud/) e clicca su "Get Started" e poi su "Sign Up" sotto il piano gratuito (Free). Puoi registrarti con la tua email @studenti.unipd.it
-2. **Crea un nuovo progetto**:
-   - Una volta fatto l'accesso, ti troverai nel tuo "Workspace".
-   - Clicca sul pulsante blu in alto a destra **"New Project"** e seleziona **"New RStudio Project"**.
-3. **Inizia a programmare**: Dopo un breve caricamento, si aprirà un'interfaccia identica a quella di RStudio Desktop. Tutto il codice, i file e i dati caricati in questo progetto verranno salvati sui server di Posit in modo sicuro.
+Questo vuol dire che i comandi e le routine spiegate a lezione sull'utilizzo di RStudio possono essere interamente riprodotte su Posit online. 
+
+:::{.callout-warning}
+
+Nella versione free si hanno **25 ore** di accesso libero ai server di Posit **al mese** (meno di un'ora al giorno). 
+
+Ricordatevi quindi di chiudere la sessione (e fare il logout) quando non lo utilizzate. 
+
+:::
+
+:::{.callout-caution}
+
+Posit cloud si appoggia sulla rete (ovviamente). Se non ne avete necessità, vi consiglio di usare RStudio con l'installazione sul vostro PC, per evitare di sovraccaricare troppo la rete -- che già non se la passa benissimo -- per chi ha davvero necessità di usare il servizio. 
+
+:::
+
+## Posit e quarto
+
+Per l'utilizzo di quarto per la generazione di report, è necessario sbloccare i pop up: 
+
+* Google Chrome (Windows/macOS)
+
+> Impostazioni --> Privacy e sicurezza --> Impostazioni sito --> Popup e reindirizzamenti
+
+*  Mozilla Firefox (Windows/macOS)
+
+>  Impostazioni --> Privacy e sicurezza --> Permessi --> Blocca finestre pop-up --> Eccezioni…
+Aggiungere Posit Cloud tra i siti autorizzati. 
+
+*  Microsoft Edge (Windows/macOS)
+
+> Impostazioni  -->  Cookie e autorizzazioni sito  -->  Popup e reindirizzamenti
+Nella sezione Consenti, aggiungere Posit Cloud. 
+
+*  Safari (Mac)
+
+> Impostazioni  -->  Siti web --> Finestre a comparsa
+Individua Posit Cloud e seleziona Consenti. 
+
+* Safari (iPad)
+
+> Impostazioni  -->  App  -->  Safari  -->  Blocca finestre a comparsa
+Disattivare temporaneamente questa opzione. 
+
+* Chrome (Android)
+
+> Impostazioni --> Impostazioni sito --> Popup e reindirizzamenti
+Consentire i pop-up.
+
+
+## Scaricare il report 
+
+```{r}
+#| fig-cap: Scaricare il documento hmtl
+#| echo: false
+
+include_graphics("img/posit4.png")
+
+```
+
