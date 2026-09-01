@@ -83,6 +83,33 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 ## Modulo 1 
 
+* [Slides Parte 1](slides/modulo1/modulo1-a.pdf)
+* [Slides Parte 2](slides/modulo1/modulo1-b.pdf)
+
+
+### Laboratorio
+
+* [Laboratorio R (Testo)](slides/modulo1/Laboratorio/LaboratorioRmod1b_Esercizi.html)
+* [Laboratorio R (Template)](slides/modulo1/Laboratorio/LaboratorioRmod1b-template.qmd)
+* [Laboratorio R (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod1b_soluzioni.pdf)
+
+### Esercitazioni 
+
+#### Parte 1
+
+* [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi.html)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.pdf)
+* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/Laboratoriomod1_soluzioni.html)
+
+#### Parte 2
+
+
+* [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-esercizi.html)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.pdf)
+* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-soluzioni.html)
+
+
+
 ## Modulo 2
 
 ## Modulo 3
