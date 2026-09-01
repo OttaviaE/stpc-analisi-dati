@@ -1,17 +1,14 @@
 ---
 title: "Analisi dei Dati con R"
-subtitle: "Esercizi moudlo 1"
-author: "Ottavia Epifania"
+subtitle: "Esercizi Modulo 1"
+author: "Nome Cognome"
 format: 
   html: 
    embed-resources: true
    number-sections: true
-execute:
-  echo: true
-  eval: true
 ---
 
-#  Operazioni aritmetiche
+# Operazioni aritmetiche
 
 ## 
 Risolvere le seguenti espressioni:
@@ -19,32 +16,33 @@ Risolvere le seguenti espressioni:
 1. $$3.5 + \dfrac{(17 \times 3) + 4}{2 + 1/5}$$
 
 ```{r}
-3.5+(((17*3)+4)/(2+(1/5)))
+
 ```
 
 
 2. $$15^{(2 \times 6)} + \dfrac{18}{3}$$
 
 ```{r}
-((15)^(2*6))+(18/3)
+
 ```
 
 
 3. $$15^{(2 \times 6)} + \dfrac{18}{3^{1/2}}$$
 
 ```{r}
-((15)^(2*6))+(18/(3^(1/2)))
+
 ```
 
 
 4. $$(18 - 22.5) \times \sqrt{121} + \dfrac{3}{25}$$
 
+
 ```{r}
-((18-22.5)*(sqrt(121)))+(3/25)
+
 ```
 
 
-#  Assegnazione di variabili
+# Assegnazione di variabili
 
 ## 
 
@@ -53,61 +51,58 @@ Assegnare le seguenti variabili:
 * `X = (32.45, 22.16, 0.04, 21.89, 0.00)`  
 
 ```{r}
-X = c(32.45, 22.16, 0.04, 21.89, 0.00)
-```
 
+```
 
 * `Y = (3/5, 1/32, 2/9)`  
 
 ```{r}
-Y = c(3/5, 1/32, 2/9)
+
 ```
 
 
-* `Z = ("Sebastiano", "Vera", "Giorgio", "Antonio")` 
+* `Z = ("Sebastiano", "Vera", "Giorgio", "Antonio")`  
 
 ```{r}
-Z = c("Sebastiano", "Vera", "Giorgio", "Antonio")
+
 ```
 
 
 Visualizzare i contenuti delle variabili
 
-```{r}
-X
-Y
-Z
-```
-
-
 
 ## 
+
 Costruire le variabili a, b, c, d:
 
 - $a = (27 \times 2) - (3 + 12)$
-- $b = (7 \times a) + a/3$
-- $c = b^2 + a/b$
-- $d = \sqrt{a + b - (c \times d)}$
-
 ```{r}
-#| error: true
-a <- (27*2)-(3+12)
-b <- (7*a)+(a/3)
-c <- (b^(2))+(a/b)
-d <- sqrt((a+b-(c*d)))
 
 ```
 
-L'errore viene fuori perché l'oggetto `d` (usato per creare appunto la variabile `d`) e non è ancora stata creata. Questa variabile non si può né osservare né rimuovere perché non esiste
+- $b = (7 \times a) + a/3$
+```{r}
 
-Visualizzare le variabili e poi rimuoverle.
+```
 
+- $c = b^2 + a/b$
 
 ```{r}
-a
-b
-c
-rm(a, b, c)
+
+```
+
+- $d = \sqrt{a + b - (c \times d)}$
+
+Stampare le variabili 
+
+```{r}
+
+```
+
+
+rimuovere le variabili
+
+```{r}
 ```
 
 
@@ -115,23 +110,32 @@ rm(a, b, c)
 Costruire:
 
 - `a = 24`
+```{r}
+
+```
+
 - `b = a`
-- `B = a + 2`
 
 ```{r}
-a <- 24
-b <- a
-B <- a+2
-a
-b
-B
+
+```
+
+- `B = a + 2`
+```{r}
+
 ```
 
 
-Visualizzare e rimuovere le variabili.
+Stampare le variabili 
 
 ```{r}
-rm(a, B, b)
+
+```
+
+
+rimuovere le variabili
+
+```{r}
 ```
 
 
@@ -139,85 +143,99 @@ rm(a, B, b)
 Assegnare le seguenti variabili e osservare i cambiamenti:
 
 - a = Carlo
-- b = Giovanni
-- c = 7
-- c = 8
-- c = b
-
-
 ```{r}
-a <- 'Carlo'
-b <- 'Giovanni'
-c <- 7
-a
-b
-c
-c <- 8
-c
-c <- b
-c
 
 ```
+
+- b = Giovanni
+```{r}
+
+```
+
+- d = 7
+```{r}
+
+```
+
+- d = 8
+```{r}
+
+```
+
+- d = b
+
+```{r}
+
+```
+
 
 # Operazioni relazionali e logiche
 
 ## 
-
 Date le variabili `a = TRUE, b = TRUE, c = FALSE, d = TRUE` verificare le seguenti condizioni logiche (dove $\land, \lor, \neg$ denotano rispettivamente: congiunzione, disgiunzione e negazione logica):
 
 1. $\quad \neg a \lor a$
 
+
+```{r}
+
+```
+
 2. $\quad a \lor (b \land c)$
+
+```{r}
+
+```
+
 
 3. $\quad a \land (b \lor c) \land \neg d$
 
+```{r}
+
+```
+
 4. $\quad \neg a \lor (b \land c) \land (\neg d \lor c)$
+
+```{r}
+
+```
+
 
 5. $\quad \neg (a \lor c) \land \neg (\neg (b \land c))$
 
-
 ```{r}
-a <- TRUE
-b <- TRUE
-c <- FALSE
-d <- TRUE
-(!a)|a
-a | (b & c)
-a & (b | c) & !d
-!a | (b & c) & (!d | c)
-!(a | c) & !(!(b & c))
+
 ```
 
 
 Poi rimuovere le variabili.
-
 ```{r}
-rm(a, b, c, d)
+
 ```
 
 
 ## 
-
 Si assegni `a = 3, b = -3`.  
-Assegnare a `X, Y, Z` i risultati dei confronti:
+
+```{r}
+
+```
+
+Assegnare a `X, Y, Z` (rispettivamente) i risultati dei confronti:
 
 1. $a > (b + 3)$
 2. $b \geq (a - 6)$
 3. $a \neq \sqrt{b^2}$
 
 ```{r}
-a <- 3
-b <- -3
-X <- a > (b+3)
-Y <- b >= (a-6)
-Z <- a != sqrt(b^2)
+
 ```
 
 
 Infine verificare $X \land (Y \lor Z)$
 
 ```{r}
-X & (Y | Z)
+
 ```
 
 
@@ -227,32 +245,54 @@ X & (Y | Z)
 Costruire i vettori:
 
 * $a = (1, 7, 8, 12, -12, 1)$
+```{r}
+
+```
+
 * $b = (2/3, 4/5, -7/2, 12/3, -11/8, 1/4)$
+
+```{r}
+
+```
+
 
 Calcolare:
 
 1. $s_1 = \sum a_i + \sum |b_j|$
+```{r}
+
+```
+
 2. $m_1 = \min(a) - \max(b)$
+```{r}
+
+```
+
 3. $m_2 = \min(a) - \max(|b|)$
+```{r}
+
+```
+
 4. $m_3 = \min(\sum a_i, \sum b_j)$
+```{r}
+
+```
+
 5. $n = \bar{a} + \bar{b}$ dove $\bar{x}$ indica la media di x
+```{r}
+
+```
+
 6. varianza di $a$ e di $b$ (calcolate separatemente)
+
+```{r}
+
+```
+
 
 Visualizzare tutte le variabili.
 
-
 ```{r}
-a <- c(1,7,8,12,-12,1)
-b <- c(2/3,4/5,-7/2,12/3,-11/8,1/4)
-a
-b
-s1 <- sum(a)+sum(abs(b))
-s1
-m1 <- min(a) - max(b)
-m2 <- min(a) - max(abs(b))
-m3 <- min(sum(a),sum(b))
-n <- mean(a) + mean(b)
-var(a)
-var(b)
+
 ```
 

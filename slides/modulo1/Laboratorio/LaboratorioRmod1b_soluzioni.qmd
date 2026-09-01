@@ -1,6 +1,6 @@
 ---
 title: "Laboratorio di Analisi dei Dati con R"
-subtitle: "Soluzioni - Parte 2"
+subtitle: "Laboratorio Modulo 1"
 author: "Ottavia Epifania"
 format: 
    pdf: 
@@ -22,9 +22,10 @@ editor_options:
 
 \newpage
 
-# 1. Manipolazioni di data frame
 
-## Esercizio 1
+# Manipolazioni di data frame
+
+## 
 
 ```{r}
 X1 <- c(12,13,11,11,13,9,5,11,13,11,6)
@@ -33,9 +34,9 @@ X3 <- c(1,1,0,0,1,0,1,0,0,0,1)
 X4 <- c("m","m","m","f","f","m","m","f","m","f","m")
 X5 <- c(1,1,2,1,3,4,4,1,2,1,2)
 
-TABa <- data.frame(X1,X2,X3,X4,X5)
+dati <- data.frame(X1,X2,X3,X4,X5)
 
-TABa
+dati
 
 ```
 
@@ -43,20 +44,20 @@ TABa
 
 ```{r}
 # terza osservazione di X2
-TABa$X2[3]
+dati$X2[3]
 # quinta osservazione di X4
-TABa$X2[4]
+dati$X2[4]
 # modificare i valori 
-TABa$X2[3] <- 25
-TABa$X4[5] <- "m"
+dati$X2[3] <- 25
+dati$X4[5] <- "m"
 ```
 
 
 2. Visualizzare solo X2. Assegnarla a Y2 e verificare se contiene valori > 10.
 ```{r}
 # visualizza x2
-TABa$X2
-Y2 = TABa$X2
+dati$X2
+Y2 = dati$X2
 Y2 > 10
 Y2[Y2 > 10]
 which(Y2 > 10) # posizioni nel vettore dei valori maggiori di 10
@@ -66,20 +67,20 @@ which(Y2 > 10) # posizioni nel vettore dei valori maggiori di 10
 3. Visualizzare il profilo della quinta osservazione. Assegnarlo a P5 e verificare che contenga "m".
 
 ```{r}
-TABa[5,]
-P5 <- TABa[5,]
+dati[5,]
+P5 <- dati[5,]
 P5[4] == 'm'
 ```
 
 
 
-## Esercizio 2
+## 
 
 Utilizzare l’operatore di selezione `[]` per filtrare e modificare il contenuto del dataframe.
 
 1. Assegnare X2 a A2 e filtrare i valori $> 13$. Assegnare a B2.
 ```{r}
-A2 <- TABa$X2
+A2 <- dati$X2
 B2 <- A2[A2>13]
 B2
 ```
@@ -88,7 +89,7 @@ B2
 2. Assegnare X4 a A4 e filtrare solo i maschi (m).
 
 ```{r}
-A4 <- TABa$X4
+A4 <- dati$X4
 A4 <- A4[A4=='m']
 A4
 
@@ -103,93 +104,93 @@ objects()
 ```
 
 
-4. Selezionare solo le righe di TABa associate al gruppo femminile. Creare `TABaF`. Fare lo stesso per i maschi creando `TABaM`.
+4. Selezionare solo le righe di dati associate al gruppo femminile. Creare `datiF`. Fare lo stesso per i maschi creando `datiM`.
 
 ```{r}
-TABaM <- TABa[TABa$X4=='m',]
-TABaF <- TABa[TABa$X4=='f',]
-TABaM
-TABaF
+datiM <- dati[dati$X4=='m',]
+datiF <- dati[dati$X4=='f',]
+datiM
+datiF
 
 ```
 
 
-5. Selezionare i profili con $X1 > 10$ e $X3 = 0$. Creare `TABa2`. Ripetere selezionando X1 compresi tra 9 e 12 (inclusi).
+5. Selezionare i profili con $X1 > 10$ e $X3 = 0$. Creare `dati2`. Ripetere selezionando X1 compresi tra 9 e 12 (inclusi).
 
 ```{r}
 
-TABa2 <- TABa[TABa$X1>10 & TABa$X3==0,]
-TABa2
+dati2 <- dati[dati$X1>10 & dati$X3==0,]
+dati2
 
-TABa2 <- TABa[(TABa$X1>=9 & TABa$X1<=12) & TABa$X3==0,]
-TABa2
+dati2 <- dati[(dati$X1>=9 & dati$X1<=12) & dati$X3==0,]
+dati2
 
 ```
 
 
-6. Sostituire la terza riga di `TABa` con (10, 10, 1, "f", 4 -- un valore per variabili).
+6. Sostituire la terza riga di `dati` con (10, 10, 1, "f", 4 -- un valore per variabili).
 
 ```{r}
 
-TABa[3,1] <- 10
-TABa[3,2] <- 10
-TABa[3,3] <- 1
-TABa[3,4] <- "f"
-TABa[3,5] <- 4
+dati[3,1] <- 10
+dati[3,2] <- 10
+dati[3,3] <- 1
+dati[3,4] <- "f"
+dati[3,5] <- 4
 
 ```
 
 
 
-# 2. Operazioni su data frame
+# Operazioni su data frame
 
-## Esercizio 3
-Utilizzare i dati di `TABa`.
+## 
+Utilizzare i dati di `dati`.
 
 1. Calcolare la media di X1 limitatamente ai valori associati a $X3 = 1$.
 
 ```{r}
-mean(TABa$X1[TABa$X3==1])
+mean(dati$X1[dati$X3==1])
 ```
 
 
 2. Calcolare la somma di:
    - Deviazione standard di X1 per le osservazioni con $1\leq X5 \leq 2$
 ```{r}
-sd(TABa$X1[TABa$X5>=1 & TABa$X5<=2])
+sd(dati$X1[dati$X5>=1 & dati$X5<=2])
 ```
  
    - Deviazione standard di X2 per le osservazioni con $X3 + X5\geq 4$
 ```{r}
-sd(TABa$X2[(TABa$X3+TABa$X5)>=4])
+sd(dati$X2[(dati$X3+dati$X5)>=4])
 ```
 
  
 3. Calcolare la somma di X2 limitatamente ai valori associati **esclusivamente** a `X4 = "m"` **o** `X3 = 1` (disgiunzione esclusiva).
 
 ```{r}
-sum(TABa$X2[(TABa$X4=="m" | TABa$X3==1) & !(TABa$X4=="m" & TABa$X3==1)])
+sum(dati$X2[(dati$X4=="m" | dati$X3==1) & !(dati$X4=="m" & dati$X3==1)])
 ```
 
 
-4. Visualizzare la sottotabella di `TABa` con $X1 > 10$ e che soddisfi anche la condizione dell’esercizio precedente.
+4. Visualizzare la sottotabella di `dati` con $X1 > 10$ e che soddisfi anche la condizione dell’esercizio precedente.
 
 ```{r}
-TABa[TABa$X1>10 & ((TABa$X4=="m" | TABa$X3==1) & !(TABa$X4=="m" & TABa$X3==1)),]
+dati[dati$X1>10 & ((dati$X4=="m" | dati$X3==1) & !(dati$X4=="m" & dati$X3==1)),]
 ```
 
 
 5. Assegnare a U la sottotabella con le colonne X1 e X5, per le righe con X4 = "f" **oppure** $X2 \geq 15$.
 
 ```{r}
-U <- TABa[TABa$X4=="f" | TABa$X2>=15,c(1,5)]
+U <- dati[dati$X4=="f" | dati$X2>=15,c(1,5)]
 U
 ```
 
 # Dettagli e spiegazione esercizio 3.3 (Disgiunzione Esclusiva `XOR`)
 
 Per risolvere l'esrecizio è necessario comprendere il concetto di disgiunzione esclusiva $\rightarrow$ è vera **se e solo se** uno dei due valori è vero **ma non entrambi**. 
-In insiemistica, la disgiunzione esclusiva equivale alla **differena simmetrica**, ovvero a tutti gli elementi che fanno parte O di A o di B **ma non di entrambi**.
+In insiemistica, la disgiunzione esclusiva equivale alla **differenza simmetrica**, ovvero a tutti gli elementi che fanno parte O di A o di B **ma non di entrambi**.
 
 Di seguito, la tavola di verità della disgiunzione esclusiva: 
 
@@ -363,7 +364,7 @@ che corrisponde a (nel dataset per risponder al quesito 3.3 - nel leggere la tab
 ```{r}
 #| eval: true
 #| echo: false 
-b = cbind(TABa[, c("X4", "X3")], (TABa$X4=="m" & TABa$X3==1), (TABa$X4=="m" | TABa$X3==1), !(TABa$X4=="m" & TABa$X3==1), ((TABa$X4=="m" | TABa$X3==1) & !(TABa$X4=="m" & TABa$X3==1)))
+b = cbind(dati[, c("X4", "X3")], (dati$X4=="m" & dati$X3==1), (dati$X4=="m" | dati$X3==1), !(dati$X4=="m" & dati$X3==1), ((dati$X4=="m" | dati$X3==1) & !(dati$X4=="m" & dati$X3==1)))
 
 colnames(b) = c("X4", "X3", "AND", "OR", "! AND", "XOR")
 b
@@ -372,8 +373,12 @@ b
 
 # `AND`, `OR`, `XOR`
 
+@fig-mat1, @fig-mat2 e @fig-mat3 sono la rappresentazione tramite matrici di tipo Raven delle regole insiemistiche AND OR e XOR (rispettivamente).
+
 ```{r}
 #| echo: false
+#| label: fig-mat1
+#| fig-cap: Matrice 1 (AND)
 library(matRiks)
 mand = mat_apply(cof(square4(), size(dice(), 2), size(dot(), 2)), hrules = "AND")
 
@@ -384,8 +389,14 @@ draw(mand, hide = TRUE)
 ```{r}
 #| echo: false
 #| fig-align: center
-#| out-width: 70%
-par(mfrow=c(1,3))
+#| layout-ncol: 3
+#| out-width: 30%
+#| label: fig-dist1
+#| fig-cap: Opzioni di risposta @fig-mat1
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
 draw(correct(mand))
 draw(wp(mand)$wp_copy)
 draw(repetition(mand)$r_left)
@@ -396,6 +407,8 @@ draw(repetition(mand)$r_left)
 
 ```{r}
 #| echo: false
+#| label: fig-mat2
+#| fig-cap: Matrice 2 (OR)
 library(matRiks)
 par(mfrow=c(1,1))
 mor = mat_apply(cof(square4(), size(dice(), 2), size(dot(), 2)), hrules = "OR") 
@@ -404,9 +417,14 @@ draw(mor, hide = TRUE)
 
 ```{r}
 #| echo: false
-#| out-width: 70%
-#| fig-align: center
-par(mfrow=c(1,3))
+#| layout-ncol: 3
+#| out-width: 30%
+#| label: fig-dist2
+#| fig-cap: Opzioni di risposta @fig-mat2
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
 draw(repetition(mor)$r_left)
 draw(correct(mor))
 draw(repetition(mor)$r_diag)
@@ -417,6 +435,8 @@ draw(repetition(mor)$r_diag)
 
 ```{r}
 #| echo: false
+#| label: fig-mat3
+#| fig-cap: Matrice 3 (XOR)
 library(matRiks)
 
 mxor = mat_apply(cof(square4(), size(dice(), 2), size(dot(), 2)), hrules = "XOR")
@@ -425,9 +445,14 @@ draw(mxor, hide = TRUE)
 
 ```{r}
 #| echo: false
-#| out-width: 70%
-#| fig-align: center
-par(mfrow=c(1,3))
+#| layout-ncol: 3
+#| out-width: 30%
+#| label: fig-dist3
+#| fig-cap: Opzioni di risposta @fig-mat3
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
 draw(correct(mxor))
 draw(repetition(mxor)$r_diag)
 draw(repetition(mxor)$r_top)

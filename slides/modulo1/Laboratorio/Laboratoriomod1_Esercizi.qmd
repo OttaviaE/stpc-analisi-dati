@@ -1,12 +1,14 @@
 ---
 title: "Laboratorio di Analisi dei Dati con R"
-subtitle: "Esercizi"
+subtitle: "Esercizi modulo 1"
 author: "Ottavia Epifania"
-format: pdf
+format: 
+  html: 
+   embed-resources: true
+   number-sections: true
 execute:
   echo: true
   eval: false
-linestretch: 1.5
 ---
 
 # 1. Operazioni aritmetiche

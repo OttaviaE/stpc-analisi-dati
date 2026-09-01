@@ -1,7 +1,7 @@
 ---
 title: "Analisi dei Dati con R"
 subtitle: "Esercizi modulo 1 -- Parte 2"
-author: "Ottavia Epifania"
+author: "Nome Cognome"
 format: 
   html: 
    embed-resources: true
@@ -10,14 +10,7 @@ format:
    toc-title: Lista Esercizi
 execute:
   eval: true
-output-file: Esercizi-aggiuntivi-Rmod1-soluzioni.html
 ---
-
-```{r include=FALSE}
-myvar = T
-knitr::opts_chunk$set(include = myvar)
-```
-
 
 # Trasposizione di una matrice 
 
@@ -53,11 +46,7 @@ In R, la trasposta di una matrice si ottiene con il comando `t()` (dove dentro l
 Costruire una matrice denominata `a`  $5 \times 5$ contenente nella prima colonna il valore numerico 1, nella seconda colonna il valore 2, ..., nella quinta colonna il valore 5. In pratica ogni colonna contiene lo stesso valore numerico replicato per cinque volte.
 
 ```{r}
-# per costuire la matrice si può usare il comando rep() settando l'agomento 
-# each = 5 perché vogliamo ripetere ogni numero 5 volte 
 
-a = matrix(rep(1:5, each=5), 5,5)
-a
 ```
 
 
@@ -66,9 +55,7 @@ a
 Selezionare la prima e l'ultima riga di `a` ed assegnarla ad una nuova matrice B di dimensione $2 \times 5$.
 
 ```{r}
-# Va usato un vettore che indicizzi le righe della matrice 
-b = a[c(1, 5), ]
-b
+
 ```
 
 
@@ -79,10 +66,7 @@ Fare la somma tra la matrice *trasposta* di `b` e la matrice `m`.
 Il risultato di questa somma va assegnato ad una nuova matrice `d`. 
 
 ```{r}
-m = matrix(1:10, 5, 2)
-m
-t(b) # trasposta di b
-d = t(b) + m
+
 ```
 
 
@@ -91,7 +75,7 @@ d = t(b) + m
 Visualizzare il valore contenuto nella posizione (riga 3, colonna 2) della matrice `d`.
 
 ```{r}
-d[3,2]
+
 ```
 
 
@@ -100,7 +84,7 @@ d[3,2]
 Fare la somma tra la media degli elementi nella prima riga di `a` e la media di tutti i valori di `d` (va usata la funzione `mean()`). 
 
 ```{r}
-mean(a[1, ]) + mean(d) 
+
 ```
 
 
@@ -117,13 +101,7 @@ Costruire una variabile lista dal nome `dati` che contenga:
 4. una variabile logica (`TRUE` vs. `FALSE`) che codifichi se ti piace viaggiare o meno. Visualizzare il contentuo di `dati` 
 
 ```{r}
-nc = c("Jane", "Doe")
-gruppi = c("Giancane", "IDLES", "Misfits", "Rancid", "Punkreas", "Ramones")
-concerti = 28
-viaggi = TRUE
-dati = list(nome = nc, gruppi = gruppi, concerti = concerti, 
-                       viaggi = viaggi)
-dati
+
 ```
 
 
@@ -132,7 +110,7 @@ dati
 Visualizzare con un unico comando il nome del gruppo più importante e quello meno importante nella tua dati.
 
 ```{r}
-dati$gruppi[c(1, length(dati$gruppi))]
+
 ```
 
 
@@ -141,8 +119,7 @@ dati$gruppi[c(1, length(dati$gruppi))]
 Cancellare dalla memoria del sistema tutte le variabili costruite nella sessione di lavoro.
 
 ```{r}
-ls() # vede quali variabili sono nell'ambiente
-rm(list = ls()) # pulisce l'ambiente
+
 ```
 
 

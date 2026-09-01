@@ -32,11 +32,30 @@ Si costruisca la seguente tabella di dati e la si assegni alla variabile **dati*
 
 Le variabili X1, X2, X3 e X5 sono numeriche (X3 è dicotomica 0/1), mentre X4 è testuale (m/f).
 
+```{r}
+
+```
+
+
 1. Visualizzare la terza osservazione di X2 e la quinta osservazione di X4. Modificare con i valori 25 e "m".
+
+```{r}
+
+```
+
 
 2. Visualizzare solo X2. Assegnarla a Y2 e verificare se contiene valori > 10.
 
+```{r}
+
+```
+
+
 3. Visualizzare il profilo della quinta osservazione. Assegnarlo a P5 e verificare che contenga "m".
+
+```{r}
+
+```
 
 
 ## 
@@ -45,15 +64,39 @@ Utilizzare l’operatore di selezione `[]` (parentesi quadre) per filtrare e mod
 
 1. Assegnare X2 a A2 e filtrare i valori $> 13$. Assegnare a B2.
 
+```{r}
+
+```
+
 2. Assegnare X4 a A4 e filtrare solo i maschi (m).
+
+```{r}
+
+```
+
 
 3. Visualizzare il contenuto del workspace.
 
+```{r}
+
+```
+
+
 4. Selezionare solo le righe di dati associate al gruppo femminile. Creare `datiF`. Fare lo stesso per i maschi creando `datiM`.
+```{r}
+
+```
 
 5. Selezionare i profili con $X1 > 10$ e $X3 = 0$. Creare `dati2`. Ripetere selezionando X1 compresi tra 9 e 12 (inclusi).
+```{r}
+
+```
 
 6. Sostituire la terza riga di `dati` con (10, 10, 1, "f", 4 -- un valore per variabili).
+
+```{r}
+
+```
 
 
 # Operazioni su data frame
@@ -64,13 +107,42 @@ Utilizzare i dati di `dati`.
 
 1. Calcolare la media di X1 limitatamente ai valori associati a $X3 = 1$.
 
+```{r}
+
+```
+
 
 2. Calcolare la somma di:
    - Deviazione standard di X1 per le osservazioni con $1\leq X5 \leq 2$
+
+```{r}
+
+```
+
    - Deviazione standard di X2 per le osservazioni con $X3 + X5\geq 4$
+
+```{r}
+
+```
+
  
 3. Calcolare la somma di X2 limitatamente ai valori associati **esclusivamente** a `X4 = "m"` **o** `X3 = 1` (disgiunzione esclusiva).
 
+```{r}
+
+```
+
+
 4. Visualizzare la sottotabella di dati con $X1 > 10$ e che soddisfi anche la condizione dell’esercizio precedente.
 
+```{r}
+
+```
+
+
 5. Assegnare a U la sottotabella con le colonne X1 e X5, per le righe con X4 = "f" **oppure** $X2 \geq 15$.
+
+```{r}
+
+```
+
