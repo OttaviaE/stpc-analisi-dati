@@ -113,7 +113,7 @@ babies = data.frame(id, months, weight)
 
 # Introduzione 
 
-Prima di iniziare: Scaricate la cartella "data" dal moodle del corso in modo da poter svolgere le esercitazioni!
+Prima di iniziare: Scaricate la cartella compressa [data](data.zip){download="data.zip"} dentro cui si trovano tutti i dataset che sono usati in questo file. 
 
 `R` è un software open source per il calcolo statistico, la grafica e molto altro
 
