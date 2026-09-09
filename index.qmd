@@ -99,7 +99,7 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 * [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi.html)
 * [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.pdf)
-* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/Laboratoriomod1_soluzioni.html)
+* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod1_soluzioni.html)
 
 #### Parte 2
 
