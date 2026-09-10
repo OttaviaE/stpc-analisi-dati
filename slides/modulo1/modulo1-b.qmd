@@ -579,3 +579,79 @@ dati = read.csv("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/dati
                 sep =";", dec =",", header = TRUE)
 head(dati)
 ```
+
+# Sintesi delle strutture tabellari
+
+### `summary()`
+
+    summary(data)
+
+Riassume il contenuto di strutture di dati 
+\pause
+
+\small
+
+```{r}
+summary(rock)
+```
+
+### `str()`
+
+    str(data)
+    
+Fornisce informazioni circa la struttura generale di un oggetto: 
+
+\pause
+
+```{r}
+str(rock)
+```
+
+### `head()` ($\alpha$) and `tail()` ($\omega$)
+
+:::: {.columns}
+
+::: {.column width="50%"}
+`head()`
+
+Le prime 6 osservazioni del dataset
+\footnotesize
+```{r}
+head(rock)
+```
+
+:::
+
+::: {.column width="50%"}
+`tail()`
+
+\footnotesize
+le ultime 6 osservazioni del dataset
+
+```{r}
+tail(rock)
+```
+
+:::
+
+::::
+
+
+### `apply()`
+
+    apply(data, MARGIN, FUN)
+
+`data`: i dati su cui si vuole lavorare
+
+`MARGIN`: 1 applica la funzione sulle righe (attraverso le colonne), 2 applica la funzione sulle colonne (attraverso le righe)
+
+`FUN`: la funzione che si vuole applicare
+
+###
+
+\footnotesize
+
+```{r}
+apply(rock, 1, sum)   # Somma per riga
+apply(rock, 2, mean)  # Media per colonna
+```

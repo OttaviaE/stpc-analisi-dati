@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 2 – Statistiche descrittive e illustrazioni"
+title: "Modulo Didattico 2 -- Scale di misura e illusrazioni grafiche"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -15,339 +15,34 @@ format:
     outertheme: miniframes
 callout-icon: false
 code-annotations: below
-header-includes: 
-   - \usepackage{graphicx} 
-   - \usepackage{xcolor}
-   - \usepackage{tikz}
-   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
-   - \AtBeginSubsection{}
-   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
-   - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
-   - \AtBeginSection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection, hideallsubsections]
-              \end{frame}
-          }
-   - \AtBeginSubsection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
-             \end{frame}
-          }
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{xcolor}
+  - \usepackage{tikz}
+  - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,arrows.meta}
+  - \AtBeginSubsection{}
+  - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+  - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+  - |
+      \AtBeginSection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,hideallsubsections]
+        \end{frame}
+      }
+  - |
+      \AtBeginSubsection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+        \end{frame}
+      }
+  - \definecolor{unipd}{RGB}{155,0,20}
+  - \definecolor{template}{RGB}{72,79,89}
+  - \definecolor{blu}{rgb}{0.0,0.33,0.71}
 editor_options: 
   chunk_output_type: console
 execute: 
   echo: true
 ---
-
-
-# File esterni di dati
-
-## Working Directories (wd)
-
-### 
-
-\footnotesize
-
-```{r}
-getwd() # <1>
-```
-
-1. Restituisce la wd in cui ci si trova (default: cartella dove si trova l'installazione di `R`)
-
-
-\footnotesize
-```{r}
-#| eval: false
-
-setwd("C/Documenti/I-miei-file") # <2>
-```
-
-2. Permette di settare una nuova wd
-
-\small
-
-```{r}
-dir()  # <3>
-```
-
-3. Vettore che indica tutti i file/sottorcartelle presenti nella wd ottenuta con `getwd()`
-
-### Esercizio 
-
-1. Aprire un nuovo script in Rstudio 
-  * File, New File, R script oppure tasti `shift + ctrl + n`
-  
-2. Determinare in che wd ci si trova (copia & incolla il risultato del comando `getwd()` nello script sottoforma di commento)
-
-3. Creare una nuova cartella sul desktop dal nome `corso-analisi`
-
-4. Usare il comando `setwd()` per spostarsi in quella cartella
-
-
-
-## Caricare
-
-### 
-
-    read.csv2("file_path")
-
-
-
-Se si possiede un dataset chiamato "Dati" nella cartella "EXP", questo codice lo importerà all'interno dell'ambiente
-
-```{r}
-#| eval: false
-# Lettura file dati esterni
-DATI <- read.csv2("C:\\EXP\\Dati.csv")
-```
-
-## Sintesi di strutture tabellari
-
-### `summary()`
-
-    summary(data)
-
-Riassume il contenuto di strutture di dati 
-\pause
-
-\small
-
-```{r}
-summary(rock)
-```
-
-### `str()`
-
-    str(data)
-    
-Fornisce informazioni circa la struttura generale di un oggetto: 
-
-\pause
-
-```{r}
-str(rock)
-```
-
-### `head()` ($\alpha$) and `tail()` ($\omega$)
-
-:::: {.columns}
-
-::: {.column width="50%"}
-`head()`
-
-Le prime 6 osservazioni del dataset
-\footnotesize
-```{r}
-head(rock)
-```
-
-:::
-
-::: {.column width="50%"}
-`tail()`
-
-\footnotesize
-le ultime 6 osservazioni del dataset
-
-```{r}
-tail(rock)
-```
-
-:::
-
-::::
-
-
-### `apply()`
-
-    apply(data, MARGIN, FUN)
-
-`data`: i dati su cui si vuole lavorare
-
-`MARGIN`: 1 applica la funzione sulle righe (attraverso le colonne), 2 applica la funzione sulle colonne (attraverso le righe)
-
-`FUN`: la funzione che si vuole applicare
-
-###
-
-\footnotesize
-
-```{r}
-apply(rock, 1, sum)   # Somma per riga
-apply(rock, 2, mean)  # Media per colonna
-```
-
-# Variabili 
-
-### 
-
-```{r}
-#| echo: false
-#| out-width: 100%
-#| fig-align: center
-knitr::include_graphics("img/variabili.png")
-```
-
-
-
-## Categoriali - Nominali 
-
-### `as.factor()`
-
-`as.factor()`: Converte una variabile in una variabile di tipo **categoriale/nominale** con tanti livelli quanti sono i valori unici nel vettore 
-
-:::{.r-stack}
-Due livelli
-:::
-
-```{r}
-Genere <- c("m","f","f","m","f","m") 
-Genere
-```
-
-\pause
-
-```{r}
-as.factor(Genere) 
-```
-
-
-
-###
-
-:::{.r-stack}
-Più livelli
-:::
-
-
-```{r}
-diagnosi <- c("schizo", "dep", "narc", "schizo", "dep", "narc")
-diagnosi
-
-```
-
-\pause
-
-\small
-```{r}
-as.factor(diagnosi) 
-```
-
-
-
-## Categoriali - Ordinali 
-
-### 
-
-    factor(A,levels=c("a1","a2",..., "ak"), 
-       ordered=TRUE) 
-       
-Converte la variabile in una variabile con tanti livelli quanti sono i valori unici e viene forzato un ordine su questi livelli: 
-
-\small
-```{r}
-Voto <- c("alto","medio","medio","basso","alto") 
-Voto
-factor(Voto,levels=c("basso","medio","alto"), ordered=TRUE) 
-```
-
-
-# Statistiche descrittive di base
-
-## Tavole di frequenza 
-
-### 
-
-    table(variabile)
-    
-Calcola le occorrenze (frequenze) per ogni categoria. Funziona sia per le variabili categoriali sia per le variabili numeriche 
-
-```{r}
-table(Genere)
-```
-
-```{r}
-table(diagnosi)
-```
-
-
-
-### Altre funzioni 
-
-| Funzione | Significato        |
-|----------|--------------------|
-| `mean()`   | Media              |
-| `min()`, `max()`   | Minimo, Massimo              |
-| `range()` | Range di valori entro cui varia la variabile|
-| `quantile(x, probs)` | Calcola il quantile p=probs della variabile numerica X|
-| `sd()`, `var()`   | Deviazione st., Varianza  |
-| `sum()`   | Somma  |
-
-
-
-# Generazione di variabili casuali 
-
-## `set.seed()`
-
-### 
-
-Permette di settare un seed comune a tutt
-
-Garantisce la perfetta replicabilità dei risultati
-
-Garantisce che se tutt settiamo questo seed, otteniamo gli stessi grafici
-
-```{r}
-set.seed(999)
-```
-
-### 
-
-
-`rnorm(n, mean = 0, sd = 1)` :Genera `n` valori casuali e indipendenti da una variabile casuale normale con media `mean` 0 e deviazione standard `sd` 1 (normale standard)
-
-
-\pause
-
-`rnunif(n, min = 0, max = 1)` Genera `n` valori casuali e indipendenti da una variabile casuale uniforme, dove i valori sono compresi tra 0 (`min`) e 1 (`max`)
-
-\pause
-
-:::: {.columns}
-
-:::{.column width=50%}
-\footnotesize
-```{r}
-x = rnorm(500, mean = 0, sd = 1)
-```
-
-```{r}
-#| echo: false
-#| out-width: 80%
-hist(x)
-```
-
-:::
-
-:::{.column width=50%}
-\footnotesize
-```{r}
-y = runif(500, min = -4, max = 4)
-```
-
-```{r}
-#| echo: false
-#| out-width: 80%
-hist(y)
-```
-
-
-:::
-::::
-
-# Grafici 
 
 ### 
 
@@ -368,6 +63,130 @@ Pastore et al. (2017)
 \end{flushright}
 
 
+### 
+
+```{r}
+#| echo: false
+#| results: asis
+# Creo la tabella delle statistiche descrittive
+descrittive <- data.frame(
+  Dataset = paste("Dataset", 1:4),
+  
+  `Media X` = sapply(1:4, function(i)
+    mean(anscombe[[paste0("x", i)]])),
+  
+  `Media Y` = sapply(1:4, function(i)
+    mean(anscombe[[paste0("y", i)]])),
+  
+  `Varianza X` = sapply(1:4, function(i)
+    var(anscombe[[paste0("x", i)]])),
+  
+  `Varianza Y` = sapply(1:4, function(i)
+    var(anscombe[[paste0("y", i)]])),
+  
+  `Correlazione` = sapply(1:4, function(i)
+    cor(
+      anscombe[[paste0("x", i)]],
+      anscombe[[paste0("y", i)]]
+    ))
+)
+
+descrittive[, -1] <- round(descrittive[, -1], 2)
+
+knitr::kable(
+  descrittive,
+  format = "latex",
+  booktabs = TRUE,
+  align = "lccccc"
+)
+```
+
+
+### {.plain}
+
+\vspace*{-1.5mm}
+
+```{r}
+#| echo: false
+#| out-width: 70%
+#| fig-align: center
+#| layout-nrow: 2
+#| layout-ncol: 2
+#| label: fig-data
+#| fig-cap: I grafici raccontano un'altra storia
+#| fig-subcap: 
+#|   - "Dataset 1"
+#|   - "Dataset 2"
+#|   - "Dataset 3"
+#|   - "Dataset 4"
+
+plot(anscombe$x1, anscombe$y1, pch = 19, 
+     col = "steelblue", 
+     cex = 2)
+abline(lm(anscombe$y1 ~ anscombe$x1), lwd = 2, lty =2, col = "gray")
+abline(v = mean(anscombe$x1), lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y1), lty = 3, col = "firebrick")
+plot(anscombe$x2, anscombe$y2, pch = 19, 
+     col = "steelblue", 
+     cex = 2)
+abline(lm(anscombe$y2 ~ anscombe$x2), lwd = 2, lty =2, col = "gray")
+abline(v = mean(anscombe$x2), lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y2), lty = 3, col = "firebrick")
+plot(anscombe$x3, anscombe$y3, pch = 19, 
+     col = "steelblue", 
+     cex = 2)
+abline(lm(anscombe$y3 ~ anscombe$x3), lwd = 2, lty =2, col = "gray")
+abline(v = mean(anscombe$x3), lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y3), lty = 3, col = "firebrick")
+plot(anscombe$x4, anscombe$y4, pch = 19, 
+     col = "steelblue", 
+     cex = 2)
+abline(lm(anscombe$y4 ~ anscombe$x4), lwd = 2, lty =2, col = "gray")
+abline(v = mean(anscombe$x4), lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y4), lty = 3, col = "firebrick")
+```
+
+
+
+# Grafici 
+
+### 
+
+R fornisce uno strumento molto utile per la rappresentazione grafica dei dati e dei risultati già con il suo pacchetto base `graphics` 
+
+:::{.callout-warning}
+## NB
+
+Non avete bisogno di installarlo, è caricato automaticamente nel momento in cui scaricate R e le sue funzioni sono sempre disponibili
+
+:::
+
+`ggplot2` è un pacchetto più avanzato per la creazione dei grafici. Non entreremo nel dettaglio del suo funzionamento perché è un po' più complicato 
+
+### 
+
+Alcune funzioni incluse nel pacchetto `graphics`:
+
+```{r}
+#| eval: false
+plot(x)   # <1> 
+plot(x, y) # <2>
+hist(x)    # <3>
+boxplot(x) # <4>
+barplot(x) # <5>
+```
+
+1. Grafico di una variabile quantitativa
+2. Grafico a dispersione di due variabili quantitative 
+3. Istogramma di una variabile quantitativa 
+4. Boxplot della distribuzione quartile di una (o più)  variabili
+5. Grafico a barre per le frequenze delle variabili qualitative
+
+
+
+
+
+## Grafico a barre
 
 ## Istogrammi 
 
@@ -709,83 +528,3 @@ hist(x, freq = FALSE)
 lines(density(x), lwd = 2, col ="blue")
 ```
 
-# Da Execel a `R`
-
-## Crea
-
-###
-
-```{r}
-#| echo: false
-knitr::include_graphics("img/excel.png")
-```
-
-
-## Salva 
-
-###
-
-```{r}
-#| echo: false
-knitr::include_graphics("img/save.png")
-```
-
-## Importa 
-
-### 
-
-\small
-```{r}
-#| echo: true
-dati = read.csv2("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/dati.csv")
-head(dati)
-```
-
-## Importa alternativa 1
-
-### 
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 100%
-knitr::include_graphics("img/import0.png")
-```
-
-###
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 100%
-knitr::include_graphics("img/import1.png")
-```
-
-###
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 100%
-knitr::include_graphics("img/import2.png")
-```
-
-### 
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 100%
-knitr::include_graphics("img/import3.png")
-```
-
-## Importa alternativa 2
-
-###
-
-```{r}
-#| echo: true
-dati = read.csv("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/dati.csv", 
-                sep =";", dec =",", header = TRUE)
-head(dati)
-```

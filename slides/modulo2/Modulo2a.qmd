@@ -1,0 +1,801 @@
+---
+title: "Modulo Didattico 2 – Scale di misura e statistica descrittiva"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+code-annotations: below
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{xcolor}
+  - \usepackage{tikz}
+  - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,arrows.meta}
+  - \AtBeginSubsection{}
+  - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+  - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+  - |
+      \AtBeginSection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,hideallsubsections]
+        \end{frame}
+      }
+  - |
+      \AtBeginSubsection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+        \end{frame}
+      }
+  - \definecolor{unipd}{RGB}{155,0,20}
+  - \definecolor{template}{RGB}{72,79,89}
+  - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+
+
+# Variabili 
+
+###
+
+\begin{center}
+\Large  QUALITATIVE / CATEGORIALI
+\end{center}
+\begin{itemize}
+\item sconnesse: $\{a,b,c\}$
+\item ordinate:$\{a,b,c\}$ con $a < b < c$ (oppure $a > b > c$)
+\end{itemize}
+
+\begin{center}
+\Large  QUANTITATIVE / METRICHE
+\end{center}
+\begin{itemize}
+\item Discrete: $\mathbb{Z}$
+\item Continue: $\mathbb{R}$
+\end{itemize}
+
+### Stevens (1946)
+
+
+\small
+Si differenziano in base alla quantità di informazione che può essere ricavata
+	
+\begin{itemize}
+\item Variabili qualitative
+\begin{itemize}
+\item \textbf{Nominale}: Distingue un insieme di dati in diverse categorie
+\item \textbf{Ordinale}: Distingue un insieme di dati in diverse categorie che sono ordinabili a seconda della quantità di caratteristica posseduta 
+\end{itemize}
+	
+\item Variabili quantitative
+	
+\begin{itemize}
+\item \textbf{Intervalli equivalenti} Distingue un insieme di dati in diverse categorie ordinabili. La distanza tra le categorie è nota perché c'è un'unità di misura
+\item \textbf{A rapporti equivalenti}: Come la scala ad intervalli...ma lo 0 indica assenza di caratteristica (non è arbitrario ma è assoluto) 
+\end{itemize}
+\end{itemize}
+
+## Categoriali - Nominali 
+
+### 
+
+\small
+
+Comune di residenza, genere, patologia clinica ecc. Vale solo l'equivalenza ($=$ o $\neq$)
+
+\begin{center}
+\includegraphics[width=.20\linewidth]{img/nominale.png}
+\end{center}
+
+Al posto di ``A'', ``B'', ``C'' si poteva scrivere $\alpha$, $\beta$ $\gamma$, 1,2,3 (ma i numeri valgono solo come etichette!)
+
+Caratteristiche: 
+
+\begin{itemize}
+\item  Categorie \textbf{distintive}: gli elementi che appartengono a categorie differenti vengono considerati di tipo diverso
+\item Categorie \textbf{mutualmente escludentesi}: ogni elemento può rientrare in una ed una sola categoria
+\item Categorie \textbf{Collettivamente esaustive}: tutti gli elementi vengono classificati nelle categorie della variabile, nessuno escluso
+	
+\end{itemize}
+
+### `as.factor()`
+
+`as.factor()`: Converte una variabile in una variabile di tipo **categoriale/nominale** con tanti livelli quanti sono i valori unici nel vettore 
+
+:::{.r-stack}
+Due livelli
+:::
+
+```{r}
+Genere <- c("m","f","f","m","f","m") 
+Genere
+```
+
+```{r}
+as.factor(Genere) 
+```
+
+\small
+
+`as.character()` produre una variabili categoriale, ma senza i livelli che caratterizzano i `factor`
+
+###
+
+:::{.r-stack}
+Più livelli
+:::
+
+
+```{r}
+diagnosi <- c("schizo", "dep", "narc", "schizo", "dep", "narc")
+diagnosi
+
+```
+
+\pause
+
+\small
+```{r}
+as.factor(diagnosi) 
+```
+
+
+
+## Categoriali - Ordinali 
+
+### 
+
+Titolo di studio, gradimento di un prodotto, valutazione di una malattia (e.g., alto, medio, basso) ecc. Vale sia l'equivalenza ($=$ o $\neq$) sia l'ordinamento ($<$ o $>$)
+	
+\begin{center}
+\includegraphics[width=.20\linewidth]{img/ordinale.png}
+\end{center}
+
+:::{.callout-caution}
+## Attenzione!
+
+Si conosce l'ordine tra le categorie, non si conosce la distanza.
+
+Le etichette numeriche valgono per il loro ordine (non ha senso compiere operazioni tra di loro)
+
+:::
+
+### 
+
+    factor(A,levels=c("a1","a2",..., "ak"), 
+       ordered=TRUE) 
+       
+Converte la variabile in una variabile con tanti livelli quanti sono i valori unici e viene forzato un ordine su questi livelli: 
+
+\small
+```{r}
+Voto <- c("alto","medio","medio","basso","alto") 
+Voto
+factor(Voto,levels=c("basso","medio","alto"), ordered=TRUE) 
+```
+
+## Quantitative -- Scala ad intervalli equivalenti
+
+### 
+
+Lo $0$ è arbitrario, ma c'è un'\emph{unita di misura} per cui le categorie si trovano alla stessa distanza. Temperatura in Celsius, Q.I., scale di atteggiamento ecc. Vale equivalenza ($=$ o $\neq$), ordinamento ($<$ o $>$) e differenza ($+$ o $-$): 
+
+\begin{center}
+\includegraphics[width=0.5\linewidth]{img/intervalli.png}
+\end{center}
+	
+\begin{figure}
+\centering
+\includegraphics[width=0.5\linewidth]{img/termometroMulti.jpg}
+\end{figure}
+
+
+### 
+
+\begin{columns}[T]
+\begin{column}{.50\linewidth}
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/termometri}
+\end{figure}
+\end{column}
+		
+\begin{column}{.50\linewidth}
+Se ci sono 0°C, non vuol dire che non c'è calore! \\
+Se ieri c'erano 5°C e oggi ce ne sono 10°C, possiamo dire che oggi fa più caldo di ieri e che ci sono 5°C più di ieri\\
+Il fatto che lo 0 non sia arbitrario non ci permette di dire che oggi c'è il doppio del caldo di ieri! \\
+Trasformando le due temperature in Fahrenheit si ottiene 41°F e 50°F... e la seconda non è più il doppio della prima!
+\end{column}
+\end{columns}
+
+## Metriche -- Scala a rapporti equivalenti 
+
+### 
+
+Lo 0 è assoluto, indica assenza del fenomeno. Peso, altezza, valori diagnostici. Vale equivalenza ($=$ o $\neq$),  ordinamento ($<$ o $>$), differenza ($+$ o $-$) e rapporto ($\times$ o $\div$)
+	
+\begin{center}
+\includegraphics[width=0.40\linewidth]{img/rapporti.png}
+\end{center}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.4\linewidth]{img/bilancia}
+\end{figure}
+
+
+### `numeric`, `integer()`
+
+Le **variabili metriche** in R  sono variabili di tipo `numeric` o `integer`, a seconda che siano continue o discrete 
+
+:::{.callout-caution}
+## Attenzione!
+
+In R non esiste una distinzione tra variabili a intervalli equivalenti e variabili a rapporti equivalenti -- Sta a voi capire che tipo di variabile sia
+:::
+
+
+### 
+
+\scriptsize
+```{r}
+x = seq(-3, 3, length.out = 10); x # <1>
+y = rnorm(10, mean = 3, sd=2); y # <2>
+z = 1:15; z # <3>
+```
+\footnotesize
+1. La funzione `seq()` genera un vettore di numeri da un minimo a un massimo, di lunghezza definita dall'utente 
+2. La funzione `rnorm()` genera un vettore di lunghezza definita estraendo a caso da una distribuzione normale 
+3. L'operatore `:` genera una sequenza unitaria di valori da un minimo a un massimo
+
+# Frequenze
+
+## Assolute e relative
+
+### 
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Categoria $x_i$ & $n_i$ & $\%_i = \dfrac{n_i}{n}\cdot 100$ \\
+\hline
+$x_1$ & $n_1$ & $\%_1$ \\
+$x_2$ & $n_2$ & $\%_2$ \\
+$\vdots$ & $\vdots$ & $\vdots$ \\
+$x_k$ & $n_k$ & $\%_k$ \\
+\hline
+Totale & $n$ & $100$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{3mm}
+
+\textbf{Frequenza assoluta:}\quad
+$n_i \geq 0$, con $n_i \in \mathbb{N}$ e
+$\displaystyle\sum_{i=1}^{k} n_i = n$
+
+\vspace{2mm}
+
+\textbf{Frequenza percentuale:}\quad
+$\%_i = \dfrac{n_i}{n}\cdot100$,
+con $0 \leq \%_i \leq 100$ e
+$\displaystyle\sum_{i=1}^{k}\%_i = 100$
+
+### 
+
+    table(variabile)
+    
+Calcola le frequenze per ogni categoria. Funziona sia per le variabili categoriali sia per le variabili metriche 
+
+```{r}
+table(Genere)
+```
+
+```{r}
+table(diagnosi)
+```
+
+
+## Cumulate 
+
+### 
+
+**Frequenza cumulata**: numero o percentuale di unità statistiche
+  che presentano una modalità "minore o uguale" alla modalità corrente.
+
+
+
+**Frequenze assolute cumulate**
+
+
+$$N_i = n_1 + n_2 + \cdots + n_i
+    = \sum_{j=1}^{i} n_j$$
+
+con
+
+$N_1 = n_1
+\qquad \text{e} \qquad
+N_k = n.$
+
+
+
+**Frequenze percentuali cumulate**
+
+$$
+N_i\% = n_1\% + n_2\% + \cdots + n_i\%
+       = \sum_{j=1}^{i} n_j\%
+$$
+
+con
+
+$
+N_1\% = n_1\%
+\qquad \text{e} \qquad
+N_k\% = 100\%.
+$
+
+### 
+
+Le frequenze cumulate possono essere definite **ricorsivamente**:
+
+
+$$N_i = N_{i-1} + n_i, \qquad N_i\% = N_{i-1}\% + n_i\%$$
+
+:::{.callout-caution}
+
+## Attenzione
+
+Le frequenze cumulate si calcolano **solo quando le modalità del carattere
+presentano un ordinamento**.
+
+Non hanno quindi senso per caratteri qualitativi sconnessi (nominali).
+:::
+
+
+
+### 
+
+Esprimi l'accordo con l'affermazione:
+
+> Insegnare statistica a psicologia è una buona idea
+
+\begin{table}
+\centering
+\small
+
+\begin{tabular}{lrrrr}
+\hline
+Modalità $x_i$ & $n_i$ & $N_i$ & $n_i\%$ & $N_i\%$ \\
+\hline
+Totalmente in disaccordo  & 10 & 10 & 24.4\% & 24.4\% \\
+Abbastanza in disaccordo  &  8 & 18 & 19.5\% & 43.9\% \\
+Indifferente              &  6 & 24 & 14.6\% & 58.5\% \\
+Abbastanza d'accordo      & 14 & 38 & 34.2\% & 92.7\% \\
+Totalmente d'accordo      &  3 & 41 &  7.3\% & 100.0\% \\
+\hline
+Totale                     & 41 &    & 100.0\% & \\
+\hline
+\end{tabular}
+
+\end{table}
+
+### `cumsum()` 
+
+
+
+```{r}
+opinione = data.frame(
+  categoria = c(
+    "Totalmente in disaccordo",
+    "Abbastanza in disaccordo",
+    "Indifferente",
+    "Abbastanza d'accordo",
+    "Totalmente d'accordo"
+  ),
+  n = c(10, 8, 6, 14, 3)
+)
+
+opinione$N = cumsum(opinione$n)
+opinione
+
+```
+
+
+# Indici di posizione 
+
+\begin{itemize}
+\item \textbf{indici sintetici} che evidenziano le caratteristiche essenziali della distribuzione della variabile
+	
+\vspace{3mm}
+
+\begin{quote}
+
+Presentano livelli maggiori di machiavellismo i CEO o gli impiegati?
+\end{quote}
+\vspace{3mm} 
+
+\item Si confrontano categorie che rappresentano i livelli o valori tipici
+
+\item Consentono di sintetizzare un insieme di misure tramite un unico valore ``rappresentativo'' $\rightarrow$ indice che riassume o descrive i dati e dipende dalla scala di misura dei dati in oggetto
+\end{itemize}
+
+### 
+
+\begin{itemize}
+\item moda
+\item mediana
+\item quartili/percentili
+\item media aritmetica
+\end{itemize}
+
+Ogni variabile statistica ha l’indice di posizione adeguato: non tutti gli indici si possono calcolare per ogni variabile $\rightarrow$ \textbf{indice di posizione adeguato}
+
+### 
+
+\begin{tikzpicture}[
+  node distance=0.9cm and 1.8cm,
+  boxleft/.style={
+    draw,
+    rounded corners=4pt,
+    minimum width=5.2cm,
+    minimum height=1.0cm,
+    align=center,
+    fill=gray!8,
+    inner sep=6pt
+  },
+  boxright/.style={
+    draw,
+    rounded corners=4pt,
+    minimum width=3.8cm,
+    minimum height=1.0cm,
+    align=center,
+    fill=template!15,
+    inner sep=6pt,
+    font=\bfseries
+  },
+  arrow/.style={
+    -{Latex[length=2.5mm]},
+    thick,
+    draw=gray!70
+  }
+]
+
+\node[boxleft] (nom) {
+Variabile misurata su\\
+\textbf{scala nominale}
+};
+
+\node[boxleft, below=of nom] (ord) {
+Variabile misurata su\\
+\textbf{scala ordinale}
+};
+
+\node[boxleft, below=of ord] (quant) {
+\textbf{Variabile quantitativa}
+};
+
+\node[boxright, right=of nom] (moda) {
+MODA
+};
+
+\node[boxright, right=of ord] (mediana) {
+MEDIANA
+};
+
+\node[boxright, right=of quant] (media) {
+MEDIA o MEDIANA
+};
+
+\draw[arrow] (nom.east) -- (moda.west);
+\draw[arrow] (ord.east) -- (mediana.west);
+\draw[arrow] (quant.east) -- (media.west);
+
+\end{tikzpicture}
+
+### Moda ($Mo$)
+
+Categoria che presenta la massima frequenza
+	
+	
+\begin{center}
+	$Mo(X) = max(n_i)$ \\ (categoria con massimo valore di $n_i$)
+\end{center}
+	
+	
+	
+:::{.callout-warning}
+		
+N.B: Si può calcolare per le variabili misurate a qualsiasi livello, anche se di fatto viene calcolata solo per le variabile categoriali, in quanto per altri livelli di misurazione si
+possono calcolare altri indici più informativi
+:::
+
+###
+
+```{r}
+opinione
+max(opinione$n) # restituisce max(n_i)
+opinione[opinione$n == max(opinione$n), "categoria"]
+```
+
+### Mediana
+
+Categoria/valore che occupa la posizione centrale o mediana ($Pos_{Me}$) nella distribuzione ordinata dei dati
+	
+\begin{itemize}
+\item preceduta da almeno 50\% dei casi
+\item superata da almeno 50\% dei casi
+\end{itemize}
+
+
+\begin{equation*}
+Pos_{Me} = \dfrac{(N+1)}{2}
+\end{equation*}
+
+Il valore di $Pos_{Me}$ va cercato nella distribuzione delle frequenze cumulate e si sceglie la categoria con $N_i \geq Pos_{Me}$
+
+### Quantili 
+
+Categorie/valori che dividono la distribuzione di frequenza \underline{ordinata} in più parti.
+
+\begin{quote}
+Qual è il reddito familiare che divide il 25\% dei più poveri dal restante 75\% ?
+	
+Qual è la soglia di reddito oltre cui sta la fascia dei più
+	abbienti ?
+	
+Quali sono le persone che hanno performato al meglio nell'ultimo semestre?
+\end{quote}
+
+Il quantile $x_p$ di ordine $p$ è quella categoria/valore che è:
+	
+	\begin{itemize}
+	\item preceduta da almeno $p$\% dei casi
+	\item superata da almeno $(1-p)$\% dei casi
+	\end{itemize}
+
+
+###
+
+\begin{tikzpicture}[
+  boxleft/.style={
+    draw,
+    rounded corners=4pt,
+    minimum width=2.8cm,
+    minimum height=0.85cm,
+    align=center,
+    fill=gray!8,
+    inner sep=5pt,
+    font=\bfseries
+  },
+  boxright/.style={
+    draw,
+    rounded corners=4pt,
+    minimum width=5.0cm,
+    minimum height=0.85cm,
+    align=center,
+    fill=template!15,
+    inner sep=5pt
+  },
+  arrow/.style={
+    -{Latex[length=2.3mm]},
+    thick,
+    draw=gray!70
+  }
+]
+
+% Box superiori
+\node[boxleft] (quartili) at (0,0) {QUARTILI};
+\node[boxright] (qtext) at (5.2,0) {
+dividono la distribuzione in \textbf{4} parti
+};
+
+\node[boxleft] (decili) at (0,-1.3) {DECILI};
+\node[boxright] (dtext) at (5.2,-1.3) {
+dividono la distribuzione in \textbf{10} parti
+};
+
+\node[boxleft] (percentili) at (0,-2.6) {PERCENTILI};
+\node[boxright] (ptext) at (5.2,-2.6) {
+dividono la distribuzione in \textbf{100} parti
+};
+
+% Frecce
+\draw[arrow] (quartili.east) -- (qtext.west);
+\draw[arrow] (decili.east) -- (dtext.west);
+\draw[arrow] (percentili.east) -- (ptext.west);
+
+% Testo sotto
+\node[align=center, font=\small] at (3.3,-3.8) {
+\textbf{La distribuzione è la stessa: cambia il modo in cui viene suddivisa}
+};
+
+% Barre: stessa lunghezza
+\def\xstart{-0.5}
+\def\xend{7.0}
+\def\barheight{0.38}
+
+% Quartili
+\node[anchor=east, font=\scriptsize] at (-0.7,-4.7) {Quartili};
+\draw[rounded corners=2pt, fill=gray!10]
+  (\xstart,-4.9) rectangle (\xend,-4.5);
+
+\foreach \x in {1.375,3.25,5.125}{
+  \draw[thick] (\x,-4.9) -- (\x,-4.5);
+}
+
+\foreach \x in {0.4375,2.3125,4.1875,6.0625}{
+  \node[font=\scriptsize] at (\x,-4.7) {25\%};
+}
+
+% Decili
+\node[anchor=east, font=\scriptsize] at (-0.7,-5.5) {Decili};
+\draw[rounded corners=2pt, fill=gray!10]
+  (\xstart,-5.7) rectangle (\xend,-5.3);
+
+\foreach \x in {0.25,1.0,1.75,2.5,3.25,4.0,4.75,5.5,6.25}{
+  \draw[thin] (\x,-5.7) -- (\x,-5.3);
+}
+
+% Etichette 10% nei decili
+\foreach \x in {-0.125,0.625,1.375,2.125,2.875,3.625,4.375,5.125,5.875,6.625}{
+  \node[font=\scriptsize] at (\x,-5.5) {10\%};
+}
+
+% Percentili
+\node[anchor=east, font=\scriptsize] at (-0.7,-6.3) {Percentili};
+\draw[rounded corners=2pt, fill=gray!10]
+  (\xstart,-6.5) rectangle (\xend,-6.1);
+
+% tante suddivisioni sottili
+\foreach \i in {1,...,99}{
+  \pgfmathsetmacro{\x}{-0.5 + 7.5*\i/100}
+  \draw[very thin, gray!60] (\x,-6.5) -- (\x,-6.1);
+}
+
+\end{tikzpicture}
+
+
+###
+
+Per il calcolo dei quantili di diverso ordine, il procedimento è
+	analogo a quello della Mediana, che di fatto è un caso
+	particolare di questi indici.
+	In generale la Posizione di ordine $p$ (in centesimi) si ottiene:
+	
+\begin{equation*}
+Pos_p = \dfrac{n+1}{100}\cdot p 
+\end{equation*}
+
+### `quantile()`
+
+    quantile(x, probs = c(0, .25, .50, .75, 1))
+    
+Funzione per il calcolo dei quantili di diverso ordine (definito dall'argomento `probs`)
+
+\scriptsize
+
+```{r}
+set.seed(123) # garantisce la replicabilità 
+x = rnorm(1000, mean = 0, sd = 1)
+quantile(x)
+# calcola i decili 
+quantile(x, probs = seq(0,1, by = .10))
+```
+
+
+### Media 
+
+La media è una sorta di baricentro della distribuzione dei dati. Data una variabile $X$ composta da $n$ valori:  
+
+\begin{equation*}
+\bar{X} = \dfrac{\sum_{i = 1}^{N}x_i}{N}
+\end{equation*}
+
+
+###
+
+\centering
+
+\scalebox{.80}{
+\begin{tikzpicture}[scale=0.9]
+
+\def\data{0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2}
+\def\mean{2.81}
+
+% Tavola
+\draw[line width=2pt] (0.5,0.3) -- (6.5,0.3);
+
+% Fulcro
+\draw[fill=gray!40]
+(\mean,0) -- ++(-0.35,-0.7) -- ++(0.7,0) -- cycle;
+\node[below] at (\mean,-0.7) {Media};
+
+% Puntini = osservazioni
+\foreach \x in \data {
+    \fill[blue!60] (\x,0.45) circle (0.12);
+}
+
+% Asse
+\draw[->, thin, gray] (0,0) -- (7,0) node[right] {Valori};
+
+\end{tikzpicture}}
+
+\flushleft 
+\small 
+I dati: $X = (0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2)$, la media $\bar{X} = 2.811$
+
+
+\scalebox{.80}{
+\begin{tikzpicture}[scale=0.9]
+
+\def\data{1.18,1.02,1.10,1.16,1.01,1.10,1.05,1.12,1.45,1.52,1.54,1.55,10.06,14.46}
+\def\mean{2.809}
+\def\angle{8}
+
+% ---- calcolo minimo e massimo ----
+\pgfmathsetmacro{\xmin}{1.01}
+\pgfmathsetmacro{\xmax}{14.46}
+
+% piccolo margine estetico
+\pgfmathsetmacro{\leftend}{\xmin - 0.5}
+\pgfmathsetmacro{\rightend}{\xmax + 0.5}
+
+% Fulcro
+\draw[fill=gray!40]
+(\mean,0) -- ++(-0.4,-0.7) -- ++(0.8,0) -- cycle;
+\node[below] at (\mean,-0.7) {Media};
+
+% Tavola + dati ruotati attorno al fulcro
+\begin{scope}[rotate around={-\angle:(\mean,0.3)}]
+
+    % Tavola che copre TUTTI i dati
+    \draw[line width=2pt] (\leftend,0.3) -- (\rightend,0.3);
+
+    % Puntini
+    \foreach \x in \data {
+        \fill[blue!60] (\x,0.45) circle (0.12);
+    }
+
+\end{scope}
+
+% Asse
+\draw[->, thin, gray] (\leftend-0.5,0) -- (\rightend+0.5,0) node[right] {Valori};
+
+\end{tikzpicture}
+}
+
+\flushleft 
+\small 
+
+I dati: $X = (1.18,1.02,1.10,1.16,1.01,1.10,1.05,1.12,1.45,1.52,1.54,1.55,10.06,14.46)$, la media $\bar{X} = 2.809$
+
+### `mean()`
+
+    mean(x, na.rm = FALSE)
+    
+Funzione per calcolare la media di un vettore di valori `x`. L'agromento `na.rm = TRUE` serve per ottenere il calcolo della media nonostante la presenza di valori NA 
+
+`rowMeans()`: Calcola la media per ogni riga (quindi attraverso le colonne)
+
+`colMeans()`: Calcola la media per ogni colonna (quindi attraverso le righe)
+
+```{r}
+mean(x)
+```
+
+
+
