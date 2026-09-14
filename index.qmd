@@ -18,9 +18,12 @@ lang: it
 
 
 :::{.callout-caution}
-## Lezioni cancellate
+## Lezioni in forse
 
-Il 24 settembre e il 5 novembre non ci sarà lezione perché non abbiamo le aule. 
+La lezione del 24 settembre precedemente annullata è ripristinata ma avverrà in due aule di palazzo Istruzione. 
+
+La lezione del 5 novembre è in forse - nel caso saltasse verrà recuperata alla fine (10 o 11 dicembre).
+
 :::
 
 :::{.callout-tip}
@@ -29,7 +32,7 @@ Il 24 settembre e il 5 novembre non ci sarà lezione perché non abbiamo le aule
 
 Tutte le lezioni avranno uno stampo molto pratico (è caldamente raccomandato l'uso del computer personale). 
 
-Le lezioni del martedì e mercoledì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
+Le lezioni del martedì e giovedì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
 
 
 :::

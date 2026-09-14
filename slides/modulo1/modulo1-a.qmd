@@ -59,7 +59,9 @@ myinclude = TRUE
 :::{.callout-caution}
 ## Lezioni cancellate
 
-Il 24 settembre e il 5 novembre non ci sarà lezione perché non abbiamo le aule. 
+La lezione del 24 settembre ci sarà ma saremo in aula 6 e 7 (una delle due aule sarà connessa). 
+
+La lezione del 5 novembre è da confermare. Nel caso non venisse fatta, sarà recuperata il 10 o 11 dicembre
 
 Esiste la possibilità che vengano cancellate altre lezioni a causa delle lauree. Controllate sempre easyroom.
 :::
@@ -73,6 +75,8 @@ Tutto il materiale del corso sarà presente sulla piattaforma Moodle e sul sito 
 
 Ricevimento: Va concordato via mail (ottavia.epifania@unitn.it), può essere online o in presenza
 
+\footnotesize
+
 :::{.callout-tip}
 ## Regole di convivenza civile 
 
@@ -85,13 +89,15 @@ Se non capite qualcosa, fermatemi subito, rispiego la stessa cosa anche fino all
 
 ###
 
+\footnotesize
+
 :::{.callout-tip}
 
 ## Tipologia di lezione 
 
 Tutte le lezioni avranno uno stampo molto pratico (è caldamente raccomandato l'uso del computer personale). 
 
-Le lezioni del martedì e mercoledì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
+Le lezioni del martedì e giovedì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
 :::
 
 :::{.callout-note}
@@ -102,7 +108,7 @@ Durante il corso verranno effetuate due esercitazioni che faranno punteggio per 
 
 **Le esercitazioni sono obbligatorie per tutt3, sia frequentanti che non e vanno consegnate almeno una settimana prima dell'appello d'esame**
 
-Ogni esercitazione permette di guadgnare 1.5 punti, da sommare al punteggio raggiunto all'esame. 
+Ogni esercitazione permette di guadagnare 1.5 punti, da sommare al punteggio raggiunto all'esame. 
 Le due esercitazioni verranno fatte alla fine della parte sulla statistica descrittiva e alla fine della parte sulla statistica inferenziale, in due lezioni di laboratorio dedicate. 
 :::
 
@@ -362,13 +368,14 @@ Il chunk di codice funziona esattamente come R -- è sequenziale, va seguito l'o
 
 Ogni volta che viene fatto il rendering del documento (`shift + ctrl + k` o freccina azzurra), viene creato un ambiente temporaneo dove viene eseguito il codice. 
 
-L'ambiente temporaneo è indipendente dall'ambiente che vedere su R! 
+L'ambiente temporaneo è indipendente dall'ambiente che vedete su R! 
 
 Per creare un nuovo chunk: `shift + ctrl + i` oppure: 
 
 ```{r}
 #| echo: false
-#| out-width: 30%
+#| out-width: 50%
+#| fig-align: center
 include_graphics("img/chunk.png")
 ```
 
@@ -389,8 +396,8 @@ Non creare il progetto dentro una cartella cloud (Google Drive, ICloud, Onedrive
 :::
 
 2. Dentro al progetto R: 
-  * Creare una cartella chiamata `data`
-  * Creare uno script R e salvarlo nella cartella del progetto (`script`)
+  * Creare una cartella chiamata `data` 
+  * Creare uno script R e salvarlo nella cartella del progetto (`script.R`)
   * Creare un documento quarto (`primo-documento.qmd`) e salvarlo nella cartella 
   
 3. In un chunk di codice del documento quarto (va bene quello predefinito) scrivere la funzione `dir()` e compilare il file 
@@ -522,7 +529,7 @@ knitr::include_graphics("img/work.png")
 
 ###
 
-Gli oggetti finisco nell'ambiente (`environment`) di R. 
+Gli oggetti finiscono nell'ambiente (`environment`) di R. 
 
 La funzione `ls()` permette di vedere tutti gli oggetti all'interno dell'ambiente
 
@@ -753,8 +760,8 @@ kable(negazione,
       col.names = c("$a$", "$\\lnot a$"))
 
 xor <- data.frame(
-  p = c("F", "F", "V", "V"),
-  q = c("F", "V", "F", "V"),
+  p  = c("V", "V", "F", "F"),
+  q  = c("V", "F", "V", "F"),
   pq = c("F", "V", "V", "F")
 )
 
@@ -762,7 +769,8 @@ kable(
   xor,
   caption = "Differenza simmetrica (XOR)",
   escape = FALSE,
-  col.names = c("$p$", "$q$", "$p \\oplus q$")
+  col.names = c("$p$", "$q$", "$p \\oplus q$"),
+  row.names = FALSE
 )
 ```
 
