@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 2 -- Scale di misura e illusrazioni grafiche"
+title: "Modulo Didattico 2 -- Scale di misura e illustrazioni grafiche statistica univariata"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -65,9 +65,12 @@ Pastore et al. (2017)
 
 ### 
 
+Data set di Anscombe: Quattro dataset, di seguito le statistiche descrittive realitive alla variabile x e alla variabile y e la loro correlazione:
+
 ```{r}
 #| echo: false
 #| results: asis
+#| tbl-cap: Dataset di Anscombe
 # Creo la tabella delle statistiche descrittive
 descrittive <- data.frame(
   Dataset = paste("Dataset", 1:4),
@@ -120,30 +123,67 @@ knitr::kable(
 #|   - "Dataset 3"
 #|   - "Dataset 4"
 
-plot(anscombe$x1, anscombe$y1, pch = 19, 
-     col = "steelblue", 
-     cex = 2)
-abline(lm(anscombe$y1 ~ anscombe$x1), lwd = 2, lty =2, col = "gray")
-abline(v = mean(anscombe$x1), lty = 3, col = "firebrick")
-abline(h = mean(anscombe$y1), lty = 3, col = "firebrick")
-plot(anscombe$x2, anscombe$y2, pch = 19, 
-     col = "steelblue", 
-     cex = 2)
-abline(lm(anscombe$y2 ~ anscombe$x2), lwd = 2, lty =2, col = "gray")
-abline(v = mean(anscombe$x2), lty = 3, col = "firebrick")
-abline(h = mean(anscombe$y2), lty = 3, col = "firebrick")
-plot(anscombe$x3, anscombe$y3, pch = 19, 
-     col = "steelblue", 
-     cex = 2)
-abline(lm(anscombe$y3 ~ anscombe$x3), lwd = 2, lty =2, col = "gray")
-abline(v = mean(anscombe$x3), lty = 3, col = "firebrick")
-abline(h = mean(anscombe$y3), lty = 3, col = "firebrick")
-plot(anscombe$x4, anscombe$y4, pch = 19, 
-     col = "steelblue", 
-     cex = 2)
-abline(lm(anscombe$y4 ~ anscombe$x4), lwd = 2, lty =2, col = "gray")
-abline(v = mean(anscombe$x4), lty = 3, col = "firebrick")
-abline(h = mean(anscombe$y4), lty = 3, col = "firebrick")
+par(
+  cex.axis = 2,
+  cex.lab  = 2,
+  lwd = 2,
+  mar = c(5, 5, 2, 1)
+)
+
+plot(anscombe$x1, anscombe$y1,
+     pch = 19,
+     col = "steelblue",
+     cex = 2.5,
+     xlab = "x",
+     ylab = "y")
+abline(lm(anscombe$y1 ~ anscombe$x1),
+       lwd = 6, lty = 2, col = "gray")
+abline(v = mean(anscombe$x1),
+       lwd = 3, lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y1),
+       lwd = 3, lty = 3, col = "firebrick")
+
+
+plot(anscombe$x2, anscombe$y2,
+     pch = 19,
+     col = "steelblue",
+     cex = 2.5,
+     xlab = "x",
+     ylab = "y")
+abline(lm(anscombe$y2 ~ anscombe$x2),
+       lwd = 6, lty = 2, col = "gray")
+abline(v = mean(anscombe$x2),
+       lwd = 3, lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y2),
+       lwd = 3, lty = 3, col = "firebrick")
+
+
+plot(anscombe$x3, anscombe$y3,
+     pch = 19,
+     col = "steelblue",
+     cex = 2.5,
+     xlab = "x",
+     ylab = "y")
+abline(lm(anscombe$y3 ~ anscombe$x3),
+       lwd = 6, lty = 2, col = "gray")
+abline(v = mean(anscombe$x3),
+       lwd = 3, lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y3),
+       lwd = 3, lty = 3, col = "firebrick")
+
+
+plot(anscombe$x4, anscombe$y4,
+     pch = 19,
+     col = "steelblue",
+     cex = 2.5,
+     xlab = "x",
+     ylab = "y")
+abline(lm(anscombe$y4 ~ anscombe$x4),
+       lwd = 6, lty = 2, col = "gray")
+abline(v = mean(anscombe$x4),
+       lwd = 3, lty = 3, col = "firebrick")
+abline(h = mean(anscombe$y4),
+       lwd = 3, lty = 3, col = "firebrick")
 ```
 
 
@@ -187,6 +227,136 @@ barplot(x) # <5>
 
 
 ## Grafico a barre
+
+### 
+
+Usato per variabili qualitative nominali o ordinali: 
+
+* Asse $x$: categoria $k$ 
+* Asse $y$: Frequenza $n_k$ (vale anche per le frequenze percentuali)
+
+L'altezza della barretta è proporzionale alla sua frequenza
+
+
+    barplot(x)
+    
+Dove `x` è il vettore delle frequenze
+   
+### 
+
+```{r}
+#| echo: false
+# Dati di esempio
+freq <- c(10, 25, 15)
+categorie <- c("A", "B", "C")
+
+# Barplot
+bp <- barplot(
+  freq,
+  names.arg = categorie,
+  ylim = c(0, 32),
+  col = "darkorange",
+  border = NA,
+  xlab = "Categorie",
+  ylab = expression("Frequenza  " * n[k] * "  (o  " * f[k] * ")"),
+  cex.names = 1.5,
+  cex.axis = 1.3,
+  cex.lab = 1.4
+)
+
+# Altezza della barra B
+segments(
+  x0 = bp[2] + 0.7, y0 = 0,
+  x1 = bp[2] + 0.7, y1 = freq[2],
+  lwd = 2,
+  lty = 2
+)
+
+arrows(
+  x0 = bp[2] + 0.7, y0 = 18,
+  x1 = bp[2] + 0.7, y1 = 24.5,
+  length = 0.12,
+  lwd = 2
+)
+
+text(
+  bp[2] + 0.9, 17,
+  labels = "Altezza = frequenza",
+  pos = 4,
+  cex = 1.2
+)
+```
+
+
+
+### {.plain}
+
+```{r}
+#| echo: false
+#| label: tbl-examples
+#| tbl-cap: Tabelle di frequenza per le categorie A, B, C.
+#| layout-ncol: 2
+#| out-width: 80%
+
+dati1 <- data.frame(
+  Categoria = c("A", "B", "C"),
+  n = c(21, 24, 22)
+)
+
+knitr::kable(
+  dati1,
+  col.names = c("Categoria", "$n_k$"),
+  row.names = FALSE,
+  align = c("c", "c")
+)
+
+dati <- data.frame(Categoria = c("A", "B", "C"),
+  n = c(12, 35, 18)
+)
+
+knitr::kable(
+  dati,
+  col.names = c("Categoria", "$n_k$"),
+  row.names = FALSE,
+  align = c("c", "c")
+)
+```
+
+
+```{r}
+#| echo: false
+#| label: fig-examples
+#| fig-cap: Barplot delle tabelle
+#| layout-ncol: 2
+
+barplot(
+  dati1$n,
+  names.arg = dati1$Categoria,
+  xlab = "Categoria",
+  ylab = expression(n[i]),
+  ylim = c(0, 30),
+  col = "steelblue",
+  border = NA,
+  cex.names = 1.5,
+  cex.axis = 1.5,
+  cex.lab = 1.5
+)
+
+barplot(
+  dati$n,
+  names.arg = dati$Categoria,
+  xlab = "Categoria",
+  ylab = expression(n[i]),
+  ylim = c(0, 40),
+  col = "steelblue",
+  border = NA,
+  cex.names = 1.5,
+  cex.axis = 1.3,
+  cex.lab = 1.4
+)
+```
+
+
 
 ## Istogrammi 
 
@@ -435,96 +605,157 @@ boxplot(x, range = 2)
 boxplot(x, range = 0)
 ```
 
+# Esempi 
 
-## Istogramma con kernel
+### `barplot()`
 
-### 
+\footnotesize
 
-\small
+```{r}
+#| eval: false
 
-*kernel density estimation, KDE*: Metodo non parametrico per *stimare* la funzione di densità di probabilità di una variabile casuale continua a partire da un campione di dati
+voto = sample(rep(c("si", "no", "astenuti"), 
+           c(12, 15, 2)))
+voto = factor(voto, levels = c("si", "no", "astenuti"))
+table(voto)
 
+# le frequenze restituite dalla funzione table() vanno usate 
+# come vettore di base per il barplot
+
+barplot(table(voto), 
+        col = c("darkgreen", "darkred", "darkblue"), 
+        ylim = c(0, 20))
+
+```
+
+### {.plain}
+
+
+\footnotesize
+```{r}
+#| eval: true
+#| echo: false
+voto = sample(rep(c("si", "no", "astenuti"), 
+           c(12, 15, 2)))
+voto = factor(voto, levels = c("si", "no", "astenuti"))
+table(voto)
+
+# le frequenze restituite dalla funzione table() vanno usate 
+# come vettore di base per il barplot
+
+
+```
+
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+barplot(table(voto), 
+        col = c("darkgreen", "darkred", "darkblue"), 
+        ylim = c(0, 20))
+
+```
+
+
+### `boxplot()`
 
 ```{r}
 #| echo: false
-#| out-width: 70%
 #| fig-align: center
-x <- rnorm(3000, mean = 10, sd = 2)
-hist(x, freq = FALSE)
-lines(density(x), col = "blue", lwd = 2) 
+#| out-width: 100%
+#| label: fig-boxes
+#| layout-ncol: 3
+#| fig-cap: Distribuzioni a confronto 
+#| fig-subcap: 
+#|   - "boxplot(x)"
+#|   - "boxplot(y)"
+#|   - "boxplot(z)"
+set.seed(666)
+x = rnorm(1000, mean = 10, sd = 4)
+boxplot(x, col ="darkorange")
+y = rnorm(1000, mean = 10, sd = 4)
+# Forte effetto pavimento
+y_floor <- (y - min(y))^3
+y_min <- min(y)
+y_max <- max(y)
+
+y_floor <- y_min + 
+  ((y - y_min) / (y_max - y_min))^3 * (y_max - y_min)
+y_ceiling <- y_max -
+  ((y_max - y) / (y_max - y_min))^3 * (y_max - y_min)
+boxplot(y_floor, col ="lightblue")
+boxplot(y_ceiling, col = "gold")
 ```
 
 
-### 
-
-
-Funzione che "assegna" una probabilità attorno a ogni singolo dato osservato
-
-`density(X, bw)`: Stima della densitità di una variabile a partire da un vettore `X` di osservazioni quantitative. `bw`: Larghezza della banda con cui viene stimato il kernel attorno a ogni dato: 
-
-### 
-
-Più è stretto attorno al dato: Si vede bene la struttura del dato, ma si rischia di essere in overfitting (quella stima va bene SOLO per quel dato)
-
-Più è largo attorno al dato: La curva è ben definita e liscia, ma si rischia di perdere dettagli per questi specifici dati (underfitting)
-
-
+### `hist()`
 
 ```{r}
 #| echo: false
-#| out-width: 70%
 #| fig-align: center
-set.seed(123)
-x <- c(2.1, 2.3, 2.5, 2.7, 2.9)
-
-# 2. Calcolo la stima di densità con due bandwidth diverse
-dens_small <- density(x, bw = 0.05)  # bandwidth piccola
-dens_large <- density(x, bw = 0.5)   # bandwidth grande
-
-plot(dens_small, 
-     col = "royalblue", lwd = 2, main = "",
-     xlab = "x", ylab = "Densità")
-lines(dens_large, col = "firebrick", lwd = 2)
-# 4. Aggiungo i punti osservati
-rug(x, lwd = 2, pch = 4)
-
-# 5. Aggiungo una legenda
-legend("topright", legend = c("bw = 0.05 (stretto)", "bw = 0.5 (largo)"),
-       col = c("royalblue", "firebrick"), lwd = 2, bty = "n")
+#| out-width: 100%
+#| label: fig-hist
+#| layout-ncol: 3
+#| fig-cap: Distribuzioni a confronto 
+#| fig-subcap: 
+#|   - "hist(x)"
+#|   - "hist(y)"
+#|   - "hist(z)"
+hist(x, col ="darkorange")
+hist(y_floor, col = "lightblue")
+hist(y_ceiling, col = "gold")
 ```
 
-
-
-## Utilizzare i kernel
-
-### 
-
-\small
-
-
-La funzione calcola la densità, per vedere la densità va usata insieme alla funzione `plot()`
-
+### Confronto boxplot vs istogramma 
 
 ```{r}
-#| out-width: 70%
+#| echo: false
 #| fig-align: center
-x = rnorm(200)
-plot(density(x))
+#| out-width: 100%
+#| label: fig-comparison0
+#| layout-ncol: 2
+#| fig-cap: Boxplot vs Istogramma
+#| fig-subcap: 
+#|   - "boxplot(x)"
+#|   - "hist(x)"
+
+boxplot(x, col ="darkorange"); hist(x, col ="darkorange")
 ```
 
-
-### 
-\small
-
-va imposto all'istogramma che costruisca i bin con la densità $d_i = \dfrac{f_i}{n * w_i}$ 
-
-\small
+### Confronto boxplot vs istogramma 
 
 ```{r}
-#| out-width: 60%
+#| echo: false
 #| fig-align: center
+#| out-width: 100%
+#| label: fig-comparison1
+#| layout-ncol: 2
+#| fig-cap: Boxplot vs Istogramma
+#| fig-subcap: 
+#|   - "boxplot(y)"
+#|   - "hist(y)"
 
-hist(x, freq = FALSE)
-lines(density(x), lwd = 2, col ="blue")
+boxplot(y_floor, col ="lightblue"); hist(y_floor, col ="lightblue")
 ```
+
+
+### Confronto boxplot vs istogramma 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+#| label: fig-comparison2
+#| layout-ncol: 2
+#| fig-cap: Boxplot vs Istogramma
+#| fig-subcap: 
+#|   - "boxplot(z)"
+#|   - "hist(z)"
+
+boxplot(y_ceiling, col ="gold"); hist(y_ceiling, col ="gold")
+```
+
+
+
+
 
