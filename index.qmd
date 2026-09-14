@@ -41,7 +41,7 @@ Le lezioni del martedì e giovedì saranno più di tipo teorico, mentre le lezio
 
 ## Frequenza delle lezioni
 
-La frequenza **non è obbluigatoria** e il materiale presente su questo sito è più che sufficiente per permettervi di preparare l'esame. 
+La frequenza **non è obbligatoria** e il materiale presente su questo sito è più che sufficiente per permettervi di preparare l'esame. 
 
 Tuttavia, la frequenza delle lezioni è caldamente consigliuata data la natura tecnica del corso. Inoltre, lo studio di questo esame è molto più affrontabile in gruppo che singolarmente.
 
@@ -108,7 +108,7 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 
 * [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-esercizi.html)
-* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.pdf)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.qmd)
 * [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-soluzioni.html)
 
 
@@ -118,6 +118,14 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 * [Slides Parte 1](slides/modulo2/Modulo2a.pdf)
 * [Slides Parte 2](slides/modulo2/Modulo2b.pdf)
+
+
+### Laboratorio 
+
+* [Dati da scaricare](slides/modulo2/Laboratorio/datiTestCR2005.csv)
+* [Esercizi -- (Testo)](slides/modulo2/Laboratorio/LaboratorioRmod2_esercizi.html)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/LaboratorioRmod2_template.qmd)
+* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod2_soluzioni.html)
 
 
 ## Modulo 3

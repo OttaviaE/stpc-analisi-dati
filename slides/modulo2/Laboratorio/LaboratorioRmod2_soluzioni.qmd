@@ -1,14 +1,14 @@
 ---
-title: "Laboratorio di analisi dei dati con R — Soluzioni"
+title: "Laboratorio di Analisi dei Dati con R"
+subtitle: "Soluzioni modulo 2"
 author: "Ottavia Epifania"
-format: pdf
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
-execute: 
+format: 
+  html: 
+   embed-resources: true
+   number-sections: true
+execute:
   echo: true
-editor_options: 
-  chunk_output_type: console
+  eval: false
 ---
 
 # Case Study A: Test di selezione universitario
