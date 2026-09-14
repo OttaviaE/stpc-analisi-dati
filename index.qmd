@@ -115,5 +115,10 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 ## Modulo 2
 
+
+* [Slides Parte 1](slides/modulo2/Modulo2a.pdf)
+* [Slides Parte 2](slides/modulo2/Modulo2b.pdf)
+
+
 ## Modulo 3
 

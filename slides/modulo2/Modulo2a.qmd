@@ -395,24 +395,22 @@ Totale                     & 41 &    & 100.0\% & \\
 
 ### `cumsum()` 
 
-
+\footnotesize
 
 ```{r}
+#| echo: true
 opinione = data.frame(
-  categoria = c(
-    "Totalmente in disaccordo",
-    "Abbastanza in disaccordo",
+  categoria = c("Totalmente in disaccordo", "Abbastanza in disaccordo",
     "Indifferente",
-    "Abbastanza d'accordo",
-    "Totalmente d'accordo"
+    "Abbastanza d'accordo", "Totalmente d'accordo"
   ),
   n = c(10, 8, 6, 14, 3)
 )
-
 opinione$N = cumsum(opinione$n)
 opinione
-
 ```
+
+
 
 
 # Indici di posizione 
@@ -424,7 +422,7 @@ opinione
 
 \begin{quote}
 
-Presentano livelli maggiori di machiavellismo i CEO o gli impiegati?
+Presentano livelli maggiori di machiavellismo l3 CEO o l3 impiegat3?
 \end{quote}
 \vspace{3mm} 
 
@@ -562,10 +560,10 @@ Quali sono le persone che hanno performato al meglio nell'ultimo semestre?
 
 Il quantile $x_p$ di ordine $p$ è quella categoria/valore che è:
 	
-	\begin{itemize}
-	\item preceduta da almeno $p$\% dei casi
-	\item superata da almeno $(1-p)$\% dei casi
-	\end{itemize}
+\begin{itemize}
+\item preceduta da almeno $p$\% dei casi
+\item superata da almeno $(1-p)$\% dei casi
+\end{itemize}
 
 
 ###
