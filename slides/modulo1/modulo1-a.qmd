@@ -573,7 +573,7 @@ sum(vettore)
 
 ###
 
-Le funzioni in R sono come le funzioni matematiche $f(\cdot)$, dove viene preso un input, viene elaborato secondo e le regole della funzione e si ottiene un output:
+Le funzioni in R sono come le funzioni matematiche $f(\cdot)$, dove viene preso un input, viene elaborato secondo le regole della funzione e si ottiene un output:
 
 
 ![](img/fun1.png){fig-align="center"}
