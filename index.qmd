@@ -101,14 +101,14 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 #### Parte 1
 
 * [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi.html)
-* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.pdf)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Esercizi-modulo1-template.qmd)
 * [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod1_soluzioni.html)
 
 #### Parte 2
 
 
 * [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-esercizi.html)
-* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi-template.qmd)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Esercizi-modulo1-parte2-template.qmd)
 * [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-soluzioni.html)
 
 
