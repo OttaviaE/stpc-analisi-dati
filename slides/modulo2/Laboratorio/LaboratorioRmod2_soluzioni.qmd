@@ -1,6 +1,6 @@
 ---
 title: "Laboratorio di Analisi dei Dati con R"
-subtitle: "Soluzioni modulo 2"
+subtitle: "Soluzioni laboratorio modulo 2"
 author: "Ottavia Epifania"
 format: 
   html: 
@@ -47,6 +47,7 @@ Si eseguano i seguenti controlli.
 # Voto 
 datitest$VOTO >= 60 & datitest$VOTO <= 100
 ```
+
 Attenzione! c'è un valore che `FALSE`, va trovato con la funzione `which()`
 
 

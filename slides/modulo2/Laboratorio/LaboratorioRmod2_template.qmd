@@ -1,6 +1,6 @@
 ---
 title: "Analisi dei Dati con R"
-subtitle: "Laboratori modulo 2"
+subtitle: "Laboratorio modulo 2"
 author: "Nome Cognome"
 format: 
   html: 

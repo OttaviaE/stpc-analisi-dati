@@ -124,8 +124,8 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 * [Dati da scaricare](slides/modulo2/Laboratorio/datiTestCR2005.csv)
 * [Esercizi -- (Testo)](slides/modulo2/Laboratorio/LaboratorioRmod2_esercizi.html)
-* [Esercizi -- (Template)](slides/modulo1/Laboratorio/LaboratorioRmod2_template.qmd)
-* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod2_soluzioni.html)
+* [Esercizi -- (Template)](slides/modulo2/Laboratorio/LaboratorioRmod2_template.qmd)
+* [Esercizi -- (Soluzioni)](slides/modulo2/Laboratorio/LaboratorioRmod2_soluzioni.html)
 
 
 ## Modulo 3
