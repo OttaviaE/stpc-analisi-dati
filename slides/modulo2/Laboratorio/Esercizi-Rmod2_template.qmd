@@ -1,7 +1,7 @@
 ---
 title: "Esercizi Modulo 2"
 subtitle: "Prima serie"
-author: "Ottavia Epifania"
+author: "Nome e Cognome"
 format: 
   html: 
    embed-resources: true

@@ -1,7 +1,7 @@
 ---
 title: "Esercizi Modulo 2"
 subtitle: "Seconda Serie"
-author: "Ottavia Epifania"
+author: "Nome e Cognome"
 format: 
   html: 
    embed-resources: true
@@ -36,7 +36,17 @@ knitr::kable(dati)
 
 Creare le singole varibaili riportate nella tabella (dneominate come `x1`, `x2` eccetera) e creare il dataframe `D`. Rimuovere le singole variabili dall'ambiente.
 
+```{r}
+
+```
+
+
 Utilizzare la funzione `summary()` per visualizzare i risultati delle principali statistiche descrittive per ciascuna delle quattro variabili separatamente.
+
+```{r}
+
+```
+
 
 ## 
 
@@ -46,17 +56,42 @@ Per confrontare meglio i quattro grafici fare in modo che:
 
 * l'ascissa di ciascun istogramma sia variabile sullo stesso dominio di valori per tutti e 4 gli istogrammi (si utilizzi il parametro `xlim` all'interno della funzione per la costruzione dell'istogramma)
 
+```{r}
+
+```
+
+
 * il numero di bin dell'istogramma sia scelto in automatico dalla funzione grafica (utilizzare la rappresentazione grafica di default).
+
+```{r}
+
+```
+
 
 ##  
 
 Utilizzando la funzione `quantile()`, visualizzare i principali quantili delle quattro variabili di `D`. 
 
+```{r}
+
+```
+
+
 Per la sola variabile `X2` visualizzare i quantili associati ai valori di probabilità 0.15, 0.33, 0.46, 0.89, 0.98, 0.99, 1.0; hai alcune osservazioni da fare sui risultati dei quantili di `X2`?
+
+```{r}
+
+```
+
 
 ## 
 
 Costruire un grafico unico che contiene i quattro grafici boxplot associati rispettivamente alle variabili `X1`, `X2`, `X3` e `X4`.
+
+```{r}
+
+```
+
 
 # Adavanced
 
@@ -64,7 +99,17 @@ Costruire un grafico unico che contiene i quattro grafici boxplot associati risp
 
 Per ciascuna variabile in D verificare se vi siano o meno dei valori anomali (outliers) nella corrispettiva distribuzione. 
 
+```{r}
+
+```
+
+
 Creare un vettore di tipo logico di lunghezza 4 che codifica per ciascuna variabile la presenza o meno di valori anomali (secondo i valori TRUE/FALSE). 
+
+```{r}
+
+```
+
 
 ## 
 
@@ -77,3 +122,8 @@ Verificare (separamente per ogni caso, vedi in sequito) attraverso la sola ispez
 * il baffo superiore di `X3` coincida con il valore massimo di `X3` 
 * il baffo inferiore di `X3` coincida con il minimo di X3 
 * Individuare quale tra le 4 variabili presenti un qualche livello di asimmetria a destra e quale tra le 4 variabili presenti un qualche livello di asimmetria a sinistra.
+
+```{r}
+
+```
+

@@ -1,13 +1,14 @@
 ---
-title: "Esercizi Modulo 2 - Seconda serie"
-subtitle: "Soluzioni"
+title: "Esercizi Modulo 2"
+subtitle: "Seconda Serie - Soluzioni"
 author: "Ottavia Epifania"
-format: pdf
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
-editor_options: 
-  chunk_output_type: console
+format: 
+  html: 
+   embed-resources: true
+   number-sections: true
+execute:
+  echo: true
+  eval: false
 ---
 
 # Dati 
@@ -33,7 +34,9 @@ knitr::kable(dati)
 
 ## 1
 
-Costruire un dataframe `D` riproducente la tabella sopra riportata e rimuovere le singole variabili dal workspace. 
+Creare le singole varibaili riportate nella tabella (dneominate come `x1`, `x2` eccetera) e creare il dataframe `D`. Rimuovere le singole variabili dall'ambiente.
+
+
 
 ```{r}
  X1 = c(41.61,46.93,50.33,53.93,51.33,51.55,52.31,53.07,53.00,51.07,  51.98,44.96,46.17,54.63,45.53,51.23,54.07,46.25,51.04,55.17)
@@ -46,14 +49,14 @@ rm(X1, X2, X3, X4)
 ```
 
 
-Utilizzare la funzione `summary()` per visualizzare i risultati delle principali statistiche descrittive per ciascuna delle quattro variabili separatamente.
+Utilizzare la funzione `summary()` per visualizzare i risultati delle principali statistiche descrittive per ciascuna delle quattro variabili separatamente
 
 ```{r}
 summary(D)
 ```
 
 
-## 2
+## 
 
 Costruire un grafico con più pannelli (si faccia riferimento al punto 15 del laboratorio del modulo 2) che contenga i quattro istogrammi associati rispettivamente alle variabili `X1`, `X2`, `X3` e `X4`. 
 
@@ -76,40 +79,8 @@ hist(D$X4,xlim=c(liminf-10,limsup+10))
 ```
 
 
-## 3 
 
-Per ciascuna variabile separatamente esplorare l'effetto di rappresentazione dell'istogramma in funzione di un differente numero di bin. Allo scopo utilizzare il parametro opportuno nella funzione di rappresentazione grafica dell'istogramma per variare il numero di bin dello stesso. Provare a commentare qualitativamente il risultato di tali variazioni.
-
-
-```{r}
-par(mfrow=c(1,3))
-hist(D$X1,breaks="Sturges",main="Metodo Sturges")
-hist(D$X1,breaks="Scott",main="Metodo Scott")
-hist(D$X1,breaks="Freedman-Diaconis",main="Metodo Freedman-Diaconis")
-```
-
-```{r}
-hist(D$X2,breaks="Sturges",main="Metodo Sturges")
-hist(D$X2,breaks="Scott",main="Metodo Scott")
-hist(D$X2,breaks="Freedman-Diaconis",main="Metodo Freedman-Diaconis")
-```
-
-
-```{r}
-hist(D$X3,breaks="Sturges",main="Metodo Sturges")
-hist(D$X3,breaks="Scott",main="Metodo Scott")
-hist(D$X3,breaks="Freedman-Diaconis",main="Metodo Freedman-Diaconis")
-```
-
-
-```{r}
-hist(D$X4,breaks="Sturges",main="Metodo Sturges")
-hist(D$X4,breaks="Scott",main="Metodo Scott")
-hist(D$X4,breaks="Freedman-Diaconis",main="Metodo Freedman-Diaconis")
-```
-
-
-## 4. 
+## 
 
 Utilizzando la funzione `quantile()`, visualizzare i principali quantili delle quattro variabili di `D`. 
 
@@ -129,7 +100,7 @@ quantile(D$X2,p=c(0.15,0.33,0.46,0.89,0.98,0.99,1.0))
 ```
 
 
-## 5 
+## 
 
 Costruire un grafico unico che contiene i quattro grafici boxplot associati rispettivamente alle variabili `X1`, `X2`, `X3` e `X4`.
 
@@ -159,7 +130,7 @@ boxplot(D$X1,D$X2,D$X3,D$X4,names=c("X1","X2","X3","X4"))
 
 # Adavanced
 
-## 6
+## 
 
 Per ciascuna variabile in D verificare se vi siano o meno dei valori anomali (outliers) nella corrispettiva distribuzione. 
 
@@ -170,7 +141,7 @@ outliers = c(F,F,T, F)
 ```
 
 
-## 7 
+## 
 
 Verificare (separamente per ogni caso, vedi in sequito) attraverso la sola ispezione grafica dei differenti boxplot se 
 
