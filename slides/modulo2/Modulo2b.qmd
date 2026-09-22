@@ -358,6 +358,19 @@ barplot(
 
 
 
+### {.plain}
+
+\footnotesize
+
+```{r}
+#| out-width: 30%
+#| fig-align: center
+dati = rep(c("A", "B", "C"), c(12, 35, 18)); dati
+table(dati)
+barplot(table(dati), col = "darkgreen")
+```
+
+
 ## Istogrammi 
 
 
@@ -372,7 +385,7 @@ barplot(
 #| fig-subcap: 
 #|   - "n = 500"
 #|   - "n = 50"
-
+set.seed(999)
 x = rnorm(500, mean = 0, sd = 1)
 hist(x, ylab = "Frequenze assolute", 
      xlim = c(-3,3))
@@ -382,30 +395,18 @@ hist(x,  ylab = "Frequenze assolute",
 ```
 
 
-<!-- :::: {.columns} -->
-<!-- :::{.column width="50%"} -->
-<!-- ```{r} -->
-<!-- #| echo: false -->
-<!-- x = rnorm(500, mean = 0, sd = 1) -->
-<!-- hist(x, main = "Istogramma, n = 500", ylab = "Frequenze assolute",  -->
-<!--      xlim = c(-3,3)) -->
+### {.plain}
 
-<!-- ``` -->
-
-<!-- ::: -->
-
-<!-- :::{.column width="50%"} -->
-<!-- ```{r} -->
-<!-- #| echo: false -->
-<!-- x = rnorm(50, mean = 0, sd = 1) -->
-<!-- hist(x, main = "Istogramma, n = 50", ylab = "Frequenze assolute",  -->
-<!--      xlim=c(-3,3)) -->
-<!-- ``` -->
-
-<!-- ::: -->
+\footnotesize
 
 
-<!-- :::: -->
+```{r}
+#| out-width: 70%
+#| fig-align: center
+x = rnorm(500, mean = 0, sd = 1)
+hist(x)
+```
+
 
 ### 
 
@@ -480,6 +481,7 @@ x = rnorm(1000, mean = 10, sd = 5)
 ```{r}
 #| layout-ncol: 2
 #| layout-nrow: 2
+#| label: fig-methods
 #| echo: false
 #| out-width: "90%"
 #| fig-cap: "Metodi per la definizione dei breaks"
@@ -756,6 +758,30 @@ boxplot(y_ceiling, col ="gold"); hist(y_ceiling, col ="gold")
 ```
 
 
+### 
+
+```{r}
+#| label: fig-myfigure
+#| echo: false
+#| layout-ncol: 3
+#| layout-nrow: 2
+#| fig-cap: ""
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+boxplot(x, col = "darkorange", horizontal = T)
+boxplot(y_floor, col ="lightblue", horizontal = T)
+boxplot(y_ceiling, col = "gold", horizontal = T)
+
+hist(x, col = "darkorange")
+hist(y_floor, col ="lightblue")
+hist(y_ceiling, col = "gold")
+
+```
 
 
 
