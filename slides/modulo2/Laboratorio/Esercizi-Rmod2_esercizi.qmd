@@ -1,10 +1,14 @@
 ---
-title: "Esercizi Modulo 2 - Prima serie"
+title: "Esercizi Modulo 2"
+subtitle: "Prima serie"
 author: "Ottavia Epifania"
-format: pdf
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
+format: 
+  html: 
+   embed-resources: true
+   number-sections: true
+execute:
+  echo: true
+  eval: false
 ---
 
 # Dati
@@ -42,19 +46,15 @@ SC il livello di scolarità dell'individuo (variabile categoriale ordinale a tre
 
 # Esercizi base
 
-## 1
-
-Costruire la tabella inserendo i dati della stessa in un foglio di calcolo (es. Excel) secondo la procedura di inserimento, controllo e salvataggio descritta a lezione. Caricare infine il file di dati esterno così ottenuto in R ed assegnarlo ad un data frame di nome dati
-
-## 2
+## 
 
 Fare la **somma** tra la media dei RT del gruppo delle donne e la media dei TP sempre nel gruppo delle donne.
 
-## 3 
+##  
 
 Controllare (semplicemente visualizzando i rispettivi risultati) se la deviazione standard dei TP del gruppo delle donne appartenenti alla condizione sperimentale (CS) di tipo A sia superiore alla deviazione standard dei TP del gruppo dei maschi appartenenti alla condizione sperimentale (CS) di tipo B.
 
-## 4
+## 
 
 Costruire due nuove strutture di dati, `datiSub1` e `datiSub2` contenenti rispettivamente: 
 
@@ -62,13 +62,13 @@ Costruire due nuove strutture di dati, `datiSub1` e `datiSub2` contenenti rispet
 
 * `datiSub2` la porzione di `dati` limitata esclusivamente alle variabili qualitative o ordinali `GEN`, `CS` e `SC`. Cancellare dalla memoria del sistema SOLO la struttura di dati dati
 
-## 5
+## 
 
 Visualizzare la tabella di frequenza relativa alla variabile `GEN` di `datiSub2`. 
 
 Ripetere la procedura questa volta visualizzando la **percentuale** di donne e quella degli uomini.
 
-## 6 
+## 
 
 Visualizzare la tabella di frequenza relativa alla variabile `SC` di `datiSub2`. 
 
@@ -76,13 +76,13 @@ Ripetere la procedura questa volta visualizzando la tabella con le frequenze rel
 
 # Esercizi advanced
 
-## 7
+## 
 
 Costruire una tabella di contingenza `TC` di dimensione $2 \times 3$ tra la variabile `GEN` e `SC`. Visualizzare i valori percentuali di TC.
 
 La sintassi per ottenere una tabella di contingenza $r \times c$ è: `table(var1, va2)` dove `var1` è la variabile che si vuole mettere sulle righe e `var2` quella sulle colonne
 
 
-## 8 
+## 
 
 A partire dai dati contenuti in `datiSub2` e `datuSub1` costruire una tabella di contingenza tra `GEN` e `CS` che sia limitata a soli quegli individui che abbiano ottenuto un punteggio di `TP` strettamente maggiore ($>$) di 55.

@@ -128,5 +128,12 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Esercizi -- (Soluzioni)](slides/modulo2/Laboratorio/LaboratorioRmod2_soluzioni.html)
 
 
+### Esercitazioni 
+
+ * [Esercitazione Modulo 2 - Prima serie (Testo)](slides/modulo2/Laboratorio/Esercizi-Rmod2_esercizi.html)
+ * [Esercitazione Modulo 2 - Prima serie (Template)](slides/modulo2/Laboratorio/Esercizi-Rmod2_template.qmd)
+ * [Esercitazione Modulo 2 - Prima serie (Soluzioni)](slides/modulo2/Laboratorio/Esercizi-Rmod2_soluzioni.html)
+
+
 ## Modulo 3
 

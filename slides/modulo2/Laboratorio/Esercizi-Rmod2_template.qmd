@@ -1,6 +1,6 @@
 ---
 title: "Esercizi Modulo 2"
-subtitle: "Prima serie - Soluzioni"
+subtitle: "Prima serie"
 author: "Ottavia Epifania"
 format: 
   html: 
@@ -46,22 +46,21 @@ SC il livello di scolarità dell'individuo (variabile categoriale ordinale a tre
 
 # Esercizi base
 
-
 ## 
 
 Fare la **somma** tra la media dei RT del gruppo delle donne e la media dei TP sempre nel gruppo delle donne.
 
 ```{r}
-mean(dati$RT[dati$GEN=="f"]) + mean(dati$TP[dati$GEN=="f"])
+
 ```
 
 
-## 
+##  
 
 Controllare (semplicemente visualizzando i rispettivi risultati) se la deviazione standard dei TP del gruppo delle donne appartenenti alla condizione sperimentale (CS) di tipo A sia superiore alla deviazione standard dei TP del gruppo dei maschi appartenenti alla condizione sperimentale (CS) di tipo B.
 
 ```{r}
-sd(dati$TP[dati$GEN=="f" & dati$CS=="A"]) > sd(dati$TP[dati$GEN=="m" & dati$CS=="B"]) 
+
 ```
 
 
@@ -73,14 +72,7 @@ Costruire due nuove strutture di dati, `datiSub1` e `datiSub2` contenenti rispet
 
 * `datiSub2` la porzione di `dati` limitata esclusivamente alle variabili qualitative o ordinali `GEN`, `CS` e `SC`. Cancellare dalla memoria del sistema SOLO la struttura di dati dati
 
-
 ```{r}
-datiSub1 <- dati[,c(2,4)]
-datiSub2 <- dati[,c(1,3,5)]
-rm(dati)
-# soluzione ugualmente valida 
-# datiSub1 <- dati[,c("RT","TP")]
-# datiSub2 <- dati[,c("GEN","CS", "SC")]
 
 ```
 
@@ -89,15 +81,10 @@ rm(dati)
 
 Visualizzare la tabella di frequenza relativa alla variabile `GEN` di `datiSub2`. 
 
-```{r}
-table(datiSub2$GEN)
-```
-
-
 Ripetere la procedura questa volta visualizzando la **percentuale** di donne e quella degli uomini.
 
 ```{r}
-table(datiSub2$GEN)/sum(table(datiSub2$GEN))
+
 ```
 
 
@@ -105,15 +92,10 @@ table(datiSub2$GEN)/sum(table(datiSub2$GEN))
 
 Visualizzare la tabella di frequenza relativa alla variabile `SC` di `datiSub2`. 
 
-```{r}
-table(datiSub2$SC)
-```
-
-
 Ripetere la procedura questa volta visualizzando la tabella con le frequenze relative dei tre livelli di scolarizzazione.
 
 ```{r}
-table(datiSub2$SC)/sum(table(datiSub2$SC))
+
 ```
 
 
@@ -125,19 +107,16 @@ Costruire una tabella di contingenza `TC` di dimensione $2 \times 3$ tra la vari
 
 La sintassi per ottenere una tabella di contingenza $r \times c$ è: `table(var1, va2)` dove `var1` è la variabile che si vuole mettere sulle righe e `var2` quella sulle colonne
 
-
 ```{r}
-TC = table(datiSub2$GEN, datiSub2$SC)
-(TC/sum(TC))*100
+
 ```
 
 
-##  
+## 
 
-A partire dai dati contenuti in `datiSub2` e `datiSub1` costruire una tabella di contingenza tra `GEN` e `CS` che sia limitata a soli quegli individui che abbiano ottenuto un punteggio di `TP` strettamente maggiore ($>$) di 55.
+A partire dai dati contenuti in `datiSub2` e `datuSub1` costruire una tabella di contingenza tra `GEN` e `CS` che sia limitata a soli quegli individui che abbiano ottenuto un punteggio di `TP` strettamente maggiore ($>$) di 55.
 
 ```{r}
-TC2 <- table(datiSub2$GEN[datiSub1$TP>55],datiSub2$SC[datiSub1$TP>55])
-TC2
+
 ```
 
