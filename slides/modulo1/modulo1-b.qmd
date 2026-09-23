@@ -392,7 +392,6 @@ data
 
     data[r, c], data$nome_variabile
 
-\pause
 
 :::: {.columns}
 
@@ -410,8 +409,8 @@ data
 ```{r}
 
 data[2, 1]
-data$peso
-data$peso[2]
+data$weight
+data$weight[2]
 ```
 :::
 ::::
@@ -471,7 +470,7 @@ str(data)
 
 Permette di creare liste di oggetti diversi (matrici, vettori, variabli) di diverso tipo (`numeric`, `character`, `integer`)
 
-Molti dei risultati ottenute con le funzioni per le analisi statistiche sono organizzati in liste, proprio perché permettono di contenere oggetti di natura diversa e con dimensionalità diversa
+Molti dei risultati ottenuti con le funzioni per le analisi statistiche sono organizzati in liste, proprio perché permettono di contenere oggetti di natura diversa e con dimensionalità diversa
 
 ###
 
