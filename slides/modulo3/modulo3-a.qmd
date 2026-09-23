@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili - Prima Parte"
+title: "Modulo Didattico 3: Statistiche descrittive bivariata (Associazione tra variabili categoriali)"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -14,37 +14,302 @@ format:
     innertheme: rounded
     outertheme: miniframes
 callout-icon: false
-lang: it
 code-annotations: below
-header-includes: 
-   - \usepackage{graphicx} 
-   - \usepackage{xcolor}
-   - \usepackage{tikz}
-   - \usepackage{multirow}
-   - \newcommand{\cov}{\mathrm{Cov}}
-   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
-   - \AtBeginSubsection{}
-   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
-   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
-   - \AtBeginSection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection, hideallsubsections]
-              \end{frame}
-          }
-   - \AtBeginSubsection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
-             \end{frame}
-          }
-editor_options: 
-  chunk_output_type: console
-execute: 
-  echo: true
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{xcolor}
+  - \usepackage{tikz}
+  - \usepackage{multirow}
+  - \usepackage{multicol}
+  - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,arrows.meta}
+  - \AtBeginSubsection{}
+  - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+  - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+  - |
+      \AtBeginSection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,hideallsubsections]
+        \end{frame}
+      }
+  - |
+      \AtBeginSubsection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+        \end{frame}
+      }
+  - \definecolor{unipd}{RGB}{155,0,20}
+  - \definecolor{template}{RGB}{72,79,89}
+  - \definecolor{blu}{rgb}{0.0,0.33,0.71}
 ---
 
-# Tabelle di frequenza (contingenza)
+# Variabile statistica doppia 
+
+### {.plain}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$X$: Istruzione & E & E & E & SI & SI & SI & SS & SS & SS & SS & SS\\
+\hline
+$Y$: Occupazione & DI & I & I & DI & I & I & D & I & I & D & D\\
+\hline
+\end{tabular}
+
+\begin{columns}[T]
+
+\begin{column}{.50\linewidth}
+			
+\centering
+\vspace{3mm}
+
+\begin{tabular}{c c}
+\hline
+categoria $x_k$ & $n_{k.}$\\
+\hline
+Elementare (E) & \textcolor{red}{3} \\
+Secondaria Inferiore (SI) & \textcolor{red}{3}\\
+Secondaria Superiore (SS) & \textcolor{red}{5} \\
+\hline
+\end{tabular}
+
+\end{column}
+
+\begin{column}{.50\linewidth}
+
+\vspace{3mm}
+\centering
+
+\begin{tabular}{c c}
+\hline
+categoria $y_j$ & $n_{.j}$ \\
+\hline
+Disoccupato (DI) & \textcolor{blue}{2} \\
+Impiegato (I) & \textcolor{blue}{6}\\
+Dirigente (D) & \textcolor{blue}{3} \\
+\hline
+\end{tabular}
+
+\end{column}
+
+\end{columns}
+
+
+\centering
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ & DI & I & D & \\
+\hline
+E  & 1 & 2 & 0 & \textcolor{red}{3}\\
+SI & 1 & 2 & 0 & \textcolor{red}{3}\\
+SS & 0 & 2 & 3 & \textcolor{red}{5}\\
+\hline
+ & \textcolor{blue}{2} & \textcolor{blue}{6} & \textcolor{blue}{3} & \textbf{11}\\
+\hline
+\end{tabular}
+
+
+###
+
+Date due variabili $X$ e $Y$ e la loro distribuzione di frequenze congiunte 
+$n_{kj}$ (numero di unità statistiche che presentano la coppia di categorie 
+$(x_k,y_j)$)
+
+
+:::{.callout-tip}
+
+L'insieme $(X,Y)$ delle terne
+
+$$(x_k,y_j,n_{kj}) 
+\qquad
+(k=1,\ldots,h;\ j=1,\ldots,m)$$
+
+è detto \textbf{variabile statistica doppia}.
+
+:::
+
+
+
+# Tabella a doppia entrata -- Tavola di contingenza
+
+### {.plain}
+
+\begin{tabular}{
+p{0.7cm} p{0.7cm} |
+p{0.7cm} p{0.7cm} p{0.7cm} p{0.7cm} p{0.7cm} p{0.7cm} |
+p{0.7cm}
+}
+
+& \multicolumn{1}{l}{} 
+& \multicolumn{6}{c}{Y} 
+& \multicolumn{1}{c}{} \\
+
+& \multicolumn{1}{c}{}
+& \multicolumn{1}{l}{$y_1$}
+& \multicolumn{1}{l}{$y_2$}
+& \multicolumn{1}{l}{$\ldots$}
+& \multicolumn{1}{l}{$y_j$}
+& \multicolumn{1}{l}{$\ldots$}
+& \multicolumn{1}{l}{$y_m$}
+& \multicolumn{1}{l}{$n_{k.}$} \\
+
+\cline{3-8}
+
+\multirow{6}{*}{X}
+
+& $x_1$
+& $n_{11}$
+& $n_{12}$
+& $\ldots$
+& $n_{1j}$
+& $\ldots$
+& $n_{1m}$
+& $n_{1.}$ \\
+
+& $x_2$
+& $n_{21}$
+& $n_{22}$
+& $\ldots$
+& $n_{2j}$
+& $\ldots$
+& $n_{2m}$
+& $n_{2.}$ \\
+
+& $\vdots$
+& $\vdots$
+& $\vdots$
+& 
+& $\vdots$
+& 
+& $\vdots$
+& $\vdots$ \\
+
+& $x_k$
+& $n_{k1}$
+& $n_{k2}$
+& $\ldots$
+& $n_{kj}$
+& $\ldots$
+& $n_{km}$
+& $n_{k.}$ \\
+
+& $\vdots$
+& $\vdots$
+& $\vdots$
+&
+& $\vdots$
+&
+& $\vdots$
+& $\vdots$ \\
+
+& $x_h$
+& $n_{h1}$
+& $n_{h2}$
+& $\ldots$
+& $n_{hj}$
+& $\ldots$
+& $n_{hm}$
+& $n_{h.}$ \\
+
+\cline{3-8}
+
+&
+& $n_{.1}$
+& $n_{.2}$
+& $\ldots$
+& $n_{.j}$
+& $\ldots$
+& $n_{.m}$
+& $n$ \\
+
+\end{tabular}
+
+
+\small
+
+$n_{kj}$: **Frequenza congiunta**, definisce il numero di unità statistiche 
+che possiedono congiuntamente la categoria $x_k$ della variabile $X$ e 
+la categoria $y_j$ della variabile $Y$
+
+$n_{k.}$: **Frequenza marginale di $X$**, definisce il numero di unità 
+statistiche che possiedono la categoria $x_k$ della variabile $X$
+
+$n_{.j}$: **Frequenza marginale di $Y$**, definisce il numero di unità 
+statistiche che possiedono la categoria $y_j$ della variabile $Y$
+
+$n$: Numero totale di unità statistiche
+
+
+### 
+
+\vspace{-3mm}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=1.1cm and 1.3cm,
+    formula/.style={
+        draw,
+        fill=white,
+        minimum width=3.2cm,
+        minimum height=1.4cm,
+        align=center,
+        inner sep=1ex
+    },
+    description/.style={
+        draw,
+        fill=white,
+        text width=7.2cm,
+        minimum height=1.4cm,
+        align=left,
+        inner sep=1.5ex
+    },
+    arrow/.style={
+        ->,
+        line width=0.5pt,
+        shorten >=3pt,
+        shorten <=3pt
+    }
+]
+
+% Frequenza marginale di X
+\node[formula] (A) {
+    $\displaystyle n_{k.} = \sum_{j=1}^{m} n_{kj}$
+};
+
+\node[description, right=of A] (C) {
+  \small  Numero di unità statistiche che possiedono la
+    categoria $x_k$ della variabile $X$
+    (\footnotesize \textbf{totale della riga $k$})
+};
+
+\draw[arrow] (A) -- (C);
+
+
+% Frequenza marginale di Y
+\node[formula, below=of A] (D) {
+    $\displaystyle n_{.j} = \sum_{k=1}^{h} n_{kj}$
+};
+
+\node[description, right=of D] (E) {
+    \small Numero di unità statistiche che possiedono la
+    categoria $y_j$ della variabile $Y$
+    (\footnotesize  \textbf{totale della colonna $j$})
+};
+
+\draw[arrow] (D) -- (E);
+
+\end{tikzpicture}
+\end{center}
+
+
+$$
+\sum_{k=1}^{h}\sum_{j=1}^{m} n_{kj}
+=
+\sum_{k=1}^{h} n_{k.}
+=
+\sum_{j=1}^{m} n_{.j}
+=
+n
+$$
 
 ## `table()`
 
@@ -55,9 +320,10 @@ execute:
 \small 
 
 ```{r}
+#| echo: true
 var1 <- as.factor(c("a1","a2","a1","a2","a1","a2","a1"))  
 var2 <- as.factor(c("b1","b1","b1","b2","b1","b2","b2")) 
-table(var1, var2)
+mytab = table(var1, var2); mytab
 ```
 
 
@@ -67,15 +333,39 @@ table(var1, var2)
 
 `margin.table(table, margin)`: Frequenze marginali per la tabella a doppia entrata
 
-> `margin = 1`: Frequenze marginali calcolate **attraverso le colonne**
-> `margin = 2`: Frequenze marginali calcolate **attraverso le righe**
+:::{.callout-tip}
+`margin = 1`: Frequenze marginali calcolate **attraverso le colonne**
+
+`margin = 2`: Frequenze marginali calcolate **attraverso le righe**
+:::
+
+\footnotesize 
 
 ```{r}
-mytab <- table(var1,var2)
-margin.table(mytab,2)  
+mytab
 ```
 
+::::{.columns}
 
+:::{.column width=50%}
+
+\footnotesize
+```{r}
+#| echo: true
+margin.table(mytab,1)  
+```
+
+:::
+
+:::{.column width=50%}
+\footnotesize
+```{r}
+#| echo: true
+margin.table(mytab,2)  
+```
+:::
+
+::::
 
 ## `prop.table()`
 
@@ -83,137 +373,38 @@ margin.table(mytab,2)
 
 `prop.table(T, margin = NULL)`: Probabilità condizionate: 
 
-* riga (`margin = 1`, attraverso le colonne) o colonna (`margin = 2`, attraverso le righe). 
-* `margin = NULL` frequenze relative 
+:::{.callout-tip}
+`margin = 1`: Probabilità condizionate di riga ( **attraverso le colonne**)
+
+`margin = 2`: Probabilità condizionate di colonna **attraverso le righe**
+:::
+
+###
+
+```{r}
+#| echo: true
+prop.table(mytab)   
+```
+
 
 ::::{.columns}
 :::{.column width=50%}
 \small
 
 ```{r}
-prop.table(mytab)    
+#| echo: true
 prop.table(mytab,1)  # P(B|A)
 ```
 :::
 
 :::{.column width=50%}
 ```{r}
+#| echo: true
 prop.table(mytab,2)  # P(A|B)
 ```
 :::
 ::::
 
-
-# Associazione (Variabili qualitative)
-
-## $\chi^2$
-
-###
-
-\small
-Quantifica il grado di associazione tra due variabili nominali: 
-
-* A con $I$ categorie,
-* B con $J$ categorie
-Richiede il confronto tra **frequenze osservate** ($n_{ij}$) e **frequenze attese** o **frequenze teoriche** ($n_{ij}^*$)
-
-:::: {.columns}
-:::{.column width=40%}
-\centering
-\begin{tabular}{|p{2.5cm}|p{1cm}|}
-\hline
-& \\
-\multicolumn{1}{|c|}{${n_{ij}}$} & \multicolumn{1}{c|}{$n_{i.}$}\\
-& \\
-\hline
-\multicolumn{1}{|c|}{$n_{.j}$} & \\
-\hline
-\end{tabular}
-	
-	
-\vspace{3mm}
-Frequenze osservate
-:::
-
-:::{.column width=10%}
-VS.
-:::
-
-:::{.column width=40%}
-\centering
-\begin{tabular}{|p{2.5cm}|p{1cm}|}
-\hline
-& \\
-\multicolumn{1}{|c|}{$n_{ij}^*$} & \multicolumn{1}{c|}{$n_{i.}$}\\
-& \\
-\hline
-\multicolumn{1}{|c|}{$n_{.j}$} & \\
-\hline
-\end{tabular}
-
-\vspace{3mm}
-Frequenze teoriche
-:::
-::::
-
-
-$$n_{ij}^* = \dfrac{n_{i.} \times n{.j}}{N}$$
-$N = \sum_{i=1}^I \sum_{j=1}^J n_{ij}$
-
-### 
-
-Le frequenze teoriche $n_{ij}^*$ sono calcolate assumendo l'indipendenza tra le variabili. 
-
-:::{.callout-tip}
-
-## $n_{ij}^*$: Significato 
-
-Data l'ampiezza campionaria $N$, quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
-
-
-:::
-
-
-
-$$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(n_{ij} - n_{ij}^*)^2}{n_{ij}^*}$$
-
-
-###
-
-
-
-$\chi^2 = 0$: $n_{ij} = n_{ij}^*$ Indipendenza stocastica
-
-$\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 = N \times \min[(I-1); (J-1)]$)
-
-\pause
-
-$$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
-
-$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
-
-
-
-## `chisq.test()`
-
-###
-
-
-`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza `table`
-
-```{r}
-#| warning: false
-chisq.test(mytab)$statistic
-```
-
-Per calcolare il $\tilde{\chi}^2$:
-
-```{r}
-#| warning: false
-chisq.test(mytab)$statistic/sum(mytab)
-```
-
-# Riflessioni 
 
 ## Frequenze percentuali
 
@@ -226,7 +417,6 @@ chisq.test(mytab)$statistic/sum(mytab)
 
 ```{r}
 #| echo: false
-#| layout-ncol: 2
 donne = read.csv2("laboratorio/datiDonne.csv")
 donne$Istruzione = factor(donne$Istruzione, levels = c("Basso", "Medio", "Alto"))
 tabella = addmargins(table(donne$Occupazione, donne$Istruzione))
@@ -355,7 +545,173 @@ barplot(
 
 *X% delle donne con titolo di studio basso/medio/alto che sono lavoratici/casalinghe*
 
-##
+
+
+# Connessione (Variabili qualitative)
+
+### 
+
+\begin{center}
+La CONNESSIONE tra due variabili categoriali equivale alla NON INDIPENDENZA!
+		
+\end{center}
+
+
+Tra le variabili $X$ e $Y$ c’è una forma di legame e \textbf{relazione} (\textbf{connessione}) $\rightarrow$ il variare di una implica un qualche cambiamento \textbf{non casuale} nell’altra
+
+## $\chi^2$
+
+###
+
+\small
+Quantifica la DISTANZA DALL'INDIPENDENZA tra due variabili categoriali
+
+* X con $h$ categorie $x_k$, con $k=1,\ldots,h$,
+* Y con $m$ categorie $y_j$, con $j=1,\ldots,m$
+
+Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attese** o **frequenze teoriche** ($n_{kj}^*$)
+
+:::: {.columns}
+:::{.column width=40%}
+\centering
+\begin{tabular}{|p{2.5cm}|p{1cm}|}
+\hline
+& \\
+\multicolumn{1}{|c|}{${n_{kj}}$} & \multicolumn{1}{c|}{$n_{k.}$}\\
+& \\
+\hline
+\multicolumn{1}{|c|}{$n_{.j}$} & \\
+\hline
+\end{tabular}
+	
+	
+\vspace{3mm}
+Frequenze osservate
+:::
+
+:::{.column width=10%}
+VS.
+:::
+
+:::{.column width=40%}
+\centering
+\begin{tabular}{|p{2.5cm}|p{1cm}|}
+\hline
+& \\
+\multicolumn{1}{|c|}{$n_{kj}^*$} & \multicolumn{1}{c|}{$n_{k.}$}\\
+& \\
+\hline
+\multicolumn{1}{|c|}{$n_{.j}$} & \\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+Frequenze teoriche
+:::
+::::
+
+
+$$n_{kj}^* = \dfrac{n_{k.} \times n_{.j}}{n}, \qquad n = \sum_{k=1}^h \sum_{j=1}^m n_{kj}$$
+
+### 
+
+:::{.callout-tip}
+
+## $n_{kj}^*$: Significato 
+
+Data l'ampiezza campionaria $n$, quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
+:::
+
+
+$$
+n_{kj}^* = \frac{n_{k.}\,n_{.j}}{n}
+$$
+
+###
+
+\footnotesize
+```{r}
+#| tbl-cap: Frequenze osservate
+knitr::kable(tabella,booktabs = TRUE,align = "c")
+```
+
+
+\begin{center}
+\footnotesize
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{lccc|c}
+\hline
+& Basso & Medio & Alto & Totale \\
+\hline
+
+Casalinghe
+& $\dfrac{85 \times 50}{140} = 30.36$
+& $\dfrac{85 \times 40}{140} = 24.29$
+& $\dfrac{85 \times 50}{140} = 30.36$
+& 85 \\
+
+Lavoratrici
+& $\dfrac{55 \times 50}{140} = 19.64$
+& $\dfrac{55 \times 40}{140} = 15.71$
+& $\dfrac{55 \times 50}{140} = 19.64$
+& 55 \\
+
+\hline
+
+Totale
+& 50
+& 40
+& 50
+& \textbf{140} \\
+
+\hline
+\end{tabular}
+\end{center}
+
+
+###
+
+$$\chi^2 = \sum_{k=1}^{h} \sum_{j=1}^{m} \displaystyle \frac{(n_{kj} - n_{kj}^*)^2}{n_{kj}^*}$$
+
+
+$\chi^2 = 0$: $n_{kj} = n_{kj}^*$ Indipendenza stocastica
+
+$\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 = n \times \min[(h-1); (m-1)]$)
+
+
+$$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
+
+$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
+
+
+
+## `chisq.test()`
+
+###
+
+
+`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza `table`
+
+```{r}
+#| warning: false
+#| echo: true
+
+mytab
+chisq.test(mytab)$statistic
+```
+
+
+### Calcolo $\chi_{max}^2$
+
+```{r}
+#| echo: true
+chiMax = sum(mytab) * min(c(nrow(mytab) - 1, ncol(mytab) - 1))
+chiMax
+chisq.test(mytab)$statistic/chiMax
+```
+
+
+# Indipendenza stocastica e massima dipendenza 
 
 ### 
 
@@ -412,8 +768,6 @@ barplot(round(prop.table(t(preferenze_tab), 1),2)*100, beside = T,
 ```
 
 
-## Osservato vs. Teorico
-
 ###
 
 ```{r}
@@ -437,7 +791,16 @@ for (i in 1:nrow(prefT)) {
 knitr::kable(prefT, caption = "Frequenze Teoriche")
 ```
 
-## Massima dipendenza 
+
+### Calcolo $\chi^2$
+
+```{r}
+#| echo: false
+chisq.test(preferenze_tab)$statistic
+sum(preferenze_tab) * min(c(nrow(preferenze_tab) -1, 
+                            ncol(preferenze_tab) - 1))
+```
+
 
 ###
 
@@ -473,9 +836,6 @@ barplot(round(prop.table(preferenze_dep, 2),2)*100, beside = T,
 
 ###
 
-:::: {.columns}
-
-::: {.column width=70%}
 ```{r}
 #| echo: false
 #| warning: false
@@ -499,15 +859,18 @@ knitr::kable(prefT, caption = "Frequenze Teoriche")
 
 ```
 
-:::
 
-::: {.column width=30%}
-$\chi^2 = `r chisq.test(preferenze_dep)$statistic`$
 
-$\chi_{Max}^2 = N* \min[(i-i);(c-1)] = `r sum(preferenze_dep)` * \min[(3-1); (3-1)] = 336$
+### 
 
-:::
-::::
+```{r}
+#| echo: true
+
+chisq.test(preferenze_dep)$statistic
+sum(preferenze_dep) * min(c(nrow(preferenze_dep) -1, 
+                            ncol(preferenze_dep) - 1))
+```
+
 
 
 
