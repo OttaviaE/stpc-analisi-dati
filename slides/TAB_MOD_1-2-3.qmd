@@ -2,8 +2,10 @@
 title: "Analisi dei dati con applicazioni informatiche"
 subtitle: "Tabella riassuntiva Moduli 1-2-3"
 format: 
-  pdf: 
+  html: 
    toc: true
+   number-sections: true
+   embed-resources: true
 ---
 
 \newpage
@@ -12,7 +14,7 @@ format:
 
 ## Artitmetici
 
-| Simbolo | Significato      | Osservazioni/Esempi |
+| Simbolo | Significato      | Note |
 |---------|------------------|----------------------|
 | +       | Addizione        |                      |
 | -       | Sottrazione      |                      |
@@ -22,7 +24,7 @@ format:
 
 ## Di confronto
 
-| Simbolo | Significato      | Osservazioni/Esempi |
+| Simbolo | Significato      | Note |
 |---------|------------------|----------------------|
 | <       | Minore           |                      |
 | >       | Maggiore         |                      |
@@ -33,23 +35,24 @@ format:
 
 ## Logici
 
-| Simbolo | Significato       | Osservazioni/Esempi |
+| Simbolo | Significato       | Note |
 |---------|-------------------|----------------------|
 | &       | Congiunzione      | Intersezione tra insiemi $\land$ ($\cap$) |
 | \|     | Disgiunzione      | Unione tra insiemi  $\lor$ $\cup$ |
 | !       | Negazione         |                    $\lnot$  |
 | &!      | Disgiunzione esclusiva |                |
+| %in%   | Incluzione | |
 
 # Valori di verità
 
-| Valore | Significato | Osservazioni/Esempi |
+| Valore | Significato | Note |
 |--------|-------------|----------------------|
 | TRUE   | Vero        | Es. X>2 confronta ogni valore di X con 2 |
 | FALSE  | Falso       |                      |
 
 # Operatori e funzioni utili
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `<-`       | Operatore di assegnazione | Uguale a `assign()` oppure `=` |
 | `c(...)`   | Concatenazione di valori | `c(1:n)` restituisce valori da 1 a n con passo 1; `c(1,n)` restituisce solo 1 e n |
@@ -60,7 +63,7 @@ format:
 
 # Convertitori
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `as.numeric(A)` | Converte in variabile numerica | |
 | `as.factor(A)` | Converte in variabile categoriale/nominale | Richiede variabile testuale |
@@ -69,7 +72,7 @@ format:
 
 # Strumenti
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `remove(...)` | Rimuove valori assegnati | |
 | `rm(...)` | Rimuove oggetti | |
@@ -80,7 +83,7 @@ format:
 
 # Funzioni matematiche
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `log(...)` | Logaritmo naturale | |
 | `exp(...)` | Esponenziale | |
@@ -100,32 +103,32 @@ format:
 | `quantile(X, probs)` | Calcola quantile | |
 | `IQR(...)` | Differenza interquartilica, $Q_3-Q_1$|
 | `range(...)` | Intervallo (min e max) | Identico a `c(min(X),max(X))` |
-| `rep(n, k) | Replica `n` per `k` volte | |
+| `rep(n, k)` | Replica `n` per `k` volte | |
 | `dim(...)` | Dimensioni oggetto tabellare | `dim(...)[1]` righe, `dim(...)[2]` colonne |
 | `cumsum(...)` | Somma cumulata | |
 | `length(...)` | Numero elementi di un vettore | |
-| `which(...) | Posizione di valori che soddisfano condizione | Es. `which(x<3)` |
+| `which(...)` | Posizione di valori che soddisfano condizione | Es. `which(x<3)` |
 | `levels(...)` | Etichette assegnate a fattori | |
 | `numeric(n)` | Vettore vuoto lunghezza n | |
 | `rownames(...)` | Nomi righe | |
 | `colnames(...)` | Nomi colonne | |
-| `summary(...) | Riassume contenuto | Anche modelli `lm(...)` |
+| `summary(...)` | Riassume contenuto | Anche modelli `lm(...)` |
 | `str(X)` | Controlla struttura oggetto | |
 | `cov(X,Y)` | Covarianza campionaria | |
 | `cor(X,Y)` | Correlazione lineare | $-1\leq r \leq 1$ |
 
 # Matrici
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note  |
 |----------|-------------|----------------------|
 | `matrix(y, r, c)` | Matrice $r \times c$ con valori `y` | Riempimento per colonne |
-| `matrix(y, r, c, byrow=TRUE)` | Matrice con riempimento per righe | |
+| `matrix(y, r, c, byrow=TRUE)` | Matrice |Riempimento per righe  |
 | `t(M)` | Trasposta di M | |
 | `*` | Prodotto tra matrici | |
 
 # Liste e Data Frame
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `list()` | Costruisce lista di oggetti | Prima creare oggetti, poi richiamarli nella lista |
 | `data.frame(...)` | Costruisce tabella di variabili | Variabili devono avere stessa lunghezza |
@@ -137,7 +140,7 @@ format:
 
 # Distribuzioni di frequenza
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `table(A)` | Tabella frequenze di variabile | |
 | `table(A,B)` | Tabella di contingenza | |
@@ -150,7 +153,7 @@ format:
 
 # Funzioni grafiche
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `hist(X,breaks)` | Istogramma | `breaks=` Calcolo ampiezza bin |
 | `boxplot(X)` | Boxplot | anche `boxplot(X,Y,names=c("X","Y"))` |
@@ -163,14 +166,14 @@ format:
 
 # Associazione variabili categoriali
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `chisq.test(T)$statistic` | Calcola chi-quadrato osservato | |
 | `chisq.test(T)$expected` | Calcola frequenze teoriche | |
 
 # Regressione lineare
 
-| Funzione | Significato | Osservazioni/Esempi |
+| Funzione | Significato | Note |
 |----------|-------------|----------------------|
 | `lm(Y~X)` | Modello regressione lineare | Y dipendente, X indipendente |
 | `abline(retta,...) `| Traccia retta sul grafico | `abline(lm(Y~X))` |
