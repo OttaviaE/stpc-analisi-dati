@@ -595,7 +595,6 @@ head(dati)
     summary(data)
 
 Riassume il contenuto di strutture di dati 
-\pause
 
 \small
 
@@ -609,7 +608,6 @@ summary(rock)
     
 Fornisce informazioni circa la struttura generale di un oggetto: 
 
-\pause
 
 ```{r}
 str(rock)
