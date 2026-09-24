@@ -82,6 +82,12 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 * [Guida e dispensa di R](introduzione-a-R-IT.html)
 
+## Dispense R 
+
+#### Moduli 1, 2, 3
+
+[Dispense delle funzioni](slides/TAB_MOD_1-2-3.html)
+
 # Il corso 
 
 ## Modulo 1 
