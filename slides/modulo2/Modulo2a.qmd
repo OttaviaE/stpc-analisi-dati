@@ -211,14 +211,14 @@ Lo $0$ è arbitrario, ma c'è un'\emph{unita di misura} per cui le categorie si 
 \end{column}
 		
 \begin{column}{.50\linewidth}
-Se ci sono 0°C, non vuol dire che non c'è calore. \\
+Se ci sono 0°C, non vuol dire che non c'è temperatura. \\
 Se ieri c'erano 5°C e oggi ce ne sono 10°C, possiamo dire che oggi fa più caldo di ieri e che ci sono 5°C più di ieri.\\
 Il fatto che lo 0 non sia arbitrario non ci permette di dire che oggi c'è il doppio del caldo di ieri. \\
 Trasformando le due temperature in Fahrenheit si ottiene 41°F e 50°F... e la seconda non è più il doppio della prima!
 \end{column}
 \end{columns}
 
-## Metriche -- Scala a rapporti equivalenti 
+## Quantitative -- Scala a rapporti equivalenti 
 
 ### 
 

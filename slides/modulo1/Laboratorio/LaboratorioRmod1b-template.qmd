@@ -1,14 +1,14 @@
 ---
 title: "Laboratorio di Analisi dei Dati con R"
 subtitle: "Laboratorio Modulo 1"
-author: "Ottavia Epifania"
+author: "Nome e Cognome"
 format: 
   html: 
    embed-resources: true
    number-sections: true
 execute:
   echo: true
-  eval: false
+  eval: true
 ---
 
 # Manipolazioni di data frame
