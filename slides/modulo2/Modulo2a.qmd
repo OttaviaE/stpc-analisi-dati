@@ -93,20 +93,20 @@ Si differenziano in base alla quantità di informazione che può essere ricavata
 
 \small
 
-Comune di residenza, genere, patologia clinica ecc. Vale solo l'equivalenza ($=$ o $\neq$)
+Comune di residenza, sesso biologico, patologia clinica ecc. Vale solo l'equivalenza ($=$ o $\neq$)
 
 \begin{center}
 \includegraphics[width=.20\linewidth]{img/nominale.png}
 \end{center}
 
-Al posto di ``A'', ``B'', ``C'' si poteva scrivere $\alpha$, $\beta$ $\gamma$, 1,2,3 (ma i numeri valgono solo come etichette!)
+Al posto di A, B, C si poteva scrivere $\alpha$, $\beta$ $\gamma$, 1,2,3 (ma i numeri valgono solo come etichette!)
 
 Caratteristiche: 
 
 \begin{itemize}
 \item  Categorie \textbf{distintive}: gli elementi che appartengono a categorie differenti vengono considerati di tipo diverso
 \item Categorie \textbf{mutualmente escludentesi}: ogni elemento può rientrare in una ed una sola categoria
-\item Categorie \textbf{Collettivamente esaustive}: tutti gli elementi vengono classificati nelle categorie della variabile, nessuno escluso
+\item Categorie \textbf{collettivamente esaustive}: tutti gli elementi vengono classificati nelle categorie della variabile, nessuno escluso
 	
 \end{itemize}
 
@@ -144,7 +144,6 @@ diagnosi
 
 ```
 
-\pause
 
 \small
 ```{r}
@@ -157,7 +156,7 @@ as.factor(diagnosi)
 
 ### 
 
-Titolo di studio, gradimento di un prodotto, valutazione di una malattia (e.g., alto, medio, basso) ecc. Vale sia l'equivalenza ($=$ o $\neq$) sia l'ordinamento ($<$ o $>$)
+Titolo di studio, gradimento di un prodotto, valutazione di una malattia (e.g., alto, medio, basso), fasce di reddito ecc. Vale sia l'equivalenza ($=$ o $\neq$) sia l'ordinamento ($<$ o $>$)
 	
 \begin{center}
 \includegraphics[width=.20\linewidth]{img/ordinale.png}
@@ -174,8 +173,7 @@ Le etichette numeriche valgono per il loro ordine (non ha senso compiere operazi
 
 ### 
 
-    factor(A,levels=c("a1","a2",..., "ak"), 
-       ordered=TRUE) 
+    factor(A,levels=c("a1","a2",..., "ak"), ordered=TRUE) 
        
 Converte la variabile in una variabile con tanti livelli quanti sono i valori unici e viene forzato un ordine su questi livelli: 
 
@@ -213,9 +211,9 @@ Lo $0$ è arbitrario, ma c'è un'\emph{unita di misura} per cui le categorie si 
 \end{column}
 		
 \begin{column}{.50\linewidth}
-Se ci sono 0°C, non vuol dire che non c'è calore! \\
-Se ieri c'erano 5°C e oggi ce ne sono 10°C, possiamo dire che oggi fa più caldo di ieri e che ci sono 5°C più di ieri\\
-Il fatto che lo 0 non sia arbitrario non ci permette di dire che oggi c'è il doppio del caldo di ieri! \\
+Se ci sono 0°C, non vuol dire che non c'è calore. \\
+Se ieri c'erano 5°C e oggi ce ne sono 10°C, possiamo dire che oggi fa più caldo di ieri e che ci sono 5°C più di ieri.\\
+Il fatto che lo 0 non sia arbitrario non ci permette di dire che oggi c'è il doppio del caldo di ieri. \\
 Trasformando le due temperature in Fahrenheit si ottiene 41°F e 50°F... e la seconda non è più il doppio della prima!
 \end{column}
 \end{columns}
@@ -251,14 +249,23 @@ In R non esiste una distinzione tra variabili a intervalli equivalenti e variabi
 
 \scriptsize
 ```{r}
-x = seq(-3, 3, length.out = 10); x # <1>
+x = seq(-3, 3, by = .5); x # <1>
 y = rnorm(10, mean = 3, sd=2); y # <2>
 z = 1:15; z # <3>
 ```
 \footnotesize
-1. La funzione `seq()` genera un vettore di numeri da un minimo a un massimo, di lunghezza definita dall'utente 
+1. La funzione `seq()` genera un vettore di numeri da un minimo a un massimo, con un step progressivo definito dall'utente
 2. La funzione `rnorm()` genera un vettore di lunghezza definita estraendo a caso da una distribuzione normale 
 3. L'operatore `:` genera una sequenza unitaria di valori da un minimo a un massimo
+
+### 
+
+```{r}
+str(x)
+str(y)
+str(z)
+```
+
 
 # Frequenze
 
@@ -314,8 +321,10 @@ table(diagnosi)
 
 ### 
 
+\small 
+
 **Frequenza cumulata**: numero o percentuale di unità statistiche
-  che presentano una modalità "minore o uguale" alla modalità corrente.
+  che presentano una categoria "minore o uguale" alla categoria corrente.
 
 
 
@@ -325,11 +334,7 @@ table(diagnosi)
 $$N_i = n_1 + n_2 + \cdots + n_i
     = \sum_{j=1}^{i} n_j$$
 
-con
-
-$N_1 = n_1
-\qquad \text{e} \qquad
-N_k = n.$
+con $N_1 = n_1 \qquad \text{e} \qquad N_k = n.$
 
 
 
@@ -340,13 +345,7 @@ N_i\% = n_1\% + n_2\% + \cdots + n_i\%
        = \sum_{j=1}^{i} n_j\%
 $$
 
-con
-
-$
-N_1\% = n_1\%
-\qquad \text{e} \qquad
-N_k\% = 100\%.
-$
+con $N_1\% = n_1\% \qquad \text{e} \qquad N_k\% = 100\%.$
 
 ### 
 
@@ -371,7 +370,7 @@ Non hanno quindi senso per caratteri qualitativi sconnessi (nominali).
 
 Esprimi l'accordo con l'affermazione:
 
-> Insegnare statistica a psicologia è una buona idea
+> Insegnare statistica a psicologia è una pessima idea
 
 \begin{table}
 \centering
@@ -402,8 +401,7 @@ Totale                     & 41 &    & 100.0\% & \\
 opinione = data.frame(
   categoria = c("Totalmente in disaccordo", "Abbastanza in disaccordo",
     "Indifferente",
-    "Abbastanza d'accordo", "Totalmente d'accordo"
-  ),
+    "Abbastanza d'accordo", "Totalmente d'accordo"),
   n = c(10, 8, 6, 14, 3)
 )
 opinione$N = cumsum(opinione$n)
@@ -700,12 +698,12 @@ quantile(x, probs = seq(0,1, by = .10))
 La media è una sorta di baricentro della distribuzione dei dati. Data una variabile $X$ composta da $n$ valori:  
 
 \begin{equation*}
-\bar{X} = \dfrac{\sum_{i = 1}^{N}x_i}{N}
+\bar{X} = \dfrac{\sum_{i = 1}^{n}x_i}{n}
 \end{equation*}
 
 
-###
-
+### {.plain}
+\footnotesize
 \centering
 
 \scalebox{.80}{
