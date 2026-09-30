@@ -135,7 +135,7 @@ plot(anscombe$x1, anscombe$y1,
      col = "steelblue",
      cex = 2.5,
      xlab = "x",
-     ylab = "y")
+     ylab = "y", ylim = c(4, 13), xlim = c(4, 14))
 abline(lm(anscombe$y1 ~ anscombe$x1),
        lwd = 6, lty = 2, col = "gray")
 abline(v = mean(anscombe$x1),
@@ -149,7 +149,7 @@ plot(anscombe$x2, anscombe$y2,
      col = "steelblue",
      cex = 2.5,
      xlab = "x",
-     ylab = "y")
+     ylab = "y", ylim = c(4, 13), xlim = c(4, 14))
 abline(lm(anscombe$y2 ~ anscombe$x2),
        lwd = 6, lty = 2, col = "gray")
 abline(v = mean(anscombe$x2),
@@ -163,7 +163,7 @@ plot(anscombe$x3, anscombe$y3,
      col = "steelblue",
      cex = 2.5,
      xlab = "x",
-     ylab = "y")
+     ylab = "y", ylim = c(4, 13), xlim = c(4, 14))
 abline(lm(anscombe$y3 ~ anscombe$x3),
        lwd = 6, lty = 2, col = "gray")
 abline(v = mean(anscombe$x3),
@@ -177,7 +177,7 @@ plot(anscombe$x4, anscombe$y4,
      col = "steelblue",
      cex = 2.5,
      xlab = "x",
-     ylab = "y")
+     ylab = "y", ylim = c(4, 13), xlim = c(4, 14))
 abline(lm(anscombe$y4 ~ anscombe$x4),
        lwd = 6, lty = 2, col = "gray")
 abline(v = mean(anscombe$x4),
@@ -240,7 +240,7 @@ L'altezza della barretta è proporzionale alla sua frequenza
 
     barplot(x)
     
-Dove `x` è il vettore delle frequenze
+Dove `x` è il vettore delle frequenze (quello che si ottiene applicando la funzione `table()` a una variabile categoriale)
    
 ### 
 
@@ -365,7 +365,7 @@ barplot(
 ```{r}
 #| out-width: 30%
 #| fig-align: center
-dati = rep(c("A", "B", "C"), c(12, 35, 18)); dati
+dati = factor(rep(c("A", "B", "C"), c(12, 35, 18))); dati
 table(dati)
 barplot(table(dati), col = "darkgreen")
 ```
@@ -412,7 +412,7 @@ hist(x)
 
 ```{r}
 #| echo: false
-#| fig-align: center
+#| fig-align: "center"
 # --- Dati di esempio ---
 set.seed(123)
 x <- rnorm(500, mean = 20, sd = 10)
@@ -483,7 +483,7 @@ x = rnorm(1000, mean = 10, sd = 5)
 #| layout-nrow: 2
 #| label: fig-methods
 #| echo: false
-#| out-width: "90%"
+#| out-width: "80%"
 #| fig-cap: "Metodi per la definizione dei breaks"
 #| fig-subcap: 
 #|     - "Sturges - Default"
@@ -586,7 +586,7 @@ text(xpos, max(out),labels = "Massimo",
 
 ### 
 
-La lunghezza dei baffi (e di conseguenza la definizione degli outliers) è definita attrverso il metodo Tukey: 
+La lunghezza dei baffi (e di conseguenza la definizione degli outliers) è definita attraverso il metodo Tukey: 
 
 $$[Q_1 - 1.5 \times IQR, \, Q_3 + 1.5 \times IQR]$$
 
@@ -659,7 +659,7 @@ barplot(table(voto),
 ```
 
 
-### `boxplot()`
+### `boxplot()` {.plain}
 
 ```{r}
 #| echo: false
@@ -689,6 +689,13 @@ boxplot(y_floor, col ="lightblue")
 boxplot(y_ceiling, col = "gold")
 ```
 
+\small 
+
+@fig-boxes-1: La distribuzione è equilibrata attorno alla mediana, situaata circa a metà della distribzuone tra il minimo e il massimo 
+
+@fig-boxes-2: La distribuzione è squilibrata verso il basso, ovvero verso il minimo, presentando una coda più "pesante" verso il massimo
+
+@fig-boxes-3: La distribuzione è squilibrata verso l'alto, ovvero verso il massimo, presentando una coda più "pesante" verso il minimo
 
 ### `hist()`
 
@@ -698,7 +705,7 @@ boxplot(y_ceiling, col = "gold")
 #| out-width: 100%
 #| label: fig-hist
 #| layout-ncol: 3
-#| fig-cap: Distribuzioni a confronto 
+#| fig-cap: Distribuzioni a confronto - Le stesse dei boxplot
 #| fig-subcap: 
 #|   - "hist(x)"
 #|   - "hist(y)"
@@ -781,6 +788,23 @@ hist(x, col = "darkorange")
 hist(y_floor, col ="lightblue")
 hist(y_ceiling, col = "gold")
 
+```
+
+
+### 
+
+```{r}
+#| echo: false
+x = x
+y = y_floor
+z = y_ceiling
+```
+
+
+```{r}
+#| echo: true
+boxplot(x, y, z, names = c("Normale", "Pavimento", "Soffitto"), 
+        col = c("darkorange", "lightblue", "gold"))
 ```
 
 
