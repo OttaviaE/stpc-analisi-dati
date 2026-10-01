@@ -1,0 +1,161 @@
+id;genere;corso;frequenza;ore_studio;ansia;esito
+1;F;Psicologia;Alta;14,7;38;Superato
+2;F;Economia;Alta;13,0;63;Superato
+3;F;Economia;Media;3,6;34;Superato
+4;M;Psicologia;Alta;16,7;49;Superato
+5;F;Psicologia;Media;11,2;68;Non superato
+6;F;Ingegneria;Alta;14,8;38;Superato
+7;M;Ingegneria;Media;12,3;34;Superato
+8;F;Psicologia;Media;11,4;57;Superato
+9;F;Economia;Alta;14,6;47;Superato
+10;F;Psicologia;Alta;11,3;37;Superato
+11;F;Ingegneria;Media;7,9;35;Superato
+12;M;Ingegneria;Alta;14,8;20;Superato
+13;M;Economia;Media;7,2;54;Superato
+14;M;Ingegneria;Alta;19,7;55;Superato
+15;M;Economia;Alta;7,6;45;Non superato
+16;F;Ingegneria;Media;11,8;36;Non superato
+17;M;Psicologia;Alta;16,3;51;Superato
+18;F;Psicologia;Media;6,0;60;Non superato
+19;M;Psicologia;Alta;15,3;43;Superato
+20;F;Psicologia;Alta;14,8;60;Superato
+21;M;Economia;Alta;16,3;44;Superato
+22;F;Psicologia;Alta;14,1;53;Superato
+23;M;Economia;Bassa;3,4;46;Superato
+24;M;Psicologia;Media;8,1;69;Non superato
+25;F;Psicologia;Alta;8,0;55;Superato
+26;F;Psicologia;Media;8,8;51;Non superato
+27;F;Psicologia;Media;10,3;50;Superato
+28;F;Economia;Bassa;0,9;45;Non superato
+29;F;Psicologia;Bassa;10,2;57;Non superato
+30;F;Psicologia;Alta;16,4;34;Superato
+31;F;Psicologia;Bassa;4,8;36;Non superato
+32;M;Ingegneria;Alta;9,1;42;Superato
+33;M;Ingegneria;Bassa;9,1;42;Superato
+34;M;Economia;Media;8,1;80;Non superato
+35;F;Psicologia;Bassa;0;56;Non superato
+36;M;Ingegneria;Alta;11,5;68;Non superato
+37;M;Economia;Bassa;8,6;66;Non superato
+38;F;Psicologia;Media;9,9;45;Superato
+39;M;Ingegneria;Bassa;6,3;42;Non superato
+40;F;Psicologia;Media;10,4;49;Superato
+41;M;Economia;Alta;15,9;47;Superato
+42;F;Psicologia;Bassa;1,3;47;Non superato
+43;F;Psicologia;Alta;13,9;28;Superato
+44;M;Economia;Alta;11,4;39;Superato
+45;F;Psicologia;Alta;17,0;41;Superato
+46;M;Economia;Media;6,8;56;Superato
+47;F;Economia;Alta;12,2;62;Superato
+48;F;Psicologia;Bassa;7,1;55;Superato
+49;M;Economia;Alta;12,7;51;Superato
+50;M;Economia;Bassa;11,1;58;Non superato
+51;F;Economia;Media;4,0;53;Non superato
+52;F;Psicologia;Bassa;14,5;44;Superato
+53;F;Psicologia;Alta;17,1;55;Superato
+54;F;Economia;Media;12,4;55;Superato
+55;F;Economia;Alta;14,9;49;Superato
+56;F;Economia;Bassa;3,3;55;Non superato
+57;F;Economia;Alta;15,1;58;Superato
+58;M;Psicologia;Media;6,9;69;Non superato
+59;F;Psicologia;Bassa;6,1;47;Non superato
+60;F;Ingegneria;Alta;16,5;55;Superato
+61;F;Economia;Bassa;7,5;50;Superato
+62;F;Psicologia;Media;7,4;50;Non superato
+63;M;Economia;Media;11,0;47;Superato
+64;F;Psicologia;Bassa;2,6;54;Non superato
+65;M;Ingegneria;Media;11,1;51;Superato
+66;M;Ingegneria;Media;8,7;34;Superato
+67;F;Psicologia;Bassa;0,9;60;Non superato
+68;M;Psicologia;Alta;10,5;51;Superato
+69;M;Economia;Media;10,0;46;Superato
+70;M;Psicologia;Bassa;7,5;56;Non superato
+71;F;Economia;Alta;17,4;32;Superato
+72;F;Psicologia;Media;10,5;45;Superato
+73;M;Ingegneria;Media;11,5;48;Superato
+74;M;Ingegneria;Media;16,6;46;Superato
+75;M;Ingegneria;Media;8,8;57;Non superato
+76;F;Economia;Alta;14,7;59;Superato
+77;F;Psicologia;Bassa;13,2;53;Superato
+78;M;Ingegneria;Alta;4,3;55;Non superato
+79;F;Psicologia;Media;9,7;65;Non superato
+80;F;Psicologia;Media;10,0;47;Superato
+81;F;Psicologia;Bassa;0;51;Non superato
+82;M;Economia;Bassa;6,6;50;Non superato
+83;M;Economia;Media;7,4;64;Non superato
+84;F;Psicologia;Bassa;9,7;64;Non superato
+85;F;Psicologia;Bassa;3,9;47;Non superato
+86;F;Economia;Alta;14,1;63;Superato
+87;F;Economia;Media;9,4;43;Non superato
+88;F;Economia;Alta;16,1;41;Superato
+89;F;Economia;Bassa;10,9;56;Non superato
+90;F;Ingegneria;Alta;12,8;52;Superato
+91;M;Ingegneria;Bassa;5,2;66;Non superato
+92;F;Psicologia;Alta;6,4;41;Superato
+93;F;Ingegneria;Alta;16,9;52;Superato
+94;M;Ingegneria;Alta;10,4;61;Superato
+95;M;Economia;Media;12,5;20;Superato
+96;M;Economia;Bassa;5,7;74;Non superato
+97;F;Economia;Alta;10,6;40;Superato
+98;M;Ingegneria;Media;11,4;42;Superato
+99;M;Psicologia;Bassa;9,5;53;Non superato
+100;M;Economia;Media;8,9;62;Superato
+101;M;Ingegneria;Bassa;1,9;54;Non superato
+102;F;Psicologia;Media;13,6;59;Non superato
+103;F;Economia;Media;7,0;60;Non superato
+104;M;Psicologia;Alta;18,1;39;Superato
+105;M;Ingegneria;Bassa;9,2;51;Non superato
+106;F;Psicologia;Bassa;7,6;41;Non superato
+107;M;Economia;Media;9,1;55;Non superato
+108;F;Ingegneria;Bassa;8,4;42;Superato
+109;M;Economia;Alta;16,5;61;Superato
+110;F;Psicologia;Alta;12,8;47;Superato
+111;F;Economia;Media;13,3;54;Superato
+112;M;Psicologia;Bassa;4,7;64;Non superato
+113;M;Economia;Bassa;8,5;53;Non superato
+114;F;Psicologia;Alta;12,3;45;Superato
+115;F;Psicologia;Bassa;5,2;53;Non superato
+116;F;Psicologia;Bassa;7,0;47;Non superato
+117;F;Psicologia;Alta;15,6;53;Superato
+118;F;Economia;Media;11,6;54;Non superato
+119;F;Psicologia;Media;5,6;40;Non superato
+120;F;Economia;Media;9,5;56;Non superato
+121;M;Economia;Alta;9,1;46;Superato
+122;F;Ingegneria;Media;10,8;54;Non superato
+123;F;Psicologia;Alta;13,3;38;Superato
+124;F;Psicologia;Media;4,8;48;Superato
+125;M;Psicologia;Bassa;4,3;52;Non superato
+126;M;Psicologia;Bassa;5,8;30;Non superato
+127;M;Economia;Alta;11,5;43;Superato
+128;M;Ingegneria;Bassa;4,4;57;Non superato
+129;M;Economia;Media;14,6;54;Superato
+130;M;Economia;Media;13,2;59;Non superato
+131;M;Ingegneria;Alta;16,5;38;Superato
+132;F;Economia;Bassa;10,2;50;Non superato
+133;M;Economia;Bassa;2,9;54;Non superato
+134;M;Ingegneria;Alta;7,3;64;Non superato
+135;F;Psicologia;Media;11,6;54;Non superato
+136;F;Economia;Bassa;4,7;64;Non superato
+137;F;Economia;Alta;18,6;30;Superato
+138;F;Ingegneria;Alta;7,0;62;Non superato
+139;F;Psicologia;Bassa;12,3;56;Non superato
+140;M;Economia;Bassa;4,6;50;Superato
+141;M;Economia;Alta;11,4;46;Superato
+142;F;Psicologia;Media;11,8;61;Non superato
+143;F;Psicologia;Alta;7,7;51;Superato
+144;F;Psicologia;Media;12,3;66;Non superato
+145;F;Ingegneria;Bassa;5,7;54;Superato
+146;F;Psicologia;Bassa;8,9;46;Non superato
+147;F;Psicologia;Media;11,2;62;Superato
+148;F;Psicologia;Alta;17,6;28;Superato
+149;F;Psicologia;Bassa;6,5;58;Non superato
+150;F;Psicologia;Media;11,3;58;Non superato
+151;F;Ingegneria;Media;14,1;31;Superato
+152;M;Psicologia;Alta;16,2;52;Superato
+153;M;Economia;Bassa;4,5;53;Non superato
+154;M;Psicologia;Alta;12,6;55;Superato
+155;M;Economia;Media;11,7;79;Non superato
+156;F;Psicologia;Alta;13,2;43;Superato
+157;M;Ingegneria;Alta;11,5;40;Superato
+158;F;Psicologia;Alta;14,2;45;Superato
+159;F;Psicologia;Bassa;5,0;48;Non superato
+160;F;Ingegneria;Alta;10,3;47;Superato

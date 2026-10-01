@@ -1,0 +1,244 @@
+---
+title: "Esercitazione Modulo 3A"
+subtitle: "Svolgimento"
+author: "Nome e Cognome"
+lang: it
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+---
+
+
+# Introduzione
+
+Gli esercizi di seguito proposti riguardano lo studio dell'associazione tra variabili categoriali (tabelle di contingenza, frequenze marginali, frequenze condizionate, frequenze teoriche e indice $\chi^2$). Tutte le analisi sono di tipo esclusivamente **descrittivo** (non inferenziale).
+
+Il file `studenti.csv` (disponibile nel moodle del corso) contiene i dati di 160 studenti e studentesse universitari che hanno sostenuto lo stesso esame. Il dataset va scaricato e salvato nella cartella  `data` del vostro progetto R. Le variabili sono:
+
+- `id`: codice identificativo dello studente
+- `genere`: genere dichiarato (`F`, `M`)
+- `corso`: corso di laurea (`Psicologia`, `Economia`, `Ingegneria`)
+- `frequenza`: frequenza alle lezioni (`Bassa`, `Media`, `Alta`)
+- `ore_studio`: ore di studio settimanali dedicate all'esame
+- `ansia`: punteggio a un questionario di ansia da esame (valori alti = più ansia)
+- `esito`: esito dell'esame (`Superato`, `Non superato`)
+
+Il file usa il punto e virgola (`;`) come separatore di colonna e la virgola (`,`) come separatore decimale.
+
+# Importazione ed esplorazione univariata
+
+## 
+
+Importare il file `studenti.csv` in un dataframe chiamato `dati`. Controllare che l'importazione sia avvenuta correttamente visualizzando le prime righe del dataset e la sua struttura. Quante osservazioni e quante variabili contiene il dataset?
+
+```{r}
+
+```
+
+## 
+
+Trasformare le variabili `genere`, `corso`, `frequenza` ed `esito` in fattori. Per la variabile `frequenza` fare in modo che i livelli siano ordinati nel seguente modo: `Bassa`, `Media`, `Alta`. Controllare il risultato con `str()` e `levels()`.
+
+```{r}
+
+```
+
+## 
+
+Per la variabile `frequenza`:
+
+1. costruire la distribuzione delle frequenze assolute
+2. costruire la distribuzione delle frequenze relative e delle frequenze percentuali (arrotondate a una cifra decimale)
+3. rappresentare graficamente le frequenze assolute con un **diagramma a barre** (`barplot()`)
+4. rappresentare graficamente le frequenze percentuali con un **diagramma a barre** (`pie()`)
+
+```{r}
+
+```
+
+## 
+
+Ripetere i punti 1-4 dell'esercizio precedente per le variabili `corso` ed `esito`. Quale corso di laurea è il più rappresentato nel campione? Qual è la percentuale di studenti che ha superato l'esame?
+
+```{r}
+
+```
+
+## 
+
+Per la variabile `ore_studio`:
+
+a) calcolare le principali statistiche descrittive (`summary()`)
+b) rappresentare la distribuzione con un **istogramma** (`hist()`)
+c) rappresentare la distribuzione con un **boxplot** (`boxplot()`)
+d) commentare brevemente la forma della distribuzione
+
+```{r}
+
+```
+
+## Esercizio 6
+
+Ripetere l'esercizio 5 per la variabile `ansia`.
+
+```{r}
+
+```
+
+# Tabelle di contingenza e frequenze condizionate
+
+In tutti gli esercizi di questa parte disporre la variabile `frequenza` (o `genere`) sulle **righe** e la variabile `esito` sulle **colonne**.
+
+## 
+
+Costruire la tabella di contingenza tra `frequenza` ed `esito` e salvarla in un oggetto chiamato `tab_fe`. Verificare che la somma di tutte le frequenze congiunte corrisponda all'ampiezza campionaria.
+
+```{r}
+
+```
+
+## 
+
+A partire da `tab_fe`:
+
+a) calcolare le frequenze marginali di riga (`frequenza`) con `margin.table()`
+b) calcolare le frequenze marginali di colonna (`esito`) con `margin.table()`
+c) verificare che le frequenze marginali ottenute ai punti a) e b) coincidano con le distribuzioni univariate calcolate nella Parte 1
+d) ottenere la tabella di contingenza completa di totali di riga e di colonna con `addmargins()`
+
+```{r}
+
+```
+
+## 
+
+Calcolare le frequenze relative congiunte con `prop.table()`. Che percentuale del campione ha una frequenza alle lezioni alta **e** ha superato l'esame?
+
+```{r}
+
+```
+
+## 
+
+Calcolare le frequenze percentuali **di riga**, $P(\text{Esito} \mid \text{Frequenza})$, arrotondate a una cifra decimale. Completare la frase: *"Il X% degli studenti con frequenza bassa/media/alta ha superato l'esame"*.
+
+```{r}
+
+```
+
+## 
+
+Calcolare le frequenze percentuali **di colonna**, $P(\text{Frequenza} \mid \text{Esito})$, arrotondate a una cifra decimale. Completare la frase: *"Tra gli studenti che hanno superato l'esame, il X% aveva una frequenza bassa/media/alta"*.
+
+```{r}
+
+```
+
+## 
+
+Rappresentare graficamente la relazione tra `frequenza` ed `esito`:
+
+a) con un diagramma a barre affiancate (`barplot()` con `beside = TRUE`) delle frequenze assolute, aggiungendo la legenda
+b) con un diagramma a barre affiancate delle frequenze percentuali di riga
+c) con un `mosaicplot()`
+
+Sulla base delle tabelle e dei grafici, sembra esserci un'associazione tra la frequenza alle lezioni e l'esito dell'esame?
+
+::: {.callout-note}
+`barplot()` con una matrice crea un gruppo di barre per ogni **colonna** della matrice. Per avere un gruppo di barre per ogni livello di `frequenza` (che è sulle righe) bisogna quindi trasporre la tabella con `t()`.
+:::
+
+```{r}
+
+```
+
+# Connessione e indice $\chi^2$
+
+## 
+
+Calcolare il valore dell'indice $\chi^2$ a partire da `tab_fe`
+
+```{r}
+
+```
+
+## 
+
+Calcolare il valore massimo che il $\chi^2$ può assumere per questa tabella, $\chi^2_{\max} = n \times \min[(h-1); (m-1)]$, e il $\chi^2$ normalizzato $\tilde{\chi}^2 = \chi^2 / \chi^2_{\max}$. Commentare il risultato.
+
+```{r}
+
+```
+
+## 
+
+Ripetere gli esercizi 7, 10, 13–15 per la coppia di variabili `genere` ed `esito`. Confrontare il $\chi^2$ normalizzato con quello ottenuto per `frequenza` ed `esito`: quale delle due variabili è più associata all'esito dell'esame?
+
+::: {.callout-warning}
+Per le tabelle $2 \times 2$, `chisq.test()` applica di default una correzione (correzione di Yates). Per ottenere lo stesso valore della formula vista a lezione utilizzare `chisq.test(tabella, correct = FALSE)`. In questo modo, sparisce anche il warning associato.
+:::
+
+```{r}
+
+```
+
+## 
+
+Studiare l'associazione tra `corso` (sulle righe) e `genere` (sulle colonne): costruire la tabella di contingenza, le frequenze percentuali di riga, un grafico a barre affiancate e calcolare il $\chi^2$ e il $\chi^2$ normalizzato. Commentare.
+
+```{r}
+
+```
+
+## 
+
+Studiare se vi sia un'associazione tra il fatto di studiare **almeno 10 ore a settimana** e l'esito dell'esame. Costruire la tabella di contingenza utilizzando una condizione logica (`dati$ore_studio >= 10`), rinominare righe e colonne in modo che siano facilmente leggibili, e calcolare frequenze percentuali di riga, $\chi^2$ e $\chi^2$ normalizzato.
+
+```{r}
+
+```
+
+# Indipendenza stocastica e massima dipendenza
+
+## 
+
+Un'indagine ha rilevato la modalità di studio preferita (`da solo`, `in gruppo`, `misto`) in tre corsi di laurea. Le frequenze osservate sono:
+
+|            | Psicologia | Economia | Ingegneria |
+|------------|:----------:|:--------:|:----------:|
+| da solo    | 20         | 30       | 10         |
+| in gruppo  | 12         | 18       | 6          |
+| misto      | 8          | 12       | 4          |
+
+a) inserire i dati in una matrice `tab_ind`, assegnando i nomi a righe e colonne
+b) calcolare le frequenze percentuali di colonna e rappresentarle con un diagramma a barre affiancate. Cosa si nota?
+c) calcolare le frequenze teoriche e confrontarle con quelle osservate
+d) calcolare il $\chi^2$ e il $\chi^2$ normalizzato. Che tipo di relazione c'è tra le due variabili?
+
+```{r}
+
+```
+
+## 
+
+Si consideri ora la seguente tabella:
+
+|            | Psicologia | Economia | Ingegneria |
+|------------|:----------:|:--------:|:----------:|
+| da solo    | 40         | 0        | 0          |
+| in gruppo  | 0          | 60       | 0          |
+| misto      | 0          | 0        | 20         |
+
+Ripetere i punti a)–d) dell'esercizio 20. Confrontare il valore del $\chi^2$ con il $\chi^2_{\max}$: che tipo di relazione c'è tra le due variabili?
+
+```{r}
+
+```

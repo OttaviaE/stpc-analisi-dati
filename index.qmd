@@ -153,3 +153,6 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 * [Slides Parte 1](slides/modulo3/modulo3-a.pdf)
 * [Slides Parte 2](slides/modulo3/modulo3-b.pdf)
+
+### Esercitazione
+

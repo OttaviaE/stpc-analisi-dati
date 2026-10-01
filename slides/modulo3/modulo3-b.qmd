@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili - Seconda Parte"
+title: "Modulo Didattico 3: Statistiche descrittive per la misura di associazione tra due variabili - Variabili quantitative"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -14,7 +14,6 @@ format:
     innertheme: rounded
     outertheme: miniframes
 callout-icon: false
-lang: it
 code-annotations: below
 header-includes: 
    - \usepackage{graphicx} 
@@ -25,17 +24,26 @@ header-includes:
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
-   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
    - \AtBeginSection[]
           {
              \begin{frame}[plain]
-             \tableofcontents[currentsection, hideallsubsections]
-              \end{frame}
+             \tableofcontents[
+               currentsection,
+               sectionstyle=show/shaded,
+               subsectionstyle=show/show/shaded
+             ]
+             \end{frame}
           }
    - \AtBeginSubsection[]
           {
              \begin{frame}[plain]
-             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+             \tableofcontents[
+               currentsection,
+               currentsubsection,
+               sectionstyle=show/shaded,
+               subsectionstyle=show/shaded/hide
+             ]
              \end{frame}
           }
 editor_options: 
