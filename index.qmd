@@ -12,8 +12,8 @@ lang: it
 
 # Caratteristiche del corso
 
-* Martedì: 10:45 - 12:30 (Inizio reale: 11:00 - fine reale 12:30) 
-* Giovedì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale 12:00) 
+* Martedì: 10:45 - 12:30 (Inizio reale: 10:45 - fine reale 12:15) 
+* Giovedì: 10:30 - 12:30 (Inizio reale: 10:45 - fine reale 12:15) 
 * Venerdì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale in base alle esigenze didattiche)
 
 
@@ -22,7 +22,7 @@ lang: it
 
 La lezione del 24 settembre precedemente annullata è ripristinata ma avverrà in due aule di palazzo Istruzione. 
 
-La lezione del 5 novembre è in forse - nel caso saltasse verrà recuperata alla fine (10 o 11 dicembre).
+La lezione del 5 novembre è confermata.
 
 :::
 
@@ -151,3 +151,5 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 ## Modulo 3
 
+* [Slides Parte 1](slides/modulo3/modulo3-a.pdf)
+* [Slides Parte 2](slides/modulo3/modulo3-b.pdf)

@@ -324,6 +324,7 @@ $$
 var1 <- as.factor(c("a1","a2","a1","a2","a1","a2","a1"))  
 var2 <- as.factor(c("b1","b1","b1","b2","b1","b2","b2")) 
 mytab = table(var1, var2); mytab
+sum(mytab) # permette di ottenere l'ampiezza campionaria
 ```
 
 
@@ -381,11 +382,25 @@ margin.table(mytab,2)
 
 ###
 
+:::: {.columns}
+
+:::{.column width="50%"}
+```{r}
+#| echo: true
+mytab
+```
+
+
+:::
+
+:::{.column width="50%"}
 ```{r}
 #| echo: true
 prop.table(mytab)   
 ```
+:::
 
+::::
 
 ::::{.columns}
 :::{.column width=50%}
@@ -422,11 +437,9 @@ donne$Istruzione = factor(donne$Istruzione, levels = c("Basso", "Medio", "Alto")
 tabella = addmargins(table(donne$Occupazione, donne$Istruzione))
 rownames(tabella)[nrow(tabella)] <- "Totale"
 colnames(tabella)[ncol(tabella)] <- "Totale"
-knitr::kable(
-  tabella,
-  booktabs = TRUE,
-  align = "c"
-)
+library(kableExtra)
+knitr::kable(tabella, booktabs = TRUE, align = "c") |>
+  row_spec(nrow(tabella) - 1, hline_after = TRUE)
 
 ```
 
@@ -611,7 +624,7 @@ Frequenze teoriche
 ::::
 
 
-$$n_{kj}^* = \dfrac{n_{k.} \times n_{.j}}{n}, \qquad n = \sum_{k=1}^h \sum_{j=1}^m n_{kj}$$
+$$n_{kj}^* = \dfrac{n_{k.} \times n_{.j}}{n}, \qquad n = \sum_{k=1}^h \sum_{j=1}^m n_{kj} = \sum_{k=1}^h \sum_{j=1}^m n_{kj}^*$$
 
 ### 
 
@@ -635,9 +648,9 @@ $$
 knitr::kable(tabella,booktabs = TRUE,align = "c")
 ```
 
-
-\begin{center}
 \footnotesize
+\begin{table}
+\caption{Frequenze teoriche}
 \renewcommand{\arraystretch}{1.8}
 \begin{tabular}{lccc|c}
 \hline
@@ -666,7 +679,7 @@ Totale
 
 \hline
 \end{tabular}
-\end{center}
+\end{table}
 
 
 ###
@@ -770,43 +783,76 @@ barplot(round(prop.table(t(preferenze_tab), 1),2)*100, beside = T,
 
 ###
 
+:::: {.columns}
+
+:::{.column width="50%"}
+\footnotesize
+**Frequenze osservate**
 ```{r}
-#| echo: false
-knitr::kable(preferenze_tab, caption = "Frequenze osservate")
+#| echo: true
+obs_n = matrix(
+  c(18, 24, 30, 12,   # mare
+    12, 16, 20, 8,    # monti
+    6, 8, 10, 4),     # città d’arte
+  nrow = 3, byrow = TRUE) ; obs_n
 
-friga = apply(preferenze_tab,1,sum)
-fcolonna = apply(preferenze_tab,2,sum)
-
-prefT = matrix(nrow = nrow(
-  preferenze_tab), ncol = ncol(preferenze_tab))
-colnames(prefT) = colnames(preferenze_tab)
-rownames(prefT) = rownames(preferenze_tab)
-
-for (i in 1:nrow(prefT)) {
-  for (j in 1:ncol(prefT)) {
-    prefT[i,j] = (friga[i]*fcolonna[j])/sum(preferenze_tab)
-  }
-}
-
-knitr::kable(prefT, caption = "Frequenze Teoriche")
 ```
+:::
+
+:::{.column width="50%"}
+\footnotesize
+**Frequenze teoriche**
+```{r}
+#| echo: true
+#| warning: false
+chisq.test(obs_n)$expected
+```
+:::
+
+::::
+
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- knitr::kable(preferenze_tab, caption = "Frequenze osservate") -->
+
+<!-- friga = apply(preferenze_tab,1,sum) -->
+<!-- fcolonna = apply(preferenze_tab,2,sum) -->
+
+<!-- prefT = matrix(nrow = nrow( -->
+<!--   preferenze_tab), ncol = ncol(preferenze_tab)) -->
+<!-- colnames(prefT) = colnames(preferenze_tab) -->
+<!-- rownames(prefT) = rownames(preferenze_tab) -->
+
+<!-- for (i in 1:nrow(prefT)) { -->
+<!--   for (j in 1:ncol(prefT)) { -->
+<!--     prefT[i,j] = (friga[i]*fcolonna[j])/sum(preferenze_tab) -->
+<!--   } -->
+<!-- } -->
+
+<!-- knitr::kable(prefT, caption = "Frequenze Teoriche") -->
+<!-- ``` -->
 
 
 ### Calcolo $\chi^2$
 
 ```{r}
-#| echo: false
-chisq.test(preferenze_tab)$statistic
-sum(preferenze_tab) * min(c(nrow(preferenze_tab) -1, 
-                            ncol(preferenze_tab) - 1))
+#| echo: true
+chisq.test(obs_n)$statistic
+sum(obs_n) * min(c(nrow(obs_n) -1, 
+                            ncol(obs_n) - 1))
 ```
 
 
 ###
 
+
+
+
+
 ```{r}
 #| echo: false
-preferenze_dep <- matrix(
+obs_n <- matrix(
   c(84, 0, 0,    # mare → solo adolescenti
     0, 64, 0,    # monti → solo giovani
     0, 0, 20),  # città d’arte → solo adulti
@@ -814,10 +860,10 @@ preferenze_dep <- matrix(
   byrow = TRUE
 )
 
-rownames(preferenze_dep) <- c("mare", "monti", "città d'arte")
-colnames(preferenze_dep) <- c("adolescenti", "giovani", "adulti")
+rownames(obs_n) <- c("mare", "monti", "città d'arte")
+colnames(obs_n) <- c("adolescenti", "giovani", "adulti")
 
-knitr::kable(addmargins(preferenze_dep))
+knitr::kable(addmargins(obs_n))
 
 ```
 
@@ -827,31 +873,62 @@ knitr::kable(addmargins(preferenze_dep))
 #| out-width: 40%
 
 
-barplot(round(prop.table(preferenze_dep, 2),2)*100, beside = T, 
+barplot(round(prop.table(obs_n, 2),2)*100, beside = T, 
         legend.text = T, col = c("seagreen2", "darkgreen", "royalblue"), 
         args.legend = list(cex = 2.5, x = "topright", bty = "n"), cex.names = 2, 
         ylim=c(0,100), main ="Percentuali di colonna",cex.main =4)
 ```
 
 
+### 
+
+:::: {.columns}
+
+:::{.column width="50%"}
+\footnotesize
+**Frequenze osservate**
+```{r}
+#| echo: true
+obs_n <- matrix(
+  c(84, 0, 0,    # mare → solo adolescenti
+    0, 64, 0,    # monti → solo giovani
+    0, 0, 20),  # città d’arte → solo adulti
+  nrow = 3, byrow = TRUE) ; obs_n
+
+
+```
+:::
+
+:::{.column width="50%"}
+\footnotesize
+**Frequenze teoriche**
+```{r}
+#| echo: true
+#| warning: false
+chisq.test(obs_n)$expected
+```
+:::
+
+::::
+
 ###
 
 ```{r}
 #| echo: false
 #| warning: false
-knitr::kable(preferenze_dep, caption = "Frequenze osservate")
+knitr::kable(obs_n, caption = "Frequenze osservate")
 
-friga = apply(preferenze_dep,1,sum)
-fcolonna = apply(preferenze_dep,2,sum)
+friga = apply(obs_n,1,sum)
+fcolonna = apply(obs_n,2,sum)
 
 prefT = matrix(nrow = nrow(
-  preferenze_dep), ncol = ncol(preferenze_dep))
-colnames(prefT) = colnames(preferenze_dep)
-rownames(prefT) = rownames(preferenze_dep)
+  obs_n), ncol = ncol(obs_n))
+colnames(prefT) = colnames(obs_n)
+rownames(prefT) = rownames(obs_n)
 
 for (i in 1:nrow(prefT)) {
   for (j in 1:ncol(prefT)) {
-    prefT[i,j] = (friga[i]*fcolonna[j])/sum(preferenze_dep)
+    prefT[i,j] = (friga[i]*fcolonna[j])/sum(obs_n)
   }
 }
 
@@ -866,9 +943,9 @@ knitr::kable(prefT, caption = "Frequenze Teoriche")
 ```{r}
 #| echo: true
 
-chisq.test(preferenze_dep)$statistic
-sum(preferenze_dep) * min(c(nrow(preferenze_dep) -1, 
-                            ncol(preferenze_dep) - 1))
+chisq.test(obs_n)$statistic
+sum(obs_n) * min(c(nrow(obs_n) -1, 
+                            ncol(obs_n) - 1))
 ```
 
 
