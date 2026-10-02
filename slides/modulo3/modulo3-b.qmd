@@ -30,7 +30,6 @@ header-includes:
              \tableofcontents[
                currentsection,
                sectionstyle=show/shaded,
-               subsectionstyle=show/show/shaded
              ]
              \end{frame}
           }
