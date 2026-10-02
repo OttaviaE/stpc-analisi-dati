@@ -22,7 +22,6 @@ header-includes:
    - \usepackage{multirow}
    - \newcommand{\cov}{\mathrm{Cov}}
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
-   - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
    - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
    - \AtBeginSection[]

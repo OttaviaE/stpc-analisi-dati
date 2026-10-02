@@ -8,7 +8,7 @@ format:
    number-sections: true
 execute:
   echo: true
-  eval: false
+  eval: true
 ---
 
 # Case Study A: Test di selezione universitario
@@ -28,7 +28,7 @@ Scaricare il file `datiTestCR2005.csv` (moodle del corso) e caricarlo nella vari
 - `D4` punteggio complessivo ad un test per la comprensione di testi, grafici e tabelle [0,12].
 
 ```{r}
-datitest <- read.csv2("datiTestCR2005.csv")
+datitest <- read.csv2("data/datiTestCR2005.csv")
 ```
 
 

@@ -8,7 +8,7 @@ format:
    number-sections: true
 execute:
   echo: true
-  eval: false
+  eval: true
 ---
 
 # Dati 
