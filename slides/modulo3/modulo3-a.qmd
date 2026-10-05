@@ -375,9 +375,9 @@ margin.table(mytab,2)
 `prop.table(T, margin = NULL)`: Probabilità condizionate: 
 
 :::{.callout-tip}
-`margin = 1`: Probabilità condizionate di riga ( **attraverso le colonne**)
+`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**)
 
-`margin = 2`: Probabilità condizionate di colonna **attraverso le righe**
+`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**)
 :::
 
 ###
@@ -413,6 +413,7 @@ prop.table(mytab,1)  # P(B|A)
 :::
 
 :::{.column width=50%}
+\small
 ```{r}
 #| echo: true
 prop.table(mytab,2)  # P(A|B)
@@ -703,7 +704,7 @@ $\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di 
 ###
 
 
-`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza `table`
+`chisq.test(table)$statistic`:  Calcola il $\chi^2$ osservato a partire da una tavola di contingenza ottenuta con `table()`
 
 ```{r}
 #| warning: false

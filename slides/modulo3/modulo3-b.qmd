@@ -15,8 +15,8 @@ format:
     outertheme: miniframes
 callout-icon: false
 code-annotations: below
-header-includes: 
-   - \usepackage{graphicx} 
+header-includes:
+   - \usepackage{graphicx}
    - \usepackage{xcolor}
    - \usepackage{tikz}
    - \usepackage{multirow}
@@ -29,7 +29,7 @@ header-includes:
              \begin{frame}[plain]
              \tableofcontents[
                currentsection,
-               sectionstyle=show/shaded,
+               sectionstyle=show/shaded
              ]
              \end{frame}
           }
@@ -44,14 +44,38 @@ header-includes:
              ]
              \end{frame}
           }
-editor_options: 
+editor_options:
   chunk_output_type: console
-execute: 
+execute:
   echo: true
 ---
 
 
 # Associazione (variabili quantitative)
+
+## Relazione lineare
+
+### 
+
+\small 
+
+Si vuole studiare la **relazione lineare** tra due variabili quantitative $X$ e $Y$ misurate sulle stesse unità statistiche
+
+Per relazione lineare si intende quanto le coppie di punti $(x_i, y_i)$ tendono a disporsi lungo una retta
+
+```{r}
+#| echo: false
+#| out-width: 45%
+#| fig-align: center
+set.seed(10)
+xr <- rnorm(60, 10, 3)
+yr <- 2 + 0.8 * xr + rnorm(60, 0, 1.2)
+plot(xr, yr, pch = 19, cex = 2, xlab = "X", ylab = "Y",
+     cex.axis = 2, cex.lab = 2)
+```
+
+
+Due indici: la **covarianza** (direzione della relazione) e il **coefficiente di correlazione lineare di Bravais-Pearson** (direzione e intensità)
 
 ## Indice di covarianza campionaria
 
@@ -73,7 +97,7 @@ dati <- data.frame(
 #| echo:  false
 #| fig-cap: Grafico a dispersione delle variabili X e Y
 #| fig-align: center
-plot(dati$X, dati$Y, cex = 2, cex.axis =3)
+plot(dati$X, dati$Y, cex = 2, cex.axis =3, pch = 20, col = "firebrick")
 abline(v = mean(dati$X), lty=2)
 abline(h = mean(dati$Y), lty=2)
 points(mean(dati$X), mean(dati$Y), pch=19, cex = 4)
@@ -93,9 +117,8 @@ dati
 :::
 ::::
 
-## `plot()`
 
-### 
+###
 
 `plot(x, y)`: Grafico di dispersione di due variabili quantitative appaiate `(x,y)` aventi lo stesso numero di osservazioni
 
@@ -109,18 +132,17 @@ Y <- c(9,6,8,9,7,10,8,4,11,5,4)
 plot(X,Y,main="Grafico di dispersione", xlim=c(0,20),ylim=c(0,15))
 ```
 
-## Covarianza campionaria 
 
-### 
+###
 
-Misura il grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{X}$ e $\bar{Y}$
+La **Covarianza** misura il grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{X}$ e $\bar{Y}$
 
 :::: {.columns}
 
 :::{.column width=50%}
 $x = (x_1, x_2, \ldots, x_n)$
 
-$y = (y_1, x_2, \ldots, y_n)$
+$y = (y_1, y_2, \ldots, y_n)$
 :::
 
 :::{.column width=50%}
@@ -131,7 +153,100 @@ $$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
 $$\cov(x,y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i
 -\bar{y})$$
 
+È (quasi) la **media dei prodotti degli scarti** di ogni variabile dalla propria media
 
+\footnotesize
+
+:::{.callout-note}
+Nota: alcuni testi dividono per $n$ invece che per $n-1$ (covarianza "descrittiva"). La funzione `cov()` di `R` divide per $n-1$, quindi useremo sempre questa versione
+
+:::
+
+<!-- ### Formula operativa -->
+
+<!-- Svolgendo i prodotti si ottiene una formula più comoda per il calcolo "a mano": -->
+
+<!-- $$\cov(x,y) = \dfrac{\sum_{i=1}^n x_i y_i - n\,\bar{x}\,\bar{y}}{n-1}$$ -->
+
+<!-- \vspace{2mm} -->
+
+<!-- \footnotesize -->
+
+
+### 
+
+:::: {.columns}
+
+:::{.column width="50%"}
+$\cov(X,Y) > 0$ 
+
+```{r}
+#| echo: false
+#| out-width: 100%
+#| fig-align: center
+prod_scarti <- (dati$X - mean(dati$X)) * (dati$Y - mean(dati$Y))
+plot(dati$X, dati$Y, pch = 19, cex = 3,
+     col = ifelse(prod_scarti > 0, "royalblue", "firebrick"),
+     xlab = "X", ylab = "Y", cex.axis = 2, cex.lab = 2,
+     xlim = c(2, 16), ylim = c(3, 12))
+abline(v = mean(dati$X), lty = 2)
+abline(h = mean(dati$Y), lty = 2)
+text(15, 11.8, "(+)(+) = +", cex = 2.5, col = "royalblue")
+text(3, 3.3, "(-)(-) = +", cex = 2.5, col = "royalblue")
+text(3, 11.8, "(-)(+) = -", cex = 2.5, col = "firebrick")
+text(15, 3.3, "(+)(-) = -", cex = 2.5, col = "firebrick")
+```
+
+:::
+
+:::{.column width="50%"}
+$\cov(X,Y) < 0$ 
+
+```{r}
+#| echo: false
+#| out-width: 100%
+#| fig-align: center
+dati_neg <- data.frame(X = dati$X, 
+                       Y = 2 * mean(dati$Y) - dati$Y)   # Y specchiata attorno alla media
+
+prod_scarti_neg <- (dati_neg$X - mean(dati_neg$X)) * (dati_neg$Y - mean(dati_neg$Y))
+plot(dati_neg$X, dati_neg$Y, pch = 19, cex = 3,
+     col = ifelse(prod_scarti_neg > 0, "royalblue", "firebrick"),
+     xlab = "X", ylab = "Y", cex.axis = 2, cex.lab = 2,
+     xlim = c(2, 16), ylim = c(3, 12))
+abline(v = mean(dati_neg$X), lty = 2)
+abline(h = mean(dati_neg$Y), lty = 2)
+text(15, 11.8, "(+)(+) = +", cex = 2.5, col = "royalblue")
+text(3, 3.3, "(-)(-) = +", cex = 2.5, col = "royalblue")
+text(3, 11.8, "(-)(+) = -", cex = 2.5, col = "firebrick")
+text(15, 3.3, "(+)(-) = -", cex = 2.5, col = "firebrick")
+```
+
+:::
+::::
+
+\footnotesize
+Il prodotto $(x_i - \bar{x})(y_i - \bar{y})$ è più spesso positivo se $\cov > 0$, più spesso negativo se $\cov < 0$
+
+###
+
+- La covarianza può assumere **tutti i valori reali**
+
+\vspace{3mm}
+
+- $\cov(X,Y) > 0$: tendenza alla linearità positiva (**crescente**)
+
+\vspace{3mm}
+
+- $\cov(X,Y) < 0$: tendenza alla linearità negativa (**decrescente**)
+
+\vspace{3mm}
+
+- $\cov(X,Y) \approx 0$: nessuna tendenza lineare
+
+
+
+Il valore della covarianza dipende dall'unità di misura delle variabili $\rightarrow$ ci dice la **direzione** della relazione ma non la sua **intensità**
 
 ###
 
@@ -180,9 +295,9 @@ mycov = list(
 #| layout-nrow: 2
 #| out-width: 60%
 #| fig-cap: "Covarianza"
-#| fig-subcap: 
+#| fig-subcap:
 #|   - "Cov = 0"
-#|   - "Cov = 0" 
+#|   - "Cov = 0"
 #|   - "Cov > 0"
 #|   - "Cov < 0"
 
@@ -193,9 +308,71 @@ plot(df3$X, df3$Y, pch = 19, col = "royalblue", cex = 3)
 ```
 
 
+###
+
+```{r}
+#| echo: false
+bimbo <- data.frame(eta = c(3, 6, 9, 12, 24, 36),
+                    peso = c(6, 8, 9, 10, 13, 20))
+```
+
+:::: {.columns}
+
+:::{.column width=45%}
+
+\small
+
+Età (in mesi) e peso (in kg) di un bambino rilevati in 6 momenti
+
+```{r}
+#| echo: false
+bimbo
+```
+
+:::
+
+:::{.column width=55%}
+
+```{r}
+#| echo: false
+#| fig-cap: Grafico a dispersione
+plot(bimbo$eta, bimbo$peso, pch = 19, cex = 3,
+     xlab = "Età (mesi)", ylab = "Peso (kg)", cex.lab = 2, cex.axis = 2)
+abline(v = mean(bimbo$eta), lty = 2)
+abline(h = mean(bimbo$peso), lty = 2)
+```
+
+:::
+::::
+
+
+
+
+### Calcolo della covarianza
+
+\small
+
+```{r}
+#| echo: false
+calcolo <- data.frame(x = bimbo$eta, y = bimbo$peso,
+                      sx = bimbo$eta - mean(bimbo$eta),
+                      sy = bimbo$peso - mean(bimbo$peso))
+calcolo$prodotto <- calcolo$sx * calcolo$sy
+colnames(calcolo) <- c("x", "y", "x - media(x)", "y - media(y)", "prodotto")
+calcolo
+```
+
+\normalsize
+
+$\bar{x} = `r mean(bimbo$eta)`$, $\bar{y} = `r mean(bimbo$peso)`$, $\sum_i (x_i - \bar{x})(y_i - \bar{y}) = `r sum(calcolo$prodotto)`$
+
+$$\cov(x,y) = \dfrac{`r sum(calcolo$prodotto)`}{6-1} = `r round(cov(bimbo$eta, bimbo$peso), 2)`$$
+
+E quindi? Sappiamo che la relazione è **positiva**, ma è forte o debole?
+
 ## `cov()`
 
-### 
+###
 
 `cov()`: Restituisce la covarianza campionaria tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
 
@@ -203,26 +380,62 @@ plot(df3$X, df3$Y, pch = 19, col = "royalblue", cex = 3)
 X <- c(9,8,12,9,10,14,5,4,13,7,5)
 Y <- c(9,6,8,9,7,10,8,4,11,5,4)
 Z <- -Y
-cov(X,Y) 
-cov(X,Z) 
+cov(X,Y)
+cov(X,Z)
+cov(bimbo$eta, bimbo$peso)
 ```
 
 ## Correlazione campionaria
 
 
-### 
+###
+
+Per stabilire l'**intensità** della relazione la covarianza va *normalizzata*, ovvero divisa per il suo valore massimo
+
+\vspace{2mm}
 
 $-sd(x)sd(y) \leq\cov(X,Y)\leq + sd(x)sd(y)$
 
-\pause
 
 $$r  = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
 
-$-1 \leq r \leq 1$
+$$-1 \leq r \leq 1$$
+$r = +1$: legame **perfettamente lineare e diretto**; 
+
+$r = -1$: legame **perfettamente lineare e inverso**
+
+$r = 0$: **incorrelazione**: non esiste un legame *lineare*... ma questo non implica che le variabili non siano in relazione tra loro
+
+### 
+
+<https://app.wooclap.com/IROOIDS?from=instruction-slide>
+
+
+
+
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+set.seed(2)
+xx <- seq(1, 20, length.out = 30)
+par(mfrow = c(1, 3), mar = c(5, 5, 6, 2))
+plot(xx, 3 + 2 * xx, pch = 19, cex = 2, xlab = "X", ylab = "Y",
+     main = "r = +1", cex.main = 3, cex.lab = 2.5, cex.axis = 2)
+plot(xx, 50 - 2 * xx, pch = 19, cex = 2, xlab = "X", ylab = "Y",
+     main = "r = -1", cex.main = 3, cex.lab = 2.5, cex.axis = 2)
+plot(xx, (xx - mean(xx))^2, pch = 19, cex = 2, xlab = "X", ylab = "Y",
+     main = paste("r =", round(cor(xx, (xx - mean(xx))^2), 2)),
+     cex.main = 3, cex.lab = 2.5, cex.axis = 2)
+```
+
 
 ## `cor()`
 
-### 
+###
 
 `cor()`: Restituisce la correlazione (lineare) campionaria tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
 
@@ -231,9 +444,24 @@ $-1 \leq r \leq 1$
 X <- c(9,8,12,9,10,14,5,4,13,7,5)
 Y <- c(9,6,8,9,7,10,8,4,11,5,4)
 Z <- -Y
-cor(X,Y) 
+cor(X,Y)
 cor(X,Z)
 ```
+
+### Il bambino di prima
+
+\small
+
+```{r}
+cov(bimbo$eta, bimbo$peso) / (sd(bimbo$eta) * sd(bimbo$peso))
+cor(bimbo$eta, bimbo$peso)
+```
+
+\normalsize
+
+$$r = \dfrac{`r round(cov(bimbo$eta, bimbo$peso), 2)`}{`r round(sd(bimbo$eta), 2)` \cdot `r round(sd(bimbo$peso), 2)`} = `r round(cor(bimbo$eta, bimbo$peso), 3)`$$
+
+Le variabili presentano una **fortissima correlazione positiva**: i punti tendono a disporsi lungo una retta crescente
 
 
 ###
@@ -282,12 +510,118 @@ plot(null, xlab="X3", ylab="Y3", main=paste("cov = ",  round(mylist$cov_null, 2)
 ```
 
 
-### 
+###
 
 ```{r}
 #| echo: false
+#| fig-align: center
 knitr::include_graphics("cor2.jpg")
 ```
+
+## Usi e abusi di $r$
+
+### In $\psi$
+
+- Attendibilità test-retest
+
+- Forme parallele di un test (coefficiente di equivalenza)
+
+- Accordo tra le valutazioni di due giudici
+
+- Consistenza interna di un questionario
+
+- ...
+
+### Statistics doesn't lie, but liars use statistics
+
+Due variabili possono essere fortemente correlate senza che esista alcun legame tra di loro
+
+\vspace{3mm}
+
+\begin{center}
+\url{https://www.tylervigen.com/spurious-correlations}
+\end{center}
+
+\vspace{3mm}
+
+
+
+\begin{center}
+\textbf{Correlazione $\neq$ causalità}
+\end{center}
+
+
+\vspace{2mm}
+
+\begin{center}
+\textit{L'ignoranza afferma o nega rotondamente; la scienza dubita} (Voltaire)
+\end{center}
+
+### Relazione diretta
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}[
+  squarednode/.style={rectangle, draw=black, minimum size=15mm, align=center},
+  ]
+  \node[squarednode] (x) {Ore di studio};
+  \node[squarednode] (y) [right=4cm of x] {\textcolor{blue!60!black}{Voto all'esame}};
+  \draw[->, line width=0.12cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (x.east) -- (y.west);
+\end{tikzpicture}
+\end{center}
+```
+
+\vspace{5mm}
+
+Ma ne siamo proprio sicuri?
+
+### Relazione indiretta
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}[
+  squarednode/.style={rectangle, draw=black, minimum size=15mm, align=center},
+  ]
+  \node[squarednode] (x) {Etnia};
+  \node[squarednode] (y) [right=7cm of x] {\textcolor{blue!60!black}{Punteggio QI}};
+  \node[squarednode] (z1) [above right=1.2cm and 1.8cm of x] {Reddito};
+  \node[squarednode] (z2) [right=0.8cm of z1] {Istruzione};
+  \draw[dotted, ->, line width=0.12cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (x.east) -- (y.west);
+  \draw[->, line width=0.10cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (x.east) -- (z1.west);
+  \draw[->, line width=0.10cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (z1.east) -- (z2.west);
+  \draw[->, line width=0.10cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (z2.east) -- (y.west);
+\end{tikzpicture}
+\end{center}
+```
+
+\footnotesize
+La relazione tra $X$ e $Y$ passa attraverso altre variabili (mediatori)
+
+### Relazione spuria
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}[
+  squarednode/.style={rectangle, draw=black, minimum size=15mm, align=center},
+  ]
+  \node[squarednode] (x) {Numero di cicogne};
+  \node[squarednode] (y) [right=5cm of x] {\textcolor{blue!60!black}{Numero di bambini nati}};
+  \node[squarednode] (z) [above right=1.2cm and 0.8cm of x] {Grandezza della città};
+  \draw[dotted, <->, line width=0.06cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (x.east) -- (y.west);
+  \draw[->, line width=0.10cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (z.west) -- (x.north);
+  \draw[->, line width=0.10cm, shorten >= +3pt, shorten <= +3pt, blue!60!black] (z.east) -- (y.north);
+\end{tikzpicture}
+\end{center}
+```
+
+\footnotesize
+$X$ e $Y$ sono correlate solo perché entrambe dipendono da una terza variabile
+
+\vspace{3mm}
+
+\begin{center}
+\normalsize LA STATISTICA SOSTIENE, NON ILLUMINA!
+\end{center}
 
 
 # Previsione variabili quantitative
@@ -303,7 +637,7 @@ Con un modello di regressione si vuole andare più a fondo per capire **quanto**
 La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale)
 
 
-### 
+###
 
 
 :::: {.columns}
@@ -312,6 +646,7 @@ La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo 
 ```{r}
 #| echo:  false
 #| fig-align: center
+
 
 par(mfrow=c(1,1))
 plot(dati$X, dati$Y, pch=19, cex=2)
@@ -342,16 +677,20 @@ $$r = `r round(cor(X, Y), 2)`$$
 
 ```{r}
 #| echo: false
+#| out-width: 70%
+#| fig-cap: Una retta che passi attraverso le coppie di osservazioni
 set.seed(999)
 mymodel = lm(Y ~ X)
 plot(X, Y, pch = 19, cex = 2)
 abline(mymodel, col = "firebrick", lwd = 2)
 ```
 
-### 
+###
 
 ```{r}
 #| echo: false
+#| out-width: 70%
+#| fig-cap: Ma quale retta?
 plot(X, Y, pch = 19, cex = 2)
 
 y1 = rnorm(20, sd = 2)
@@ -364,21 +703,21 @@ for (i in 1:length(x1)) {
 ```
 
 
-\footnotesize 
+\footnotesize
 
-Caso estremamente semplice dove varia solo l'intercetta 
+Caso estremamente semplice dove varia solo l'intercetta -- le rette sono parallele
 
 
-### 
+###
 
-La regressione lineare tra una *variabile indipendente* $X$ (predittore) ed una *variabile dipendente* $Y$ (criterio) calcola la migliore approssimazione lineare che identifica il legame tra le due variabili utilizzando la struttura di dati bivariata $(x,y)$ osservata su un campione di $n$ osservazioni.
+La regressione lineare tra una *variabile indipendente* $X$ (predittore) ed una *variabile dipendente* $Y$ (criterio) calcola la migliore approssimazione lineare che identifica il legame tra le due variabili utilizzando la struttura di dati bivariata $(x_i,y_i)$ osservata su un campione di $n$ osservazioni.
 
 :::: {.columns}
 
 :::{.column width=50%}
 $x = (x_1, x_2, \ldots, x_n)$
 
-$y = (y_1, x_2, \ldots, y_n)$
+$y = (y_1, y_2, \ldots, y_n)$
 :::
 
 :::{.column width=50%}
@@ -388,12 +727,21 @@ $$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
 
 $$Y = \beta_0 + \beta X $$
 $$y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)$$
+\footnotesize
 
-## Principio dei minimi quadrati 
+$y_i$: Valore di $y$ atteso per l'i-esima osservazione 
 
-### 
+$\beta_0$: Valore dell'intercetta, ovvero *valore atteso in $y$ quando $x_i = 0$*
 
-$$SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = SQE = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2  = \sum_{i=1}^n e_i^2$$
+$\beta_1$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in y per ogni cambiamento unitario in $x$*
+
+$\varepsilon_i$: Componente d'errore ($\mathcal{N}(0, \sigma^2)$)
+
+## Principio dei minimi quadrati
+
+###
+
+$$SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2  = \sum_{i=1}^n e_i^2$$
 \footnotesize
 
 dove $y_i^* = \beta_0 + \beta x_i$, e $e_i = y_i - y_i^*$.  \normalsize
@@ -409,7 +757,7 @@ mentre per $\beta_0$ è
 
 $$\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$$
 
-### 
+###
 
 ```{r}
 #| echo:  false
@@ -425,10 +773,54 @@ pred <- fitted(mod)
 segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
 ```
 
+## Proprietà della retta di regressione
+
+### Coefficiente angolare e correlazione
+
+:::: {.columns}
+
+:::{.column width=50%}
+$$\hat{\beta} = \dfrac{\cov(X,Y)}{sd(x)^2}$$
+:::
+
+:::{.column width=50%}
+$$r = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
+:::
+::::
+
+Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
+
+$$\hat{\beta} = r \, \dfrac{sd(y)}{sd(x)}$$
+
+
+
+1. Il **segno** del coefficiente angolare è lo stesso di $r$: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale
+
+2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $\hat{y} = \hat{\beta}_0 + \hat{\beta}x$)
+
+### Il bambino di prima
+
+\small
+
+```{r}
+b <- cov(bimbo$eta, bimbo$peso) / var(bimbo$eta)
+b0 <- mean(bimbo$peso) - b * mean(bimbo$eta)
+c(b0, b)
+cor(bimbo$eta, bimbo$peso) * sd(bimbo$peso) / sd(bimbo$eta)
+```
+
+\normalsize
+
+Retta di regressione: $\hat{y} = `r round(b0, 2)` + `r round(b, 2)`x$
+
+
+
+Quale sarebbe il peso previsto a 48 mesi? $\hat{y}_{48} = `r round(b0, 2)` + `r round(b, 2)` \cdot 48 = `r round(b0 + b * 48, 2)`$ kg
+
 
 ## Indice di adattamento $R^2$
 
-### 
+###
 
 $$R^2 = 1 - \dfrac{SQE/n-1}{Var(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
 
@@ -436,7 +828,6 @@ $\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della com
 
 $0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto, $R^2 = r^2$
 
-## Relazione $R^2$ e $r$
 
 ###
 
@@ -444,13 +835,13 @@ $0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto,
 #| echo: false
 
 r = seq(-1,1, length.out= 1000)
-plot(r, r^2, pch = 19, xlab = "r", ylab = expression(r^2), 
+plot(r, r^2, pch = 19, xlab = "r", ylab = expression(r^2),
      cex.lab =4, cex.axis=2)
 ```
 
 
 
-### 
+###
 
 ```{r}
 #| echo: false
@@ -480,7 +871,7 @@ fit <- lm(Y ~ X)
 Y_hat <- fitted(fit)
 
 # Grafico
-plot(X, Y, pch = 19, col = "black", 
+plot(X, Y, pch = 19, col = "black",
      xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
 abline(fit)
 
@@ -519,7 +910,7 @@ fit <- lm(Y ~ X)
 Y_hat <- fitted(fit)
 
 # Grafico
-plot(X, Y, pch = 19, col = "black", 
+plot(X, Y, pch = 19, col = "black",
      xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
 abline(fit)
 
@@ -530,7 +921,7 @@ segments(X, Y, X, Y_hat, lty = 2)
 $R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 
-### 
+###
 
 
 ```{r}
@@ -562,7 +953,7 @@ fit <- lm(Y ~ X)
 Y_hat <- fitted(fit)
 
 # Grafico
-plot(X, Y, pch = 19, col = "black", 
+plot(X, Y, pch = 19, col = "black",
      xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
 abline(fit)
 
@@ -572,7 +963,7 @@ segments(X, Y, X, Y_hat, lty = 1.2)
 
 $R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
-### 
+###
 
 ```{r}
 #| echo: false
@@ -601,7 +992,7 @@ fit <- lm(Y ~ X)
 Y_hat <- fitted(fit)
 
 # Grafico
-plot(X, Y, pch = 19, col = "black", 
+plot(X, Y, pch = 19, col = "black",
      xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
 abline(fit)
 
@@ -616,7 +1007,7 @@ $R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 ## `lm()`
 
-### 
+###
 
 
 \small
@@ -632,14 +1023,55 @@ Y <- c(9,6,8,9,7,10,8,4,11,5,4)
 lm(Y~X)
 ```
 
-## I residui 
+## Assunti del modello
 
-### 
+### Assunzioni
+
+
+- **Indipendenza dei predittori dall'errore**
+
+\vspace{1.5mm}
+
+> I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
+
+- **Indipendenza delle osservazioni**
+
+\vspace{1.5mm}
+
+> $\forall i \neq j, \, \varepsilon_i \perp\!\!\!\perp \varepsilon_j$ (le osservazioni sono state campionate indipendentemente l'una dall'altra)
+
+- **Linearità**
+
+\vspace{1.5mm}
+
+> Il valore atteso  dell'errore per un dato valore di $x$ è 0
+
+### Assunzioni
+
+- **Normalità**
+
+\vspace{1.5mm}
+
+> $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: Anche $y_i$ è distribuita normalmente con media $\beta_0 + \beta_1x_i$
+
+- **Varianza costante** (omoschedasticità)
+
+\vspace{1.5mm}
+
+> La varianza degli errori è costante per qualunque valore di $X$
+
+\vspace{3mm}
+
+
+
+Gli errori $\varepsilon_i$ della popolazione non si osservano $\rightarrow$ si guardano i loro "rappresentanti" nel campione: i **residui** $e_i = y_i - \hat{y}_i$
+
+###
 
 **Indipendenza dei predittori dall'errore**
 
 \vspace{1.5mm}
- 
+
 > I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
 
 \begin{center}
@@ -649,7 +1081,7 @@ lm(Y~X)
 I residui e il predittore **non devono essere correlati tra di loro**
 
 
-### 
+###
 
 ```{r}
 #| echo: false
@@ -666,14 +1098,20 @@ e = rnorm(length(x), sd= 3)
 y <- beta0 + beta1 * x + e
 
 fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
      cex.axis = 2, cex.lab = 2)
 abline(0,0, lwd = 2, col ="firebrick")
+abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
 
 ```
 
+\footnotesize
 
-### 
+La linea intera rossa rappresenta quello che dovremmo osservare, ossia la totale assenza di relazione tra la $x$ e i residui del modello
+
+Le linea tratteggiata blu indica la relazione effettiva tra i residui e il predittore $x$. Questa linea deve essere il più vicina possibile alla linea rossa
+
+###
 
 ```{r}
 #| echo: false
@@ -690,7 +1128,7 @@ e = rnorm(length(x), sd= 3)
 y <- beta0 + beta1 * x + e
 
 fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
      cex.axis = 2, cex.lab = 2)
 abline(0,0, lwd = 2, col ="firebrick")
 abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
@@ -698,7 +1136,7 @@ abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
 
 $$r = `r round(cor(e, x),2)`$$
 
-### 
+###
 
 ```{r}
 #| echo: false
@@ -708,13 +1146,14 @@ ecorr = x+rnorm(length(x), sd= 1)
 ycorr <- beta0 + beta1 * x + ecorr
 
 fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
      cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
 abline(0,0, lwd = 2, col ="firebrick")
+abline(lm(ycorr ~x), col ="royalblue4", lwd = 2, lty = 2)
 ```
 
 
-### 
+###
 
 
 ```{r}
@@ -725,10 +1164,397 @@ ecorr = x+rnorm(length(x), sd= 1)
 ycorr <- beta0 + beta1 * x + ecorr
 
 fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui", 
+plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
      cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
 abline(0,0, lwd = 2, col ="firebrick")
 abline(lm(ecorr ~x), col ="royalblue4", lwd = 2, lty = 2)
 ```
 
 $$r = `r round(cor(ecorr, x),2)`$$
+
+
+
+### {.plain}
+
+\footnotesize
+
+```{r}
+#| echo: false
+set.seed(42)
+studio <- data.frame(ore = round(runif(80, 0, 20), 1))
+studio$voto <- round(15 + 0.6 * studio$ore + rnorm(80, 0, 2), 1)
+```
+
+
+```{r}
+#| echo: true
+#| out-width: 55%
+#| fig-align: center
+head(studio)
+modello <- lm(voto ~ ore, data = studio)
+modello
+```
+
+### I valori attesi e i residui
+
+\footnotesize
+
+```{r}
+#| echo: true
+studio$attesi <- fitted(modello)      # y cappello
+studio$residui <- residuals(modello)  # y - y cappello
+head(studio)
+```
+
+
+
+```{r}
+#| echo: true
+# i residui sono semplicemente osservati - attesi
+head(studio$voto - studio$attesi)
+```
+
+### Normalità degli errori
+
+\small
+
+La media dei residui è (sempre) 0:
+
+```{r}
+#| echo: true
+mean(studio$residui)
+```
+
+I residui dovrebbero distribuirsi in modo simmetrico attorno allo 0: la mediana deve essere il più vicina possibile a 0, il minimo e il massimo (così come il primo e il terzo quartile) dovrebbero essere simili in valore assoluto
+
+```{r}
+#| echo: true
+summary(studio$residui)
+```
+
+
+### Residui vs predittore
+
+\small
+
+Se la relazione è lineare, i residui si distribuiscono **casualmente** attorno allo 0, senza alcun andamento
+
+```{r}
+#| echo: true
+#| out-width: 55%
+#| fig-align: center
+plot(studio$ore, studio$residui, pch = 19,
+     xlab = "ore", ylab = "residui")
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+### Quando la relazione non è lineare
+
+```{r}
+#| echo: false
+set.seed(42)
+nonlin <- data.frame(x = runif(80, 0, 10))
+nonlin$y <- 5 + 0.8 * (nonlin$x - 5)^2 + rnorm(80, 0, 2)
+mod_nonlin <- lm(y ~ x, data = nonlin)
+nonlin$residui <- residuals(mod_nonlin)
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 90%
+par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
+plot(nonlin$x, nonlin$y, pch = 19, cex = 1.5, xlab = "x", ylab = "y",
+     main = "Dati e retta", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+abline(mod_nonlin, col = "royalblue4", lwd = 2)
+plot(nonlin$x, nonlin$residui, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
+     main = "Residui", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+\footnotesize
+I residui hanno una chiara forma a "U": il modello lineare sovrastima al centro e sottostima agli estremi $\rightarrow$ l'assunto di linearità è violato
+
+### Istogramma dei residui
+
+\scriptsize
+
+```{r}
+#| echo: true
+#| out-width: 55%
+#| fig-align: center
+hist(studio$residui, freq = FALSE, xlab = "residui", col = "gray90")
+curve(dnorm(x, mean = 0, sd = sd(studio$residui)), 
+      add = TRUE, col = "firebrick", lwd = 2)
+```
+
+\footnotesize
+La linea rossa è la distribuzione normale con media 0 e sd pari a quella dei residui
+
+### Q-Q plot dei residui
+
+\small
+
+Confronta i quantili dei residui con quelli di una distribuzione normale: se i residui sono normali, i punti stanno **sulla retta**
+
+```{r}
+#| echo: true
+#| out-width: 50%
+#| fig-align: center
+qqnorm(studio$residui, pch = 19)
+qqline(studio$residui, col = "firebrick", lwd = 2)
+```
+
+### Quando i residui non sono normali
+
+```{r}
+#| echo: false
+set.seed(42)
+asim <- data.frame(x = runif(80, 0, 10))
+asim$y <- 2 + 1.5 * asim$x + rexp(80, rate = 0.3)
+mod_asim <- lm(y ~ x, data = asim)
+asim$residui <- residuals(mod_asim)
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 80%
+par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
+hist(asim$residui, freq = FALSE, main = "Istogramma",
+     xlab = "residui", col = "gray90", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+curve(dnorm(x, mean = 0, sd = sd(asim$residui)),
+      add = TRUE, col = "firebrick", lwd = 2)
+qqnorm(asim$residui, pch = 19, main = "Q-Q plot",
+       cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+qqline(asim$residui, col = "firebrick", lwd = 2)
+```
+
+\footnotesize
+Distribuzione asimmetrica: coda lunga a destra, i punti si allontanano dalla retta agli estremi
+
+###
+
+Omoschedasticità
+\small
+
+La variabilità dei residui deve essere **costante** per tutti i valori attesi: la "nuvola" deve avere la stessa ampiezza da sinistra a destra
+
+\scriptsize
+
+```{r}
+#| echo: true
+#| out-width: 55%
+#| fig-align: center
+plot(studio$attesi, studio$residui, pch = 19,
+     xlab = "valori attesi", ylab = "residui")
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+### {.plain}
+
+```{r}
+#| echo: false
+set.seed(42)
+etero <- data.frame(x = runif(80, 0, 10))
+etero$y <- 2 + 1.5 * etero$x + rnorm(80, 0, 0.5 + 0.6 * etero$x)
+mod_etero <- lm(y ~ x, data = etero)
+etero$attesi <- fitted(mod_etero)
+etero$residui <- residuals(mod_etero)
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 80%
+par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
+plot(etero$x, etero$y, pch = 19, cex = 1.5, xlab = "x", ylab = "y",
+     main = "Dati e retta", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+abline(mod_etero, col = "royalblue4", lwd = 2)
+plot(etero$attesi, etero$residui, pch = 19, cex = 1.5,
+     xlab = "valori attesi", ylab = "residui",
+     main = "Residui", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+\footnotesize
+Forma "a imbuto": i residui sono sempre più dispersi al crescere dei valori attesi $\rightarrow$ eteroschedasticità
+
+### {.plain}
+
+Indipendenza delle osservazioni
+
+\small
+
+Dipende soprattutto da **come sono stati raccolti i dati**: ogni osservazione deve essere indipendente dalle altre
+
+Esempi di violazione: misure ripetute sulla stessa persona, studenti della stessa classe, dati raccolti nel tempo
+
+
+
+Se i dati hanno un ordine (es. ordine di raccolta), si possono guardare i residui in quell'ordine: non deve esserci nessun andamento
+
+```{r}
+#| echo: true
+#| out-width: 45%
+#| fig-align: center
+plot(studio$residui, type = "b", pch = 19,
+     xlab = "ordine di raccolta", ylab = "residui")
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+
+### Cosa guardare nei residui
+
+\small
+
+| Assunto | Grafico | Cosa si deve vedere |
+|:--------|:--------|:--------------------|
+| Linearità | `plot(x, residui)` | Nuvola casuale attorno a 0 |
+| Normalità | `hist(residui)`, `qqnorm(residui)` | Forma a campana, punti sulla retta |
+| Omoschedasticità | `plot(attesi, residui)` | Ampiezza costante (niente imbuti) |
+| Indipendenza | `plot(residui, type = "b")` | Nessun andamento nell'ordine |
+
+\vspace{3mm}
+
+Tutto parte da due funzioni:
+
+```{r}
+#| echo: true
+#| eval: false
+attesi <- fitted(modello)
+residui <- residuals(modello)
+```
+
+
+# Materiale supplementare
+
+## Outliers e casi influenti
+
+### Definizioni
+
+**Outlier**: Il valore di un'osservazione nella variabile dipendente è anomalo dato il valore del predittore (ha un residuo molto grande)
+
+**Leverage** (leva): Quanto il valore di un'osservazione nel predittore è lontano dalla media del predittore $\rightarrow$ quanto *potenzialmente* può spostare la retta
+
+**Influential case**: Una singola osservazione che riesce a spostare l'intera retta di regressione
+
+\vspace{2mm}
+
+Un'osservazione può essere:
+
+- Un outlier (ma non un influential case)
+
+- Un punto ad alta leva in linea con gli altri (ma non un influential case)
+
+- Un outlier influente (anomalo **e** ad alta leva)
+
+```{r}
+#| echo: false
+dat <- data.frame(
+  soggetto = 1:10,
+  eta = c(6, 6, 7, 8, 8, 9, 10, 10, 11, 12),
+  statura = c(110, 119, 125, 123, 133, 129, 140, 142, 138, 150)
+)
+type <- c(rep("normal", 10), "weird")
+
+disegna_caso <- function(nuovo, posizione_legenda) {
+  newdati <- rbind(dat, nuovo)
+  newdati$type <- type
+  plot(newdati$eta, newdati$statura, cex = 2,
+       xlab = "Età", ylab = "Statura (cm)",
+       ylim = c(105, 190), xlim = c(4, 20),
+       pch = ifelse(newdati$type == "normal", 19, 17),
+       col = ifelse(newdati$type == "normal", "royalblue", "salmon"),
+       cex.lab = 1.5, cex.axis = 1.5)
+  abline(lm(statura ~ eta, data = dat), lwd = 2, lty = 2)
+  abline(lm(statura ~ eta, data = newdati), lwd = 2, col = "firebrick")
+  legend(posizione_legenda, col = c("black", "firebrick"), lty = c(2, 1),
+         lwd = 2, legend = c("Senza", "Con"), cex = 1.5)
+}
+```
+
+### Un outlier living the life
+
+```{r}
+#| echo: false
+#| out-width: 75%
+#| fig-align: center
+disegna_caso(c(soggetto = 11, eta = 9, statura = 155), "bottomright")
+```
+
+\footnotesize
+Il triangolo rosa è un outlier: è anomalo rispetto alla nuvola di punti, ma essendo vicino alla media dell'età sposta la retta di poco (soprattutto in alto, l'intercetta)
+
+### Un punto ad alta leva living the life
+
+```{r}
+#| echo: false
+#| out-width: 75%
+#| fig-align: center
+disegna_caso(c(soggetto = 11, eta = 18, statura = 182), "bottomright")
+```
+
+\footnotesize
+Il triangolo rosa è lontano dagli altri sull'asse delle $x$ (alta leva), ma è in linea con l'andamento dei dati: la retta non cambia
+
+### Un outlier influential case living the life
+
+```{r}
+#| echo: false
+#| out-width: 75%
+#| fig-align: center
+disegna_caso(c(soggetto = 11, eta = 18, statura = 120), "topleft")
+```
+
+\footnotesize
+Il triangolo rosa è anomalo **e** lontano dagli altri sull'asse delle $x$: ne sposta drasticamente la pendenza
+
+## Leverage e distanza di Cook
+
+### Tirare fuori leverage e distanza di Cook
+
+\small
+
+Come per i residui, anche gli indici di influenza si estraggono dal modello e si guardano
+
+`hatvalues()`: leverage di ogni osservazione
+
+`cooks.distance()`: distanza di Cook $\rightarrow$ quanto cambiano *tutti* i valori attesi se l'osservazione viene tolta (combina residuo e leverage)
+
+```{r}
+#| echo: true
+influente <- rbind(dat, c(soggetto = 11, eta = 18, statura = 120))
+mod_inf <- lm(statura ~ eta, data = influente)
+influente$leva <- hatvalues(mod_inf)
+influente$cook <- cooks.distance(mod_inf)
+```
+
+###
+
+\small
+
+```{r}
+#| echo: true
+round(influente, 2)
+```
+
+### Il grafico della distanza di Cook
+
+\small
+
+Una soglia spesso usata: $D_i > 4/n$
+
+```{r}
+#| echo: true
+#| out-width: 50%
+#| fig-align: center
+plot(influente$cook, type = "h", lwd = 3,
+     xlab = "osservazione", ylab = "distanza di Cook")
+abline(h = 4 / nrow(influente), col = "firebrick", lty = 2, lwd = 2)
+```
+
+```{r}
+#| echo: true
+which(influente$cook > 4 / nrow(influente))
+```
