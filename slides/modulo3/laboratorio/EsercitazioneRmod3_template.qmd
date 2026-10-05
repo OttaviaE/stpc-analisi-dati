@@ -1,6 +1,6 @@
 ---
 title: "Esercizi Modulo 3"
-subtitle: "Esercizi - Variabili quantitative"
+subtitle: "Template - Variabili quantitative"
 author: "Ottavia M. Epifania"
 lang: it
 format:
@@ -18,10 +18,6 @@ execute:
 
 # Introduzione
 
-Gli esercizi di seguito proposti sono relativi all'uso delle misure di associazione (covarianza e correlazione lineare) per le variabili quantitative. Lo studio delle misure di associazione sarà condotto utilizzando il dataset di Anscombe e riguarderà gli aspetti esclusivamente descrittivi (non inferenziali) di tali statistiche. Nello specifico: 
-
-Queste variabili sono ricavate dal famoso esempio di Anscombe (1973, Graphs in statistical analysis, The American Statistician).
-
 ```{r}
 #| echo: true
 
@@ -34,25 +30,58 @@ Y4 <- c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89)
 
 ```
 
-Svolgere i seguenti esercizi:
 
 1. Si costruisca un dataframe, D, che contenga le sei variabili del set di dati di Anscombe. Rimuovere dalla memoria tutte le variabili escluso il dataframe D.
+
+```{r}
+
+```
+
 
 2. Si calcoli il valore della covarianza tra X1 e Y1. Nel calcolo della covarianza si utilizzi la formula matematica: 
 
 $$Cov(X,Y) = \dfrac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})$$
 
 
+
+```{r}
+
+```
+
 3. Ripetere l'esercizio 2, questa volta utilizzando la formula predefinita in R, `cov()`, per il calcolo della covarianza. Verificare che i risultati ottenuti con le due modalità (esercizio 2 e 3) siano uguali
+
+```{r}
+
+```
+
+```{r}
+
+```
+
 
 4. Costruire un nuovo dataframe `Dcov` che contenga rispettivamente tre variabili (ovvero tre colonne): 
   - a) una variabile `scartiX1` contenente lo scarto dalla media di `X1` dei punteggi di `X1`,
   - b) una variabile `scartiY1` contenente lo scarto dalla media di `Y1` dei punteggi di `Y1`, 
   - c) una variabile `prodScarti` contenente il prodotto degli scarti rispetto a `X1` e `Y1` (per maggiori dettagli si veda la formula a p. 113).
 
+```{r}
+
+```
+
+
 5. Visualizzare il contenuto di `Dcov` e concentrarsi sui valori di `prodScarti`. Quali osservazioni potresti fare circa i valori contenuti in `prodScarti`? Nello specifico circa il segno di tali scarti (quale è il loro significato e come vanno ad incidere sul risultato finale della misura di covarianza)?
 
+Il prodotto degli scarti è positivo per tutte le osservazioni. Questo vuol dire che, tendenzialmente a uno scarto dalla media di X positivo, corrisponde uno scarto dalla media di Y positivo. La covarianza ha quindi sgeni positivo. 
+
+
 6. Calcolare la covarianza della variabile `Y1` con se stessa. Nella procedura di calcolo utilizzare sia la modalità descritta nell'Es. 2 che quella indicata nell'Es. 3. Verificare la concordanza dei risultati delle due procedure. Infine tabulare i valori del dataframe corrispondente a `Dcov` per questa nuova coppia di variabili (variabile ripetuta). Quali osservazioni puoi fare sui risultati del valore della covarianza di `Y1` con se stessa? A cosa viene a coincidere tale particolare covarianza?
+
+```{r}
+
+```
+
+
+
 
 7. Calcolare la correlazione lineare tra `X1` e `Y1`. Per il calcolo della correlazione utilizzare la formula descritta a p. 114 del manuale: 
 
@@ -60,3 +89,10 @@ $$\rho_{xy} = \dfrac{\sigma_{xy}}{\sigma_x \sigma_y}$$
 
 
 e confrontarla con il calcolo della funzione predefinita in R, ovvero la funzione `cor(X1,Y1)` ($\sigma_{xy} = Cox(X,Y$).
+
+
+```{r}
+
+```
+
+

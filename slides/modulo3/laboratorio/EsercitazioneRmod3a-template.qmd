@@ -1,6 +1,6 @@
 ---
 title: "Esercitazione Modulo 3A"
-subtitle: "Svolgimento"
+subtitle: "Template"
 author: "Nome e Cognome"
 lang: it
 format:

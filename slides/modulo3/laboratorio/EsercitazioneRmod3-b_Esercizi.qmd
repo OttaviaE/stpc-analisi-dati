@@ -1,15 +1,19 @@
 ---
-title: "Laboratorio di Analisi dei Dati con R"
-subtitle: "Esercizi legati al modulo 3 - Seconda SERIE"
-author: "Ottavia Epifania"
-format: 
-  pdf:
+title: "Esercizi Modulo 3"
+subtitle: "Esercizi seconda parte - Variabili quantitative e categoriali"
+author: "Ottavia M. Epifania"
+lang: it
+format:
+  html:
     toc: true
-    toc-title: Lista degli esercizi
+    toc-depth: 2
+    number-sections: true
+    embed-resources: true
 execute:
   echo: true
-  eval: false
-linestretch: 1.5
+  eval: true
+  warning: false
+  message: false
 ---
 
 \newpage
@@ -35,7 +39,7 @@ Y4 <- c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89)
 
 # Esercizio 1
 
-## 1. 
+## 
 
 studiare la relazione tra le seguenti coppie di variabili attraverso dei modelli di regressione. Visualizzare graficamente la relazione tra le varaibili attraverso un grafico a disperisione: 
  - $(X1,Y1)$ (modello di regressione `MR1`) 
@@ -43,21 +47,21 @@ studiare la relazione tra le seguenti coppie di variabili attraverso dei modelli
  - $(X1,Y3)$ (modello di regressione `MR3`)
  - $(X2,Y4)$ (modello di regressione `MR4`)
 
-## 2. 
+## 
 
 Studia la relazione tra la variabile indipendente ed i residui per ciascun modello utilizzando dei grafici di dispersione. Che tipo di commenti puoi fare circa ciascun grafico di dispersione?
 
-## 3. 
+## 
 
 Calcola e visualizza la percentuale di varianza spiegata per ciascun modello
 
-## 4. 
+## 
 
 Calcola i valori predetti dal primo modello di regressione (`MR1`) per $X1 = \{-25, 0.25, 44.9, 100.8\}$
 
 # Esercizio 2
 
-## 1. 
+## 
 
 Si consideri la seguente coppia di variabili categoriali `A` e `B` con rispettivamente 3 e 2 livelli:
 
@@ -68,15 +72,15 @@ B=(b1,b1,b1,b1,b1,b1,b1,b1,b1,b2,b2,b2,b2,b2,b2,b2,b2,b2,b2)
 Si costruisca la tabella di contingenza `f_o` associata alle due variabili A e B.
 
 
-## 2. 
+## 
 
 Costruire la tabella di contingenza, `f_t`, che contenga le frequenze teoriche associate al modello di indipendenza tra `A` e `B`.
 
-## 3. 
+## 
 
 Calcola e visualizza il valore del Chi-quadrato osservato ottenuto sulla tabella di contingenza `f_o`.
 
-## 4. 
+## 
 
 Calcola l'indice normalizzato del Chi-quadrato osservato: 
 
@@ -84,11 +88,11 @@ $$\chi_N^2 = \dfrac{\chi^2}{N\times \min[(r-1); (c-1)]}$$
 
 Quale conclusione si può trarre dal risultato di tale indice?
 
-## 5. 
+## 
 
 Calcola il valore del Chi-quadrato osservato ottenuto sulla tabella di contingenza `f_o` limitata ai soli valori `a1` e `a3` della variabile categoriale A. Su questa nuova tabella di contingenza calcola l'indice normalizzato del Chi-quadrato.
 
-## 6. 
+## 
 
 Costruisci una nuova tabella di contingenza sommando i valori della seconda e terza riga di `f_o`. Questa nuova tabella di contingenza esprime l'associazione tra i valori `b1` e `b2` della variabile categoriale `B` e i valori `a1` e ${a2,a3}$ della nuova variabile categoriale `A2`. 
 

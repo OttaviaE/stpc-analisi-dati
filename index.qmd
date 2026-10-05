@@ -154,6 +154,12 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Slides Parte 1](slides/modulo3/modulo3-a.pdf)
 * [Slides Parte 2](slides/modulo3/modulo3-b.pdf)
 
+### Laboratorio
+
+* [Dati da scaricare](slides/modulo3/laboratorio/data/DataAS.csv)
+* [Laboratorio Modulo 3 (Testo)](slides/modulo3/laboratorio/LaboratorioRmod3-Lombardi.pdf)
+* [Laboratorio Modulo 3 (Soluzioni)](slides/modulo3/laboratorio/LaboratorioRmod3_Soluzioni.html)
+
 ### Esercitazione
 
 #### Parte 1: Connessione tra variabili categoriali
@@ -162,4 +168,16 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Esercitazione Modulo 3 - Parte 1 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3a-esercizi.html)
 * [Esercitazione Modulo 3 - Parte 1 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3a-template.qmd)
 * [Esercitazione Modulo 3 - Parte 1 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3a-soluzioni.html)
+
+#### Parte 2: Covarianza e correlazione tra variabili quantitative
+
+* [Esercitazione Modulo 3 - Parte 2 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3_Esercizi.html)
+* [Esercitazione Modulo 3 - Parte 2 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3_template.qmd)
+* [Esercitazione Modulo 3 - Parte 2 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3_Soluzioni.html)
+
+#### Parte 3: Regressione lineare e Chi quadrato
+
+* [Esercitazione Modulo 3 - Parte 3 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_Esercizi.html)
+* [Esercitazione Modulo 3 - Parte 3 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_template.qmd)
+* [Esercitazione Modulo 3 - Parte 3 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_Soluzioni.html)
 

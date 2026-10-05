@@ -1,12 +1,19 @@
 ---
-title: "Laboratorio di Analisi dei Dati con R"
-subtitle: "Soluzioni - PRIMA SERIE"
-author: "Ottavia Epifania"
-format: pdf
+title: "Laboratorio Modulo 3"
+subtitle: "Soluzuioni"
+author: "Ottavia M. Epifania"
+lang: it
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    embed-resources: true
 execute:
   echo: true
-  eval: false
-linestretch: 1.5
+  eval: true
+  warning: false
+  message: false
 ---
 
 
@@ -14,7 +21,7 @@ linestretch: 1.5
 # Esercizio 1
 ```{r}
 
-dati <- read.csv("DataAS.csv", sep=";")
+dati <- read.csv("data/DataAS.csv", sep=";")
 
 ```
  
@@ -24,13 +31,13 @@ ECat[(dati$E >= 36) & (dati$E <= 43)] <- 1
 ECat[(dati$E >= 44) & (dati$E <= 51)] <- 2
 SM10 <- rep(0,60)
 SM10[(dati$a1b1+dati$a1b2)>=10] <- 1
-myt <- table(ECat,SM10)
-rownames(myt) <- c("[36-43]","[44-51]")
-colnames(myt) <- c("P<10","P>=10")
-myt  # I bambini più grandi hanno una maggiore probabilità di
+mytab<- table(ECat,SM10)
+rownames(mytab) <- c("[36-43]","[44-51]")
+colnames(mytab) <- c("P<10","P>=10")
+mytab # I bambini più grandi hanno una maggiore probabilità di
    # superare la soglia minima 10
 
-Chi2 <- chisq.test(myt)$statistic # confermato da un valore elevato
+Chi2 <- chisq.test(mytab)$statistic # confermato da un valore elevato
 Chi2                            # di Chi2 osservato
 Chi2max <- nrow(dati)*min(c(nrow(mytab)-1, ncol(mytab)-1))                   # chi2max = N * min(I-1,J-1)
 Chi2nor <- Chi2/Chi2max         # Chi2 normalizzato
