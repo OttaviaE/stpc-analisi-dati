@@ -156,3 +156,10 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 ### Esercitazione
 
+#### Parte 1
+
+* [Dati da scaricare](slides/modulo3/laboratorio/data/studenti.csv)
+* [Esercitazione Modulo 3 - Parte 1 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3a-esercizi.html)
+* [Esercitazione Modulo 3 - Parte 1 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3a-template.qmd)
+* [Esercitazione Modulo 3 - Parte 1 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3a-soluzioni.html)
+
