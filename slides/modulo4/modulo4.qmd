@@ -14,7 +14,6 @@ format:
     innertheme: rounded
     outertheme: miniframes
 callout-icon: false
-lang: it
 code-annotations: below
 header-includes: 
    - \usepackage{graphicx} 
@@ -61,8 +60,9 @@ $$f_X(x|\theta) = \Pr[X = x], \qquad \forall x \in S,$$
 al contrario $f_X(x|\theta) = 0$ per tutti gli $x \notin S$. 
 In generale noi considereremo funzioni $f_X$ parametriche con parametri $\theta \in \Theta$:
 
-$$f_X : \mathbb{R} \times \Theta \to [0,1].
-$$
+$$f_X : \mathbb{R} \times \Theta \to [0,1].$$
+
+
 
 ### Distribuzione di probabilità binomiale
 
@@ -83,6 +83,7 @@ n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1 & \text{se } n > 0.
 ```{r}
 #| echo: false
 #| layout-ncol: 3
+#| label: fig-bin1
 #| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
 #| fig-subcap: 
 #|   - "$\\theta = .30$"
@@ -114,6 +115,7 @@ segments(x,0, x, dbinom(x,6, prob =.85), lwd = 2)
 #|   - "$\\theta = .30$"
 #|   - "$\\theta = .50$"
 #|   - "$\\theta = .85$"
+#| label: fig-bin2
 
 x = 0:10
 plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
@@ -140,6 +142,8 @@ segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
 #|   - "$\\theta = .30$"
 #|   - "$\\theta = .50$"
 #|   - "$\\theta = .85$"
+#| label: fig-bin3
+
 
 x = 0:20
 plot(x, dbinom(x,length(x), prob =.3), pch = 19,  

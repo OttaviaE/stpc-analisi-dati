@@ -1,0 +1,1967 @@
+---
+title: "Modulo Didattico 4: Principali distribuzioni di probabilità"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ Univeristà di Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+   - |
+      \AtBeginSection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,hideallsubsections]
+        \end{frame}
+      }
+   - |
+      \AtBeginSubsection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+        \end{frame}
+      }
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{template}{RGB}{72,79,89}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+# Cenni di calcolo delle probabilità
+
+## Eventi
+
+### Dalle frequenze alle probabilità
+
+:::: {.columns}
+
+::: {.column width=50%}
+**Statistica descrittiva**
+
+Variabili statistiche caratterizzate da *frequenze* osservate
+
+| $x$ | $n_k$ |
+|:---:|:---:|
+| $x_1$ | $n_1$ |
+| $x_2$ | $n_2$ |
+| $\vdots$ | $\vdots$ |
+| $x_h$ | $n_h$ |
+:::
+
+::: {.column width=50%}
+**Teoria della probabilità**
+
+Variabili casuali caratterizzate da *probabilità* $\rightarrow$ modelli teorici per la popolazione
+
+| $x$ | $\Pr[X = x_k]$ |
+|:---:|:---:|
+| $x_1$ | $\Pr[X = x_1]$ |
+| $x_2$ | $\Pr[X = x_2]$ |
+| $\vdots$ | $\vdots$ |
+| $x_h$ | $\Pr[X = x_h]$ |
+:::
+
+::::
+
+### Esperimento aleatorio
+
+Per parlare di probabilità si deve pensare a un *esperimento aleatorio*, cioè a un esperimento i cui risultati sono "casuali":
+
+- **Approccio deterministico**: l'esperimento ammette un unico risultato certo
+- **Approccio probabilistico**: l'esperimento ammette almeno due risultati e vi è incertezza su quale si realizzerà (es., lancio di un dado)
+
+\vspace{3mm}
+
+Le manifestazioni di un esperimento sono descritte da **eventi**.
+
+La **probabilità** è una misura del presentarsi di un evento.
+
+\vspace{3mm}
+
+*Obiettivo*: costruire modelli teorici che permettano di calcolare la probabilità di tutti gli eventi sperimentabili
+
+### Tipologie di eventi
+
+1. **Eventi elementari** $\omega_1, \omega_2, \ldots, \omega_i, \ldots$: risultati possibili dell'esperimento aleatorio
+
+    Lancio di un dado a 6 facce: $\omega_1 = \{1\}, \omega_2 = \{2\}, \ldots, \omega_6 = \{6\}$
+
+2. **Eventi composti** $A_1, A_2, \ldots, A_i, \ldots$: insiemi di eventi elementari
+
+    Lancio di un dado a 6 facce: $A = \{\text{risultato pari}\} = \{2, 4, 6\}$
+
+3. **Eventi particolari**:
+    - evento impossibile $\emptyset$ (insieme vuoto)
+    - evento certo $\Omega$: spazio degli eventi elementari (tutti i possibili risultati)
+
+### Operazioni sugli insiemi
+
+\small
+
+**Unione** (A **o** B):
+$$A \cup B = \{\omega \in \Omega : \omega \in A \ \text{o} \ \omega \in B\}$$
+
+**Intersezione** (A **e** B):
+$$A \cap B = \{\omega \in \Omega : \omega \in A \ \text{e} \ \omega \in B\}$$
+
+**Complementare** (tutto quello che non è A):
+$$A^C = \{\omega \in \Omega : \omega \notin A\}$$
+
+**Differenza simmetrica**:
+$$A \,\Delta\, B = \{\omega \in \Omega : (\omega \in A \ \text{e} \ \omega \notin B) \ \text{o} \ (\omega \in B \ \text{e} \ \omega \notin A)\}$$
+
+### Esempio
+
+:::: {.columns}
+
+::: {.column width=45%}
+Un dado a 6 facce:
+
+$\Omega = \{1, 2, 3, 4, 5, 6\}$
+
+Facce pari: $A = \{2, 4, 6\}$
+
+Facce $> 3$: $B = \{4, 5, 6\}$
+
+Faccia 1: $C = \{1\}$
+:::
+
+::: {.column width=55%}
+$A^C = \{1, 3, 5\}$
+
+$A \cup B = \{2, 4, 5, 6\}$
+
+$A \cap B = \{4, 6\}$
+
+$B \cap C = \emptyset$
+
+$B \cup C = \{1, 4, 5, 6\}$
+
+$(A \cap B)^C = \{1, 2, 3, 5\}$
+
+$A \,\Delta\, B = \{2, 5\}$
+
+$(A \cap B) \cup C = \{1, 4, 6\}$
+:::
+
+::::
+
+## Funzione di probabilità
+
+###
+
+Una volta definiti gli eventi, bisogna definire la *funzione di probabilità*: una legge $\Pr$ che permette di calcolare $\Pr[A]$ per ogni evento $A \subseteq \Omega$.
+
+\vspace{3mm}
+
+Servono 3 "ingredienti":
+
+1. Assiomi
+2. Regola per assegnare la probabilità agli eventi elementari
+3. Regole per il calcolo della probabilità degli altri eventi
+
+### Assiomi del calcolo delle probabilità
+
+Sia $\Omega$ lo spazio (finito) degli eventi elementari. La funzione $\Pr$ soddisfa i seguenti assiomi:
+
+1. $\Pr[A] \geq 0 \quad \forall A \subseteq \Omega$
+
+2. $\Pr[\Omega] = 1$
+
+3. $\Pr\left[\bigcup_{i} A_i\right] = \sum_{i} \Pr[A_i]$ se gli $A_i$ sono disgiunti
+
+\vspace{3mm}
+
+Due insiemi sono *disgiunti* se non hanno elementi in comune, ossia la loro intersezione è vuota ($A \cap B = \emptyset$)
+
+### Regole derivate dagli assiomi
+
+1. Probabilità dell'unione:
+$$\Pr[A \cup B] = \Pr[A] + \Pr[B] - \Pr[A \cap B]$$
+($\Pr[A \cap B] = 0$ se $A$ e $B$ sono disgiunti)
+
+2. Probabilità della differenza:
+$$\Pr[A - B] = \Pr[A] - \Pr[A \cap B]$$
+($\Pr[A \cap B] = \Pr[B]$ se $B \subset A$)
+
+3. Probabilità del complementare: $\Pr[A^C] = 1 - \Pr[A]$
+
+4. Probabilità dell'evento impossibile: $\Pr[\emptyset] = 0$
+
+\vspace{2mm}
+
+Di conseguenza: $0 \leq \Pr[A] \leq 1$
+
+### Regola per l'assegnazione della probabilità
+
+Gli assiomi dicono quali proprietà deve avere una funzione per essere definita "probabilità", ma non come calcolare la probabilità di un generico evento $A$.
+
+\vspace{2mm}
+
+- Gli eventi elementari sono, per definizione, disgiunti
+- Un evento composto è l'unione di eventi elementari
+
+$\Rightarrow$ per il terzo assioma, definendo la probabilità degli eventi elementari si può calcolare la probabilità di qualsiasi evento $A$
+
+\vspace{2mm}
+
+**Caso finito ed equiprobabilità**: se $\Omega$ contiene $n$ eventi elementari tutti con la stessa probabilità di verificarsi:
+
+$$\Pr[\omega_i] = \dfrac{1}{n}, \qquad i = 1, 2, \ldots, n$$
+
+### Lancio di un dado equilibrato
+
+:::: {.columns}
+
+::: {.column width=35%}
+| $x$ | $\Pr[X = x]$ |
+|:---:|:---:|
+| 1 | 1/6 |
+| 2 | 1/6 |
+| 3 | 1/6 |
+| 4 | 1/6 |
+| 5 | 1/6 |
+| 6 | 1/6 |
+:::
+
+::: {.column width=65%}
+$A = \{\text{facce pari}\} = \{2, 4, 6\}$
+
+\begin{align*}
+\Pr[A] &= \Pr[\{2\} \cup \{4\} \cup \{6\}] \\
+&= \Pr[\{2\}] + \Pr[\{4\}] + \Pr[\{6\}] \\
+&= \dfrac{1}{6} + \dfrac{1}{6} + \dfrac{1}{6} = \dfrac{1}{2}
+\end{align*}
+:::
+
+::::
+
+### Formula classica (Laplace)
+
+Sfruttando il terzo assioma, la probabilità di un generico evento $A$ è:
+
+$$\Pr[A] = \dfrac{\text{casi favorevoli ad } A}{\text{casi possibili}}$$
+
+:::{.callout-warning}
+## Attenzione
+
+Vale solo se lo spazio campionario è finito e la condizione di equiprobabilità è rispettata
+:::
+
+Il numero di casi favorevoli e possibili si calcola:
+
+1. Per conteggio (quando $\Omega$ ha pochi eventi elementari)
+2. Con il calcolo combinatorio (permutazioni, disposizioni, combinazioni)
+
+### Esempi
+
+\small
+
+**Mazzo di 52 carte, si estrae una carta**. $A$: carta di cuori; $B$: carta figura
+
+- $\Pr[A] = 13/52 = 0.25$
+- $\Pr[B] = 12/52 = 0.23$
+- $\Pr[A \cap B] = 3/52 = 0.058$ (figure di cuori)
+- $\Pr[A - B] = \Pr[A] - \Pr[A \cap B] = 13/52 - 3/52 = 10/52 = 0.19$
+
+**Lancio di due monete**: $\Omega = \{TT, TC, CT, CC\}$
+
+- $A$: almeno una $T = \{TT, TC, CT\}$, $\Pr[A] = 3/4 = 0.75$
+- $B$: una $T$ e una $C = \{TC, CT\}$, $\Pr[B] = 2/4 = 0.50$
+- $A^C = \{CC\}$, $\Pr[A^C] = 1 - 3/4 = 0.25$
+- $A \cap B = \{TC, CT\} = B$, $\Pr[A \cap B] = 2/4 = 0.50$
+
+### Esempi
+
+**Lancio di un dado**: $\Omega = \{1, 2, 3, 4, 5, 6\}$
+
+- $A$: dispari $= \{1, 3, 5\}$, $\Pr[A] = 3/6 = 0.50$
+- $B$: maggiore o uguale a 3 $= \{3, 4, 5, 6\}$, $\Pr[B] = 4/6 = 0.67$
+- $A \cap B = \{3, 5\}$, $\Pr[A \cap B] = 2/6 = 0.33$
+- $A \cup B = \{1, 3, 4, 5, 6\}$, $\Pr[A \cup B] = 5/6 = 0.83$
+
+\vspace{2mm}
+
+oppure: $\Pr[A \cup B] = \Pr[A] + \Pr[B] - \Pr[A \cap B] = 0.50 + 0.67 - 0.33 = 0.83$
+
+## Probabilità condizionata e indipendenza
+
+### Probabilità condizionata
+
+*Evento condizionato* $A \mid B$: evento $A$ dato che $B$ si è già verificato
+
+$$\Pr[A \mid B] = \dfrac{\Pr[A \cap B]}{\Pr[B]}, \qquad \Pr[B] \neq 0$$
+
+$$\Pr[B \mid A] = \dfrac{\Pr[A \cap B]}{\Pr[A]}, \qquad \Pr[A] \neq 0$$
+
+\vspace{2mm}
+
+Da cui la regola della probabilità dell'intersezione:
+
+$$\Pr[A \cap B] = \Pr[A \mid B]\Pr[B] = \Pr[B \mid A]\Pr[A]$$
+
+### Indipendenza tra eventi
+
+Due eventi $A$ e $B$ sono *indipendenti* se:
+
+$$\Pr[A \cap B] = \Pr[A]\Pr[B] \qquad \text{(fattorizzazione della probabilità)}$$
+
+ovvero $\Pr[A \mid B] = \Pr[A]$ e $\Pr[B \mid A] = \Pr[B]$: le probabilità condizionate sono uguali alle probabilità non condizionate
+
+:::{.callout-warning}
+## Attenzione: disgiunti $\neq$ indipendenti
+
+$\Pr[A \cap B] = 0 \Rightarrow A$ e $B$ sono **disgiunti**
+
+$\Pr[A \cap B] = \Pr[A]\Pr[B] \Rightarrow A$ e $B$ sono **indipendenti**
+:::
+
+### Estrazioni con e senza reimmissione
+
+- **Con reimmissione**: gli eventi sono indipendenti, a ogni estrazione si ha la stessa situazione iniziale
+- **Senza reimmissione**: i possibili risultati dipendono dall'estrazione precedente
+
+\vspace{2mm}
+
+\small
+
+**Esempio**: da un mazzo di 52 carte si estraggono 2 carte. Probabilità che siano entrambe assi?
+
+$A$: la prima carta è un asso; $B$: la seconda carta è un asso
+
+1. *Con reimmissione*: $A$ e $B$ indipendenti, $\Pr[A] = \Pr[B] = 4/52$
+$$\Pr[A \cap B] = \Pr[A]\Pr[B] = (4/52)(4/52) = 0.0059$$
+
+2. *Senza reimmissione*: $B$ dipende dalla prima estrazione, $\Pr[A] = 4/52$, $\Pr[B \mid A] = 3/51$
+$$\Pr[A \cap B] = \Pr[A]\Pr[B \mid A] = (4/52)(3/51) = 0.0045$$
+
+## Variabile casuale
+
+###
+
+- eventi elementari $\omega \in \Omega \Rightarrow$ valori numerici $x \in S$ (*supporto* della variabile casuale $X$)
+
+- eventi composti $A \Rightarrow$ insiemi di valori assumibili dalla variabile casuale $X$, del tipo
+$$\{X = x\}, \qquad \{X \leq x\}, \qquad \{a < X \leq b\}$$
+a cui è associata la probabilità che $X$ assuma quel valore o quei valori
+
+\vspace{3mm}
+
+:::{.callout-tip}
+## Variabile casuale
+
+Una variabile casuale è un insieme di valori e di probabilità associate. Costruire una variabile casuale significa:
+
+1. Determinare i valori $x$ che $X$ può assumere (supporto $S$)
+2. Associare a ogni valore una misura di probabilità (funzione di probabilità $f_X(x|\theta)$ o funzione di densità)
+:::
+
+# Funzioni di probabilità discrete
+
+## Definizioni generali 
+
+### 
+
+
+Sia $X$ una variabile casuale discreta che assume valori in un insieme numerabile $S \subset \mathbb{R}$. 
+La *funzione di probabilità (massa)* di $X$ è indicata con $f_X(x|\theta)$ e definita come:
+
+$$f_X(x|\theta) = \Pr[X = x], \qquad \forall x \in S,$$
+
+al contrario $f_X(x|\theta) = 0$ per tutti gli $x \notin S$. 
+In generale noi considereremo funzioni $f_X$ parametriche con parametri $\theta \in \Theta$:
+
+$$f_X : \mathbb{R} \times \Theta \to [0,1].$$
+
+
+
+## Distribuzione binomiale
+
+### Esperimento bernoulliano
+
+Esperimento dicotomico con solo 2 possibili esiti, di cui si conosce la probabilità:
+
+- **Successo**: $\Pr[\text{successo}] = \theta$
+- **Insuccesso**: $\Pr[\text{insuccesso}] = 1 - \theta$
+
+\vspace{3mm}
+
+**Ipotesi**:
+
+1. $n$ prove ripetute e indipendenti (estrazioni con reimmissione)
+2. A ogni prova la probabilità di successo $\theta$ rimane invariata
+3. Le condizioni sperimentali sono sempre le medesime
+
+\vspace{3mm}
+
+La variabile casuale $X$ che conta il numero di successi in $n$ prove è detta **binomiale**: $X \sim \text{Bin}(n, \theta)$
+
+### Distribuzione di probabilità binomiale
+
+$$f_X(x|\theta) = \Pr[X = x] = \binom{n}{x}\, \theta^x (1-\theta)^{\,n-x},
+\qquad x = 0,1,\ldots,n,$$
+
+dove $\theta \in [0,1]$ e $S = \{0, 1, \ldots, n\}$.
+
+\small
+
+- $\Pr[X = x]$: probabilità di ottenere $x$ successi in $n$ prove
+- $\binom{n}{x}$: coefficiente binomiale
+- $\theta^x$: probabilità degli $x$ successi indipendenti
+- $(1-\theta)^{n-x}$: probabilità degli $n-x$ insuccessi indipendenti
+
+\normalsize
+
+### Coefficiente binomiale
+
+$\binom{n}{x} = \dfrac{n!}{x!(n-x)!}$ e
+$$n! =
+\begin{cases}
+1 & \text{se } n = 0, \\[2mm]
+n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1 & \text{se } n > 0.
+\end{cases}$$
+
+(es., $5! = 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 120$)
+
+### Media e varianza della binomiale
+
+I parametri $(n, \theta)$ sono il numero di prove indipendenti ($n$) e la probabilità di successo in una singola prova ($\theta$).
+
+$$\mu_X = n\theta, \qquad \sigma^2_X = n\theta(1-\theta), \qquad \sigma_X = \sqrt{n\theta(1-\theta)}$$
+
+La forma di $f_X(x|\theta)$ varia al variare di $(n, \theta)$:
+
+- $\theta \to 0.50$: simmetria
+- $\theta \to 0$ o $\theta \to 1$: asimmetria
+
+(1 moda, oppure 2 mode contigue)
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-bin1
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+library(ggplot2)
+x = 0:6
+plot(x, dbinom(x,6, prob =.3), pch = 19,
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.3), lwd = 2)
+
+plot(x, dbinom(x,6, prob =.5), pch = 19,
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.5), lwd = 2)
+
+plot(x, dbinom(x,6, prob =.85), pch = 19,
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.85), lwd = 2)
+```
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 10 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+#| label: fig-bin2
+
+x = 0:10
+plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.3), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.5), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
+
+```
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 20 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+#| label: fig-bin3
+
+
+x = 0:20
+plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.3), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.5), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
+
+```
+
+### 
+
+La *funzione di probabilità cumulata* di una variabile casuale discreta $X$ si indica con $F_X(x|\theta)$ ed è definita come:
+
+$$F_X(x|\theta) = \Pr[X \leq x]
+= \sum_{s \in S: \, s \leq x} f_X(s|\theta).$$
+
+In altre parole, $F_X(x|\theta)$ rappresenta la probabilità che $X$ assuma un valore minore o uguale a $x$.  
+Chiaramente,
+$$F_X : \mathbb{R} \times \Theta \longrightarrow [0,1].$$
+
+### Distribuzione binomiale cumulata
+
+Se $X \sim \text{Bin}(n,\theta)$, allora la funzione di probabilità cumulata è:
+
+$$F_X(x|\theta) = \sum_{z=0}^{x} \binom{n}{z}\, \theta^z (1-\theta)^{\,n-z}, 
+\qquad x = 0,1,\ldots,n,$$
+
+dove $\theta \in [0,1]$.
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-binCum1
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+
+x = 0:6
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19,  cex = 2,
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5), cex = 2,pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .85), cex = 2,pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+```
+
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-binCum2
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 10 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+
+
+x = 0:10
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19,  
+     cex.main = 3, cex.axis = 2,cex =2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5),cex =2, pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .85),cex =2, pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+```
+
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-binCum3
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 20 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+
+x = 0:20
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19, cex =2, 
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
+plot(x, pbinom(x, length(x), prob = .85), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
+```
+
+### La binomiale in R
+
+\small
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dbinom(x, size, prob)` | Restituisce i *valori di massa* $f_X(x|\theta)$ associati al vettore discreto `x` di una distribuzione binomiale con `size` $= n$ prove e probabilità di successo `prob` $= \theta$. |
+| `pbinom(x, size, prob)` | Restituisce i *valori di probabilità cumulata* $F_X(x|\theta)$ associati al vettore discreto `x`. Con `lower.tail = FALSE` calcola $\Pr[X > x]$. |
+| `qbinom(p, size, prob)` | Restituisce i *valori dei quantili* $q_X(p|\theta)$ associati al vettore di probabilità `p`. |
+| `rbinom(n, size, prob)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione binomiale. |
+
+### $f_X(x|\theta)$ "a mano" e con `dbinom()`
+
+\small
+
+```{r}
+binomcoef <- function(n, x) {
+  factorial(n) / (factorial(x) * factorial(n - x))
+}
+n <- 10
+x <- 0:n
+theta <- .25
+fx_mano <- binomcoef(n, x) * theta^x * (1 - theta)^(n - x)
+round(fx_mano, 4)
+round(dbinom(x, size = n, prob = theta), 4)
+sum(dbinom(x, size = n, prob = theta))
+```
+
+### $f_X(x|\theta)$ al variare di $\theta$
+
+\small
+
+```{r}
+#| fig-align: center
+#| out-width: 55%
+plot(x, dbinom(x, n, prob = .25), pch = 19, ylab = "f(x)", ylim = c(0, .3))
+segments(x, 0, x, dbinom(x, n, prob = .25))
+points(x, dbinom(x, n, prob = .75), col = "red", pch = 19)
+segments(x, 0, x, dbinom(x, n, prob = .75), col = "red")
+points(x, dbinom(x, n, prob = .50), col = "blue", pch = 19)
+segments(x, 0, x, dbinom(x, n, prob = .50), col = "blue")
+```
+
+### $F_X(x|\theta)$: `cumsum()` e `pbinom()`
+
+\small
+
+La cumulata è la somma delle masse fino a $x$:
+
+```{r}
+round(cumsum(dbinom(x, n, prob = theta)), 4)
+round(pbinom(x, size = n, prob = theta), 4)
+```
+
+### Probabilità con `pbinom()`
+
+\small
+
+$\Pr[X \leq 2] = F_X(2|\theta)$:
+
+```{r}
+sum(dbinom(0:2, n, prob = theta))
+pbinom(2, n, prob = theta)
+```
+
+$\Pr[X > 3] = 1 - F_X(3|\theta)$:
+
+```{r}
+1 - pbinom(3, n, prob = theta)
+pbinom(3, n, prob = theta, lower.tail = FALSE)
+```
+
+### $F_X(x|\theta)$ al variare di $\theta$
+
+\small
+
+```{r}
+#| fig-align: center
+#| out-width: 55%
+plot(x, pbinom(x, n, prob = .25), pch = 19, ylab = "F(x)")
+points(x, pbinom(x, n, prob = .75), pch = 19, col = "red")
+points(x, pbinom(x, n, prob = .50), pch = 19, col = "blue")
+abline(h = .5, lwd = 2)
+abline(v = 3, lwd = 2, lty = 2)
+```
+
+### $q_X(p|\theta)$: `qbinom()`
+
+\small
+
+La funzione quantile è l'inversa della cumulata: dato $p$, restituisce il più piccolo $x$ tale che $F_X(x|\theta) \geq p$
+
+```{r}
+Fx <- pbinom(x, n, prob = theta)
+qbinom(Fx, n, prob = theta)
+qbinom(c(.25, .50, .75), n, prob = theta)
+```
+
+Estrarre a caso da una binomiale:
+
+```{r}
+set.seed(999)
+rbinom(15, size = n, prob = theta)
+```
+
+### Esempio: rispondere a caso
+
+Un test è composto da 10 domande con 3 alternative di risposta (1 giusta e 2 sbagliate).
+
+Che probabilità ha uno studente di rispondere correttamente a 5 domande, rispondendo in maniera del tutto casuale a ogni domanda?
+
+\vspace{3mm}
+
+- $n = 10$ prove
+- $x = 0, 1, \ldots, 10$ numero di successi possibili
+- $n - x$ numero di insuccessi
+- $\theta = 1/3$ probabilità di successo
+- $1 - \theta = 2/3$ probabilità di insuccesso
+
+\vspace{3mm}
+
+$X \sim \text{Bin}(10, 1/3)$
+
+### Esempio: rispondere a caso
+
+Facendo assumere a $x$ tutti i valori da 0 a 10:
+
+\small
+
+\begin{align*}
+f_X(0|\theta) &= \binom{10}{0}\left(\dfrac{1}{3}\right)^0\left(\dfrac{2}{3}\right)^{10-0} = 0.017 \\
+f_X(1|\theta) &= \binom{10}{1}\left(\dfrac{1}{3}\right)^1\left(\dfrac{2}{3}\right)^{10-1} = 0.087 \\
+f_X(2|\theta) &= \binom{10}{2}\left(\dfrac{1}{3}\right)^2\left(\dfrac{2}{3}\right)^{10-2} = 0.195 \\
+&\ \, \vdots \\
+f_X(10|\theta) &= \binom{10}{10}\left(\dfrac{1}{3}\right)^{10}\left(\dfrac{2}{3}\right)^{10-10} = 0.000
+\end{align*}
+
+### Esempio: rispondere a caso
+
+:::: {.columns}
+
+::: {.column width=40%}
+```{r}
+#| echo: false
+x_test <- 0:10
+tab_test <- data.frame(x = x_test,
+                       f = round(dbinom(x_test, 10, 1/3), 3))
+knitr::kable(tab_test, col.names = c("$x$", "$f_X(x \\mid \\theta)$"),
+             escape = FALSE, align = "cc")
+```
+:::
+
+::: {.column width=60%}
+La probabilità di rispondere correttamente a 5 domande su 10 quando la risposta corretta è 1 su 3 è
+
+$$f_X(5|\theta) = 0.137$$
+
+```{r}
+dbinom(5, size = 10, prob = 1/3)
+```
+
+$$\sum_{x = 0}^{10} f_X(x|\theta) = 1$$
+
+Distribuzione asimmetrica positiva ($\theta < .50$)
+
+*Conclusione*: se volete passare l'esame, non affidatevi al caso e studiate!
+:::
+
+::::
+
+### Esercizio: tiri liberi
+
+Si vuole calcolare la probabilità che un giocatore di basket faccia canestro a un tiro libero (canestro/non canestro).
+
+Non ha senso dire che $\theta = 1/2$. Sappiamo però che nelle partite precedenti ha segnato 82 volte su 100 tiri: $\theta = 0.82$.
+
+\vspace{3mm}
+
+**Domanda**: qual è la probabilità che su 8 tiri faccia canestro almeno 6 volte?
+
+\vspace{3mm}
+
+$X \sim \text{Bin}(8, 0.82)$
+
+$$\Pr[X \geq 6] = f_X(6|\theta) + f_X(7|\theta) + f_X(8|\theta) = 1 - F_X(5|\theta)$$
+
+### Esercizio: tiri liberi -- Soluzione
+
+:::: {.columns}
+
+::: {.column width=40%}
+```{r}
+#| echo: false
+x_tiri <- 0:8
+tab_tiri <- data.frame(x = x_tiri,
+                       f = round(dbinom(x_tiri, 8, .82), 3))
+knitr::kable(tab_tiri, col.names = c("$x$", "$f_X(x \\mid \\theta)$"),
+             escape = FALSE, align = "cc")
+```
+:::
+
+::: {.column width=60%}
+$$\Pr[X \geq 6] = 0.276 + 0.359 + 0.204 = 0.839$$
+
+\vspace{3mm}
+
+In R:
+
+```{r}
+sum(dbinom(6:8, size = 8, prob = .82))
+1 - pbinom(5, size = 8, prob = .82)
+```
+:::
+
+::::
+
+### Esempio: moneta truccata
+
+Una moneta truccata ha probabilità di uscire Testa doppia rispetto a Croce. Probabilità di ottenere al più 8 volte Croce in 10 lanci?
+
+$$\Pr[T] = 2\Pr[C] \Rightarrow \Pr[T] = 2/3, \quad \Pr[C] = 1/3$$
+
+Successo = Croce, $\theta = 1/3$
+
+$X$: numero di Croce in 10 lanci, $X \sim \text{Bin}(10, 1/3)$
+
+### Esempio: moneta truccata -- Soluzione
+
+\small
+
+\begin{align*}
+\Pr[X \leq 8] = F_X(8|\theta) &= f_X(0|\theta) + \ldots + f_X(8|\theta) = 1 - [f_X(9|\theta) + f_X(10|\theta)] \\
+&= 1 - \binom{10}{9}\left(\dfrac{1}{3}\right)^9\left(\dfrac{2}{3}\right)^1 - \binom{10}{10}\left(\dfrac{1}{3}\right)^{10}\left(\dfrac{2}{3}\right)^0 \\
+&= 1 - 10\left(\dfrac{1}{3}\right)^9\left(\dfrac{2}{3}\right) - \left(\dfrac{1}{3}\right)^{10} = 0.9996
+\end{align*}
+
+```{r}
+pbinom(8, size = 10, prob = 1/3)
+```
+
+
+# Funzioni di probabilità Continue
+
+## Definizioni generali 
+
+### 
+
+Sia $X$ una variabile casuale continua distribuita secondo la funzione di densità $f_X(x|\theta)$:
+
+$$f_X : \mathbb{R} \times \Theta \to \mathbb{R}^+$$
+
+$f_X$ è una funzione di densità parametrica con parametri $\theta \in \Theta$.
+
+La *funzione di densità cumulata* $F_X(x|\theta)$ è definita come
+
+$$F_X(x|\theta) = \Pr[X \leq x]
+= \int_{-\infty}^x f_X(z|\theta)\,dz$$
+
+dove chiaramente
+
+$$F_X : \mathbb{R} \times \Theta \to [0,1]$$
+
+
+### 
+
+Infine, la *funzione quantile* $q_X(p|\theta)$ è definita come la funzione inversa di $F_X$:
+
+$$q_X(p|\theta) = F_X^{-1}(p|\theta)
+= x \in \mathbb{R} \ \ \text{tale che} \ \ p = F_X(x|\theta)$$
+
+dove
+
+$$q_X : [0,1] \times \Theta \to \mathbb{R}$$
+
+Nota che in generale
+
+$$q_X(p|\theta) = F_X^{-1}(p|\theta) 
+\quad \text{sse} \quad 
+F_X(x|\theta) = q_X^{-1}(x|\theta).$$
+
+## Normale
+
+### Distribuzione normale (o gaussiana)
+
+- È una distribuzione teorica di punteggi in una popolazione
+- Riguarda solo variabili continue (misurate almeno su scale a intervalli equivalenti)
+- Molti fenomeni osservati si distribuiscono normalmente o con forme che approssimano la curva normale
+- Gran parte della statistica inferenziale si basa sulle sue proprietà
+
+### Dalle frequenze alla curva
+
+```{r}
+#| echo: false
+#| label: fig-hist
+#| layout-ncol: 3
+#| fig-subcap:
+#|   - "Distribuzione di frequenza"
+#|   - "Intervalli più piccoli, $n$ più grande"
+#|   - "Si ottiene una curva..."
+set.seed(123)
+dat_sim <- rnorm(1e5)
+hist(dat_sim[1:200], breaks = seq(-5, 5, by = 1),
+     col = "seagreen3", main = "", xlab = "x", ylab = "Frequenza",
+     cex.axis = 2, cex.lab = 2.5)
+hist(dat_sim[1:2000], breaks = seq(-5, 5, by = .4),
+     col = "seagreen3", main = "", xlab = "x", ylab = "Frequenza",
+     cex.axis = 2, cex.lab = 2.5)
+hist(dat_sim, breaks = seq(-5, 5, by = .1), freq = FALSE,
+     col = "seagreen3", border = "seagreen4", main = "", xlab = "x",
+     ylab = "Densità", cex.axis = 2, cex.lab = 2.5)
+curve(dnorm(x), add = TRUE, lwd = 4, col = "orange")
+```
+
+### Funzione di densità
+
+:::: {.columns}
+
+:::{.column width=50%}
+Distribuzione Normale, $X \sim \mathcal{N}(\mu, \sigma^2)$
+
+$$f_X(x|\theta) = {\displaystyle {\dfrac {1}{\sigma {\sqrt {2\pi }}}}e^{-{\dfrac {1}{2}}\left({\dfrac {x-\mu }{\sigma }}\right)^{2}}}$$
+
+$\theta = (\mu, \sigma^2)$, $\Theta = (\mathbb{R} \times \mathbb{R}^+)$
+:::
+
+:::{.column width=50%}
+Distribuzione Normale Standard, $Z \sim \mathcal{N}(0, 1)$
+
+
+$$f_Z(z) = \dfrac{1}{\sqrt{2\pi}} e^{-\dfrac{1}{2}z^2}$$
+
+$\theta = (0, 1)$: nessun parametro libero
+:::
+
+
+::::
+
+\vspace{3mm}
+
+- $\mu$: media della popolazione
+- $\sigma$: deviazione standard della popolazione ($\sigma^2$ varianza)
+- $\pi \approx 3.14$ ed $e \approx 2.718$: costanti
+
+
+### Rappresentazione grafica
+
+La curva è **crescente** per $-\infty < x < \mu$ e **decrescente** per $\mu < x < +\infty$. Ha due **punti di flesso** in $\mu \pm \sigma$
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 90%
+
+xx <- seq(-4, 4, length.out = 1000)
+plot(xx, dnorm(xx), type = "l", lwd = 3, col = "orange",
+     xaxt = "n", yaxt = "n", xlab = "x", ylab = expression(f[X](x*"|"*theta)),
+     cex.lab = 1.5, bty = "l")
+axis(1, at = c(-4, -1, 0, 1, 4),
+     labels = c(expression(-infinity), expression(mu - sigma), expression(mu),
+                expression(mu + sigma), expression(+infinity)), cex.axis = 1.3)
+segments(c(-1, 0, 1), 0, c(-1, 0, 1), dnorm(c(-1, 0, 1)), lty = 3)
+points(c(-1, 1), dnorm(c(-1, 1)), pch = 19, cex = 1.5)
+text(1.2, dnorm(1) + .02, "Punto di flesso", pos = 4, cex = 1.2)
+text(-1.2, dnorm(1) + .02, "Punto di flesso", pos = 2, cex = 1.2)
+text(0, dnorm(0) - .02, "Media = Moda = Mediana", pos = 4, cex = 1.2)
+text(3, .04, "Asintotica", cex = 1.2)
+```
+
+
+### 
+
+\small
+
+**VALORI**: 
+
+
+> vanno da $-\infty$ a $+ \infty$ (in ascissa si trovano tutti i valori di $x$; in ordinata la densità $f_X(x|\theta)$ di ciascun valore)
+	
+	
+**SIMMETRICA** 
+
+
+> rispetto al valore massimo di $f_X(x|\theta)$ (punto più alto $\Rightarrow x = \mu$)
+		(solo un valore centrale ha la frequenza massima; i valori più bassi e più alti compaiono rispettivamente con frequenza crescente e decrescente)
+	
+**UNIMODALE**
+
+$\mu = Mo=Me$
+
+	
+**ASINTOTICA**: 
+
+>	si avvicina all’asse delle $X$ senza mai toccarlo.
+>	La curva mostra due **PUNTI DI FLESSO**: da concava diventa convessa nella metà sinistra e da convessa diventa concava nella metà destra (in corrispondenza di valori di x uguali alla media meno o più una ds)
+
+
+### 
+
+L’area sottesa alla curva normale rappresenta la PROBABILITA’ degli intervalli
+	
+$$\int_{-\infty}^{+\infty} f_X(x|\theta)\, dx = 1$$
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 50%
+library(ggplot2)
+x=seq(-4,4, length.out=1000)
+dx = dnorm(x)
+myd = data.frame(x, dx)
+
+ggplot(myd, 
+       aes(x = x, y = dx)) + 
+  geom_line(linewidth = 1.5) +  geom_area(fill = "grey80", alpha = 0.8) +
+  theme_bw() + xlab("X") + ylab("Densità") + 
+    scale_x_continuous(
+    breaks = c(min(myd$x), max(myd$x)),
+    labels = c(expression(-infinity), expression(+infinity))
+  ) + 
+  theme(axis.title = element_text(size = 20), 
+        axis.text = element_text(size = 18))
+```
+
+### {.plain}
+
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| layout-nrow: 2
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "100%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(x, rev(x)), c(dx, rep(0, length(dx))), 
+        col = "grey80", border = NA)
+
+# Ridisegno della curva sopra l'area
+lines(x, dx, lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "68.26%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(-1, x[x >= -1 & x <= 1],1),
+        c(0, dx[x >= -1 & x <= 1], 0),col= rgb(.2,.2,.2,alpha=.4))
+segments(-1, 0, -1, dnorm(-1), lwd = 2)
+segments(1, 0, 1, dnorm(1), lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "95.45%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(-2, x[x >= -2 & x <= 2],2),
+        c(0, dx[x >= -2 & x <= 2], 0),col= rgb(.2,.2,.2,alpha=.4))
+segments(-2, 0, -2, dnorm(-2), lwd = 2)
+segments(2, 0, 2, dnorm(2), lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+plot(x, dx, type = "l", lwd = 2, col = "black",
+     xlab = "X", ylab = "Densità", 
+     xaxt = "n", main = "99.73%", cex.main = 4)   # nasconde i valori sull'asse x
+
+# Area grigia sotto la curva
+polygon(c(-3, x[x >= -3 & x <= 3],2),
+        c(0, dx[x >= -3 & x <= 3], 0),col= rgb(.2,.2,.2,alpha=.4))
+segments(-3, 0, -3, dnorm(-3), lwd = 2)
+segments(3, 0, 3, dnorm(3), lwd = 2)
+
+# Aggiunta delle etichette -∞ e +∞ agli estremi
+axis(1, at = c(min(x), max(x)), 
+     labels = c(expression(-infinity), expression(+infinity)), cex.axis = 3)
+axis(1, at = seq(-3, 3, by = 1),
+     labels = c(expression(-3*sigma), 
+       expression(-2*sigma), 
+                expression(-1*sigma), 
+                expression(mu),
+                expression(1*sigma), 
+                expression(2*sigma), 
+       expression(3*sigma)), 
+     cex.axis = 3)
+```
+
+### Area e probabilità
+
+La porzione di curva compresa tra la media e un valore espresso in deviazioni standard è costante:
+
+| | | |
+|:---|:---|:---|
+| $\mu + \sigma$: 34.13% | $\rightarrow$ | $\mu \pm \sigma$: 68.26% |
+| $\mu + 2\sigma$: 47.73% | $\rightarrow$ | $\mu \pm 2\sigma$: 95.45% |
+| $\mu + 3\sigma$: 49.87% | $\rightarrow$ | $\mu \pm 3\sigma$: 99.73% |
+
+\vspace{3mm}
+
+Conoscendo $\mu$ e $\sigma$ è possibile calcolare:
+
+- la densità $f_X(x|\theta)$ di ogni $x$
+- l'area (e quindi la **probabilità**) compresa tra due qualsiasi valori di $x$
+
+Poiché la curva è simmetrica, l'area tra $-\infty$ e $\mu$ è uguale a .50, come quella tra $\mu$ e $+\infty$: $F_X(\mu|\theta) = 0.50$
+
+### Area e probabilità
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-subcap:
+#|   - "$\\Pr[X > x_1] = \\int_{x_1}^{+\\infty} f_X(x|\\theta)\\,dx = 1 - F_X(x_1|\\theta)$"
+#|   - "$\\Pr[x_1 < X < x_2] = \\int_{x_1}^{x_2} f_X(x|\\theta)\\,dx = F_X(x_2|\\theta) - F_X(x_1|\\theta)$"
+xx <- seq(-4, 4, length.out = 1000)
+plot(xx, dnorm(xx), type = "l", lwd = 3, xaxt = "n", yaxt = "n",
+     xlab = "x", ylab = expression(f[X](x*"|"*theta)), cex.lab = 2.5, bty = "l")
+sel <- xx >= -0.8
+polygon(c(-0.8, xx[sel], 4), c(0, dnorm(xx[sel]), 0), col = "turquoise", border = NA)
+lines(xx, dnorm(xx), lwd = 3)
+axis(1, at = -0.8, labels = expression(x[1]), cex.axis = 3)
+
+plot(xx, dnorm(xx), type = "l", lwd = 3, xaxt = "n", yaxt = "n",
+     xlab = "x", ylab = expression(f[X](x*"|"*theta)), cex.lab = 2.5, bty = "l")
+sel <- xx >= -0.8 & xx <= 1.5
+polygon(c(-0.8, xx[sel], 1.5), c(0, dnorm(xx[sel]), 0), col = "turquoise", border = NA)
+lines(xx, dnorm(xx), lwd = 3)
+axis(1, at = c(-0.8, 1.5), labels = c(expression(x[1]), expression(x[2])), cex.axis = 3)
+```
+
+
+
+###
+
+```{r}
+#| echo: false
+#| fig-cap: "Distribuzione normale"
+#| layout-ncol: 3
+#| label: fig-Norm
+#| fig-subcap: 
+#|   - "Densità"
+#|   - "Cumulata"
+#|   - "Quantile"
+set.seed(999)
+x = seq(-4, 4, length.out = 1000)
+plot(x, dnorm(x), type = "l", lwd = 2, 
+     cex.axis = 2, ylab = "f(x)", xlab = "x", cex.lab = 3, 
+     cex.axis = 2.5)
+
+plot(x, pnorm(x), type = "l", lwd = 2, 
+     cex.axis = 2, ylab = "F(x)", xlab = "x", cex.lab = 3, 
+     cex.axis = 2.5)
+
+plot(pnorm(x), qnorm(pnorm(x)), type = "l", lwd = 2,  xlab = "F(x)", ylab = "qX",
+     cex.lab = 3, 
+     cex.axis = 2.5)
+```
+
+
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dnorm(x, mean, sd)` | Restituisce i *valori di densità associati* al valore quantitativo `x` di una distribuzione normale con media e deviazione standard. |
+| `pnorm(x, mean, sd)` | Restituisce i *valori di probabilità cumulata* associati al vettore `x`. |
+| `qnorm(p, mean, sd)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p` di una distribuzione normale (`0 <= p <= 1`). |
+| `rnorm(n, mean, sd)` | Genera un vettore casuale di `n` osservazioni indipendenti campionate da una nomrale con media e deviazione standard. |
+
+
+### $f_X(x|\theta)$ con `dnorm()`
+
+\small
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+xg <- seq(10, 300, length.out = 1000)
+m <- c(14, 22, 56, 150, 100)
+plot(xg, dnorm(xg, mean = 50, sd = 5), type = "l", ylab = "f(x)", xlab = "x")
+for (i in 1:length(m)) {
+  lines(xg, dnorm(xg, mean = m[i], sd = 5), col = i)
+}
+```
+
+### $f_X(x|\theta)$ con `dnorm()`
+
+\small
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+s <- c(5, 10, 20, 50, 70)
+plot(xg, dnorm(xg, mean = 150, sd = 1), type = "l", ylab = "f(x)", xlab = "x")
+for (i in 1:length(s)) {
+  lines(xg, dnorm(xg, mean = 150, sd = s[i]), col = i, lwd = 2)
+}
+```
+
+### Area e $F_X$: `pnorm()`
+
+\small
+
+$\Pr[Z \leq 2] = F_Z(2)$: l'area a sinistra di 2 è il valore della cumulata in 2
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+#| fig-height: 3.5
+x <- seq(-4, 4, length.out = 1000)
+dx <- dnorm(x, mean = 0, sd = 1)
+px <- pnorm(x)
+par(mfrow = c(1, 2))
+plot(x, dx, type = "l", lwd = 2)
+polygon(c(x[x <= 2], 2), c(dx[x <= 2], 0), col = rgb(.5, .5, .5, alpha = .4))
+plot(x, px, type = "l", lwd = 2)
+abline(v = 2); abline(h = pnorm(2))
+pnorm(2)
+```
+
+### Probabilità di un intervallo
+
+\small
+
+$\Pr[-1.5 < Z < 1.5] = F_Z(1.5) - F_Z(-1.5)$
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+#| fig-height: 3.5
+par(mfrow = c(1, 2))
+plot(x, dx, type = "l", lwd = 2)
+polygon(c(-1.5, x[x >= -1.5 & x <= 1.5], 1.5),
+        c(0, dx[x >= -1.5 & x <= 1.5], 0), col = rgb(.5, .5, .5, alpha = .4))
+plot(x, px, type = "l", lwd = 2)
+abline(v = c(-1.5, 1.5))
+pnorm(1.5) - pnorm(-1.5)
+```
+
+### $\mu \pm \sigma$ per una normale qualsiasi
+
+\small
+
+```{r}
+#| fig-align: center
+#| out-width: 45%
+xg <- seq(10, 50, length.out = 1000)
+mx <- 30; sx <- 6
+dxg <- dnorm(xg, mean = mx, sd = sx)
+plot(xg, dxg, type = "l", lwd = 2, xlab = "x", ylab = "f(x)")
+polygon(c(mx - sx, xg[xg >= mx - sx & xg <= mx + sx], mx + sx),
+        c(0, dxg[xg >= mx - sx & xg <= mx + sx], 0), col = "pink")
+pnorm(mx + sx, mean = mx, sd = sx) - pnorm(mx - sx, mean = mx, sd = sx)
+```
+
+Qualsiasi siano $\mu$ e $\sigma$, tra $\mu \pm \sigma$ c'è sempre il 68.27% dell'area
+
+### $q_X(p|\theta)$: `qnorm()`
+
+\small
+
+Il quantile è l'inversa della cumulata: $q_Z(F_Z(z)) = z$
+
+```{r}
+qnorm(c(.25, .50, .75))
+pnorm(qnorm(.75)) - pnorm(qnorm(.25))
+```
+
+### Le due code
+
+\small
+
+Quanta area c'è sotto $-1.28$ e sopra $+1.28$?
+
+```{r}
+#| fig-align: center
+#| out-width: 45%
+#| fig-height: 3.5
+plot(x, dnorm(x), type = "l", ylab = "f(z)", xlab = "z")
+polygon(c(x[x <= qnorm(.10)], qnorm(.10)),
+        c(dnorm(x)[x <= qnorm(.10)], 0), col = "pink")
+polygon(c(qnorm(1 - .10), x[x >= qnorm(1 - .10)]),
+        c(0, dnorm(x)[x >= qnorm(1 - .10)]), col = "darkblue")
+pnorm(-1.28) + (1 - pnorm(1.28))
+2 * pnorm(-1.28)
+```
+
+### 
+
+$X \sim \mathcal{N}(10, 25)$, $\theta = (\mu, \sigma^2) = (10, 25)$
+
+:::: {.columns}
+
+
+::: {.column width="80%"}
+```{r}
+#| echo: false
+source("DisegnaNormale-code.R")
+Media <- 10
+Ds <- 5
+limInfX <- qnorm(0.001,Media,Ds)
+limSupX <- qnorm(0.999,Media,Ds)
+X <- c(3,8,12,19,14)
+disegnaNorm(limInfX,limSupX,Media,Ds,X)
+```
+:::
+
+:::{.column width="20%"}
+
+\small
+
+$f_X(3|\theta) = 0.0299$ 
+
+$f_X(8|\theta) = 0.0737$
+
+$f_X(12|\theta) = 0.0737$ 
+
+$f_X(14|\theta) = 0.0579$ 
+
+$f_X(19|\theta) = 0.0158$
+
+:::
+
+::::
+
+
+### 
+
+:::: {.columns}
+
+
+::: {.column width="75%"}
+```{r}
+#| echo: false
+source("DisegnaNormale-code.R")
+Media <- 10
+Ds <- 5
+limInfX <- qnorm(0.001,Media,Ds)
+limSupX <- qnorm(0.999,Media,Ds)
+X <- c(3,8,12,19,14)
+disegnaNormC(limInfX,limSupX,Media,Ds,X)
+
+
+```
+:::
+
+:::{.column width="25%"}
+
+\small
+
+$F_X(3|\theta) = 0.0808$ 
+
+$F_X(8|\theta) = 0.3446$ 
+
+$F_X(12|\theta) = 0.6554$ 
+
+$F_X(14|\theta) = 0.7881$ 
+
+$F_X(19|\theta) = 0.9641$ 
+
+\vspace{5mm}
+
+$q_X(0.0808|\theta) = 3$ 
+
+$q_X(0.3446|\theta) = 8$ 
+
+$q_X(0.6554|\theta) = 12$ 
+
+$q_X(0.7881|\theta) = 14$ 
+
+$q_X(0.9641|\theta) = 19$ 
+
+:::
+
+::::
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "Stessa media, diversa SD"
+#| label: fig-Norm1
+#| fig-subcap: 
+#|    - "Densità"
+#|    - "Cumulata"
+
+mysd = c(2, 3, 6)
+mycol = c("seagreen","royalblue", "orange", "orchid")
+plot(x, dnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(mu, " = 0")), cex.main = 4)
+for (i in 1:length(mysd)) {
+  lines(x, dnorm(x, 0, mysd[i]), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("sd = ", mysd)), cex = 2)
+
+plot(x, pnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(mu, " = 0")), cex.main = 4)
+for (i in 1:length(mysd)) {
+  lines(x, pnorm(x, 0, mysd[i]), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("sd = ", mysd)), cex = 2)
+
+```
+
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| label: fig-Norm2
+#| fig-cap: "Stessa SD, media diversa"
+#| fig-subcap: 
+#|    - "Densità"
+#|    - "Cumulata"
+
+mymean = c(-2, 1, 3)
+mycol = c("seagreen","royalblue", "orange", "orchid")
+plot(x, dnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(sigma, " = 1")), cex.main = 4)
+for (i in 1:length(mymean)) {
+  lines(x, dnorm(x, mymean[i], 1), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("M = ", mymean)), cex = 2)
+
+plot(x, pnorm(x, 0, 1), type = "l", lwd = 2,
+     ylab = "f(x)", cex.axis=2, cex.labs = 2, main = expression(paste(sigma, " = 1")), cex.main = 4)
+for (i in 1:length(mymean)) {
+  lines(x, pnorm(x, mymean[i], 1), 
+        col = mycol[i], lwd = 2)
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("M = ", mymean)), cex = 2)
+
+```
+
+
+## Normale standardizzata
+
+### Standardizzazione
+
+Per gli usi pratici della distribuzione normale si ricorre alla **normale standardizzata** $Z \sim \mathcal{N}(0, 1)$:
+
+$$f_Z(z) = \dfrac{1}{\sqrt{2\pi}} e^{-\dfrac{1}{2}z^2}$$
+
+\vspace{2mm}
+
+**Standardizzazione**: se $X \sim \mathcal{N}(\mu, \sigma^2)$
+
+$$Z = \dfrac{X - \mu}{\sigma} \qquad \Rightarrow \qquad z = \dfrac{x - \mu}{\sigma}$$
+
+###
+
+Per ogni valore $x$ della variabile originaria esiste un corrispondente valore $z$: l'area al di là di $z$ sulla normale standardizzata corrisponde all'area al di là di $x$ nella distribuzione originaria, $F_X(x|\theta) = F_Z\left(\frac{x - \mu}{\sigma}\right)$
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 60%
+zz <- seq(-3.5, 3.5, length.out = 1000)
+par(mar = c(7, 4, 2, 2))
+plot(zz, dnorm(zz), type = "l", lwd = 3, xaxt = "n", yaxt = "n",
+     xlab = "", ylab = "", bty = "n")
+cols_area <- c("khaki", "slateblue1", "aquamarine3", "aquamarine3", "slateblue1", "khaki")
+lims <- -3:3
+for (i in 1:6) {
+  sel <- zz >= lims[i] & zz <= lims[i + 1]
+  polygon(c(lims[i], zz[sel], lims[i + 1]), c(0, dnorm(zz[sel]), 0),
+          col = cols_area[i], border = NA)
+}
+lines(zz, dnorm(zz), lwd = 3)
+axis(1, at = -3:3, labels = c(-3, -2, -1, 0, "+1", "+2", "+3"),
+     cex.axis = 1.3, line = 0)
+mtext("z", side = 1, at = 3.6, line = 1, cex = 1.5)
+axis(1, at = -3:3,
+     labels = c(expression(mu - 3*sigma), expression(mu - 2*sigma),
+                expression(mu - sigma), expression(mu),
+                expression(mu + sigma), expression(mu + 2*sigma),
+                expression(mu + 3*sigma)),
+     cex.axis = 1.3, line = 3)
+mtext("x", side = 1, at = 3.6, line = 4, cex = 1.5)
+```
+
+### Tavole della normale standardizzata vs R
+
+:::: {.columns}
+
+::: {.column width=62%}
+\tiny
+
+```{r}
+#| echo: false
+z_righe <- seq(0, 1.9, by = .1)
+z_col <- seq(0, .09, by = .01)
+tab_z <- outer(z_righe, z_col, function(a, b) pnorm(a + b) - .5)
+tab_z <- formatC(tab_z, format = "f", digits = 4)
+tab_z <- data.frame(z = formatC(z_righe, format = "f", digits = 1), tab_z)
+knitr::kable(tab_z, col.names = c("$z$", paste0(".0", 0:9)),
+             escape = FALSE, align = "c", row.names = FALSE)
+```
+:::
+
+::: {.column width=38%}
+\small
+
+Le tavole riportano l'area tra 0 e $z$, cioè $F_Z(z) - 0.50$, solo per $z > 0$ (per simmetria $F_Z(-z) = 1 - F_Z(z)$)
+
+\vspace{2mm}
+
+Es., $F_Z(1.85) = 0.50 + 0.4678$
+
+```{r}
+pnorm(1.85)
+```
+
+Lettura inversa: $q_Z(0.9678)$
+
+```{r}
+qnorm(0.9678)
+```
+:::
+
+::::
+
+### Esempio: la dominanza
+
+La variabile "dominanza" si distribuisce normalmente con $\mu = 32$ e $\sigma = 5$. In un gruppo di 80 persone, quale proporzione di casi ha un punteggio superiore a 35?
+
+$X \sim \mathcal{N}(32, 25)$, $\quad \Pr[X > 35] = 1 - F_X(35|\theta)$
+
+:::: {.columns}
+
+::: {.column width=50%}
+```{r}
+#| echo: false
+#| out-width: 100%
+xd <- seq(32 - 4*5, 32 + 4*5, length.out = 1000)
+plot(xd, dnorm(xd, 32, 5), type = "l", lwd = 3, yaxt = "n",
+     xlab = "x", ylab = "", bty = "l", xaxt = "n", cex.lab = 2)
+sel <- xd >= 35
+polygon(c(35, xd[sel], max(xd)), c(0, dnorm(xd[sel], 32, 5), 0),
+        col = "seagreen3", border = NA)
+lines(xd, dnorm(xd, 32, 5), lwd = 3)
+axis(1, at = c(32, 35), cex.axis = 2)
+```
+:::
+
+::: {.column width=50%}
+\small
+
+```{r}
+1 - pnorm(35, mean = 32, sd = 5)
+p35 <- pnorm(35, 32, 5,
+             lower.tail = FALSE)
+p35
+80 * p35
+```
+
+Circa 22 persone su 80
+:::
+
+::::
+
+### Esempio: la dominanza con le tavole
+
+\small
+
+**Step 1**: standardizzare, $z = \dfrac{35 - 32}{5} = 0.6$
+
+```{r}
+(35 - 32) / 5
+1 - pnorm(0.6)
+```
+
+**Step 2**: area tra 0 e 0.6 dalla tavola: $0.2257$
+
+**Step 3**: area di interesse per differenza, $\Pr[Z > 0.6] = 0.50 - 0.2257 = 0.2743$
+
+**Step 4**: $80 \cdot 0.2743 = 21.94 \approx 22$
+
+### Esempio: al contrario
+
+Punteggio minimo per **non** essere inclusi nel 30% dei punteggi più bassi: $x = q_X(0.30|\theta)$
+
+:::: {.columns}
+
+::: {.column width=50%}
+```{r}
+#| echo: false
+#| out-width: 100%
+q30 <- qnorm(.30, 32, 5)
+plot(xd, dnorm(xd, 32, 5), type = "l", lwd = 3, yaxt = "n",
+     xlab = "x", ylab = "", bty = "l", xaxt = "n", cex.lab = 2)
+sel <- xd <= q30
+polygon(c(min(xd), xd[sel], q30), c(0, dnorm(xd[sel], 32, 5), 0),
+        col = "seagreen3", border = NA)
+lines(xd, dnorm(xd, 32, 5), lwd = 3)
+text(q30 - 6, dnorm(q30, 32, 5) + .01, ".30", cex = 2)
+axis(1, at = c(q30, 32), labels = c("?", "32"), cex.axis = 2)
+```
+:::
+
+::: {.column width=50%}
+\small
+
+```{r}
+qnorm(.30, mean = 32, sd = 5)
+32 + qnorm(.30) * 5
+```
+
+Con le tavole: l'area tra $z$ e 0 deve essere $0.20$, quindi $z = -0.52$ e $x = 32 + (-0.52) \cdot 5 = 29.40$
+:::
+
+::::
+
+### Esercizio svolto
+
+Sia $X$ una variabile con $\mu = 100$ e $\sigma = 15$.
+
+1. Se $X$ fosse distribuita esattamente come una normale, quale percentuale di casi dovrebbe avere valori compresi tra 70 e 130?
+2. Quale percentuale di casi vi attendete non inferiore a 115?
+3. Quale percentuale di casi vi attendete inferiore a 85?
+4. La variabile $X$ viene standardizzata in $Z$. Qual è la media e la deviazione standard di $Z$? Rappresentarla graficamente.
+5. Quale percentuale di casi vi attendete tra $-1$ e $+1$? Tra 0 e 2? Meno di $-2$?
+
+### Esercizio svolto: 1.
+
+Percentuale di casi tra 70 e 130?
+
+\small
+
+Si noti che $70 = 100 - 2 \cdot 15$ e $130 = 100 + 2 \cdot 15$: in una normale tra $\mu \pm 2\sigma$ si trova circa il 95% dei casi
+
+$$\Pr[70 < X < 130] = \Pr\left[\dfrac{70 - 100}{15} < Z < \dfrac{130 - 100}{15}\right] = \Pr[-2 < Z < 2]$$
+
+Dalle tavole:
+
+$$F_Z(2) - F_Z(-2) = 0.9772 - 0.0228 = 0.9545$$
+
+```{r}
+pnorm(130, 100, 15) - pnorm(70, 100, 15)
+```
+
+### Esercizio svolto: 2. e 3.
+
+**2.** Percentuale di casi non inferiore a 115?
+
+$$\Pr[X \geq 115] = \Pr\left[Z \geq \dfrac{115 - 100}{15}\right] = \Pr[Z \geq 1] = 1 - F_Z(1) = F_Z(-1) = 0.1587$$
+
+**3.** Percentuale di casi inferiore a 85?
+
+$$\Pr[X < 85] = \Pr\left[Z < \dfrac{85 - 100}{15}\right] = \Pr[Z < -1] = F_Z(-1) = 0.1587$$
+
+```{r}
+pnorm(115, 100, 15, lower.tail = FALSE)
+pnorm(85, 100, 15)
+```
+
+### Esercizio svolto: 4.
+
+$Z = \dfrac{X - 100}{15}$ ha media $\mu_Z = 0$ e deviazione standard $\sigma_Z = 1$, $Z \sim \mathcal{N}(0, 1)$
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-subcap:
+#|   - "$X \\sim \\mathcal{N}(100, 225)$"
+#|   - "$Z \\sim \\mathcal{N}(0, 1)$"
+xe <- seq(100 - 4*15, 100 + 4*15, length.out = 1000)
+plot(xe, dnorm(xe, 100, 15), type = "l", lwd = 3, xlab = "x",
+     ylab = expression(f[X](x*"|"*theta)), cex.lab = 2.5, cex.axis = 2)
+plot(zz, dnorm(zz), type = "l", lwd = 3, xlab = "z",
+     ylab = expression(f[Z](z)), cex.lab = 2.5, cex.axis = 2)
+```
+
+### Esercizio svolto: 5.
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-subcap:
+#|   - "$\\Pr[-1 < Z < 1] = 0.6827$"
+#|   - "$\\Pr[0 < Z < 2] = 0.4772$"
+#|   - "$\\Pr[Z < -2] = 0.0228$"
+area_z <- function(a, b) {
+  plot(zz, dnorm(zz), type = "l", lwd = 3, xlab = "z",
+       ylab = expression(f[Z](z)), cex.lab = 2.5, cex.axis = 2)
+  sel <- zz >= a & zz <= b
+  polygon(c(a, zz[sel], b), c(0, dnorm(zz[sel]), 0),
+          col = "seagreen3", border = NA)
+  lines(zz, dnorm(zz), lwd = 3)
+}
+area_z(-1, 1)
+area_z(0, 2)
+area_z(min(zz), -2)
+```
+
+```{r}
+pnorm(1) - pnorm(-1); pnorm(2) - pnorm(0); pnorm(-2)
+```
+
+### Esercizio svolto inverso
+
+\small
+
+Il punteggio $X$ di un gioco a premi è distribuito come $\mathcal{N}(28, 16)$ ($\mu = 28$, $\sigma^2 = 16$, quindi $\sigma = 4$). Il miglior 15% dei giocatori riceve un premio. Qual è il punteggio minimo per ricevere il premio?
+
+\vspace{2mm}
+
+Cerchiamo $x$ tale che
+
+$$F_X(x|\theta) = \Pr[X \leq x] = 0.85 \quad \Rightarrow \quad x = q_X(0.85|\theta)$$
+
+$$\Pr[X \leq x] = \Pr\left[\dfrac{X - \mu}{\sigma} \leq \dfrac{x - 28}{4}\right] = \Pr\left[Z \leq \dfrac{x - 28}{4}\right] = 0.85$$
+
+Dalle tavole $q_Z(0.85) = 1.04$, da cui $\dfrac{x - 28}{4} = 1.04$, quindi $x = 32.16$
+
+```{r}
+qnorm(.85, mean = 28, sd = 4)
+```
+
+## $t$ di Student
+
+
+### 
+
+Definita da un unico parametro $\theta = df$, $\Theta = (\mathbb{R}^+)$ (dove $df = N-1$)
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+plot(x, dnorm(x), lty = 4, col = "red", type = "l",xaxt = "n", lwd = 2, ylab = "f(x)", xlab = "x", 
+     cex.lab = 2)
+lines(x, dt(x, df = 5), lwd =2, col ="royalblue")
+legend("topleft", col = c("red", "royalblue"), lty = c(2,1), 
+       legend = c("t di Student (df = 5)", "Normale standard"), 
+       cex = 1.2, bty = "n")
+axis(1, at = c(min(x),0, max(x)), 
+     labels = c(expression(-infinity),0, expression(+infinity)), cex.axis = 3)
+```
+
+
+
+### 
+
+		
+$$\int_{-\infty}^{+\infty} f_X(x|\theta)\, dx = 1$$
+		
+		
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+plot(x,dt(x, df = 5), col ="royalblue", type = "l", lwd = 2, ylab = "f(x)", xlab = "x", cex.lab = 2, main = "df = 5", cex.main = 2)
+polygon(x, dt(x, df=5), col = rgb(0.5,0.5, 0.5, alpha = .30))
+```
+
+
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "$\\theta = df$, $\\Theta = R^+$"
+#| fig-subcap: 
+#|  - "Densità"
+#|  - "Cumulata"
+mydf = c(3,6,8)
+plot(x, dt(x, 1), type = "l", lwd = 2, 
+     ylab = "f(x)", cex.axis = 2, ylim= c(0, 0.5))
+
+for (i in 1:length(mydf)) {
+  lines(x, dt(x, mydf[i]), col = mycol[i])
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+
+plot(x, pt(x, 1), type = "l", lwd = 2, 
+     ylab = "F(x)", cex.axis = 2)
+
+for (i in 1:length(mydf)) {
+  lines(x, pt(x, mydf[i]), col = mycol[i])
+}
+legend("topleft", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+```
+
+
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dt(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione t con gradi di libertà (`df`). |
+| `pt(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
+| `qt(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rt(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione t di Student con `df`. |
+
+
+## Distribuzione $\chi^2$
+
+
+
+###
+
+
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: "$\\theta = df$, $\\Theta = R^+$"
+#| fig-subcap: 
+#|  - "Densità"
+#|  - "Cumulata"
+mydf = c(2,4,9)
+x = seq(0, 15, length.out= 1000)
+plot(x, dchisq(x, 1), type = "l", lwd = 2, 
+     ylab = "f(x)", cex.axis = 2, ylim = c(0,0.5))
+
+for (i in 1:length(mydf)) {
+  lines(x, dchisq(x, mydf[i]), col = mycol[i], lwd = 2)
+}
+legend("topright", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+
+plot(x, pchisq(x, 1), type = "l", lwd = 2, 
+     ylab = "F(x)", cex.axis = 2)
+
+for (i in 1:length(mydf)) {
+  lines(x, pchisq(x, mydf[i]), col = mycol[i], lwd = 2)
+}
+legend("bottomright", 
+       fill = c( mycol[-length(mycol)]), 
+       legend = c(paste("df = ", mydf)), cex = 2)
+```
+
+
+### 
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dchisq(x, df)` | Restituisce i *valori di densità* associati al vettore quantitativo `x` di una distribuzione Chi-quadrato con gradi di libertà (`df`). |
+| `pchisq(x, df)` | Restituisce i *valori di probabilità cumulata* associati al vettore quantitativo `x`. |
+| `qchisq(p, df)` | Restituisce i *valori dei quantili* associati al vettore di probabilità `p`. |
+| `rchisq(n, df)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione chi-quadrato con `df`. |
+
+
+## Altre distribuzioni continue 
+
+###
+
+:::{.callout-tip}
+## Esponenziale `exp`
+
+`dexp(x, lambda)`, `pexp(x, lambda)`, `qexp(p, lambda)`,  `rexp(n, lambda)`
+
+`lambda` è il rate della distribuzione esponenziale
+
+:::
+
+
+:::{.callout-tip}
+## Uniforme `unif`
+
+`dunif(x, min, max)`, `punif(x, min, max)`, `qunif(p, min, max)`,  `runif(n, min, max)`
+
+`min, max` valore minimo e massimo della distribuzione 
+
+:::
+
+###
+
+:::{.callout-tip}
+## Gamma `gamma`
+
+`dgamma(x, shape, scale)`, `pgamma(x, shape, scale)`, `qgamma(p, shape, scale)`,  `rgamma(n, shape, scale)`
+
+`shape`: regola la forma della distribzuione, `scale` regola la varianza
+:::
+
