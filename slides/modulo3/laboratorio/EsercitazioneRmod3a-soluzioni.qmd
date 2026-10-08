@@ -70,7 +70,7 @@ Per la variabile `frequenza`:
 1. costruire la distribuzione delle frequenze assolute
 2. costruire la distribuzione delle frequenze relative e delle frequenze percentuali (arrotondate a una cifra decimale)
 3. rappresentare graficamente le frequenze assolute con un **diagramma a barre** (`barplot()`)
-4. rappresentare graficamente le frequenze percentuali con un **diagramma a barre** (`pie()`)
+4. rappresentare graficamente le frequenze percentuali con un **diagramma a barre** (`barplot()`)
 
 ```{r}
 # 1. frequenze assolute
@@ -94,7 +94,6 @@ barplot(freq_ass,
 ```
 
 ```{r}
-# d) diagramma a torta con le percentuali nelle etichette
 barplot(freq_perc,
     names = paste0(names(freq_perc), " (", freq_perc, "%)"),
     col = c("lightcoral", "khaki", "seagreen3"),
@@ -341,13 +340,13 @@ chisq.test(tab_fe)$statistic
 Calcolare il valore massimo che il $\chi^2$ può assumere per questa tabella, $\chi^2_{\max} = n \times \min[(h-1); (m-1)]$, e il $\chi^2$ normalizzato $\tilde{\chi}^2 = \chi^2 / \chi^2_{\max}$. Commentare il risultato.
 
 ```{r}
-chiMax_fe = sum(tab_fe) * min(c(nrow(tab_fe) - 1, ncol(tab_fe) - 1))
+chiMax_fe = sum(tab_fe) * min(dim(tab_fe)- 1)
 chiMax_fe
 
 chisq.test(tab_fe)$statistic / chiMax_fe
 ```
 
-Con $h = 3$ e $m = 2$, $\chi^2_{\max} = 160 \times \min(2; 1) = 160$. Il $\chi^2$ normalizzato è circa 0.37: le due variabili non sono indipendenti ($\tilde{\chi}^2 > 0$), ma siamo lontani da una relazione di perfetta dipendenza ($\tilde{\chi}^2 = 1$). Si tratta di un'associazione moderata.
+Con $h = 3$ e $m = 2$, $\chi^2_{\max} = 160 \times \min[2; 1] = 160$. Il $\chi^2$ normalizzato è circa 0.37: le due variabili non sono indipendenti ($\tilde{\chi}^2 > 0$), ma siamo lontani da una relazione di perfetta dipendenza ($\tilde{\chi}^2 = 1$). Si tratta di un'associazione moderata.
 
 ## 
 

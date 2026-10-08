@@ -2467,7 +2467,7 @@ window.Quarto = {
 <li>costruire la distribuzione delle frequenze assolute</li>
 <li>costruire la distribuzione delle frequenze relative e delle frequenze percentuali (arrotondate a una cifra decimale)</li>
 <li>rappresentare graficamente le frequenze assolute con un <strong>diagramma a barre</strong> (<code>barplot()</code>)</li>
-<li>rappresentare graficamente le frequenze percentuali con un <strong>diagramma a barre</strong> (<code>pie()</code>)</li>
+<li>rappresentare graficamente le frequenze percentuali con un <strong>diagramma a barre</strong> (<code>barplot()</code>)</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. frequenze assolute</span></span>
@@ -2510,11 +2510,10 @@ Bassa Media  Alta
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># d) diagramma a torta con le percentuali nelle etichette</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(freq_perc,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">names =</span> <span class="fu">paste0</span>(<span class="fu">names</span>(freq_perc), <span class="st">&quot; (&quot;</span>, freq_perc, <span class="st">&quot;%)&quot;</span>),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightcoral&quot;</span>, <span class="st">&quot;khaki&quot;</span>, <span class="st">&quot;seagreen3&quot;</span>),</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Frequenza alle lezioni (%)&quot;</span>)</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(freq_perc,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">names =</span> <span class="fu">paste0</span>(<span class="fu">names</span>(freq_perc), <span class="st">&quot; (&quot;</span>, freq_perc, <span class="st">&quot;%)&quot;</span>),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightcoral&quot;</span>, <span class="st">&quot;khaki&quot;</span>, <span class="st">&quot;seagreen3&quot;</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Frequenza alle lezioni (%)&quot;</span>)</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2885,7 +2884,7 @@ Nota
 <h2 data-number="4.2" class="anchored" data-anchor-id="section-13"><span class="header-section-number">4.2</span> </h2>
 <p>Calcolare il valore massimo che il <span class="math inline">\(\chi^2\)</span> può assumere per questa tabella, <span class="math inline">\(\chi^2_{\max} = n \times \min[(h-1); (m-1)]\)</span>, e il <span class="math inline">\(\chi^2\)</span> normalizzato <span class="math inline">\(\tilde{\chi}^2 = \chi^2 / \chi^2_{\max}\)</span>. Commentare il risultato.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>chiMax_fe <span class="ot">=</span> <span class="fu">sum</span>(tab_fe) <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">c</span>(<span class="fu">nrow</span>(tab_fe) <span class="sc">-</span> <span class="dv">1</span>, <span class="fu">ncol</span>(tab_fe) <span class="sc">-</span> <span class="dv">1</span>))</span>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>chiMax_fe <span class="ot">=</span> <span class="fu">sum</span>(tab_fe) <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">dim</span>(tab_fe)<span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>chiMax_fe</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 160</code></pre>
@@ -2896,7 +2895,7 @@ Nota
 0.3677249 </code></pre>
 </div>
 </div>
-<p>Con <span class="math inline">\(h = 3\)</span> e <span class="math inline">\(m = 2\)</span>, <span class="math inline">\(\chi^2_{\max} = 160 \times \min(2; 1) = 160\)</span>. Il <span class="math inline">\(\chi^2\)</span> normalizzato è circa 0.37: le due variabili non sono indipendenti (<span class="math inline">\(\tilde{\chi}^2 &gt; 0\)</span>), ma siamo lontani da una relazione di perfetta dipendenza (<span class="math inline">\(\tilde{\chi}^2 = 1\)</span>). Si tratta di un’associazione moderata.</p>
+<p>Con <span class="math inline">\(h = 3\)</span> e <span class="math inline">\(m = 2\)</span>, <span class="math inline">\(\chi^2_{\max} = 160 \times \min[2; 1] = 160\)</span>. Il <span class="math inline">\(\chi^2\)</span> normalizzato è circa 0.37: le due variabili non sono indipendenti (<span class="math inline">\(\tilde{\chi}^2 &gt; 0\)</span>), ma siamo lontani da una relazione di perfetta dipendenza (<span class="math inline">\(\tilde{\chi}^2 = 1\)</span>). Si tratta di un’associazione moderata.</p>
 </section>
 <section id="section-14" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="section-14"><span class="header-section-number">4.3</span> </h2>
