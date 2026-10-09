@@ -57,16 +57,22 @@ library(MASS)
 knitr::include_graphics("slides/modulo1/img/Rstudio.png")
 ```
 
-**Ambiente/Environment**. Contiene tutti gli oggetti che sono stati creati fino a quel momento nell'ambiente di lavoro
+**Ambiente/Environment** (Pannello in alto a dx). Contiene tutti gli oggetti che sono stati creati fino a quel momento nell'ambiente di lavoro. Viene automaticamente suddiviso in oggetti di tipo vettoriale o scalare (`values`) e oggetti più complessi come dataframe e liste.
 
-**Script**. File di tipo testuale dove salvare il codice usato per generare gli oggetti presenti nell'ambiente. Si possono combinare codice e commenti (righe che non vengono eseguite e interpretate come codice `#`)
+**Script**. (Pannelli in alto a sinistra). File di tipo testuale con estensione `.R` dove salvare il codice usato per generare gli oggetti presenti nell'ambiente. Si possono combinare codice e commenti (righe che non vengono eseguite e interpretate come codice, sono le righe precedute dal simbolo `#`, vedi @lst-example). Per eseguire i comandi negli script bisogna usare la combinazione di tasti `ctrl + invio` (per il mac, `cmd + invio `)
+
+**Console**. (Pannello in basso a sinistra). Pannello di lavoro dove i lavori vengono immediatamente eseguiti immediatamente quando si clicca invio. Le righe di comando non vengon salvate ma sono sempre accessibili premendo con la freccina in su della tastiera. Nella console appaiono anche i risultati dei codici eseguiti nello script. 
+
+**Plot/Files**. (Pannello in basso a dx). Pannnello composto da diversi pannelli. Nel pannello `Plots` compaiono i grafici risultatinti dalle analisi statistiche svolte negli script. Nel pannello `Files` appaiono tutti i file e le cartelle dispoonibili in una data working directory (Vedi @sec-wd e @sec-project).
 
 ```{r}
+#| lst-label: lst-example
+#| lst-cap: Codice con commento
 # codice per assegnare il numero 25 alla variabile x
 x <- 25 
 ```
 
-**Working directory**. La cartella dentro cui sta lavorando R in quel momento. Diventa di fondamentale importanza perché è dove R si aspetta che ci siano i file (e.g., i dati) con cui volete lavorare
+
 
 :::{.callout-note}
 ## Console
@@ -95,11 +101,15 @@ Per fare lo switch allo script $\rightarrow$ `ctr + 1`
 
 :::
 
-## Working directories (`wd`)
+## Working directories (`wd`) {#sec-wd}
+
+**Working directory**. La cartella dentro cui sta lavorando R in quel momento. Diventa di fondamentale importanza perché è dove R si aspetta che ci siano i file (e.g., i dati) con cui volete lavorare
 
 ### Hard way
 
 ```{r}
+#| lst-label: lst-wd
+#| lst-cap: Funzione per ottenere la wd, ovvero la cartella dentro cui sta lavorando R
 # per sapere dove sta lavorando R
 getwd()
 ```
@@ -108,13 +118,14 @@ La `wd` si può cambiare con il comando `setwd()`:
 
 ```{r}
 #| eval: false
-
+#| lst-label: lst-wdSet
+#| lst-cap: Funzione per ottenere cambiare la wd dentro cui sta lavorando R. Dentro la funzione, va messo il percorso completo entro cui si vuole spostare la cartella di lavoro tra virgolette, come nell'esempio sottostante.
 setwd("C:/Users/Ottavia/Documents/altro-percorso")
 ```
 
-### Easy Way: R Project
+### Easy Way: R Project {#sec-project}
 
-Crea automaticamente una working directory in cui potete trovare tutto il materiale necessario per delle analisi
+Crea automaticamente una working directory (ovvero una cartella) in cui potete trovare tutto il materiale necessario per delle analisi. Questo vi evita di dover pensare alla gestione delle working directories.
 
 Struttura tipica
 
@@ -122,20 +133,21 @@ Struttura tipica
 my-project/
 |
 +-- index.qmd
++-- laboratorioTemplate.qmd
++-- myScript.R
++-- my-project.Rproj
 +-- data/
 |   +-- mydata.csv
-+-- img/
-|   +-- logo.png
-|   +-- plot.jpg
-|   +-- illustration.svg
-+-- bibliography/
-|   +-- references.bib
-+-- slides/
-    +-- intro.qmd
-    +-- advanced-topics.qmd
 ```
 
-From `File` $\rightarrow$ New Project: 
+Nell'esempio precedente, la cartella di ordine superiore è la cartella `my-project`, ovvero la cartella che contiene tutto il vostro progetto. Al suo iinterno si trovano i seguenti file, a diversi livelli: 
+
+1. Primo Livello: `index.qmd`, `laboratorioTemplate.qmd`, `myScript.R` (file di quarto con estensione `qmd`, file R con estensione `R`) e una cartella `data`. Il file `my-project.Rproj` è il file del vostro progetto R con estensione `Rproj`.
+2. Secondo Livello: all'interno della cartella `data` si trova il file `mydata.csv`. Per accedere a questo file di dati da un file contenuto nella cartella di ordine superiore, bisogna semplicemente comunicare a R che si trova nella cartella data, `"data/mydata.csv"`. 
+
+#### Creare un nuovo progetto
+
+Da `File` $\rightarrow$ New Project e seguire i seguenti step: 
 
 ```{r}
 #| label: fig-project
@@ -155,44 +167,60 @@ knitr::include_graphics("slides/modulo1/img/project2.png")
 knitr::include_graphics("slides/modulo1/img/project3.png")
 ```
 
+In @fig-project-1 selezionare l'opzione `New directory`. 
+
+In @fig-project-2 selezionare l'opzione `New Project` (ignorate tutte le altre opzioni).
+
+In @fig-project-3 date un nome al progetto (e.g., `corso-analisi`) e secgliete la cartella entro cui salvarlo (consigliato: I Documenti del vostro computer). 
+
+@fig-pjCheck illsutra il controllo per capire se effettivamente siete dentro al progetto R. Se non siete dentro il progetto R, andate a cercarlo nella cartella dove lo avete creato e fate doppio click sul file con estensione `Rproj`.
+
 ```{r}
 #| echo: false
 #| fig-align: center
+#| label: fig-pjCheck
 #| fig-cap: Indica il nome del progetto
 knitr::include_graphics("slides/modulo1/img/progetto.png")
 ```
+
+## Script e reporting
+
+@fig-newScript illustra come creare un nuovo script, dove è possibile eseguire e salvare una serie di comandi.
 
 ```{r}
 #| echo: false
 #| out-width: 70%
 #| fig-align: center
+#| label: fig-newScript
 #| fig-cap: "Creare un nuovo script"
 
 knitr::include_graphics("slides/modulo1/img/new-script.png")
 ```
 
     
-Oppure la seguenza di tasti: `Ctrl + shift + n`
+In alternativa, si può usare la sequenza di tasti: `Ctrl + shift + n` (`cmd + shift + n`)
 
-Per salvare uno script: Click sull'icona del salvataggio 
+Per salvare uno script, bastare cliccare sull'icona del salvataggio. 
 
 ## Reporting con quarto
 
 quarto è un markup language integrato con RStudio. 
 
-Permette la creazione di documenti (sia pdf sia html) che possono contenre chunk di codice, ovvero delle parti dove viene eseguito il codice R, per ottenere risultati, tabelle e grafici.
+Permette la creazione di documenti (sia pdf sia html) che possono contenere chunk di codice, ovvero delle parti dove viene eseguito il codice R, per ottenere risultati, tabelle e grafici.
 
-In questo corso, useremo quarto per tutti gli esercizi.
+In questo corso, useremo quarto per tutti gli esercizi. Vi verranno forniti dei template, specie all'inizio, nella speranza che riusciate a modificarli e a diventare via via più autonome nel suo utilizzo.
 
 Una parte dell'esame prevede l'utilizzo di quarto per lo svolgimento degli esercizi. le esercitazioni in intinere sono da svolgere su quarto. 
 
-A [questo link](https://arca-dpss.github.io/shine-with-quarto/) trovate maggiori informazioni su quarto e una guida veloce sul suo funzionamento 
+A [questo link](https://arca-dpss.github.io/shine-with-quarto/) trovate maggiori informazioni su quarto e una guida veloce sul suo funzionamento. 
+
+@fig-quarto-1 crea un nuovo file quarto, mentre @fig-quarto-2 illustra come specificare varie opzioni del docuemnto (titolo, autrice).
 
 ```{r}
 #| echo: false
 #| fig-align: center
 #| fig-cap-location: top
-#| out-width: 80%
+#| out-width: 100%
 #| label: fig-quarto
 #| fig-cap: Crea un nuovo file quarto
 #| layout-ncol: 2
@@ -206,9 +234,7 @@ include_graphics("slides/modulo1/img/quarto1.png")
 
 ```
 
-::::{.columns}
-
-:::{.column width="70%"}
+@fig-example vi mostra il default che si ottiene quando si crea un documento quarto.
 
 ```{r}
 #| echo: false
@@ -219,16 +245,10 @@ library(knitr)
 include_graphics("slides/modulo1/img/quarto2.png")
 ```
 
-:::
-
-:::{.column width="30%"}
 In verde in @fig-example, lo YAML che controlla l'aspetto generale del documento. Va modificato per cambiare i metadati del documento. 
 
 In rosso in @fig-example, un chunk di codice eseguibile, ovvero una parte del docuemnto che funziona come un qualsaisi script di R e in quanto tale permette di esguire codice. 
 
-:::
-
-::::
 
 :::{.callout-caution}
 ## Modifica importante allo YAML
@@ -310,9 +330,11 @@ variabile
 Tutto quello che viene creato in R viene chiamato *oggetto* tramite l'"assegnazione" con specifici simboli, ovvero `<- ` oppure `=`:
 
 ```{r}
-x <- 4 ; x 
+x <- 4 
+x 
 
-X = 5 ; X
+X = 5 
+X
 ```
 
 Gli elementi a destra del simbolo (contenuto) vengono assegnati all'elemento a sinsitra (contenitore) del simbolo
@@ -360,7 +382,7 @@ Pessimi nomi per variabili:
 Non deve contenere caratteri speciali come #, &, $, ?, etc.
 
 Non deve essere una parola riservata ovvero quelle parole che sono
-utilizzate da R con un significato speciale (`?reserved`).
+utilizzate da R con un significato speciale (`?reserved` nella console).
 
 ```{r}
 #| error: true
@@ -371,29 +393,19 @@ TRUE = 567
 
 #### Per convenzione
 
-Queste istruzioni sono valide attraverso diversi linguaggi di programmazione
+Queste istruzioni sono valide attraverso diversi linguaggi di programmazione.
 
 Fanno riferimento a nomi di oggetti composti da più nomi e/o molto lunghi: 
 
 1. `first_data`, ovvero separare i termini con un underscore (e.g., `my_data`)
 2. `firstData`, ovvero la prima parola tutta minuscola, la seconda con la prima lettera maiuscola (e.g., `unitnData` invece di `university_of_trento_data`)
 
-:::{.callout-note}
-## Esercizio
-
-1. Creare un nuovo chunk di codice e creare i seguenti oggetti:
-  - $10 + 15$ (nome dell'oggetto: `somma`)
-  - $\frac{5}{10} \times 3 -2$ (nome dell'oggetto: `operazione_1`)
-
-2. Compilare il documento
-
-:::
 
 ### L'ambiente
 
 Gli oggetti finiscono nell'ambiente (`environment`) di R. 
 
-La funzione `ls()` permette di vedere tutti gli oggetti all'interno dell'ambiente
+La funzione `ls()` permette di vedere tutti gli oggetti all'interno dell'ambiente.
 
 ```{r}
 #| echo: false
@@ -402,27 +414,37 @@ La funzione `ls()` permette di vedere tutti gli oggetti all'interno dell'ambient
 include_graphics("slides/modulo1/img/env.png")
 ```
 
-`rm()` (remove) è la funzione preposta per rimuovere gli oggetti dall'ambiente di R: `rm("oggetto")`
 
-Il codice `rm(list = ls())` permette di eliminare tutti gli oggetti nell'ambiente in un colpo solo (equivale alla scopetta)
+`rm()` (remove) è la funzione preposta per rimuovere gli oggetti dall'ambiente di R: `rm("oggetto")` (vedi @lst-env).
+
+Il codice `rm(list = ls())` permette di eliminare tutti gli oggetti nell'ambiente in un colpo solo (equivale alla scopetta). 
+
+```{r}
+#| lst-cap: Ottenere gli elementi nell'ambiente e uso della funzione rm
+#| lst-label: lst-env
+
+ls() # ottiene tutti gli oggetti nell'ambiente
+rm(variabile) # rimuove l'oggetto variabile 
+ls()
+rm(list = ls()) # rimuove tutto l'ambiente
+ls()
+```
+
 
 ## Pacchetti e Funzioni
 
 ### Funzioni
 
-Ogni cosa fatta in R di fatto è riassumbile nelle operazioni fatte su oggetti 
+Ogni cosa fatta in R di fatto è riassumbile nelle *operazioni* fatte su *oggetti* 
 
-Le operazioni sono le **funzioni**, che permettono di modificare gli oggetti esistenti e di creare di nuovi
+Le operazioni sono le **funzioni**, che permettono di modificare gli oggetti esistenti e di creare di nuovi.
+
+Ad esempio, in @lst-sum viene usata la funzione `sum()` per sommare tutti gli elementi all'interno del vettore. Matematicamente, la funzione `sum()` equivale a $\displaystyle \sum_{i = 1}^k x_i$ dove $k$ è il totale di elementi $x$ all'interno del vettore $X$.
 
 ```{r}
-#| echo: false 
-
+#| lst-label: lst-sum
+#| lst-cap: Applica la funzione somma per sommare tutti gli elementi all'interno di vettore
 vettore = 1:5
-```
-
-```{r}
-vettore
-
 sum(vettore)
 ```
 
@@ -430,112 +452,164 @@ Le funzioni in R sono come le funzioni matematiche $f(\cdot)$, dove viene preso 
 
 ![](slides/modulo1/img/fun1.png){fig-align="center"}
 
+#### Elementi di una funzione
     
     mean(x, trim = 0, na.rm = FALSE, ...)
 
 - Nome della funzione: `mean`
 - Parentesi che racchiudono gli argomenti della funzione
 - argomenti: 
-  - **obbligatori**, senza valori predefiniti senza di cui la funzione non può funzionare
-  - **facoltativi** con valori di default (`trim = 0`, `na.rm = FALSE`)
+  - **obbligatori**, senza valori predefiniti senza di cui la funzione non può funzionare. Nel caso della funzione `mean()`, l'unico argomento obbligatorio è il vettore `x` di valori di cui si vuole calcolare la media
+  - **facoltativi** con valori di default (`trim = 0`, `na.rm = FALSE`), che vangono applicati qualora l'utente non ne specifichi di alternativi. Nel caso della media,  non viene applicato il trimming dei valori estremi e non vengono tolti i valori NA.
   
 
 ```{r}
-mean(1:5)
-mean(1:5, trim = 0.3)
+mean(vettore)
+mean(vettore, trim = 0.3)
 ```
 
-`?funzione` permette di accedere all'help della funzione per scoprire esattamente cosa fa una funzione: 
+`?funzione` (@lst-help) permette di accedere all'help della funzione per scoprire esattamente cosa fa una funzione: 
 
 ```{r}
 #| eval: false
+#| lst-label: lst-help
+#| lst-cap: Permette di accedere all'help della funzione mean
 ?mean
 ```
 
 ```{r}
 #| echo: false
-#| out-width: 70%
+#| out-width: 100%
 #| fig-align: center
+#| fig-cap: Help della funzione mean
 knitr::include_graphics("slides/modulo1/img/mean.png")
 ```
 
-Ne esistono di predefinite all'installazione di R, se ne possono definire di nuove autonomamente, si possono installare dei "pacchetti" dal CRAN (comprehensive R archive network) o da un file locale, a seconda delle operazioni che si vogliono svolgere.
+#### Installare i pacchetti
+
+Esistono funzioni predefinite all'installazione di R, se ne possono definire di nuove autonomamente, si possono installare dei "pacchetti" dal CRAN (comprehensive R archive network, vedi @lst-install) o da un file locale, a seconda delle operazioni che si vogliono svolgere.
 
 ```{r}
 #| eval: false
 #| lst-label: lst-install
 #| lst-cap: Codice per installare e caricare un pacchetto
 
-install.packages("nomePacchetto") # installa
-library(nomePacchetto) # carica il pacchetto
+install.packages("nomePacchetto") # installa (va fatto correre solo una volta)
+library(nomePacchetto) # carica il pacchetto (va fatto correre tutte le volte)
 ```
 
 ## Operatori
 
 ### Operatori Matematici
 
-| Funzione | Cosa fa?        | Esempio     | Risultato |
-|----------|-----------------|-------------|-----------|
-| `+`      | addizione       | `5.4 + 6.1` | `11.5`    |
-| `-`      | sottrazione     | `9 - 4.3`   | `4.7`     |
-| `*`      | moltiplicazione | `7 * 1.4`   | `9.8`     |
-| `/`      | divisione       | `9/3`       | `3`       |
-| `%%`     | resto           | `9%%2`      | `1`       |
-| `^`      | potenza         | `15 ^ 2`    | `225`     |
+Tabella \ref{tbl-operatori} illustra alcuni operatori matematici di base, mentre Tabella \ref{tbl-funzioni-matematiche} illustrate le principali funzioni matematiche disponibili in R.
 
-| Funzione | Cosa fa?               | Esempio           | Risultato |
-|----------|------------------------|-------------------|-----------|
-| `abs()`    | valore assoluto        | `abs(-8)`         | `8`       |
-| `sqrt()`   | radice quadrata        | `sqrt(225)`       | `15`      |
-| `exp()`    | funzione esponenziale  | `exp(0)`          | `1`       |
-| `log()`    | logaritmo naturale     | `log(1)`          | `0`       |
-| `round()`  | arrotondamento, intero | `round(1.738)`    | `2`       |
-| `round()`  | arrotondamento         | `round(1.738, 2)` | `1.74`    |
+```{=latex}
+\begin{table}[htbp]
+\centering
+\caption{Operatori matematici in R}
+\label{tbl:operatori}
+\begin{tabular}{llll}
+\toprule
+Funzione & Cosa fa? & Esempio & Risultato \\
+\midrule
+\texttt{+}      & addizione       & \texttt{5.4 + 6.1}    & \texttt{11.5} \\
+\texttt{-}      & sottrazione     & \texttt{9 - 4.3}      & \texttt{4.7}  \\
+\texttt{*}      & moltiplicazione & \texttt{7 * 1.4}      & \texttt{9.8}  \\
+\texttt{/}      & divisione       & \texttt{9/3}          & \texttt{3}    \\
+\texttt{\%\%}   & resto           & \texttt{9\%\%2}       & \texttt{1}    \\
+\texttt{\^{}}   & potenza         & \texttt{15 \^{} 2}    & \texttt{225}  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Funzioni matematiche in R}
+\label{tbl:funzioni-matematiche}
+\begin{tabular}{llll}
+\toprule
+Funzione & Cosa fa? & Esempio & Risultato \\
+\midrule
+\texttt{abs()}   & valore assoluto        & \texttt{abs(-8)}         & \texttt{8}    \\
+\texttt{sqrt()}  & radice quadrata        & \texttt{sqrt(225)}       & \texttt{15}   \\
+\texttt{exp()}   & funzione esponenziale  & \texttt{exp(0)}          & \texttt{1}    \\
+\texttt{log()}   & logaritmo naturale     & \texttt{log(1)}          & \texttt{0}    \\
+\texttt{round()} & arrotondamento, intero & \texttt{round(1.738)}    & \texttt{2}    \\
+\texttt{round()} & arrotondamento         & \texttt{round(1.738, 2)} & \texttt{1.74} \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
 
 ### Operatori Relazionali
 
-In R è possibile valutare se una data relazione è vera o falsa. R valuterà le proposizioni e ci restituirà il valore **`TRUE`** se la proposizione è vera oppure **`FALSE`** se la proposizione è falsa.
+In R è possibile valutare se una data relazione è vera o falsa. R valuterà le proposizioni e ci restituirà il valore **`TRUE`** se la proposizione è vera oppure **`FALSE`** se la proposizione è falsa. Per fare questo si usano gli operatori relazionali in Tabella \ref{tbl-operatori-relazionali}.
 
-+---------------+-------------------+-------------------+---------------+
-| Funzione      | Nome              | Esempio           | Risulato      |
-+===============+===================+===================+===============+
-| `==`          | uguale            | `30 == 30`        | `TRUE`        |
-+---------------+-------------------+-------------------+---------------+
-| `!=`          | diverso           | `30 != 30`        | `FALSE`       |
-+---------------+-------------------+-------------------+---------------+
-| `>`/`>=`      | maggiore/o uguale | `30 > 10`         | `TRUE`        |
-|               |                   |                   |               |
-|               |                   | `30 >= 10`        | `TRUE`        |
-+---------------+-------------------+-------------------+---------------+
-| `<`/`<=`      | minore/o uguale   | `30 < 10`         | `FALSE`       |
-|               |                   |                   |               |
-|               |                   | `10 <= 10`        | `TRUE`        |
-+---------------+-------------------+-------------------+---------------+
-| `%in%`        | inclusione        | `10%in%c(1,2,10)` | `TRUE`        |
-+---------------+-------------------+-------------------+---------------+
+```{=latex}
+\begin{table}[htbp]
+\centering
+\caption{Operatori relazionali in R}
+\label{tbl:operatori-relazionali}
+\begin{tabular}{llll}
+\toprule
+Funzione & Nome & Esempio & Risultato \\
+\midrule
+\texttt{==} & uguale  & \texttt{30 == 30} & \texttt{TRUE}  \\
+\texttt{!=} & diverso & \texttt{30 != 30} & \texttt{FALSE} \\
+\multirow{2}{*}{\texttt{>} / \texttt{>=}} & \multirow{2}{*}{maggiore / maggiore o uguale}
+            & \texttt{30 > 10}  & \texttt{TRUE}  \\
+            &  & \texttt{30 >= 10} & \texttt{TRUE}  \\
+\multirow{2}{*}{\texttt{<} / \texttt{<=}} & \multirow{2}{*}{minore / minore o uguale}
+            & \texttt{30 < 10}  & \texttt{FALSE} \\
+            &  & \texttt{10 <= 10} & \texttt{TRUE}  \\
+\texttt{\%in\%} & inclusione & \texttt{10 \%in\% c(1, 2, 10)} & \texttt{TRUE} \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
 
 ### Insiemistici
 
-Dato:
+Per capire gli operatori insiemistici (Tabella \ref{tbl-operatori-logici}), definiziamo un oggetto, `x`, come segue:
 
 ```{r,echo = TRUE}
 x = 30 
 ```
 
-| Funzione | Nome                   | Esempio       | Risulato |
-|----------|------------------------|---------------|----------|
-| `&`      | Congiunzione           | `x>25 & x<60` | `TRUE`   |
-| `|`      | Disgiunzione Inclusiva | `x>25 | x>60` | `TRUE`   |
-| `!`      | Negazione              | `!(x<18)`     | `TRUE`   |
+Gli operatori insiemistici permettono di testare diverse condizioni. 
+
+```{=latex}
+\begin{table}[htbp]
+\centering
+\caption{Operatori logici in R (con x = 30)}
+\label{tbl-operatori-logici}
+\begin{tabular}{llll}
+\toprule
+Funzione & Nome & Esempio & Risultato \\
+\midrule
+\texttt{\&} & Congiunzione           & \texttt{x > 25 \& x < 60} & \texttt{TRUE} \\
+\texttt{|}  & Disgiunzione inclusiva & \texttt{x > 25 | x > 60}  & \texttt{TRUE} \\
+\texttt{!}  & Negazione              & \texttt{!(x < 18)}        & \texttt{TRUE} \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+La **congiunzione** testa che siano contemporaneamente vere entrambe le condizioni, ovvero restituisisce un risultato vero se e solo se entrambe le condizioni sono vere. 
+
+La **congiunzione** testa che sia vera almeno una delle condizioni, ovvero restituisisce un risultato vero se almeno una delle condizioni è vera. 
+
+La **negazione** inverte il valore logico.
 
 ## Tavole di verità
 
 | Operazione | Simbolo | In R | Significato |
 |------------|:-------:|:----:|-------------|
-| Congiunzione (AND) | $A \cap B$ | `&` | Vera se entrambe le condizioni sono vere. |
-| Disgiunzione (OR) | $A \cup B$ | `|` | Vera se almeno una delle due condizioni è vera. |
-| Negazione (NOT) | $\overline{A}$ | `!` | Inverte il valore logico di $A$. |
-| Differenza simmetrica (XOR) | $A \Delta B$ | `xor(A, B)` | Vera se una e una sola delle due condizioni è vera. |
+| Congiunzione (AND) | $A \cap B$ | `&` | Vera se entrambe le condizioni sono vere @tbl-tables-1. |
+| Disgiunzione (OR) | $A \cup B$ | `|` | Vera se almeno una delle due condizioni è vera @tbl-tables-2. |
+| Negazione (NOT) | $\overline{A}$ | `!` | Inverte il valore logico di $A$ @tbl-tables-3. |
+| Differenza simmetrica (XOR) | $A \Delta B$ | `xor(A, B)` | Vera se una e una sola delle due condizioni è vera @tbl-tables-4. |
 
 ```{r}
 #| echo: false
@@ -599,11 +673,11 @@ Lo stesso risultato della funzione `xor()` può essere ottenuto con la combinazi
 
 Ci sono diversi livelli di **allerta** quando scriviamo codice:
 
--   **`messaggi`**: la funzione ci restituisce qualcosa che è utile sapere, ma tutto liscio
+-   **`messaggi`**: la funzione ci restituisce qualcosa che è utile sapere, ma tutto liscio. Appaiono spesso quando si caricano dei pacchetti.
 
--   **`warnings`**: la funzione ci informa di qualcosa di *potenzialmente* problematico, ma (circa) tutto liscio
+-   **`warnings`**: la funzione ci informa di qualcosa di *potenzialmente* problematico, ma (circa) tutto liscio. R ci sta dicendo che è successo qualcosa di insolito e di prestareattenzione, ma non per forza è un problema.
 
--   **`error`**: la funzione non solo ci informa di un **errore** ma le operazioni richieste non sono state eseguite
+-   **`error`**: la funzione non solo ci informa di un **errore** ma le operazioni richieste non sono state eseguite. Solitamente il messaggio di errore ci dice anche cosa sta succedendo. 
 
 Come risolvere?
 
@@ -612,6 +686,42 @@ Come risolvere?
 -   Cercare il messaggio su internet
 -   Chiedere aiuto nei forum dedicati
 -  Chidere all'IA
+
+#### Esempi di errori
+
+```{r}
+#| error: true
+#| lst-cap: Prova a calcolare la media (o in generale ad applicare una funzione a un oggetto che non esiste)
+mean(myVector)  #
+```
+
+
+```{r}
+#| error: true
+#| lst-cap: Prova a importare un file che non esiste/non si trova nella cartella
+dati = read.csv("i-miei-dati.csv")
+```
+
+
+
+```{r}
+#| error: true
+#| lst-cap: Il nome della funzione è scritto male 
+
+lenght(vettore)
+```
+
+
+```{r}
+#| error: true
+#| lst-cap: Non si è usato il comando c per concatenare
+
+(3,4,5)
+
+```
+
+
+
 
 #### R e l'uso dell'IA
 
@@ -633,19 +743,19 @@ I vettori sono una struttura dati unidimensionale e sono la più semplice presen
 
 **Caratteristiche**:
 
-* **la lunghezza**: il numero di elementi da cui è formato il vettore
+* **la lunghezza**: il numero di elementi da cui è formato il vettore. La funzione `length(x)` permette di ottenere la lunghezza del vettore x, ovvero permette di conoscere il numero di elementi di cui è composto il vettore.
 
-* **la tipologia**: la tipologia di dati da cui è formato il vettore. Un vettore infatti deve esssere formato da **elementi tutti dello stesso tipo**!
+* **la tipologia**: la tipologia di dati da cui è formato il vettore. Un vettore infatti deve esssere formato da **elementi tutti dello stesso tipo** (vedi @sec-vec)!
 
-#### Caratteristiche degli elementi di un vettore
+I vettori sono caratterizzati da: 
 
--   **un valore**: il valore dell'elemento che può essere di qualsiasi tipo ad esempio un numero o una serie di caratteri
+*  **un valore**: il valore dell'elemento che può essere di qualsiasi tipo ad esempio un numero o una serie di caratteri.
 
--   **un indice di posizione**: un numero intero positivo che identifica la sua posizione all'interno del vettore.
+*  **un indice di posizione**: un numero intero positivo che identifica la sua posizione all'interno del vettore.
 
-![](slides/modulo1/img/vettore.png){fig-align="center"}
 
-#### Creare un vettore con `c()`
+
+### Creare un vettore con `c()`
 
 Concatena diversi oggetti insieme per creare un nuovo oggetto unico
 
@@ -655,7 +765,7 @@ X = 1:3 ; X
 x == X 
 ```
 
-### Tipologie di vettore
+### Tipologie di vettore {#sec-vec}
 
 Tipi di oggetti diversi $\rightarrow$ Tipi di vettori diversi: 
 
@@ -664,7 +774,7 @@ Tipi di oggetti diversi $\rightarrow$ Tipi di vettori diversi:
 - `chr` (`character`): characters `("a", "b", "c")`
 - `factor` (`factor`): factor con diversi livelli
 
-La distinzione più importanti è tra vettori di tipo categoriale (`chr` e `factor`) e vettori di tipo numerico (`int` e `num`): 
+La distinzione più importante è tra vettori di tipo categoriale (`chr` e `factor`) e vettori di tipo numerico (`int` e `num`): 
 
 - `integer` e `numeric`: Operazioni matematiche E calcolo delle frequenze
 - `character` e `factor`: Calcolo delle frequenze
@@ -677,44 +787,53 @@ months = c(5, 6, 8, 10, 12, 16); months
 weight = runif(6, 3, 18) ; weight
 ```
 
-I vettori logici si ottengono testando delle condizioni sulla base dei valori di altri vettori: 
+I vettori logici si ottengono testando delle condizioni sulla base dei valori di altri vettori (@lst-test: 
 
 ```{r}
+#| lst-cap: Testa se ci sono valori maggior di 12 all'interno del vettore
+#| lst-label: lst-test
 months > 12
 ```
 
-Il vettore logico risultante può essere utilizzato
+Il vettore logico risultante può essere utilizzato per filtrare i valori dal vettore orginale (vedi @sec-filterVec).
+
+
+
+La funzione `rep()` in @lst-rep crea un vettore di tipo character ripetendo i $K$ valori per $X$ volte. Nell'esempio in @lst-rep, le categorie `low`, `medium`, `high` vengono ripertute tutte per due volte (argomento `each = 2`).
+
+La funzione `factor()` forza il vettore ad essere un vettore con $K$ categorie e un numero di valori uguale al numero di elementi dentro il vettore. 
 
 ```{r}
-v_chr = c(letters[1:3], LETTERS[4:6]); v_chr
+#| lst-cap: Creare un vettore di tipo factor usando la funzione rep
+#| lst-label: lst-rep
+ses = factor(rep(c("low", "medium", "high"), each = 2))
+ses
 ```
 
-```{r}
-ses = factor(rep(c("low", "medium", "high"), each = 2)); ses
-```
-
-Il secondo vettore è un vettore di tipo `factor` e prevede che si possa specificare l'ordine dei livelli 
+L'argomento `levels` all'interno della funzione `factor()` (vedi @lst-levels) permette di specificare l'ordine delle categorie, altrimenti il default di R le mette in ordine alfabetico.
 
 ```{r}
+#| lst-cap: Ordinare i livelli della vraibile con levels
+#| lst-label: lst-levels
 ses = factor(ses, levels = c("low", "medium", "high"))
 ```
 
-Attenzione a non mischiare gli oggetti!!
+### Indicizzare i vettori {#sec-filterVec}
 
-`num` + `logi` $\rightarrow$ `num` 
+I vttori si indicizzano usando le parentesi quadre: 
 
-`num` + `factor` $\rightarrow$ `num` 
+`nome_vettore[indice]` dove l'indice è la posizione all'interno del vettore che si vuole ottenere. 
 
-`num` + `chr` $\rightarrow$ `chr`
+In R, la numerazione delle posizioni all'interno del vettore va da 1 alla lunghezza del vettore.
 
-`chr` + `logi` $\rightarrow$ `chr`
-
-### Indicizzare i vettori
+Dato ad esempio il vettore `nomi` come segue
 
 ```{r eval=TRUE}
 nomi = c("Pasquale", "Egidio", "Debora", "Luca", "Andrea")
 nomi
 ```
+
+Possiamo immaginare ogni nome come occupante di una specifica posizione all'interno del vettore, come segue:
 
 \begin{table}[h]
 \centering
@@ -726,7 +845,7 @@ nomi
 \end{tabular}
 \end{table}
 
-`nome_vettore[indice]`
+Per cui possiamo estrarre i vari nomi facendo riferimento al loro indice: 
 
 `nomi[1]` $\rightarrow$  `r nomi[1]`
 
@@ -734,9 +853,21 @@ nomi
 
 `nomi[seq(2, 5, by = 2)]` $\rightarrow$  `r nomi[seq(2, 5, by = 2)]`
 
+
+:::{.callout-note}
+
+## `seq(min, max, by)`
+
+Questa funzione genera un vettore partendo da un valore minimo fino a un valore massimo con uno step incrementale definito dall'utente: 
+
 ```{r}
-weight
+seq(1,5, by = 0.5)
 ```
+
+
+:::
+
+L'indicizzazione dei vettori funziona anche su vettori di tipo numerico, come negli esempi sequenti:
 
 ```{r eval=TRUE}
 weight[2] # secondo elemento di weight
@@ -746,59 +877,85 @@ weight[2:6] # elementi dal 2 al 6 (incluso)
 weight[-2] # rimuove il secondo elemento
 ```
 
-Si può indicizzare con la logica
+
+I vettori logici possono essere utilizzati per estrarre dteerminati valori da un vettore: 
 
 ```{r}
-weight > 7
+weight > 7 
 ```
+
+
+Restituisce un vettore logico dove si `TRUE` se il valore in quella posizione è maggiore di 7 e `FALSE` in ogni altro caso. In questo caso si hanno valori veri (quindi osservazioni con un valore magggiore di 7) nelle seguenti posizioni del vettore: 
+
+```{r}
+#| echo: false
+which(weight>7)
+```
+
+Usando il vettore logico dentro le parentesi quadre, si otterranno esattamente i valori che occupano quelle posizioni:
 
 ```{r}
 weight[weight > 7] # solo i valori > di 7
 weight[weight >= 4.5 & weight < 8] # valori compresi tra 4.5 e 8
 ```
 
-:::{.callout-note}
-## Esercizio
-
-In un nuovo documento quarto (`esercizi-modulo1.qmd`):
-
-- Assegna i seguenti valori a un oggetto chiamato `my_var` (i valori devono essere **concatenati** tra loro)
-
-> 23, 24, 25, 27, 28, 29, 30
-
-- Calcola la media di `my_var` usando la funzione `mean()`, il minimo (`min()`) e massimo (`max()`)
-
-- Crea un oggetto (`voto`) di tipo character come segue (usare la funzione `rep()`): 
-  - "si" ripetuto 12 volte
-  - "no" ripetuto 15 volte 
-
-:::
-
 ## Matrici
 
-Le matrici sono una struttura dati **bidimensionale** (caratterizzate da 2 dimensioni **`dim()`** ) dove il numero di righe rappresenta la dimensione 1 e il numero di colonne la dimensione 2.
+Le matrici sono una struttura dati **bidimensionale** (caratterizzate da 2 dimensioni, la funzione **`dim()`** permette di sapere da quante righe e da quante colonne è composta) dove il numero di righe rappresenta la dimensione 1 e il numero di colonne la dimensione 2.
 
 ```{r, echo=TRUE}
 my_mat = matrix(data = 1:10, nrow = 2, ncol = 5)
 my_mat
 ```
 
+Per creare una matrice in R si può usare la funzione `matrix()`, come segue
+
      `matrix(data, nrow, ncol, byrow = FALSE)`
+     
+dove `data` sono i valori che si vogliono mettere all'interno della matrice, `nrow` e `ncol` specificano il numero di righe e di colonne che si vogliono mettere nella matrice e `byrow = FALSE` (default) indica che i dati vengono organizzati per colonna (ovvero la matrice viene rimpita seguendo le colonne).
+
 
 ```{r}
 # crea una matrice con 3 righe e 4 colonne 
 # (i valori sono sistemati per riga)
 A = matrix(1:12, nrow=3, ncol = 4, byrow = TRUE)
 # assegna dei nomi alle righe 
-rownames(A) = paste("a", 
-                    1:nrow(A), sep ="_") 
+rownames(A) = paste("a",1:nrow(A), sep ="_") 
 # assegna dei nomi alle colonne
-colnames(A) = paste("b", 
-                    1:ncol(A), sep ="_")
+colnames(A) = paste("b",1:ncol(A), sep ="_")
 A
 ```
 
+
+Nel caso precedente, la lunghezza del vettore organizzato nella matrice rientrava perfettamente nel numero di celle disponibili all'interno della matrice stessa. Se questo non succede, si hanno due casi: 
+
+:::{.callout-note}
+## Il numero di celle è un moltiplicando della lunghezza del vettore 
+
+```{r}
+data = 1:12
+matrix(data, nrow = 6, ncol =4)
+```
+
+Non succede niente, non appaiono warning e la matrice viene creata ripetendo due volte il vettore originale. 
+
+:::
+
+:::{.callout-note}
+## Il numero di celle NON è un moltiplicando della lunghezza del vettore 
+
+```{r}
+data = 1:12
+matrix(data, nrow = 3, ncol =2)
+```
+
+Si ottiene un warning, ma R comunque crea la matrice come può.
+
+:::
+
 ### Caratteristiche
+
+Le matrici di fatto sono la concatenazione bidimensionale di una serie di vettori. Di conseguenza: 
 
 * Possono contenere una sola tipologia di dati
 * Essendo bidimensionali, sono necessari due indici di posizione
@@ -806,6 +963,12 @@ A
 * Possono essere viste come un insieme di singoli vettori
 
 ### Indicizzare le matrici
+
+La logica per l'indicizzaizone è la stessa che si usa per i vettori, solo che all'interno delle parentesi quadre va inserito anche l'indice per le colonne: 
+
+`my_matrix[righe, colonne]`
+
+Il primo indice fa sempre riferimento alle righe, il secondo alle colonne: 
 
 ```{r echo = FALSE, results='asis'}
 #| tbl-cap: "Struttura di una matrice"
@@ -821,7 +984,8 @@ my.mat %>% kable(align = "c")
 
 ```
 
-`my_matrix[righe, colonne]`
+
+Ad esempio, data la matrice `A`:
 
 ```{r}
 A
@@ -833,17 +997,7 @@ A
 
 `A[2, 3]` $\rightarrow$ `r A[2, 3]` 
 
-:::{.callout-note}
-## Esercizio
 
-- Crea una matrice $3 \times 3$ con la tabellina del 3 fino a 24, assegnandola all'oggetto `my_mat`
-- Dai un nome alle righe (e.g., `r1, r2, r3`) e alle colonne (e.g., `c1, c2, c3`)
-- Indice da `my_mat`:
-  - La prima riga
-  - La seconda colonna
-  - La cella $[1,2]$
-
-:::
 
 ## Dataframe
 
