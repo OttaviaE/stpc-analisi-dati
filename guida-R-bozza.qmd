@@ -120,6 +120,71 @@ Posit cloud si appoggia sulla rete (ovviamente). Se non ne avete necessità, vi 
 
 :::
 
+## Caricare i file su Posit Cloud
+
+Posit Cloud funziona sui server di Posit, non sul vostro computer: R **non vede** i file salvati sul vostro PC (nella cartella Download, sul Desktop ecc.). Prima di poter usare un file di dati (ad esempio un `.csv`, un `.xlsx` o un `.RData`) bisogna quindi **caricarlo nel progetto** su Posit Cloud.
+
+### Caricare un file dal proprio computer
+
+1. Aprire il progetto su Posit Cloud.
+2. Nel pannello in basso a destra, aprire la scheda **Files**.
+3. (Facoltativo) Entrare nella cartella in cui si vuole salvare il file (ad esempio una cartella `data` creata con il pulsante **New Folder**).
+4. Cliccare sul pulsante **Upload**.
+5. Nella finestra che si apre, cliccare su **Scegli file** (o **Browse...**) e selezionare il file dal proprio computer.
+6. Controllare che la cartella indicata in **Target directory** sia quella giusta e cliccare su **OK**.
+
+Al termine del caricamento il file compare nella lista del pannello **Files** e può essere usato da R.
+
+:::{.callout-tip}
+
+Il pulsante **Upload** carica **un file alla volta**. Per caricare più file (o un'intera cartella) insieme, comprimeteli prima in un file `.zip` sul vostro computer e caricate lo `.zip`: Posit Cloud lo estrae automaticamente nella cartella di destinazione.
+
+:::
+
+### Leggere il file caricato
+
+Il progetto su Posit Cloud si trova nella cartella `/cloud/project`, che è anche la *working directory* di default. Per leggere un file caricato nella cartella principale del progetto basta quindi indicarne il nome:
+
+```{r}
+#| eval: false
+dati <- read.csv("nome-file.csv")
+```
+
+Se il file è stato caricato in una sottocartella (ad esempio `data`), bisogna indicare anche il nome della cartella:
+
+```{r}
+#| eval: false
+dati <- read.csv("data/nome-file.csv")
+```
+
+
+:::{.callout-warning}
+
+Quando si lavora con un documento Quarto (`.qmd`), il file di dati deve trovarsi **nella stessa cartella del file `.qmd`** (oppure va indicato il percorso a partire da quella cartella). Se il report non si genera e compare un errore del tipo `cannot open file ... No such file or directory`, controllate dove si trova il file di dati rispetto al `.qmd`.
+
+:::
+
+:::{.callout-caution}
+
+Per le persone che utilizzano l'Ipad: Quando viene scaricato il file `.qmd` dal Moodle del corso, viene aggiunta di default l'estensione `.txt`. 
+
+Per ovviare al problema e avere un file compilabile in quarto: 
+
+- Uplodare il file come spiegato nella seizione precedente 
+- Cliccare sulla freccina del rename, dopo aver selezionato il file 
+- Togleiere (ovvero cancellare) l'estensione `.txt` dal vostro file
+:::
+
+### Scaricare un file da Posit Cloud
+
+Per salvare sul proprio computer un file presente nel progetto (uno script, un dataset modificato, un report):
+
+1. Nel pannello **Files**, spuntare la casella accanto al file.
+2. Cliccare sull'icona a forma di ingranaggio **More** e scegliere **Export...**.
+3. Cliccare su **Download**.
+
+Se si selezionano più file, Posit Cloud li scarica insieme in un unico file `.zip`.
+
 ## Posit e quarto
 
 Per l'utilizzo di quarto per la generazione di report, è necessario sbloccare i pop up: 
