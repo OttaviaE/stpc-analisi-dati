@@ -930,7 +930,7 @@ A
 Nel caso precedente, la lunghezza del vettore organizzato nella matrice rientrava perfettamente nel numero di celle disponibili all'interno della matrice stessa. Se questo non succede, si hanno due casi: 
 
 :::{.callout-note}
-## Il numero di celle è un moltiplicando della lunghezza del vettore 
+## Il numero di celle è un moltiplicando/dividendo della lunghezza del vettore 
 
 ```{r}
 data = 1:12
@@ -1001,17 +1001,16 @@ A
 
 ## Dataframe
 
-Il dataframe è la struttura più “complessa”, utile e potente di R: 
+Il dataframe è la struttura più “complessa”, utile e potente di R e
+come le matrici, è composto da due dimensioni (righe $\times$ colonne).
 
-Come le matrici, è composto da due dimensioni (righe $\times$ colonne)
-
-A differenza delle matrici, può contenere dati di tipo diverso
+A differenza delle matrici, può contenere dati di tipo diverso:
 
 * Ogni elemento (colonna) è un vettore con un nome associato 
 
 * Ogni colonna deve avere lo stesso numero di elementi
 di conseguenza ogni riga ha lo stesso numero di elementi (struttura
-rettangolare)
+rettangolare).
 
 * **Tutte le colonne (quindi tutti i vettori contenuti nel dataframe) devono avere la stessa lunghezza**
 
@@ -1025,9 +1024,18 @@ data = data.frame(id = paste0("id", 1:length(weight)),
 data
 ```
 
-### Indicizzare i dataframe
+Per convenzione, i dati sperimentali vengono organizzati in modo che le unità statistiche siano sulle righe e le variabili sulle colonne. In questo modo, sapendo il numero di righe si può ricavare il numero di unità statistiche, sapendo il numero di righe si può ricavare il numero di variabili misurate su quelle unità statistiche.
 
-    data[r, c], data$nome_variabile
+### Indicizzare i dataframe {#sec-indDataframe}
+
+I dataframe si possono indicizzar come le matrici utilizzando le parentesi quadre e i rispettivi indici di riga e colonna: 
+
+
+    data[r, c]
+
+Si può anche usare un'indicizzazione basata sull'estrazione delle singole colonne con l'operatore `$`: 
+
+    data$nome_variabile
 
 :::: {.columns}
 
@@ -1060,33 +1068,43 @@ Nel caso del dataframe:
 ::::{.columns}
 
 :::{.column width=50%}
+Estrae tutte le righe che soddisfano la condizione e tutte le colonne.
 ```{r}
 data[data$weight >=7, ]
 ```
 :::
 
 :::{.column width=50%}
+Estrare i valori del vettore `data$id` che soddisfano la condizione sulla variabile weight.
+
 ```{r}
-data[data$weight >=7 & data$weight < 9, 
-     "id"]
+data$id[data$weight >=7 & data$weight < 9]
 ```
 :::
 
 ::::
+
 ### Attributi e caratteristiche
 
 Le funzioni **`names()`** , **`dim()`**, **`nrow()`**, **`ncol()`** sono alcune delle funzioni per ottenere informazioni sulle caratteristiche del dataframe. 
 
-La funzione più utile è **`str()`** poichè ci restituisce una veloce overview della struttura del dataframe: dimensioni, tipi di variabili,...
+La funzione più utile è **`str()`** poichè ci restituisce una veloce overview della struttura del dataframe: dimensioni, tipi di variabili.
 
 ```{r,echo=TRUE}
-str(data) 
+names(data) # estrae i nomi del dataset
+dim(data) # numero di righe e numero di colonne del dataset
+str(data) # restituisce la struttura 
+nrow(data) # numero di righe (equivale al numero di unità statistiche)
+ncol(data) # numero di colonne (equivale al numero di variabili)
 ```
+
 
 :::{.callout-note}
 ## NB
 
-La funzione **`str()`** funziona su tutti gli oggetti di R
+La funzione **`str()`** funziona su tutti gli oggetti di R (vettori, matrici, dataframe, liste). 
+
+Restituisce sempre le informazioni circa la dimensionalità e il numero (e tipo) di elementi contentui nell'oggetto.
 :::
 
 ## Liste
@@ -1094,11 +1112,14 @@ La funzione **`str()`** funziona su tutti gli oggetti di R
       list(name1 = obj1, name2 = obj2, name3 = obj3, . . .)
       
 
-Permette di creare liste di oggetti diversi (matrici, vettori, variabli) di diverso tipo (`numeric`, `character`, `integer`)
+Permette di creare liste di oggetti diversi (matrici, vettori, variabli) di diverso tipo (`numeric`, `character`, `integer`). 
+Ogni oggetto nella lista può avere un nome diverso che può essere utilizzato per l'indicizzazione (vedi @sec-indListe).
 
-Molti dei risultati ottenuti con le funzioni per le analisi statistiche sono organizzati in liste, proprio perché permettono di contenere oggetti di natura diversa e con dimensionalità diversa
+Molti dei risultati ottenuti con le funzioni per le analisi statistiche sono organizzati in liste, proprio perché permettono di contenere oggetti di natura diversa e con dimensionalità diversa.
 
 ```{r}
+#| lst-label: lst-list
+#| lst-cap: Crea una lista con oggetti diversi (vettori e matrici). Ad ogni oggetto viene assegnato un nome
 A <- c(1,8,5,0)
 M <- matrix(A, 2, 2)
 Nomi3 <- c("giorgio", "ugo", "anna")
@@ -1107,20 +1128,26 @@ OgLista <- list(a = A, Mat = M, nomi = Nomi3, X = LV)
 str(OgLista)
 ```
 
-### Indicizzare le liste
+### Indicizzare le liste {#sec-indListe}
 
-    lista[[i]], lista$nome_oggettpo
+    lista[[i]]
 
-`[[i]]`: indice dell'oggetto all'interno della lista a cui si vuole accedere 
+`[[i]]`: indice $i$ dell'i-esimo oggetto all'interno della lista a cui si vuole accedere (vedi @lst-indList1)
 
 ```{r}
-
+#| lst-cap: Accede al secondo oggetto della lista con il suo indice
+#| lst-label: lst-indList1
 OgLista[[2]]
 ```
 
-`$nome_oggetto`
+
+`lista$nome_oggetto`
+
+Gli oggetti dentro le liste si possono indicizzare anche attraverso i loro nomi usando l'operatore `$` (vedi @lst-indList2):
 
 ```{r}
+#| lst-cap: Accede al'oggetto Mat nella lista usando il suo nome
+#| lst-label: lst-indList2
 OgLista$Mat
 ```
 
@@ -1128,11 +1155,11 @@ OgLista$Mat
 
 ### Importa base
 
-    read.csv2("file_path", header = T, sep = ";")
+    read.csv2("file_path", header = TRUE, sep = ";")
 
-Il default della funzione prevede che la prima riga contenga i nomi delle variabili e che il separatore di colonne sia ";".
+Il default della funzione prevede che la prima riga contenga i nomi delle variabili (`header = TRUE`) e che il separatore di colonne (ovvero il valore che fa riconoscere ad R le diverse colonne del dataset) sia ";" (`sep = ";"`).
 
-Se si possiede un dataset chiamato "dati" nella cartella "data", questo codice lo importerà all'interno dell'ambiente
+Se si possiede un dataset chiamato "dati" nella cartella "data", questo codice lo importerà all'interno dell'ambiente.
 
 ```{r}
 #| eval: false
@@ -1140,7 +1167,20 @@ Se si possiede un dataset chiamato "dati" nella cartella "data", questo codice l
 data <- read.csv2("data/dati.csv")
 ```
 
+
+:::{.callout-caution}
+
+Nei dataset messi a disposizione per questo corso, si deve sempre usare la funzione `read.csv2()`.
+
+Perché il codice di sopra funzioni, si assume che la cartella `data` sia all'interno del progetto R creato per il corso (vedi @sec-project).
+:::
+
 ### Importa alternativa 1
+
+:::{.callout-warning}
+
+Questa alternativa è presentata solo per completezza di informazione, ma è fortemente sconsigliata visto che non può essere automatizzata dentro i documento quarto.
+:::
 
 ```{r}
 #| echo: false
@@ -1172,36 +1212,55 @@ knitr::include_graphics("slides/modulo1/img/import3.png")
 
 ### Importa alternativa 2
 
+:::{.callout-warning}
+
+Questa funzione è la funzione base su cui poggia `read.csv2()`. Cambiano i default, che in questo caso sono ottimizzati per i file csv creati in altre regioni del mondo, dove "," è il sepratore di colonna di default e "." è il separatore di decimali di default.
+
+:::
+
 ```{r}
 #| echo: true
 dati = read.csv("slides/dati.csv", 
-                sep =";", dec =",", header = TRUE)
+                sep =",", dec =".", header = TRUE)
 head(dati)
 ```
 
 ## Sintesi delle strutture tabellari
 
-#### `summary()`
+### Riassunto descrittivo: `summary()`
 
     summary(data)
 
-Riassume il contenuto di strutture di dati 
+Riassume il contenuto di strutture di dati, riportando diverse statistiche descrittive (@tbl-summary). Tutte le statistiche descrittive possono essere ottenute con funzioni equivalenti. 
+
+| Statistica | Nome                  | Cosa indica                                                                                     | Funzione equivalente      |
+|------------|-----------------------|-------------------------------------------------------------------------------------------------|---------------------------|
+| `Min.`     | Minimo                | Il valore più piccolo osservato                                                                 | `min(x)`                  |
+| `1st Qu.`  | Primo quartile ($Q_1$) | Il valore preceduto dal 25% delle osservazioni e superato dal restante 75%                     | `quantile(x, 0.25)`       |
+| `Median`   | Mediana ($Q_2$)       | Il valore centrale della distribuzione ordinata: il 50% delle osservazioni sta sotto, il 50% sopra | `median(x)`            |
+| `Mean`     | Media aritmetica      | Il baricentro della distribuzione: la somma dei valori divisa per il numero di osservazioni     | `mean(x)`                 |
+| `3rd Qu.`  | Terzo quartile ($Q_3$) | Il valore preceduto dal 75% delle osservazioni e superato dal restante 25%                     | `quantile(x, 0.75)`       |
+| `Max.`     | Massimo               | Il valore più grande osservato                                                                  | `max(x)`                  |
+| `NA's`     | Valori mancanti       | Il numero di osservazioni mancanti (compare solo se ce ne sono)                                 | `sum(is.na(x))`           |
+
+: Statistiche restituite dalla funzione `summary()` per una variabile numerica {#tbl-summary}
 
 ```{r}
 summary(rock)
 ```
 
-#### `str()`
+### Struttura: `str()`
 
     str(data)
     
-Fornisce informazioni circa la struttura generale di un oggetto: 
+Fornisce informazioni circa la struttura generale di un oggetto (qualsiasi oggetto): 
 
 ```{r}
-str(rock)
+str(rock) #dataframe
+str(weight)
 ```
 
-#### `head()` ($\alpha$) and `tail()` ($\omega$)
+### L'inizio `head()` e la fine `tail()` di un oggetto
 
 :::: {.columns}
 
@@ -1228,45 +1287,43 @@ tail(rock)
 
 ::::
 
-#### `apply()`
+### `apply()`
+
+Ci sono diverse funzioni in R che permettono di applicare la stessa funzione più volte su uno stesso oggetto, come ad esempio la funzione `apply()`:
 
     apply(data, MARGIN, FUN)
 
-`data`: i dati su cui si vuole lavorare
+`data`: i dati su cui si vuole lavorare. Si può prendere anche una sottoselezione di dati utilizzando l'indicizzazione del dataframe (sia per le righe sia per le colonne, vedi @sec-indDataframe).
 
-`MARGIN`: 1 applica la funzione sulle righe (attraverso le colonne), 2 applica la funzione sulle colonne (attraverso le righe)
+`MARGIN = 1`: applica la funzione sulle righe (attraverso le colonne). Questo vuol dire che si ottiene un vettore dei risultati di lunghezza uguale al numero di righe del dataframe.
+
+`MARGIN = 2`: applica la funzione sulle colonne (attraverso le righe). Questo vuol dire che si ottiene un vettore dei risultati di lunghezza uguale al numero di colonne del dataframe.
 
 `FUN`: la funzione che si vuole applicare
 
 ```{r}
-apply(rock, 1, sum)   # Somma per riga
-apply(rock, 2, mean)  # Media per colonna
+apply(rock, 1, sum)   # Somma per riga 
+apply(rock, 2, mean)  # Media per colonna 
 ```
 
 # Modulo 2 -- Scale di misura e statistica descrittiva univariata
 
-## Variabili
+## Tipi di variabili
 
-\begin{center}
-\Large  QUALITATIVE / CATEGORIALI
-\end{center}
-\begin{itemize}
-\item sconnesse: $\{a,b,c\}$
-\item ordinate:$\{a,b,c\}$ con $a < b < c$ (oppure $a > b > c$)
-\end{itemize}
+**QUALITATIVE / CATEGORIALI**
 
-\begin{center}
-\Large  QUANTITATIVE / METRICHE
-\end{center}
-\begin{itemize}
-\item Discrete: $\mathbb{Z}$
-\item Continue: $\mathbb{R}$
-\end{itemize}
+- Sconnesse: $\{a, b, c\}$
+- Ordinate: $\{a, b, c\}$ con $a < b < c$ (oppure $a > b > c$)
 
-#### Stevens (1946)
+**QUANTITATIVE / METRICHE**
 
-Si differenziano in base alla quantità di informazione che può essere ricavata
-	
+- Discrete: $\mathbb{Z}$
+- Continue: $\mathbb{R}$
+
+## Scale di misura (Stevens, 1946)
+
+Le variabili si differenziano in base alla quantità di informazione che può essere ricavata.
+
 \begin{itemize}
 \item Variabili qualitative
 \begin{itemize}
@@ -1284,22 +1341,7 @@ Si differenziano in base alla quantità di informazione che può essere ricavata
 
 ### Categoriali - Nominali
 
-Comune di residenza, sesso biologico, patologia clinica ecc. Vale solo l'equivalenza ($=$ o $\neq$)
-
-\begin{center}
-\includegraphics[width=.20\linewidth]{slides/modulo2/img/nominale.png}
-\end{center}
-
-Al posto di A, B, C si poteva scrivere $\alpha$, $\beta$ $\gamma$, 1,2,3 (ma i numeri valgono solo come etichette!)
-
-Caratteristiche: 
-
-\begin{itemize}
-\item  Categorie \textbf{distintive}: gli elementi che appartengono a categorie differenti vengono considerati di tipo diverso
-\item Categorie \textbf{mutualmente escludentesi}: ogni elemento può rientrare in una ed una sola categoria
-\item Categorie \textbf{collettivamente esaustive}: tutti gli elementi vengono classificati nelle categorie della variabile, nessuno escluso
-	
-\end{itemize}
+Comune di residenza, sesso biologico, patologia clinica ecc. 
 
 #### `as.factor()`
 
@@ -1330,10 +1372,15 @@ diagnosi
 as.factor(diagnosi) 
 ```
 
-### Categoriali - Ordinali
 
-Titolo di studio, gradimento di un prodotto, valutazione di una malattia (e.g., alto, medio, basso), fasce di reddito ecc. Vale sia l'equivalenza ($=$ o $\neq$) sia l'ordinamento ($<$ o $>$)
-	
+### Scala ordinale
+
+Distingue un insieme di dati in diverse categorie che sono ordinabili a seconda della quantità di caratteristica posseduta. Vale sia l'equivalenza ($=$ o $\neq$) sia l'ordinamento ($<$ o $>$).
+
+Esempi: Titolo di studio, gradimento di un prodotto, valutazione di una malattia (alto, medio, basso).
+
+Le etichette numeriche valgono per il loro ordine (non ha senso compiere operazioni tra di loro).
+
 \begin{center}
 \includegraphics[width=.20\linewidth]{slides/modulo2/img/ordinale.png}
 \end{center}
@@ -1352,14 +1399,43 @@ Le etichette numeriche valgono per il loro ordine (non ha senso compiere operazi
 Converte la variabile in una variabile con tanti livelli quanti sono i valori unici e viene forzato un ordine su questi livelli: 
 
 ```{r}
+#| lst-cap: Utilizzo dell'agormento levels per ordinare i livelli di una variabile categoriale ordinata
+#| lst-label: lst-order
 Voto <- c("alto","medio","medio","basso","alto") 
 Voto
-factor(Voto,levels=c("basso","medio","alto"), ordered=TRUE) 
+factor(Voto,levels=c("basso","medio","alto")) 
 ```
 
-### Quantitative -- Scala ad intervalli equivalenti
 
-Lo $0$ è arbitrario, ma c'è un'\emph{unita di misura} per cui le categorie si trovano alla stessa distanza. Temperatura in Celsius, Q.I., scale di atteggiamento ecc. Vale equivalenza ($=$ o $\neq$), ordinamento ($<$ o $>$) e differenza ($+$ o $-$): 
+:::{.callout-warning}
+
+L'utilizzo dell'argomento ordered è deprecato, sconsiglio di usarlo. In caso di variabili ordinali, è sufficiente ordinare i livelli attraverso l'argomento levels come mostrato oin @lst-order.
+:::
+
+### Scala a intervalli equivalenti
+
+Lo $0$ è arbitrario, ma c'è un'unità di misura per cui le categorie si trovano alla stessa distanza. Vale equivalenza ($=$ o $\neq$), ordinamento ($<$ o $>$) e differenza ($+$ o $-$).
+
+Esiste una relazione d'ordine tra le quantità e la distanza tra le quantità è nota e definita da una unità di misura costante e **nota**.
+
+Esempi: Temperatura in Celsius, Q.I., scale di atteggiamento.
+
+Se ci sono 0°C, non vuol dire che non c'è calore!
+
+Prendiamo due temperature, $T_a$ e $T_b$. Queste temperature in Celsius $C$ sono $T_a(C) = 5$ e $T_b(C) = 10$.
+
+Quello che si può dire: 
+
+* $T_a(C) < T_b(C)$ (oppure $T_b(C) > T_a(C)$)
+* $T_b(C) - T_a(C) = 5$
+* Non possiamo dire che $T_b(C) = 2T_a(C)$.
+
+Infatti, volendo trasformare le due temperature in Fahrenheit tramite la relazione:
+
+$$F = \dfrac{9}{5}C + 32$$
+si vedrebbe che $T_a(F) = \dfrac{9}{5}5 + 32 = 41$ e $T_a(F) = \dfrac{9}{5}10 + 32 = 50$. 
+
+Rimane la relazione d'ordine, per cui anche $T_a(F) < T_b(F)$, ma cambia sia la differenza tra le due quantità $T_b(F) - T_a(F) = 9$ sia la relazione tra le due, per cui si vede chiaramente che $T_a(F) \neq T_b(F)$.
 
 \begin{center}
 \includegraphics[width=0.5\linewidth]{slides/modulo2/img/intervalli.png}
@@ -1373,14 +1449,30 @@ Lo $0$ è arbitrario, ma c'è un'\emph{unita di misura} per cui le categorie si 
 \includegraphics[width=0.3\linewidth]{slides/modulo2/img/termometri}
 \end{center}
 
-Se ci sono 0°C, non vuol dire che non c'è temperatura.
-Se ieri c'erano 5°C e oggi ce ne sono 10°C, possiamo dire che oggi fa più caldo di ieri e che ci sono 5°C più di ieri.
-Il fatto che lo 0 non sia arbitrario non ci permette di dire che oggi c'è il doppio del caldo di ieri.
-Trasformando le due temperature in Fahrenheit si ottiene 41°F e 50°F... e la seconda non è più il doppio della prima!
 
-### Quantitative -- Scala a rapporti equivalenti
+### Scala a rapporti equivalenti
 
-Lo 0 è assoluto, indica assenza del fenomeno. Peso, altezza, valori diagnostici. Vale equivalenza ($=$ o $\neq$),  ordinamento ($<$ o $>$), differenza ($+$ o $-$) e rapporto ($\times$ o $\div$)
+Lo $0$ è assoluto: indica assenza del fenomeno. Vale equivalenza ($=$ o $\neq$), ordinamento ($<$ o $>$), differenza ($+$ o $-$) e rapporto ($\times$ o $\div$).
+
+Esempi: Peso, altezza, valori diagnostici.
+
+La presenza dello 0 assoluto permette di andare oltre la mera relazione d'ordine e distanza tra le quantità.
+
+Si prendano ad esempio due pesi, $P_a$ e $P_b$. 
+Questi pesi, misurati in chilogrammi $K$, sono $P_a(K)= 10$ e $P_b(K) = 30$. 
+Quello che si può dire: 
+
+* $P_a(K) < P_b(K)$ ($P_b(K) > P_a(K)$)
+* $P_b(K) - P_a(K) = 20$
+* Ma soprattutto $P_a(K) = \dfrac{1}{3}P_b(K)$ oppure $P_b(K) = 3P_a(K)$
+
+La relazione tra $P_a$ e $P_b$ rimane **invariante** attraverso le diverse trasformazioni di scala. 
+
+Ad esempio, trasformando $P_a(K)$ e $P_b(K)$ in libbre ($L$) mediante la relazione
+
+$$L = K \times 2.20462$$
+per cui $P_a(L) = 10 \times 2.20462 = 22.0462$ e $P_b(L) = 20 \times 2.20462 = 44.0924$. La relazione d'ordine è matenuta e, al netto dei decimali, rimane anche invariante il rapporto tra i due pesi.
+
 	
 \begin{center}
 \includegraphics[width=0.40\linewidth]{slides/modulo2/img/rapporti.png}
@@ -1417,6 +1509,8 @@ str(z)
 
 ## Frequenze
 
+Le frequenze sono le statistiche descrittive più semplici che si possano calcolare su una variabile: indicano quante volte compare ciascuna categoria (o ciascun valore). Si possono calcolare sia sulle variabili categoriali sia su quelle quantitative, ma sono più informative per le prime. Nelle variabili quantitative, soprattutto se continue, quasi ogni valore compare una sola volta, e le frequenze diventano utili solo dopo aver raggruppato i valori in classi.
+
 ### Assolute e relative
 
 \begin{table}[h]
@@ -1437,20 +1531,23 @@ Totale & $n$ & $100$ \\
 
 \vspace{3mm}
 
-\textbf{Frequenza assoluta:}\quad
+\textbf{Frequenza assoluta:} La frequenza assoluta semplice di una categoria è il **numero naturale di unità statistiche** che presentano tale categoria. \quad
 $n_i \geq 0$, con $n_i \in \mathbb{N}$ e
 $\displaystyle\sum_{i=1}^{k} n_i = n$
 
 \vspace{2mm}
 
-\textbf{Frequenza percentuale:}\quad
+\textbf{Frequenza percentuale:} 
+La frequenza relativa semplice (o **frequenza percentuale**) è data dal rapporto tra la frequenza assoluta semplice di tale categoria e il numero totale di unità statistiche osservate. \quad
 $\%_i = \dfrac{n_i}{n}\cdot100$,
 con $0 \leq \%_i \leq 100$ e
 $\displaystyle\sum_{i=1}^{k}\%_i = 100$
 
+#### Frequenze univariate: `table()`
+
     table(variabile)
     
-Calcola le frequenze per ogni categoria. Funziona sia per le variabili categoriali sia per le variabili metriche 
+Calcola le frequenze per ogni categoria. Funziona sia per le variabili categoriali sia per le variabili metriche (anche se ha poco senso).
 
 ```{r}
 table(Genere)
@@ -1518,7 +1615,7 @@ Totale                     & 41 &    & 100.0\% & \\
 
 \end{table}
 
-#### `cumsum()`
+#### Calcolare le frequenze cumulate: `cumsum()`
 
 ```{r}
 #| echo: true
@@ -1545,9 +1642,9 @@ Presentano livelli maggiori di machiavellismo l3 CEO o l3 impiegat3?
 \end{quote}
 \vspace{3mm} 
 
-\item Si confrontano categorie che rappresentano i livelli o valori tipici
+\item Si confrontano categorie che rappresentano i livelli o valori tipici.
 
-\item Consentono di sintetizzare un insieme di misure tramite un unico valore ``rappresentativo'' $\rightarrow$ indice che riassume o descrive i dati e dipende dalla scala di misura dei dati in oggetto
+\item Consentono di sintetizzare un insieme di misure tramite un unico valore ``rappresentativo'' $\rightarrow$ indice che riassume o descrive i dati e dipende dalla scala di misura dei dati in oggetto.
 \end{itemize}
 
 \begin{itemize}
@@ -1559,6 +1656,7 @@ Presentano livelli maggiori di machiavellismo l3 CEO o l3 impiegat3?
 
 Ogni variabile statistica ha l’indice di posizione adeguato: non tutti gli indici si possono calcolare per ogni variabile $\rightarrow$ \textbf{indice di posizione adeguato}
 
+\begin{center}
 \begin{tikzpicture}[
   node distance=0.9cm and 1.8cm,
   boxleft/.style={
@@ -1618,14 +1716,15 @@ MEDIA o MEDIANA
 \draw[arrow] (quant.east) -- (media.west);
 
 \end{tikzpicture}
+\end{center}
 
-#### Moda ($Mo$)
+### Moda ($Mo$)
 
-Categoria che presenta la massima frequenza
+La moda $Mo$ di una variabile $X$ è la categoria a cui è associata la massima frequenza:
 	
 	
 \begin{center}
-	$Mo(X) = max(n_i)$ \\ (categoria con massimo valore di $n_i$)
+	$Mo(X) = \max(n_i)$ \\ (categoria con massimo valore di $n_i$)
 \end{center}
 	
 	
@@ -1636,15 +1735,20 @@ N.B: Si può calcolare per le variabili misurate a qualsiasi livello, anche se d
 possono calcolare altri indici più informativi
 :::
 
+
 ```{r}
 opinione
 max(opinione$n) # restituisce max(n_i)
+# va filtrato il dataframe per ottenere la categoria a cui 
+# è associata la frequenza massima
 opinione[opinione$n == max(opinione$n), "categoria"]
+# codice alternativo che produce lo stesso risultato 
+opinione$categoria[opinione$n == max(opinione$n)]
 ```
 
-#### Mediana
+### Mediana
 
-Categoria/valore che occupa la posizione centrale o mediana ($Pos_{Me}$) nella distribuzione ordinata dei dati
+La mediana $Me$ di una variabile $X$ è la categoria che occupa la posizione centrale o mediana ($Pos_{Me}$) nella distribuzione ordinata dei dati, ovvero che è:
 	
 \begin{itemize}
 \item preceduta da almeno 50\% dei casi
@@ -1657,7 +1761,7 @@ Pos_{Me} = \dfrac{(N+1)}{2}
 
 Il valore di $Pos_{Me}$ va cercato nella distribuzione delle frequenze cumulate e si sceglie la categoria con $N_i \geq Pos_{Me}$
 
-#### Quantili
+### Quantili
 
 Categorie/valori che dividono la distribuzione di frequenza \underline{ordinata} in più parti.
 
@@ -1670,13 +1774,14 @@ Qual è la soglia di reddito oltre cui sta la fascia dei più
 Quali sono le persone che hanno performato al meglio nell'ultimo semestre?
 \end{quote}
 
-Il quantile $x_p$ di ordine $p$ è quella categoria/valore che è:
+Il quantile $x_p$ di ordine $p$ della variabile $X$ è quella categoria/valore che è:
 	
 \begin{itemize}
 \item preceduta da almeno $p$\% dei casi
 \item superata da almeno $(1-p)$\% dei casi
 \end{itemize}
 
+\begin{center}
 \begin{tikzpicture}[
   boxleft/.style={
     draw,
@@ -1774,6 +1879,8 @@ dividono la distribuzione in \textbf{100} parti
 }
 
 \end{tikzpicture}
+\end{center}
+
 
 Per il calcolo dei quantili di diverso ordine, il procedimento è
 	analogo a quello della Mediana, che di fatto è un caso
@@ -1784,21 +1891,21 @@ Per il calcolo dei quantili di diverso ordine, il procedimento è
 Pos_p = \dfrac{n+1}{100}\cdot p 
 \end{equation*}
 
-#### `quantile()`
+#### Trovare i quantili: `quantile()`
 
     quantile(x, probs = c(0, .25, .50, .75, 1))
     
-Funzione per il calcolo dei quantili di diverso ordine (definito dall'argomento `probs`)
+Funzione per il calcolo dei quantili da una variabile $X$ (argomento `x`) di diverso ordine (definito dall'argomento `probs`). Di default, vengono calcolati i quartili, compresi anche il minimo (`0`) e il massimo (`1`) della variabile $X$.
 
 ```{r}
-set.seed(123) # garantisce la replicabilità 
+set.seed(123) # garantisce la replicabilità dei risultati
 x = rnorm(1000, mean = 0, sd = 1)
 quantile(x)
 # calcola i decili 
 quantile(x, probs = seq(0,1, by = .10))
 ```
 
-#### Media
+### Media
 
 La media è una sorta di baricentro della distribuzione dei dati. Data una variabile $X$ composta da $n$ valori:  
 
@@ -1806,6 +1913,7 @@ La media è una sorta di baricentro della distribuzione dei dati. Data una varia
 \bar{X} = \dfrac{\sum_{i = 1}^{n}x_i}{n}
 \end{equation*}
 
+\begin{center}
 \scalebox{.80}{
 \begin{tikzpicture}[scale=0.9]
 
@@ -1829,9 +1937,12 @@ La media è una sorta di baricentro della distribuzione dei dati. Data una varia
 \draw[->, thin, gray] (0,0) -- (7,0) node[right] {Valori};
 
 \end{tikzpicture}}
+\end{center}
 
 I dati: $X = (0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2)$, la media $\bar{X} = 2.811$
 
+
+\begin{center}
 \scalebox{.80}{
 \begin{tikzpicture}[scale=0.9]
 
@@ -1870,6 +1981,8 @@ I dati: $X = (0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2)$, la media $\bar{X} = 2.811$
 
 \end{tikzpicture}
 }
+\end{center}
+
 
 I dati: $X = (1.18,1.02,1.10,1.16,1.01,1.10,1.05,1.12,1.45,1.52,1.54,1.55,10.06,14.46)$, la media $\bar{X} = 2.809$
 
@@ -1886,6 +1999,83 @@ Funzione per calcolare la media di un vettore di valori `x`. L'agromento `na.rm 
 ```{r}
 mean(x)
 ```
+
+## Indici di variabilità
+
+Il concetto di variabilità si riferisce a quanto i punteggi di una distribuzione sono sparsi, ovvero quanto siano simili o dissimili tra loro.
+
+- Il ricorso a un indice di tendenza centrale (come la media) comporta una forte semplificazione
+- È fondamentale capire quanto i dati siano dispersi intorno all'indice di tendenza centrale
+- La variabilità è una caratteristica fondamentale delle distribuzioni: *"Variability is the essence of statistics"* (Cobb, 1992)
+
+Gli indici di variabilità possono assumere solo valori positivi (non ha senso parlare di dispersione negativa) o nulli (quando i dati hanno tutti lo stesso valore).
+
+### Campo di variazione (Gamma) o range
+
+Il campo di variazione è la differenza tra il valore massimo e il valore minimo osservato:
+
+$$\text{gamma} = X_{max} - X_{min}$$
+
+```{r}
+team_A <- c(38, 42, 44, 36, 39, 42, 38, 41)
+max(team_A) - min(team_A)
+```
+
+
+:::{.callout-caution}
+## Limitazione
+
+Dipende solo da due valori (massimo e minimo) e non considera la distribuzione dei dati intermedi.
+:::
+
+
+### La varianza
+
+La varianza $\sigma^2$ è la media degli scarti al quadrato tra i dati e la media:
+
+$$\sigma^2 = \frac{\sum_i^n (X_i - \bar{X})^2}{n}$$
+
+La varianza assume valore minimo $0$ quando tutti i dati sono uguali tra loro e aumenta all'aumentare della dispersione.
+
+::: callout-important
+La funzione `var()` di R calcola la **varianza campionaria**, che divide per $n-1$ anziché $n$. Per dati descrittivi (popolazione osservata) si usa $n$; per stimare la varianza della popolazione da un campione si usa $n-1$.
+:::
+
+### La deviazione standard
+
+La deviazione standard è la radice della varianza:
+
+$$\sigma = \sqrt{\sigma^2}$$
+
+Riporta l'indice di variabilità sulla **scala della variabile**.
+
+Esempio: Se in un campione di dipendenti la variabile `WorkHoursPerWeek` ha media $40$ ore e deviazione standard $2.5$, i dipendenti differiscono mediamente di $2.5$ ore dal carico di lavoro medio.
+
+La deviazione standard, a differenza della varianza, è espressa nella stessa unità di misura della variabile.
+
+### Il coefficiente di variazione
+
+Il coefficiente di variazione è il rapporto tra la deviazione standard e il valore assoluto della media:
+
+$$CV = \frac{\sigma}{|\bar{X}|}$$
+
+Il CV è un indice di **variabilità relativa** fondamentale per eseguire **confronti** tra fenomeni misurati su **scale diverse**.
+
+
+### Differenza interquartilica (IQR)
+
+La differenza interquartilica è la differenza tra il terzo e il primo quartile:
+
+$$IQR = Q_{75} - Q_{25}$$
+
+L'IQR misura la dispersione del 50% centrale dei dati ed è un indice **robusto** perché i valori estremi incidono poco o per nulla.
+
+**Outlier:** valori oltre $[Q_1 - 1.5 \times IQR \;;\; Q_3 + 1.5 \times IQR]$.
+
+Il **boxplot** (vedi sezione @sec-boxplot) visualizza Q1, mediana, Q3 e gli outlier in un unico grafico.
+
+
+La funzione `IQR(x)` permette di calcolare la differenza interquartilica in R per qualsiasi variabile quantitativa.
 
 ## Perché i grafici
 
@@ -1904,12 +2094,13 @@ to such decisions.
 Pastore et al. (2017)
 \end{flushright}
 
-Data set di Anscombe: Quattro dataset, di seguito le statistiche descrittive realitive alla variabile x e alla variabile y e la loro correlazione:
+Data set di Anscombe (@tbl-AnsCombe): Quattro dataset, di seguito le statistiche descrittive realitive alla variabile x e alla variabile y e la loro correlazione:
 
 ```{r}
 #| echo: false
 #| results: asis
 #| tbl-cap: Dataset di Anscombe
+#| label: tbl-AnsCombe
 # Creo la tabella delle statistiche descrittive
 descrittive <- data.frame(
   Dataset = paste("Dataset", 1:4),
@@ -1942,6 +2133,8 @@ knitr::kable(
   align = "lccccc"
 )
 ```
+
+Guardando la @tbl-Anscombe, sembra che i quattro dataset siano identici, in termini di media, varianza e correlazione tra le variabili $x$ e $y$. Tuttavia, se si guardano i grafici a dispersione (vedi @sec-correlazione) tra le variabili $x$ e $y$ dei quattro dataset (@fig-data), appaiono delle differenze abbastanza palesi tra i diversi dataset.
 
 ```{r}
 #| echo: false
@@ -2042,12 +2235,12 @@ barplot(x) # <5>
 ```
 
 1. Grafico di una variabile quantitativa
-2. Grafico a dispersione di due variabili quantitative 
-3. Istogramma di una variabile quantitativa 
-4. Boxplot della distribuzione quartile di una (o più)  variabili
-5. Grafico a barre per le frequenze delle variabili qualitative
+2. Grafico a dispersione di due variabili quantitative (vedi @sec-correlazione)
+3. Istogramma di una variabile quantitativa (@sec-hist)
+4. Boxplot della distribuzione quartile di una (o più)  variabili (@sec-boxplot)
+5. Grafico a barre per le frequenze delle variabili qualitative (@sec-barplot)
 
-### Grafico a barre
+### Grafico a barre {#sec-barplot}
 
 Usato per variabili qualitative nominali o ordinali: 
 
@@ -2176,9 +2369,20 @@ table(dati)
 barplot(table(dati), col = "darkgreen")
 ```
 
-### Istogrammi
+### Istogrammi {#sec-hist}
 
-`hist(x, breaks)` Produce un istogramma a partire da un vettore x di osservazioni quantitative. `breaks` definisce la larghezza delle singole barre, secondo diverse regole 
+`hist(x, breaks)` produce un istogramma a partire da un vettore `x` di osservazioni quantitative.
+
+Per costruire l'istogramma, l'intervallo dei valori di `x` viene diviso in classi contigue, disposte sull'asse delle $x$. Per ogni classe si conta quante osservazioni vi ricadono: questa frequenza è l'altezza della barra sull'asse delle $y$.
+
+L'argomento `breaks` stabilisce come vengono costruite le classi. Può essere il numero di classi desiderato, una regola per calcolarlo (`"Sturges"`, il default, `"FD"` o `"Scott"`), oppure un vettore con i punti di taglio esatti. Il numero di classi determina la loro ampiezza:
+
+- **Classi strette (molti `breaks`)**: ogni classe raccoglie poche osservazioni, quindi le barre sono basse e alcune classi possono restare vuote. L'istogramma risulta frastagliato e difficile da leggere.
+- **Classi larghe (pochi `breaks`)**: ogni classe raccoglie molte osservazioni, quindi le barre sono più alte ma sono poche. L'istogramma diventa troppo grossolano e nasconde la forma della distribuzione.
+
+:::{.callout-note}
+Quando `breaks` è un numero, R lo usa come *suggerimento* e lo arrotonda a intervalli "puliti". Per questo con `breaks = 145` non si ottengono esattamente 145 barre.
+:::
 
 ```{r}
 #| echo: false
@@ -2303,9 +2507,9 @@ User defined:
 
 \end{center}
 
-### Boxplot
+### Boxplot {#sec-boxplot}
 
-`boxplot(x)` Produce un boxplot a partire da un vettore X di osservazioni quantitative 
+`boxplot(x)` Produce un boxplot a partire da un vettore X di osservazioni quantitative.
 
 ```{r}
 #| echo: false
@@ -2370,6 +2574,8 @@ $$[Q_1 - 1.5 \times IQR, \, Q_3 + 1.5 \times IQR]$$
 
 dove $IQR = Q_3 - Q_1$ (Inter-quartile range)
 
+Tutti i valori che cadono al di fuori dei baffi, sono definiti outliers.
+
 Settando l'argomento `range = x` si può cambiare il modo in cui vengono calcolati i baffi: 
 
 ```{r}
@@ -2385,7 +2591,7 @@ boxplot(x, range = 0)
 
 ## Esempi
 
-#### `barplot()`
+### `barplot()`
 
 ```{r}
 #| eval: false
@@ -2426,7 +2632,7 @@ barplot(table(voto),
 
 ```
 
-#### `boxplot()`
+### `boxplot()`
 
 ```{r}
 #| echo: false
@@ -2462,7 +2668,7 @@ boxplot(y_ceiling, col = "gold")
 
 @fig-boxes-3: La distribuzione è squilibrata verso l'alto, ovvero verso il massimo, presentando una coda più "pesante" verso il minimo
 
-#### `hist()`
+### `hist()`
 
 ```{r}
 #| echo: false
@@ -2480,7 +2686,7 @@ hist(y_floor, col = "lightblue")
 hist(y_ceiling, col = "gold")
 ```
 
-#### Confronto boxplot vs istogramma
+### Confronto boxplot vs istogramma
 
 ```{r}
 #| echo: false
@@ -2488,45 +2694,18 @@ hist(y_ceiling, col = "gold")
 #| out-width: 100%
 #| label: fig-comparison0
 #| layout-ncol: 2
+#| layout-nrow: 3
 #| fig-cap: Boxplot vs Istogramma
 #| fig-subcap: 
 #|   - "boxplot(x)"
 #|   - "hist(x)"
 
 boxplot(x, col ="darkorange"); hist(x, col ="darkorange")
-```
-
-#### Confronto boxplot vs istogramma
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 100%
-#| label: fig-comparison1
-#| layout-ncol: 2
-#| fig-cap: Boxplot vs Istogramma
-#| fig-subcap: 
-#|   - "boxplot(y)"
-#|   - "hist(y)"
-
 boxplot(y_floor, col ="lightblue"); hist(y_floor, col ="lightblue")
-```
-
-#### Confronto boxplot vs istogramma
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 100%
-#| label: fig-comparison2
-#| layout-ncol: 2
-#| fig-cap: Boxplot vs Istogramma
-#| fig-subcap: 
-#|   - "boxplot(z)"
-#|   - "hist(z)"
-
 boxplot(y_ceiling, col ="gold"); hist(y_ceiling, col ="gold")
 ```
+
+Forzano i boxpolot ad essere in orizzontale attraverso l'argomento `horizontal = TRUE` (@fig-myFigure) si può apprezzare meglio la similutudine tra la forma della distribuzione vista con l'istogramma e la forma della distribuzione vista con il boxplot.
 
 ```{r}
 #| label: fig-myfigure
@@ -2558,16 +2737,30 @@ y = y_floor
 z = y_ceiling
 ```
 
+@fig-boxMulti illustra gli stessi boxplot disposti nella stessa finestra (@lst-box). 
+
+
 ```{r}
 #| echo: true
-boxplot(x, y, z, names = c("Normale", "Pavimento", "Soffitto"), 
+#| fig-cap: Tanti boxplot in un unico grafico 
+#| label: fig-boxMulti
+#| lst-cap: Finestra grafica con molti boxplot
+#| lst-label: lst-box
+boxplot(x, y, z, 
+        names = c("Normale", "Pavimento", "Soffitto"), 
         col = c("darkorange", "lightblue", "gold"))
 ```
 
 # Modulo 3 -- Statistica descrittiva bivariata
 
 ## Variabile statistica doppia
+Si consideri un gruppo di 11 persone, per ciascuna delle quali sono state rilevate due variabili categoriali: il titolo di studio ($X$, con categorie Elementare, Secondaria Inferiore e Secondaria Superiore) e l'occupazione ($Y$, con categorie Disoccupato, Impiegato e Dirigente). I dati sono riportati in @tbl-dati-doppia.
 
+```{=latex}
+\begin{table}[htbp]
+\centering
+\caption{Titolo di studio e occupazione rilevati su 11 persone}
+\label{tbl-dati-doppia}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
 $X$: Istruzione & E & E & E & SI & SI & SI & SS & SS & SS & SS & SS\\
@@ -2575,10 +2768,16 @@ $X$: Istruzione & E & E & E & SI & SI & SI & SS & SS & SS & SS & SS\\
 $Y$: Occupazione & DI & I & I & DI & I & I & D & I & I & D & D\\
 \hline
 \end{tabular}
+\end{table}
+```
 
-\begin{center}
-\begin{minipage}[t]{.48\linewidth}
+Ciascuna delle due variabili può essere descritta separatamente attraverso la sua distribuzione di frequenza. @tbl-freq-x riporta le frequenze del titolo di studio ($n_{k.}$, il numero di persone che possiedono la categoria $x_k$), mentre @tbl-freq-y riporta quelle dell'occupazione ($n_{.j}$, il numero di persone che possiedono la categoria $y_j$).
+
+```{=latex}
+\begin{table}[htbp]
 \centering
+\caption{Distribuzione di frequenza della variabile Istruzione}
+\label{tbl-freq-x}
 \begin{tabular}{c c}
 \hline
 categoria $x_k$ & $n_{k.}$\\
@@ -2588,9 +2787,14 @@ Secondaria Inferiore (SI) & \textcolor{red}{3}\\
 Secondaria Superiore (SS) & \textcolor{red}{5} \\
 \hline
 \end{tabular}
-\end{minipage}\hfill
-\begin{minipage}[t]{.48\linewidth}
+\end{table}
+```
+
+```{=latex}
+\begin{table}[htbp]
 \centering
+\caption{Distribuzione di frequenza della variabile Occupazione}
+\label{tbl-freq-y}
 \begin{tabular}{c c}
 \hline
 categoria $y_j$ & $n_{.j}$ \\
@@ -2600,10 +2804,16 @@ Impiegato (I) & \textcolor{blue}{6}\\
 Dirigente (D) & \textcolor{blue}{3} \\
 \hline
 \end{tabular}
-\end{minipage}
-\end{center}
+\end{table}
+```
 
-\begin{center}
+Le distribuzioni univariate non dicono nulla su come le due variabili si combinano tra loro: sappiamo quante persone hanno un titolo di studio elementare e quante sono dirigenti, ma non quante persone con un titolo elementare sono dirigenti. Per rispondere a questa domanda bisogna considerare le due variabili *congiuntamente*, contando quante persone presentano ciascuna coppia di categorie $(x_k, y_j)$. Il risultato è la **tabella a doppia entrata** (o tavola di contingenza) in @tbl-doppia-entrata: le righe corrispondono alle categorie di $X$, le colonne alle categorie di $Y$, e ogni cella contiene la **frequenza congiunta** $n_{kj}$, cioè il numero di persone che possiedono contemporaneamente la categoria $x_k$ e la categoria $y_j$.
+
+```{=latex}
+\begin{table}[htbp]
+\centering
+\caption{Tabella a doppia entrata di Istruzione e Occupazione}
+\label{tbl-doppia-entrata}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
  & DI & I & D & \\
@@ -2615,17 +2825,20 @@ SS & 0 & 2 & 3 & \textcolor{red}{5}\\
  & \textcolor{blue}{2} & \textcolor{blue}{6} & \textcolor{blue}{3} & \textbf{11}\\
 \hline
 \end{tabular}
-\end{center}
+\end{table}
+```
 
-Date due variabili $X$ e $Y$ e la loro distribuzione di frequenze congiunte 
-$n_{kj}$ (numero di unità statistiche che presentano la coppia di categorie 
-$(x_k,y_j)$)
+Ad esempio, la cella all'incrocio tra la riga SS e la colonna D indica che 3 persone hanno un titolo di studio di secondaria superiore *e* sono dirigenti.
+
+Sommando le frequenze congiunte lungo ciascuna riga si ottengono i totali di riga (in rosso), mentre sommandole lungo ciascuna colonna si ottengono i totali di colonna (in blu). Questi totali sono detti **frequenze marginali**, perché si trovano ai margini della tabella. Confrontando @tbl-doppia-entrata con @tbl-freq-x e @tbl-freq-y si nota che le frequenze marginali di riga coincidono esattamente con la distribuzione di frequenza di $X$ e le frequenze marginali di colonna coincidono con la distribuzione di frequenza di $Y$. In altre parole, la tabella a doppia entrata contiene al suo interno anche le due distribuzioni univariate. Infine, la cella in basso a destra (11) riporta il numero totale di unità statistiche $n$, che si ottiene sia sommando i totali di riga sia sommando i totali di colonna.
+
+Più in generale, date due variabili $X$ e $Y$, la loro distribuzione di frequenze congiunte $n_{kj}$ descrive quante unità statistiche presentano ciascuna coppia di categorie $(x_k, y_j)$.
 
 :::{.callout-tip}
 
 L'insieme $(X,Y)$ delle terne
 
-$$(x_k,y_j,n_{kj}) 
+$$(x_k,y_j,n_{kj})
 \qquad
 (k=1,\ldots,h;\ j=1,\ldots,m)$$
 
@@ -2633,8 +2846,9 @@ $$(x_k,y_j,n_{kj})
 
 :::
 
-## Tabella a doppia entrata -- Tavola di contingenza
+### Tabella a doppia entrata -- Tavola di contingenza
 
+\begin{center}
 \begin{tabular}{
 p{0.7cm} p{0.7cm} |
 p{0.7cm} p{0.7cm} p{0.7cm} p{0.7cm} p{0.7cm} p{0.7cm} |
@@ -2724,6 +2938,7 @@ p{0.7cm}
 & $n$ \\
 
 \end{tabular}
+\end{center}
 
 $n_{kj}$: **Frequenza congiunta**, definisce il numero di unità statistiche 
 che possiedono congiuntamente la categoria $x_k$ della variabile $X$ e 
@@ -2895,14 +3110,15 @@ prop.table(mytab,2)  # P(A|B)
 :::
 ::::
 
-### Frequenze percentuali
 
-::::{.columns}
+### Frequenze percentuali e frequenze condizionate
 
-:::{.column width="50%"}
+Si consideri un campione di 140 donne per le quali sono state rilevate due variabili categoriali: l'occupazione (casalinga o lavoratrice) e il livello di istruzione (basso, medio o alto). La tabella a doppia entrata con le frequenze assolute e le marginali è riportata in @tbl-donne-contingenza.
 
 ```{r}
 #| echo: false
+#| label: tbl-donne-contingenza
+#| tbl-cap: "Tabella a doppia entrata di Occupazione e Istruzione (frequenze assolute)"
 donne = read.csv2("slides/modulo3/laboratorio/datiDonne.csv")
 donne$Istruzione = factor(donne$Istruzione, levels = c("Basso", "Medio", "Alto"))
 tabella = addmargins(table(donne$Occupazione, donne$Istruzione))
@@ -2911,114 +3127,127 @@ colnames(tabella)[ncol(tabella)] <- "Totale"
 library(kableExtra)
 knitr::kable(tabella, booktabs = TRUE, align = "c") |>
   row_spec(nrow(tabella) - 1, hline_after = TRUE)
-
 ```
 
-:::
+Guardando le frequenze assolute si potrebbe essere tentati di concludere, ad esempio, che tra le donne con istruzione alta ci sono più lavoratrici (30) che casalinghe (20), e che tra quelle con istruzione bassa ci sono molte più casalinghe (40) che lavoratrici (10). Le frequenze assolute, però, non permettono confronti corretti, perché i gruppi hanno dimensioni diverse: nel campione ci sono 85 casalinghe e solo 55 lavoratrici, e anche i tre livelli di istruzione non hanno la stessa numerosità (50, 40 e 50). Un numero più alto in una cella può dipendere semplicemente dal fatto che quel gruppo è più numeroso.
 
-:::{.column width="50%"}
+Per confrontare gruppi di dimensione diversa bisogna passare alle **frequenze percentuali condizionate**: invece di dividere ogni cella per il totale generale $n$ (quelo che fa la funzione `prop.table(tabella)` quando non viene specificato un margin), la si divide per il totale della sua riga o della sua colonna. In questo modo ogni riga (o ogni colonna) diventa una distribuzione percentuale che somma a 100, e i gruppi diventano confrontabili.
+
+La stessa tabella si può leggere in due modi diversi, a seconda di quale variabile si sceglie come *condizionante*, cioè di quale variabile si fissano le categorie per guardare come si distribuisce l'altra.
+
+Un primo colpo d'occhio sulla struttura della tabella è dato dal mosaic plot in @fig-donne-mosaic. La larghezza delle due colonne è proporzionale al numero di casalinghe e di lavoratrici, mentre l'altezza dei rettangoli all'interno di ciascuna colonna rappresenta la percentuale di donne con istruzione bassa, media o alta *in quel gruppo*.
 
 ```{r}
 #| echo: false
-#| out-width: 80%
-#| fig-align: center
+#| label: fig-donne-mosaic
+#| fig-cap: "Mosaic plot di Occupazione e Istruzione"
+#| out-width: 60%
 tab = table(donne$Occupazione, donne$Istruzione)
 mosaicplot(
   tab,
   color = c("skyblue", "lightcoral", "seagreen4"),
-  cex = 3
+  main = "",
+  cex = 1.2
 )
 ```
 
-:::
+#### Frequenze percentuali di riga: $P(\text{Istruzione} \mid \text{Occupazione})$
 
-:::: 
-
-### $P(\text{Titolo}|\text{Occupazione})$ (Frequenze percentuali di **riga**)
-
-:::: {.columns}
-
-::: {.column width="50%"}
+Le percentuali di **riga** si ottengono dividendo ogni cella per il totale della propria riga (`prop.table(tabella, 1)`). Poiché le righe corrispondono all'occupazione, ogni riga descrive *come si distribuisce il titolo di studio all'interno di ciascun gruppo occupazionale* (@tbl-donne-perc-riga e @fig-donne-perc-riga).
 
 ```{r}
 #| echo: false
+#| label: tbl-donne-perc-riga
+#| tbl-cap: "Frequenze percentuali di riga: distribuzione dell'Istruzione condizionata all'Occupazione"
 percRiga = (round(prop.table(table(donne$Occupazione, donne$Istruzione), 1), 2))*100
 percRiga = addmargins(percRiga)
 percRiga = percRiga[-nrow(percRiga), ]
-knitr::kable(
-  percRiga,
-  booktabs = TRUE,
-  align = "c"
-)
+colnames(percRiga)[ncol(percRiga)] <- "Totale"
+knitr::kable(percRiga, booktabs = TRUE, align = "c")
 ```
-
-:::
-
-::: {.column width="50%"}
 
 ```{r}
 #| echo: false
-
-tab = table(donne$Istruzione, donne$Occupazione)
+#| label: fig-donne-perc-riga
+#| fig-cap: "Distribuzione percentuale dell'Istruzione nei due gruppi occupazionali"
+#| out-width: 70%
+percRigaPlot = prop.table(table(donne$Istruzione, donne$Occupazione), 2) * 100
 barplot(
-  tab,
-  beside = TRUE,          # barre affiancate (non impilate)
+  percRigaPlot,
+  beside = TRUE,
   col = c("yellow2", "seagreen2", "darkgreen"),
-  legend = TRUE,
-  ylim = c(0, max(tab) + 10),
-  main = "Frequenze assolute per Occupazione e Livello di Istruzione",
-  ylab = "Frequenza assoluta", cex.names = 3,args.legend = list(cex = 2.5, x = "topright", bty = "n")
+  legend.text = TRUE,
+  ylim = c(0, 100),
+  ylab = "Percentuale di riga",
+  args.legend = list(x = "topright", bty = "n", title = "Istruzione")
 )
 ```
 
-:::
+La lettura corretta è sempre del tipo *"tra le donne [categoria di occupazione], il X% ha un titolo di studio [categoria di istruzione]"*. Ad esempio:
 
-::::
+- tra le casalinghe, il 47% ha un titolo di studio basso e solo il 24% un titolo alto;
+- tra le lavoratrici, il 55% ha un titolo di studio alto e solo il 18% un titolo basso.
 
-*X% delle donne lavoratici/casalinghe hanno un titolo di studio basso/medio/alto*
+Le percentuali di riga descrivono quindi la **composizione** di ciascun gruppo occupazionale: rispondono a domande del tipo *"che titolo di studio hanno le casalinghe?"*.
 
-### $P(\text{Occupazione}|\text{Titolo})$ (Frequenze percentuali di **colonna**)
+#### Frequenze percentuali di colonna: $P(\text{Occupazione} \mid \text{Istruzione})$
 
-:::: {.columns}
-
-::: {.column width="50%"}
+Le percentuali di **colonna** si ottengono dividendo ogni cella per il totale della propria colonna (`prop.table(tabella, 2)`). Poiché le colonne corrispondono al titolo di studio, ogni colonna descrive *come si distribuisce l'occupazione all'interno di ciascun livello di istruzione* (@tbl-donne-perc-colonna e @fig-donne-perc-colonna).
 
 ```{r}
 #| echo: false
+#| label: tbl-donne-perc-colonna
+#| tbl-cap: "Frequenze percentuali di colonna: distribuzione dell'Occupazione condizionata all'Istruzione"
 percColonna = (round(prop.table(table(donne$Occupazione, donne$Istruzione), 2), 2))*100
 percColonna = addmargins(percColonna)
-percColonna = percColonna[,-ncol(percColonna) ]
-knitr::kable(
-  percColonna,
-  booktabs = TRUE,
-  align = "c"
-)
+percColonna = percColonna[, -ncol(percColonna)]
+rownames(percColonna)[nrow(percColonna)] <- "Totale"
+knitr::kable(percColonna, booktabs = TRUE, align = "c")
 ```
-
-:::
-
-::: {.column width="50%"}
 
 ```{r}
 #| echo: false
-
-tab = table(donne$Occupazione, donne$Istruzione)
+#| label: fig-donne-perc-colonna
+#| fig-cap: "Distribuzione percentuale dell'Occupazione nei tre livelli di istruzione"
+#| out-width: 70%
+percColonnaPlot = prop.table(table(donne$Occupazione, donne$Istruzione), 2) * 100
 barplot(
-  tab,
-  beside = TRUE,          # barre affiancate (non impilate)
-  col = c("yellow2",  "darkgreen"),
-  legend = TRUE,
-  ylim = c(0, max(tab) + 10),
-  main = "Frequenze assolute per Occupazione e Livello di Istruzione",cex.names = 3,
-  ylab = "Frequenza assoluta",args.legend = list(cex = 2.5, x = "topright", bty = "n")
+  percColonnaPlot,
+  beside = TRUE,
+  col = c("yellow2", "darkgreen"),
+  legend.text = TRUE,
+  ylim = c(0, 100),
+  ylab = "Percentuale di colonna",
+  args.legend = list(x = "topright", bty = "n", title = "Occupazione")
 )
 ```
 
+In questo caso la lettura è del tipo *"tra le donne con titolo di studio [categoria di istruzione], il X% è [categoria di occupazione]"*. Ad esempio:
+
+- tra le donne con titolo di studio basso, l'80% è casalinga e solo il 20% lavora;
+- tra le donne con titolo di studio alto, la situazione si capovolge: il 60% lavora e il 40% è casalinga.
+
+Al crescere del titolo di studio, quindi, cresce la percentuale di lavoratrici (20%, 38%, 60%).
+
+#### Quale percentuale ha senso calcolare?
+
+Dal punto di vista del calcolo, entrambe le percentuali sono sempre ottenibili, e R le restituisce senza alcun problema. La scelta di quale usare dipende dalla **domanda di ricerca**, cioè da quale variabile ha senso considerare come condizionante e quale come variabile da descrivere.
+
+In questo esempio è più naturale ragionare in termini di $P(\text{Occupazione} \mid \text{Istruzione})$, cioè con le percentuali di **colonna**. Il titolo di studio, infatti, si acquisisce di norma *prima* di entrare nel mondo del lavoro: ha senso chiedersi se e come l'occupazione cambi al variare del titolo di studio, mentre ha molto meno senso pensare che essere casalinga o lavoratrice determini il titolo di studio posseduto. Le percentuali di riga restano comunque utili a scopo descrittivo (per sapere, ad esempio, com'è composto il gruppo delle casalinghe), ma non vanno lette come se l'occupazione "spiegasse" l'istruzione.
+
+:::{.callout-tip}
+## Una regola pratica
+
+Si condiziona sulla variabile che si pensa possa *spiegare* o *precedere* l'altra, e si calcolano le percentuali all'interno delle sue categorie. Poi si confrontano le percentuali **tra** le categorie della variabile condizionante: se le distribuzioni sono diverse tra loro, le due variabili sono in qualche modo associate.
 :::
 
-::::
+:::{.callout-warning}
+## Condizionare non vuol dire dimostrare una causa
 
-*X% delle donne con titolo di studio basso/medio/alto che sono lavoratici/casalinghe*
+Scegliere una variabile come condizionante è una scelta di lettura dei dati, non una prova di un legame causale. Che tra le donne con istruzione alta ci siano più lavoratrici non dimostra che sia il titolo di studio a *causare* l'occupazione: le due variabili potrebbero dipendere entrambe da altri fattori, ad esempio la condizione economica della famiglia di origine.
+:::
+
+Infine, se le due variabili fossero **indipendenti**, le distribuzioni condizionate sarebbero tutte uguali tra loro e uguali alla distribuzione marginale. In questo caso, ad esempio, in ogni livello di istruzione ci si aspetterebbe di trovare la stessa percentuale di lavoratrici osservata nel campione complessivo, cioè $55/140 \approx 39\%$. Le percentuali osservate (20%, 38% e 60%) sono invece molto diverse tra loro: è proprio questa distanza dalla situazione di indipendenza che l'indice $\chi^2$, presentato nella sezione successiva, permette di quantificare.
 
 ## Connessione (Variabili qualitative)
 
