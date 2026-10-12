@@ -25,13 +25,13 @@ header-includes:
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ Univeristà di Trento \\\texttt{ottavia.epifania@unitn.it}}}
    - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
-   - |
+  - |
       \AtBeginSection[]{
         \begin{frame}[plain]
           \tableofcontents[currentsection,hideallsubsections]
         \end{frame}
       }
-   - |
+  - |
       \AtBeginSubsection[]{
         \begin{frame}[plain]
           \tableofcontents[currentsection,currentsubsection,hideothersubsections]

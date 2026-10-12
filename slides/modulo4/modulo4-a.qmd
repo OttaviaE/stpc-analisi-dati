@@ -1,0 +1,740 @@
+---
+title: "Modulo Didattico 4-A: Principali distribuzioni di probabilità"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ Univeristà di Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+   - |
+      \AtBeginSection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,hideallsubsections]
+        \end{frame}
+      }
+   - |
+      \AtBeginSubsection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+        \end{frame}
+      }
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{template}{RGB}{72,79,89}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+   - \definecolor{evid}{RGB}{70,130,180}
+   - \definecolor{evidB}{RGB}{230,140,60}
+   - \def\omegaRett{(-2.8,-1.7) rectangle (2.8,1.7)}
+   - \def\cerchioA{(-0.75,0) circle (1.15)}
+   - \def\cerchioB{(0.75,0) circle (1.15)}
+   - \newcommand{\contorni}{\draw[thick] \omegaRett; \draw[thick] \cerchioA; \draw[thick] \cerchioB; \node at (2.45,1.35) {$\Omega$}; \node at (-1.25,0) {$A$}; \node at (1.25,0) {$B$};}
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+# Cenni di calcolo delle probabilità
+
+## Eventi
+
+### Dalle frequenze alle probabilità
+
+:::: {.columns}
+
+::: {.column width=50%}
+**Statistica descrittiva**
+
+Variabili statistiche caratterizzate da *frequenze* osservate
+
+| $x$ | $n_k$ |
+|:---:|:---:|
+| $x_1$ | $n_1$ |
+| $x_2$ | $n_2$ |
+| $\vdots$ | $\vdots$ |
+| $x_h$ | $n_h$ |
+:::
+
+::: {.column width=50%}
+**Teoria della probabilità**
+
+Variabili casuali caratterizzate da *probabilità* $\rightarrow$ modelli teorici per la popolazione
+
+| $x$ | $\Pr[X = x_k]$ |
+|:---:|:---:|
+| $x_1$ | $\Pr[X = x_1]$ |
+| $x_2$ | $\Pr[X = x_2]$ |
+| $\vdots$ | $\vdots$ |
+| $x_h$ | $\Pr[X = x_h]$ |
+:::
+
+::::
+
+### Esperimento aleatorio ed eventi
+
+\small
+
+*Esperimento aleatorio*: ammette almeno due risultati e c'è incertezza su quale si realizzerà (es., lancio di un dado). Le sue manifestazioni sono descritte da **eventi**; la **probabilità** è una misura del presentarsi di un evento.
+
+\vspace{2mm}
+
+1. **Eventi elementari** $\omega_1, \omega_2, \ldots$: risultati possibili dell'esperimento
+
+    Dado a 6 facce: $\omega_1 = \{1\}, \omega_2 = \{2\}, \ldots, \omega_6 = \{6\}$
+
+2. **Eventi composti** $A_1, A_2, \ldots$: insiemi di eventi elementari
+
+    Dado a 6 facce: $A = \{\text{risultato pari}\} = \{2, 4, 6\}$
+
+3. **Eventi particolari**: evento impossibile $\emptyset$ (insieme vuoto); evento certo $\Omega$ (spazio di tutti i possibili risultati)
+
+\vspace{2mm}
+
+*Obiettivo*: costruire modelli teorici che permettano di calcolare la probabilità di tutti gli eventi
+
+### Unione
+
+\small
+
+**Unione** (A **o** B):
+$$A \cup B = \{\omega \in \Omega : \omega \in A \ \text{o} \ \omega \in B\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \fill[evid!60] \cerchioA;
+  \fill[evid!60] \cerchioB;
+  \contorni
+  \node[below] at (0,-1.7) {$A \cup B$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Intersezione
+
+\small
+
+**Intersezione** (A **e** B):
+$$A \cap B = \{\omega \in \Omega : \omega \in A \ \text{e} \ \omega \in B\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \begin{scope}
+    \clip \cerchioA;
+    \fill[evid!60] \cerchioB;
+  \end{scope}
+  \contorni
+  \node[below] at (0,-1.7) {$A \cap B$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Complementare
+
+\small
+
+**Complementare** (tutto quello che non è A):
+$$A^C = \{\omega \in \Omega : \omega \notin A\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \fill[evid!60, even odd rule] \omegaRett \cerchioA;
+  \draw[thick] \omegaRett;
+  \draw[thick] \cerchioA;
+  \node at (2.45,1.35) {$\Omega$};
+  \node at (-0.75,0) {$A$};
+  \node at (1.4,0) {$A^C$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Differenza simmetrica
+
+\footnotesize
+
+**Differenza simmetrica** (A **o** B, ma non entrambi):
+$$A \,\Delta\, B = \{\omega \in \Omega : (\omega \in A \ \text{e} \ \omega \notin B) \ \text{o} \ (\omega \in B \ \text{e} \ \omega \notin A)\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \fill[evid!60, even odd rule] \cerchioA \cerchioB;
+  \contorni
+  \node[below] at (0,-1.7) {$A \,\Delta\, B$};
+\end{tikzpicture}
+\end{center}
+```
+
+###
+
+\small
+
+La differenza simmetrica è l'unione di due pezzi: ciò che sta in $A$ ma non in $B$, e ciò che sta in $B$ ma non in $A$.
+$$A \,\Delta\, B = (A \cap B^C) \cup (B \cap A^C)$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \begin{scope}
+    \clip \cerchioA;
+    \fill[evid!60, even odd rule] \omegaRett \cerchioB;
+  \end{scope}
+  \begin{scope}
+    \clip \cerchioB;
+    \fill[evidB!60, even odd rule] \omegaRett \cerchioA;
+  \end{scope}
+  \contorni
+  \node[below, text=evid] at (-1.4,-1.7) {$A \cap B^C$};
+  \node[below, text=evidB] at (1.4,-1.7) {$B \cap A^C$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Summary
+
+\small
+
+**Unione** (A **o** B):
+$$A \cup B = \{\omega \in \Omega : \omega \in A \ \text{o} \ \omega \in B\}$$
+
+**Intersezione** (A **e** B):
+$$A \cap B = \{\omega \in \Omega : \omega \in A \ \text{e} \ \omega \in B\}$$
+
+**Complementare** (tutto quello che non è A):
+$$A^C = \{\omega \in \Omega : \omega \notin A\}$$
+
+**Differenza simmetrica**:
+$$A \,\Delta\, B = \{\omega \in \Omega : (\omega \in A \ \text{e} \ \omega \notin B) \ \text{o} \ (\omega \in B \ \text{e} \ \omega \notin A)\}$$
+
+### Esempio
+
+:::: {.columns}
+
+::: {.column width=45%}
+Un dado a 6 facce:
+
+$\Omega = \{1, 2, 3, 4, 5, 6\}$
+
+Facce pari: $A = \{2, 4, 6\}$
+
+Facce $> 3$: $B = \{4, 5, 6\}$
+
+Faccia 1: $C = \{1\}$
+:::
+
+::: {.column width=55%}
+$A^C = \{1, 3, 5\}$
+
+$A \cup B = \{2, 4, 5, 6\}$
+
+$A \cap B = \{4, 6\}$
+
+$B \cap C = \emptyset$ $\rightarrow$ $B$ e $C$ sono *disgiunti*
+
+$A \,\Delta\, B = \{2, 5\}$
+:::
+
+::::
+
+## Funzione di probabilità
+
+###
+
+Una volta definiti gli eventi, bisogna definire la *funzione di probabilità*: una legge $\Pr$ che permette di calcolare $\Pr[A]$ per ogni evento $A \subseteq \Omega$.
+
+
+Servono 3 "ingredienti":
+
+1. Assiomi
+2. Regola per assegnare la probabilità agli eventi elementari
+3. Regole per il calcolo della probabilità degli altri eventi
+
+### Assiomi del calcolo delle probabilità
+
+Sia $\Omega$ lo spazio (finito) degli eventi elementari. La funzione $\Pr$ soddisfa i seguenti assiomi:
+
+1. $\Pr[\omega] \geq 0 \quad \forall \omega \subseteq \Omega$
+
+2. $\Pr[\Omega] = 1$
+
+3. $\Pr\left[\bigcup_{i} A_i\right] = \sum_{i} \Pr[A_i]$ se gli $A_i$ sono disgiunti
+
+\vspace{3mm}
+
+Due insiemi sono *disgiunti* se non hanno elementi in comune, ossia la loro intersezione è vuota ($A \cap B = \emptyset$)
+
+### Regole derivate dagli assiomi
+
+1. Probabilità dell'unione:
+$$\Pr[A \cup B] = \Pr[A] + \Pr[B] - \Pr[A \cap B]$$
+($\Pr[A \cap B] = 0$ se $A$ e $B$ sono disgiunti)
+
+2. Probabilità della differenza:
+$$\Pr[A - B] = \Pr[A] - \Pr[A \cap B]$$
+($\Pr[A \cap B] = \Pr[B]$ se $B \subset A$; ci servirà per $\Pr[a < X \leq b]$)
+
+3. Probabilità del complementare: $\Pr[A^C] = 1 - \Pr[A]$
+
+4. Probabilità dell'evento impossibile: $\Pr[\emptyset] = 0$
+
+\vspace{2mm}
+
+Di conseguenza: $0 \leq \Pr[A] \leq 1$
+
+### Assegnare la probabilità: il dado equilibrato
+
+\small
+
+Gli eventi elementari sono disgiunti e ogni evento composto è unione di eventi elementari $\Rightarrow$ (terzo assioma) basta assegnare la probabilità agli eventi elementari.
+
+:::: {.columns}
+
+::: {.column width=30%}
+| $x$ | $\Pr[X = x]$ |
+|:---:|:---:|
+| 1 | 1/6 |
+| 2 | 1/6 |
+| 3 | 1/6 |
+| 4 | 1/6 |
+| 5 | 1/6 |
+| 6 | 1/6 |
+:::
+
+::: {.column width=70%}
+$A = \{\text{facce pari}\} = \{2, 4, 6\}$
+
+\begin{align*}
+\Pr[A] &= \Pr[\{2\}] + \Pr[\{4\}] + \Pr[\{6\}] = \dfrac{3}{6} = \dfrac{1}{2}
+\end{align*}
+
+**Formula classica (Laplace)**: 
+$$\Pr[A] = \dfrac{\text{casi favorevoli ad } A}{\text{casi possibili}}$$
+
+\footnotesize
+Vale solo se $\Omega$ è finito e gli eventi elementari sono equiprobabili.
+:::
+
+::::
+
+### Esempio: lancio di due monete
+
+$\Omega = \{TT, TC, CT, CC\}$, tutti con probabilità $1/4$
+
+- $A$: almeno una $T = \{TT, TC, CT\}$, $\Pr[A] = 3/4 = 0.75$
+- $B$: una $T$ e una $C = \{TC, CT\}$, $\Pr[B] = 2/4 = 0.50$
+- $A^C = \{CC\}$, $\Pr[A^C] = 1 - 3/4 = 0.25$
+- $A \cap B = \{TC, CT\} = B$, $\Pr[A \cap B] = 2/4 = 0.50$
+
+\vspace{2mm}
+
+Se $X$ = numero di teste: $\Pr[X = 0] = 1/4$, $\Pr[X = 1] = 2/4$, $\Pr[X = 2] = 1/4$ $\rightarrow$ la ritroveremo come distribuzione binomiale
+
+## Indipendenza
+
+### Indipendenza tra eventi
+
+Due eventi $A$ e $B$ sono *indipendenti* se sapere che uno si è verificato non cambia la probabilità dell'altro. In questo caso:
+
+$$\Pr[A \cap B] = \Pr[A]\Pr[B] \qquad \text{(fattorizzazione della probabilità)}$$
+
+\vspace{2mm}
+
+Es., estrazioni **con reimmissione**: a ogni estrazione si riparte dalla stessa situazione, quindi le estrazioni sono indipendenti
+
+\vspace{2mm}
+
+:::{.callout-warning}
+## Attenzione: disgiunti $\neq$ indipendenti
+
+Disgiunti: $\Pr[A \cap B] = 0$. Indipendenti: $\Pr[A \cap B] = \Pr[A]\Pr[B]$
+:::
+
+## Variabile casuale
+
+###
+
+- eventi elementari $\omega \in \Omega \Rightarrow$ valori numerici $x \in S$ (*supporto* della variabile casuale $X$)
+
+- eventi composti $A \Rightarrow$ insiemi di valori assumibili dalla variabile casuale $X$, del tipo
+$$\{X = x\}, \qquad \{X \leq x\}, \qquad \{a < X \leq b\}$$
+a cui è associata la probabilità che $X$ assuma quel valore o quei valori
+
+\vspace{3mm}
+
+:::{.callout-tip}
+## Variabile casuale
+
+Una variabile casuale è un insieme di valori e di probabilità associate. Costruire una variabile casuale significa:
+
+1. Determinare i valori $x$ che $X$ può assumere (supporto $S$)
+2. Associare a ogni valore una misura di probabilità (funzione di probabilità $f_X(x|\theta)$ o funzione di densità)
+:::
+
+# Funzioni di probabilità discrete
+
+## Definizioni generali 
+
+### 
+
+
+Sia $X$ una variabile casuale discreta che assume valori in un insieme numerabile $S \subset \mathbb{R}$. 
+La *funzione di probabilità (massa)* di $X$ è indicata con $f_X(x|\theta)$ e definita come:
+
+$$f_X(x|\theta) = \Pr[X = x], \qquad \forall x \in S,$$
+
+al contrario $f_X(x|\theta) = 0$ per tutti gli $x \notin S$. 
+In generale noi considereremo funzioni $f_X$ parametriche con parametri $\theta \in \Theta$:
+
+$$f_X : \mathbb{R} \times \Theta \to [0,1].$$
+
+
+
+## Distribuzione binomiale
+
+### Esperimento bernoulliano
+
+Esperimento dicotomico con solo 2 possibili esiti, di cui si conosce la probabilità:
+
+- **Successo**: $\Pr[\text{successo}] = \theta$
+- **Insuccesso**: $\Pr[\text{insuccesso}] = 1 - \theta$
+
+\vspace{3mm}
+
+**Ipotesi**:
+
+1. $n$ prove ripetute e indipendenti (estrazioni con reimmissione)
+2. A ogni prova la probabilità di successo $\theta$ rimane invariata
+3. Le condizioni sperimentali sono sempre le medesime
+
+\vspace{3mm}
+
+La variabile casuale $X$ che conta il numero di successi in $n$ prove è detta **binomiale**: $X \sim \text{Bin}(n, \theta)$
+
+### Distribuzione di probabilità binomiale
+
+$$f_X(x|\theta) = \Pr[X = x] = \binom{n}{x}\, \theta^x (1-\theta)^{\,n-x},
+\qquad x = 0,1,\ldots,n,$$
+
+dove $\theta \in [0,1]$ e $S = \{0, 1, \ldots, n\}$.
+
+\small
+
+- $\Pr[X = x]$: probabilità di ottenere $x$ successi in $n$ prove
+- $\binom{n}{x}$: coefficiente binomiale
+- $\theta^x$: probabilità degli $x$ successi indipendenti
+- $(1-\theta)^{n-x}$: probabilità degli $n-x$ insuccessi indipendenti
+
+\normalsize
+
+### Coefficiente binomiale
+
+$\binom{n}{x} = \dfrac{n!}{x!(n-x)!}$ e
+$$n! =
+\begin{cases}
+1 & \text{se } n = 0, \\[2mm]
+n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1 & \text{se } n > 0.
+\end{cases}$$
+
+(es., $5! = 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 120$)
+
+### Media e varianza della binomiale
+
+I parametri $(n, \theta)$ sono il numero di prove indipendenti ($n$) e la probabilità di successo in una singola prova ($\theta$).
+
+$$\mu_X = n\theta, \qquad \sigma^2_X = n\theta(1-\theta), \qquad \sigma_X = \sqrt{n\theta(1-\theta)}$$
+
+La forma di $f_X(x|\theta)$ varia al variare di $(n, \theta)$:
+
+- $\theta \to 0.50$: simmetria
+- $\theta \to 0$ o $\theta \to 1$: asimmetria
+
+(1 moda, oppure 2 mode contigue)
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-bin1
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+library(ggplot2)
+x = 0:6
+plot(x, dbinom(x,6, prob =.3), pch = 19,
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.3), lwd = 2)
+
+plot(x, dbinom(x,6, prob =.5), pch = 19,
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.5), lwd = 2)
+
+plot(x, dbinom(x,6, prob =.85), pch = 19,
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,6, prob =.85), lwd = 2)
+```
+
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 10 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+#| label: fig-bin2
+
+x = 0:10
+plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.3), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.5), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
+
+```
+
+### 
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| fig-cap: "Massa distribuzione binomiale con $S = \\{0,1, \\ldots, 20 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+#| label: fig-bin3
+
+
+x = 0:20
+plot(x, dbinom(x,length(x), prob =.3), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.3), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.5), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.5), lwd = 2)
+
+plot(x, dbinom(x,length(x), prob =.85), pch = 19, 
+     cex.main = 3, cex.axis = 2, ylab = "f(x)")
+segments(x,0, x, dbinom(x,length(x), prob =.85), lwd = 2)
+
+```
+
+### 
+
+La *funzione di probabilità cumulata* di una variabile casuale discreta $X$ si indica con $F_X(x|\theta)$ ed è definita come:
+
+$$F_X(x|\theta) = \Pr[X \leq x]
+= \sum_{s \in S: \, s \leq x} f_X(s|\theta).$$
+
+In altre parole, $F_X(x|\theta)$ rappresenta la probabilità che $X$ assuma un valore minore o uguale a $x$.  
+Chiaramente,
+$$F_X : \mathbb{R} \times \Theta \longrightarrow [0,1].$$
+
+### Distribuzione binomiale cumulata
+
+Se $X \sim \text{Bin}(n,\theta)$, allora la funzione di probabilità cumulata è:
+
+$$F_X(x|\theta) = \sum_{z=0}^{x} \binom{n}{z}\, \theta^z (1-\theta)^{\,n-z}, 
+\qquad x = 0,1,\ldots,n,$$
+
+dove $\theta \in [0,1]$.
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-binCum1
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 6 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+
+x = 0:6
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19,  cex = 2,
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5), cex = 2,pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .85), cex = 2,pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+```
+
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-binCum2
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 10 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+
+
+x = 0:10
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19,  
+     cex.main = 3, cex.axis = 2,cex =2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5),cex =2, pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .85),cex =2, pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+```
+
+
+###
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| label: fig-binCum3
+#| fig-cap: "Probabilità cumulata della binomiale con $S = \\{0,1, \\ldots, 20 \\}$"
+#| fig-subcap: 
+#|   - "$\\theta = .30$"
+#|   - "$\\theta = .50$"
+#|   - "$\\theta = .85$"
+
+
+x = 0:20
+cum_bin = pbinom(x, length(x), prob = .3)
+plot(x, cum_bin, pch = 19, cex =2, 
+     cex.main = 3, cex.axis = 2, ylab = "F(x)")
+plot(x, pbinom(x, length(x), prob = .5), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
+plot(x, pbinom(x, length(x), prob = .85), pch = 19,  
+     cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
+```
+
+### La binomiale in R
+
+\small
+
+| Funzione | Descrizione |
+|----------|-------------|
+| `dbinom(x, size, prob)` | Restituisce i *valori di massa* $f_X(x|\theta)$ associati al vettore discreto `x` di una distribuzione binomiale con `size` $= n$ prove e probabilità di successo `prob` $= \theta$. |
+| `pbinom(x, size, prob)` | Restituisce i *valori di probabilità cumulata* $F_X(x|\theta)$ associati al vettore discreto `x`. Con `lower.tail = FALSE` calcola $\Pr[X > x]$. |
+| `qbinom(p, size, prob)` | Restituisce i *valori dei quantili* $q_X(p|\theta)$ associati al vettore di probabilità `p`. |
+| `rbinom(n, size, prob)` | Restituisce un vettore casuale di `n` osservazioni indipendenti campionate da una distribuzione binomiale. |
+
+### $f_X(x|\theta)$: `dbinom()`
+
+\small
+
+    dbinom(x, size, prob)
+    
+`x`: Supporto $S$ della variabile casuale $X$ (e.g., numero di volte in cui esce testa)
+
+`size`: Ampiezza campionaria (e.g., numero di lanci)
+
+`prob`: $\theta$, probabilità di successo a priori
+
+\footnotesize
+
+```{r}
+n <- 10
+x <- 0:n
+theta <- .25
+round(dbinom(x, size = n, prob = theta),4)
+```
+
+###
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-cap: "$n = 10$, $\\theta = .25$"
+#| out-width: 70%
+plot(x, dbinom(x, size = n, prob = theta), cex = 2, pch = 19, col ="darkgreen", 
+     ylim = c(0,.30),
+     ylab = "Probabilità di Massa", xlab = "", cex.axis = 2)
+```
+
+
+### $F_X(x|\theta)$: `pbinom()`
+
+\small
+
+    pbinom(x, size, prob)
+
+`x`: $z$ Valore fino a cui è calcolata la probabilità cumulata 
+
+`size`: Ampiezza campionaria (e.g., numero di lanci)
+
+`prob`: $\theta$, probabilità di successo a priori
+
+La cumulata è la somma delle masse fino a $z$:
+
+```{r}
+# calcola la probabilità di osservare un numero di successi <= a 3
+round(pbinom(3, size = n, prob = theta), 4)
+```
+
+###
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-cap: "$n = 10$, $\\theta = .25$: in arancione i valori che entrano in $F_X(3|\\theta)$"
+#| out-width: 70%
+colori <- ifelse(x <= 3, "darkorange", "grey40")
+plot(x, pbinom(x, size = n, prob = theta), cex = 2, pch = 19, col = colori,
+     ylim = c(0, 1),
+     ylab = "Probabilità cumulata", xlab = "", cex.axis = 2)
+abline(h = pbinom(3, size = n, prob = theta), lty = 2, col = "darkorange")
+```
+
+### Probabilità con `pbinom()`
+
+\small
+
+$\Pr[X \leq 3] = F_X(3|\theta)$:
+
+```{r}
+pbinom(3, n, prob = theta)
+```
+
+$\Pr[X > 3] = 1 - F_X(3|\theta)$ (Probabilità complementare di $\Pr[X > 3]$):
+
+```{r}
+1 - pbinom(3, n, prob = theta)
+pbinom(3, n, prob = theta, lower.tail = FALSE)
+```
+

@@ -1,0 +1,134 @@
+---
+title: "Operazioni sugli insiemi"
+format:
+  beamer:
+    header-includes: |
+      \usepackage{tikz}
+      \definecolor{evid}{RGB}{70,130,180}
+      \definecolor{evidB}{RGB}{230,140,60}
+      % elementi comuni dei diagrammi
+      \def\omegaRett{(-2.8,-1.7) rectangle (2.8,1.7)}
+      \def\cerchioA{(-0.75,0) circle (1.15)}
+      \def\cerchioB{(0.75,0) circle (1.15)}
+      \newcommand{\contorni}{%
+        \draw[thick] \omegaRett;
+        \draw[thick] \cerchioA;
+        \draw[thick] \cerchioB;
+        \node at (2.45,1.35) {$\Omega$};
+        \node at (-1.25,0) {$A$};
+        \node at (1.25,0) {$B$};}
+---
+
+### Operazioni sugli insiemi: il punto di partenza
+
+Lo spazio campionario $\Omega$ è il rettangolo, gli eventi $A$ e $B$ sono i due cerchi.
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \contorni
+\end{tikzpicture}
+\end{center}
+```
+
+La parte **colorata** di ogni diagramma è il risultato dell'operazione.
+
+### Unione
+
+\small
+
+**Unione** (A **o** B):
+$$A \cup B = \{\omega \in \Omega : \omega \in A \ \text{o} \ \omega \in B\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \fill[evid!60] \cerchioA;
+  \fill[evid!60] \cerchioB;
+  \contorni
+  \node[below] at (0,-1.7) {$A \cup B$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Intersezione
+
+\small
+
+**Intersezione** (A **e** B):
+$$A \cap B = \{\omega \in \Omega : \omega \in A \ \text{e} \ \omega \in B\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \begin{scope}
+    \clip \cerchioA;
+    \fill[evid!60] \cerchioB;
+  \end{scope}
+  \contorni
+  \node[below] at (0,-1.7) {$A \cap B$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Complementare
+
+\small
+
+**Complementare** (tutto quello che non è A):
+$$A^C = \{\omega \in \Omega : \omega \notin A\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \fill[evid!60, even odd rule] \omegaRett \cerchioA;
+  \draw[thick] \omegaRett;
+  \draw[thick] \cerchioA;
+  \node at (2.45,1.35) {$\Omega$};
+  \node at (-0.75,0) {$A$};
+  \node at (1.4,0) {$A^C$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Differenza simmetrica
+
+\footnotesize
+
+**Differenza simmetrica** (A **o** B, ma non entrambi):
+$$A \,\Delta\, B = \{\omega \in \Omega : (\omega \in A \ \text{e} \ \omega \notin B) \ \text{o} \ (\omega \in B \ \text{e} \ \omega \notin A)\}$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \fill[evid!60, even odd rule] \cerchioA \cerchioB;
+  \contorni
+  \node[below] at (0,-1.7) {$A \,\Delta\, B$};
+\end{tikzpicture}
+\end{center}
+```
+
+### Differenza simmetrica: le due parti
+
+\small
+
+La differenza simmetrica è l'unione di due pezzi: ciò che sta in $A$ ma non in $B$, e ciò che sta in $B$ ma non in $A$.
+$$A \,\Delta\, B = (A \cap B^C) \cup (B \cap A^C)$$
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}
+  \begin{scope}
+    \clip \cerchioA;
+    \fill[evid!60, even odd rule] \omegaRett \cerchioB;
+  \end{scope}
+  \begin{scope}
+    \clip \cerchioB;
+    \fill[evidB!60, even odd rule] \omegaRett \cerchioA;
+  \end{scope}
+  \contorni
+  \node[below, text=evid] at (-1.4,-1.7) {$A \cap B^C$};
+  \node[below, text=evidB] at (1.4,-1.7) {$B \cap A^C$};
+\end{tikzpicture}
+\end{center}
+```
