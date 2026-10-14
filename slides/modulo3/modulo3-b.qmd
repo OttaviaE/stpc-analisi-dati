@@ -27,15 +27,18 @@ header-includes:
    - \AtBeginSection[]
           {
              \begin{frame}[plain]
+             \small
              \tableofcontents[
                currentsection,
-               sectionstyle=show/shaded
+               sectionstyle=show/shaded,
+               subsectionstyle=show/shaded/hide
              ]
              \end{frame}
           }
    - \AtBeginSubsection[]
           {
              \begin{frame}[plain]
+             \small
              \tableofcontents[
                currentsection,
                currentsubsection,
@@ -246,7 +249,7 @@ Il prodotto $(x_i - \bar{x})(y_i - \bar{y})$ è più spesso positivo se $\cov > 
 
 
 
-Il valore della covarianza dipende dall'unità di misura delle variabili $\rightarrow$ ci dice la **direzione** della relazione ma non la sua **intensità**
+Il valore della covarianza dipende dall'unità di misura delle variabili $\rightarrow$ ci dice la **direzione** della relazione ma non la sua **intensità**.
 
 ###
 
@@ -293,6 +296,7 @@ mycov = list(
 #| echo: false
 #| layout-ncol: 2
 #| layout-nrow: 2
+#| label: fig-CovExamples
 #| out-width: 60%
 #| fig-cap: "Covarianza"
 #| fig-subcap:
@@ -368,7 +372,6 @@ $\bar{x} = `r mean(bimbo$eta)`$, $\bar{y} = `r mean(bimbo$peso)`$, $\sum_i (x_i 
 
 $$\cov(x,y) = \dfrac{`r sum(calcolo$prodotto)`}{6-1} = `r round(cov(bimbo$eta, bimbo$peso), 2)`$$
 
-E quindi? Sappiamo che la relazione è **positiva**, ma è forte o debole?
 
 ## `cov()`
 
@@ -390,7 +393,7 @@ cov(bimbo$eta, bimbo$peso)
 
 ###
 
-Per stabilire l'**intensità** della relazione la covarianza va *normalizzata*, ovvero divisa per il suo valore massimo
+Per stabilire l'**intensità** della relazione la covarianza va *normalizzata*, ovvero divisa per il suo valore massimo:
 
 \vspace{2mm}
 
@@ -518,9 +521,9 @@ plot(null, xlab="X3", ylab="Y3", main=paste("cov = ",  round(mylist$cov_null, 2)
 knitr::include_graphics("cor2.jpg")
 ```
 
-## Usi e abusi di $r$
+## Dove si trova $r$
 
-### In $\psi$
+### 
 
 - Attendibilità test-retest
 
@@ -571,9 +574,7 @@ Due variabili possono essere fortemente correlate senza che esista alcun legame 
 \end{center}
 ```
 
-\vspace{5mm}
-
-Ma ne siamo proprio sicuri?
+$X$ influenza $Y$ senza che intervengano altre variabili.
 
 ### Relazione indiretta
 
@@ -595,7 +596,7 @@ Ma ne siamo proprio sicuri?
 ```
 
 \footnotesize
-La relazione tra $X$ e $Y$ passa attraverso altre variabili (mediatori)
+La relazione tra $X$ e $Y$ passa attraverso altre variabili (mediatori).
 
 ### Relazione spuria
 
@@ -615,13 +616,7 @@ La relazione tra $X$ e $Y$ passa attraverso altre variabili (mediatori)
 ```
 
 \footnotesize
-$X$ e $Y$ sono correlate solo perché entrambe dipendono da una terza variabile
-
-\vspace{3mm}
-
-\begin{center}
-\normalsize LA STATISTICA SOSTIENE, NON ILLUMINA!
-\end{center}
+$X$ e $Y$ sono correlate solo perché entrambe dipendono da una terza variabile.
 
 
 # Previsione variabili quantitative
@@ -630,11 +625,11 @@ $X$ e $Y$ sono correlate solo perché entrambe dipendono da una terza variabile
 
 ### Quanto varia $y$ in funzione di $x$?
 
-La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$: **modello simmetrico** per determinare *l'intensità della relazione*
+La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$: **modello simmetrico** per determinare *l'intensità della relazione*.
 
-Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione
+Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione.
 
-La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale)
+La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale).
 
 
 ###
@@ -790,15 +785,17 @@ $$r = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
 
 Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
 
-$$\hat{\beta} = r \, \dfrac{sd(y)}{sd(x)}$$
+\begin{align*}
+\hat{\beta} &= \frac{\cov(X,Y)}{sd(x) \, sd(x)} \cdot \frac{sd(y)}{sd(y)} = \underbrace{\frac{\cov(X,Y)}{sd(x) \, sd(y)}}_{r} \cdot \frac{sd(y)}{sd(x)} = r \, \frac{sd(y)}{sd(x)}
+\end{align*}
 
+\footnotesize
 
+1. Il **segno** del coefficiente angolare è lo stesso di $r$: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale.
 
-1. Il **segno** del coefficiente angolare è lo stesso di $r$: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale
+2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $\hat{y} = \hat{\beta}_0 + \hat{\beta}x$).
 
-2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $\hat{y} = \hat{\beta}_0 + \hat{\beta}x$)
-
-### Il bambino di prima
+### 
 
 \small
 
@@ -822,7 +819,9 @@ Quale sarebbe il peso previsto a 48 mesi? $\hat{y}_{48} = `r round(b0, 2)` + `r 
 
 ###
 
-$$R^2 = 1 - \dfrac{SQE/n-1}{Var(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
+$$R^2 = 1 - \frac{\dfrac{SQE}{n-1}}{Var(Y)}
+    = 1 - \frac{\dfrac{\sum_{i=1}^n e_i^2}{n-1}}{\dfrac{\sum_{i=1}^n (y_i - \bar{y})^2}{n-1}}
+    = 1 - \frac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
 
 $\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della componente di errore
 
@@ -1014,13 +1013,11 @@ $R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 `lm(Y ~ X)`: Retituisce la stima dei parametri del modello di regressione lineare dove si predicono i valori di $Y$ a seconda dei valori di $X$
 
-`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5` (fonte non verificata)
+`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5`
 
 
 ```{r}
-X <- c(9,8,12,9,10,14,5,4,13,7,5)
-Y <- c(9,6,8,9,7,10,8,4,11,5,4)
-lm(Y~X)
+lm(bimbo$peso~bimbo$eta)
 ```
 
 ## Assunti del modello
@@ -1052,7 +1049,8 @@ lm(Y~X)
 
 \vspace{1.5mm}
 
-> $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: Anche $y_i$ è distribuita normalmente con media $\beta_0 + \beta_1x_i$
+> $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: per ogni valore fissato di $x_i$, anche $y_i$ è distribuita normalmente, con media $\beta_0 + \beta_1 x_i$ e varianza $\sigma^2$
+$$y_i \mid x_i \sim \mathcal{N}(\beta_0 + \beta_1 x_i, \, \sigma^2)$$
 
 - **Varianza costante** (omoschedasticità)
 
