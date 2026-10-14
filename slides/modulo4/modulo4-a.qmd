@@ -389,6 +389,25 @@ Una variabile casuale è un insieme di valori e di probabilità associate. Costr
 2. Associare a ogni valore una misura di probabilità (funzione di probabilità $f_X(x|\theta)$ o funzione di densità)
 :::
 
+## Distribuzioni di probabilità in R
+
+In R sono disponibili quattro funzioni per ogni distribuzione di probabilità:
+
+- `d*`: calcola la **massa di probabilità** (discrete) o la **densità** (continue)
+- `p*`: calcola la **probabilità cumulata** $P(X \leq q)$ dato un quantile
+- `q*`: calcola il **quantile** dato un livello di probabilità cumulata
+- `r*`: genera un **campione casuale** dalla distribuzione
+
+dove `*` è il nome della distribuzione in R (es. `norm`, `binom`, `t`, ...).
+
+| Distribuzione | Tipo | Nome R |
+|:--|:--|:--|
+| Binomiale | discreta | `binom` |
+| Poisson | discreta | `pois` |
+| Uniforme | continua | `unif` |
+| Normale | continua | `norm` |
+| t di Student | continua | `t` |
+
 # Funzioni di probabilità discrete
 
 ## Definizioni generali 

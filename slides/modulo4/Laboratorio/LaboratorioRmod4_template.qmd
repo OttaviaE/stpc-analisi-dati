@@ -1,0 +1,96 @@
+---
+title: "Laboratorio Modulo 4"
+subtitle: "Template"
+author: "Nome Cognome"
+format: 
+  html: 
+   embed-resources: true
+   number-sections: true
+execute:
+  echo: true
+  eval: true
+---
+
+
+# Calcolo di eventi di probabilita su distribuzioni di probabilita parametriche
+
+In questo laboratorio sara richiesto di applicare le apposite funzioni di R per eseguire calcoli di probabilita di eventi associati a variabili casuali continue distribuite secondo distribuzioni di densita parametriche. 
+
+
+## Esercizio 1
+
+Sia $X$ una variabile casuale continua distribuita secondo una funzione di densita normale $N(x|\mu_X, \sigma_X)$ dove $\mu_X =100$ e $\mu_X =35$. 
+Si considerino i seguenti quattro eventi associati ad X: $E_1 = \{ x \in \mathbb{R} : x \leq 75\}$, $E_2 = \{ x \in \mathbb{R} : 50 \leq x \leq 70\}$, 
+$E_3 = \{ x \in \mathbb{R} : x \geq 110\}$, $E_4 = \{ x \in \mathbb{R} : x \geq 125\}$. Si calcolino le probabilita dei seguenti eventi combinati: 
+
+1. $P[E_1 \cup E_3]$
+2. $P[E_1 \cup E_4]$ 
+3. $P[E_1 \cap E_2]$ 
+4. $P[E_1 \cap E_3]$.
+
+```{r}
+
+```
+
+## Esercizio 2
+
+Sia $X$ una variabile casuale continua distribuita secondo una funzione di densita normale standardizzata $N(x| \mu_X, \sigma_X)$ (dove chiaramente $\mu_X = 0$ e $\sigma_X = 1$). Si considerino i seguenti due eventi associati ad X: $E_1 = \{x \in \mathbb{R}: x  \leq 05\}$ e $E_2 = x \in \mathbb{R} : x \geq -0.5$. 
+Si calcolino le probabilita dei seguenti eventi combinati: 
+
+1. $P[E1 \cup E2]$. 
+2. $P[E1 \cap E2]$. 
+3. $P[E1 \triangle E2]$.
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+## Esercizio 3
+
+Siano $X$ ed $Y$ due variabili casuali continue distribuite secondo le seguenti funzioni di densità normale: $N(x | \mu_X, \sigma_X)$ (con $\mu_X = 10$ e $\sigma_X = 5$) e $N(y | \mu_Y, \sigma_Y)$ (con $\mu_Y = 7$ e $\sigma_Y = 8$). Inoltre si assuma che le due variabili casuali $X$ ed $Y$ siano anche indipendenti, cioè a dire:
+
+$$P(X,Y) = P(X) P(Y)$$
+
+Si considerino i seguenti due eventi associati ad $X$: $E_1 = \{x \in \mathbb{R} : 5 \le x \le 9\}$ e $E_2 = \{x \in \mathbb{R} : 6.5 \le x \le 13\}$. Per $Y$ si ha un solo evento: $G_1 = \{y \in \mathbb{R} : 4 \le y \le 8.5\}$. Si calcolino le probabilità dei seguenti eventi combinati:
+
+1. $P[E_1 \cup G_1]$.
+2. $P[E_2 \cap G_1]$.
+
+
+
+```{r}
+
+```
+
+## Esercizio 4 
+
+Sia $W$ una variabile casuale continua distribuita secondo una funzione di densità $t$ di Student $t(w | gdl)$ (dove $gdl = 35$). Si considerino i seguenti valori dei quantili di $W$:
+
+
+1. $q_W(0.33)$.
+2. $q_W(0.75) + q_W(0.25)$.
+3. $q_W(0.75) - q_W(0.25)$.
+4. $q_W(0.975)$.
+
+```{r}
+
+```
+
+## Esercizio 5
+
+Sia $U$ una variabile casuale continua distribuita secondo una funzione di densità Chi quadrato $\chi^2(u | gdl)$ ($gdl = 4$). Si calcolino le probabilità dei seguenti eventi di $U$:
+
+1. $P[U \ge 1.5]$.
+2. $P[1.1 \le U \le 2.5]$.
+3. $P[U \ge q_U(0.950)]$.
+
+
+```{r}
+
+```
+

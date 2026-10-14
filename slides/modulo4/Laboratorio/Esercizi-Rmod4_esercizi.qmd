@@ -3,12 +3,12 @@ title: "Esercizi Modulo 4"
 subtitle: "Esercizi"
 author: "Ottavia Epifania"
 format: 
-   pdf: 
-    toc: true
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
-lang: it
+  html: 
+   embed-resources: true
+   number-sections: true
+execute:
+  echo: true
+  eval: false
 ---
 
 # Variabili casuali

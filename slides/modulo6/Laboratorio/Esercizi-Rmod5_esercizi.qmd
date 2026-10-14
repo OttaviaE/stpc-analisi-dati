@@ -1,0 +1,172 @@
+---
+title: "Modulo 5 - Prima serie"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format: 
+  pdf: 
+   toc: true
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{eforms}
+---
+
+
+```{r include=FALSE}
+myvar = FALSE
+echovar = FALSE
+evalvar = FALSE
+knitr::opts_chunk$set(include = myvar, 
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+# Introduzione
+
+Il presente caso studio richiede di eseguire delle procedure di analisi dei dati su un insieme di variabili associate a 70 candidati di un corso di laurea del nord-est (nota: questi dati sono già stati analizzati da un punto di vista descrittivo in un precedente Laboratorio R del Modulo 2).
+
+## Esercizi 
+
+### es 1
+
+Scaricare il file `datiTestCR2005.csv` e caricarlo in R assegnandolo alla variabile (data frame) DATITEST. Il file contiene un database con 70 osservazioni misurate su 7 variabili distinte:
+
+1. `DIPAA` indica l’anno in cui lo studente ha ottenuto il suo diploma di scuola superiore;
+
+2. `VOTO` è il voto di diploma ottenuto dallo studente (espresso in centesimi);
+
+3. `SESSO` codifica il sesso dello studente (1: maschio, 2: femmina);
+
+4. `D1` punteggio complessivo ad un test per la misura del ragionamento deduttivo: gamma di valori da 0 a 17;
+
+5. `D2` punteggio complessivo ad un test per la misura del ragionamento spaziale: gamma di valori da 0 a 20;
+
+6. `D3` punteggio complessivo ad un test per la misura del pensiero creativo: gamma di valori  da 0 a 4;
+
+7. `D4` punteggio complessivo ad un test per la comprensione di testi, grafici e tabelle: gamma di valori da 0 a 12.
+
+```{r}
+dati = read.csv2("datiTestCR2005.csv")
+head(dati)
+str(dati)
+summary(dati)
+```
+
+
+
+### es 2 
+
+Correggere la variabile `VOTO` secondo la modalità descritta nel Laboratorio R che ha analizzato lo stesso set di dati (ovvero, i valori fuori dal range vanno sostituiti con la media di `VOTO` calcolata sui soli valori all'interno del range).
+
+
+```{r}
+index = which(dati$VOTO < 60 | dati$VOTO > 100)
+dati$VOTO[index] = mean(dati$VOTO[-index])
+```
+
+### es 3
+
+Visualizzare le statistiche descrittive di base per le variabili di tipo numerico.
+Aggiungere anche il calcolo della deviazione standard per tutte le variabili di tipo numerico
+
+```{r}
+summary(dati[,-3])
+apply(dati[,-3], 2, sd)
+```
+
+
+###  es 4 
+
+Verificare se il voto medio di diploma del gruppo dei *maschi* sia significativamente differente dal voto medio di diploma del gruppo delle *femmine* (si consideri come livello di riferimento $\alpha = .05$). Quali conclusioni puoi trarre? Presentare i risultati con le oppurtune rappresentazioni grafiche
+
+```{r}
+boxplot(dati$VOTO ~ dati$SESSO)
+points(c(1,2), c(mean(dati$VOTO[dati$SESSO == 1]), mean(dati$VOTO[dati$SESSO == 2])), 
+       pch = c(16, 19),col = c("salmon", "royalblue"), 
+       cex = 3)
+```
+
+
+```{r}
+t.test(dati$VOTO[dati$SESSO ==1], dati$VOTO[dati$SESSO ==2])
+# analogo a 
+t.test(dati$VOTO ~ dati$SESSO)
+
+```
+
+
+### es. 5 
+
+Derivare utilizzando le funzioni di riferimento di R il valore del p-value ed il valore critico della statistica target (considerato $\alpha = .05$).
+
+```{r}
+mytest = t.test(dati$VOTO ~ dati$SESSO) # assegna all'oggetto mytest i
+# risultati
+
+2*(1-pt(abs(mytest$statistic),mytest$parameter))   # calcolo del p-value
+2*(pt(mytest$statistic,mytest$parameter))          # modo equivalente dato il segno
+                                # del t osservato
+
+qt(0.975,mytest$parameter)     # valore critico della statistica, test a due code
+
+```
+
+
+
+
+### Esercizio 6. 
+
+Verificare se il voto medio di diploma degli studenti (indipendentemente dal genere sessuale) sia significativamente superiore a 70.
+Si richiede di testare l'ipotesi inferenziale utilizzando il confronto diretto tra il valore della statistica target osservata e il valore critico della statistica (assunto $\alpha = 0.05$).
+
+```{r}
+t.test(dati$VOTO, mu=70, alternative = "greater")
+
+qt(0.95,69)    # calcolo del valore critico della
+               # statistica pari a 1.667239 (test ad una coda dx) 
+
+# di conseguenza dato che il t osservato è maggiore del t critico
+# concludo per il rigetto dell'ipotesi nulla (ovvero, il voto medio è
+# significativamente superiore a 70)
+
+```
+
+
+### Esercizio 7 
+
+Relativamente al gruppo delle *donne*, verificare la presenza di una differenza statisticamente significativa tra la variabile `ND1` e la variabile `ND2` (assunto $\alpha = 0.01$). 
+
+Nota: le variabili `ND1` e `ND2` sono le versioni normalizzate delle variabili originarie D1 e D2, mediante la seguente formula: 
+
+$$ND_i = \dfrac{D_i} {\max D_i}$$
+
+dove $\max D_i$ fa riferimento al massimo valore *teorico* di $D_i$. Quali conclusioni puoi trarre? Presentare i risultati con le oppurtune rappresentazioni grafiche
+
+
+```{r}
+# 17 e 20 sono i valori massimi teorici delle variabili D1 d D2 
+# rispettivamente
+dati$ND1 = dati$D1/17
+dati$ND2 = dati$D2/20
+
+boxplot(dati$ND1[dati$SESSO==2], dati$ND2[dati$SESSO==2], names = c("ND1", "ND2"))
+
+t.test(dati$ND1[dati$SESSO==2],
+       dati$ND2[dati$SESSO==2],paired=T)
+```
+
+
+
+
+
+###Esercizio 8. 
+
+Ripetere la stessa analisi questa volta sul gruppo dei maschi.
+
+```{r}
+
+boxplot(dati$ND1[dati$SESSO==1], dati$ND2[dati$SESSO==1], names = c("ND1", "ND2"))
+
+t.test(dati$ND1[dati$SESSO==1],
+       dati$ND2[dati$SESSO==1],paired=T)
+```
+

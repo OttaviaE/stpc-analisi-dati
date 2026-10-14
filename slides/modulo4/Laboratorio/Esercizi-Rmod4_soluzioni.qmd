@@ -3,14 +3,12 @@ title: "Esercizi Modulo 4 - Prima serie"
 subtitle: "Soluzioni"
 author: "Ottavia Epifania"
 format: 
-   pdf: 
-    toc: true
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
-lang: it
-editor_options: 
-  chunk_output_type: console
+  html: 
+   embed-resources: true
+   number-sections: true
+execute:
+  echo: true
+  eval: true
 ---
 
 # Variabili casuali

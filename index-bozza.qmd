@@ -1,0 +1,200 @@
+---
+title: "Analisi dei dati con applicazioni informatiche"
+author: "Ottavia M. Epifania"
+format:
+  html:
+    toc: true
+    number-sections: true
+    toc-title: "Struttura del corso"
+    theme: yeti
+lang: it
+---
+
+# Caratteristiche del corso
+
+* Martedì: 10:45 - 12:30 (Inizio reale: 10:45 - fine reale 12:15) 
+* Giovedì: 10:30 - 12:30 (Inizio reale: 10:45 - fine reale 12:15) 
+* Venerdì: 10:30 - 12:30 (Inizio reale: 10:30 - fine reale in base alle esigenze didattiche)
+
+
+:::{.callout-caution}
+## Lezioni in forse
+
+La lezione del 24 settembre precedemente annullata è ripristinata ma avverrà in due aule di palazzo Istruzione. 
+
+La lezione del 5 novembre è confermata.
+
+:::
+
+:::{.callout-tip}
+
+## Tipologia di lezione 
+
+Tutte le lezioni avranno uno stampo molto pratico (è caldamente raccomandato l'uso del computer personale). 
+
+Le lezioni del martedì e giovedì saranno più di tipo teorico, mentre le lezioni del venerdì saranno delle esercitazioni in aula.
+
+
+:::
+
+:::{.callout-warning}
+
+## Frequenza delle lezioni
+
+La frequenza **non è obbligatoria** e il materiale presente su questo sito è più che sufficiente per permettervi di preparare l'esame. 
+
+Tuttavia, la frequenza delle lezioni è caldamente consigliuata data la natura tecnica del corso. Inoltre, lo studio di questo esame è molto più affrontabile in gruppo che singolarmente.
+
+
+:::
+
+
+## Esercitazioni in itinere
+
+**Come indicato nel syllabus**, durante il corso verranno effetuate due esercitazioni che faranno punteggio per l'esame. 
+
+**Le esercitazioni sono obbligatorie per tutt3, sia frequentanti che non e vanno consegnate almeno una settimana prima dell'appello d'esame**
+
+Ogni esercitazione permette di guadgnare 1.5 punti, da sommare al punteggio raggiunto all'esame. 
+
+Per superare l'esame, è necessario ottenere un punteggio di **almeno** 18 (ovvero, non è possibile arrivare alla sufficienza considerando i punti delle esercitazioni). 
+
+Le due esercitazioni verranno fatte alla fine della parte sulla statistica descrittiva e alla fine della parte sulla statistica inferenziale, in due lezioni di laboratorio dedicate. 
+
+Il vantaggio di svolgerle in aula è di avere a disposizione il supporto mio e dell'assistente ai laboratori. 
+
+## Esame 
+
+**Come specificato nel syllabus**, l'esame si compone di 3 parti: 
+
+* 13 domande a scelta multipla (1 risposta corretta, 3 sbagliate): $+1$ punto per ogni risposta corretta, $0$ punti per ogni risposta errata o non data. 
+* Esercizi su R per un totale di 15 punti
+* Esercitazioni in intinere **obbligatorie** per un totale di 3 punti
+
+L'esame si considera superato solo se si raggiunge un punteggio di 18 **senza contare le esrecitazioni in intinere**. 
+
+Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esame nell'apposito spazio dedicato su moodle. **La mancata consegna nei tempi previsti preclude la partecipazione all'esame**. 
+
+
+# Usare R
+
+* [Installare R e R Studio](guida-R.html)
+
+* [Guida e dispensa di R](introduzione-a-R-IT.html)
+
+## Dispense R 
+
+#### Moduli 1, 2, 3
+
+[Dispense delle funzioni](slides/TAB_MOD_1-2-3.html)
+
+# Il corso 
+
+## Modulo 1 
+
+* [Slides Parte 1](slides/modulo1/modulo1-a.pdf)
+* [Slides Parte 2](slides/modulo1/modulo1-b.pdf)
+
+
+### Laboratorio
+
+* [Laboratorio R (Testo)](slides/modulo1/Laboratorio/LaboratorioRmod1b_Esercizi.html)
+* [Laboratorio R (Template)](slides/modulo1/Laboratorio/LaboratorioRmod1b-template.qmd)
+* [Laboratorio R (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod1b_soluzioni.pdf)
+
+### Esercitazioni 
+
+#### Parte 1
+
+* [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Laboratoriomod1_Esercizi.html)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Esercizi-modulo1-template.qmd)
+* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/LaboratorioRmod1_soluzioni.html)
+
+#### Parte 2
+
+
+* [Esercizi -- (Testo)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-esercizi.html)
+* [Esercizi -- (Template)](slides/modulo1/Laboratorio/Esercizi-modulo1-parte2-template.qmd)
+* [Esercizi -- (Soluzioni)](slides/modulo1/Laboratorio/Esercizi-aggiuntivi-Rmod1-soluzioni.html)
+
+
+
+## Modulo 2
+
+
+* [Slides Parte 1](slides/modulo2/Modulo2a.pdf)
+* [Slides Parte 2](slides/modulo2/Modulo2b.pdf)
+
+
+### Laboratorio 
+
+* [Dati da scaricare](slides/modulo2/Laboratorio/data/datiTestCR2005.csv)
+* [Esercizi -- (Testo)](slides/modulo2/Laboratorio/LaboratorioRmod2_esercizi.html)
+* [Esercizi -- (Template)](slides/modulo2/Laboratorio/LaboratorioRmod2_template.qmd)
+* [Esercizi -- (Soluzioni)](slides/modulo2/Laboratorio/LaboratorioRmod2_soluzioni.html)
+
+
+### Esercitazioni 
+
+#### Parte 1
+
+ * [Esercitazione Modulo 2 - Prima serie (Testo)](slides/modulo2/Laboratorio/Esercizi-Rmod2_esercizi.html)
+ * [Esercitazione Modulo 2 - Prima serie (Template)](slides/modulo2/Laboratorio/Esercizi-Rmod2_template.qmd)
+ * [Esercitazione Modulo 2 - Prima serie (Soluzioni)](slides/modulo2/Laboratorio/Esercizi-Rmod2_soluzioni.html)
+ 
+#### Parte 2
+ 
+ * [Esercitazione Modulo 2 - Seconda serie (Testo)](slides/modulo2/Laboratorio/Esercizi-Rmod2-b_esercizi.html)
+ * [Esercitazione Modulo 2 - Seconda serie (Template)](slides/modulo2/Laboratorio/Esercizi-Rmod2-b_template.qmd)
+ * [Esercitazione Modulo 2 - Seconda serie (Soluzioni)](slides/modulo2/Laboratorio/Esercizi-Rmod2-b_soluzioni.html) 
+
+
+## Modulo 3
+
+* [Slides Parte 1](slides/modulo3/modulo3-a.pdf)
+* [Slides Parte 2](slides/modulo3/modulo3-b.pdf)
+
+### Laboratorio
+
+* [Dati da scaricare](slides/modulo3/laboratorio/data/DataAS.csv)
+* [Laboratorio Modulo 3 (Testo)](slides/modulo3/laboratorio/LaboratorioRmod3-Lombardi.pdf)
+* [Laboratorio Modulo 3 (Soluzioni)](slides/modulo3/laboratorio/LaboratorioRmod3_Soluzioni.html)
+
+### Esercitazione
+
+#### Parte 1: Connessione tra variabili categoriali
+
+* [Dati da scaricare](slides/modulo3/laboratorio/data/studenti.csv)
+* [Esercitazione Modulo 3 - Parte 1 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3a-esercizi.html)
+* [Esercitazione Modulo 3 - Parte 1 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3a-template.qmd)
+* [Esercitazione Modulo 3 - Parte 1 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3a-soluzioni.html)
+
+#### Parte 2: Covarianza e correlazione tra variabili quantitative
+
+* [Esercitazione Modulo 3 - Parte 2 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3_Esercizi.html)
+* [Esercitazione Modulo 3 - Parte 2 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3_template.qmd)
+* [Esercitazione Modulo 3 - Parte 2 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3_Soluzioni.html)
+
+#### Parte 3: Regressione lineare e Chi quadrato
+
+* [Esercitazione Modulo 3 - Parte 3 (Testo)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_Esercizi.html)
+* [Esercitazione Modulo 3 - Parte 3 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_template.qmd)
+* [Esercitazione Modulo 3 - Parte 3 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_Soluzioni.html)
+
+## Modulo 4
+
+* [Slides Parte 1](slides/modulo4/modulo4-a.pdf)
+* [Slides Parte 2](slides/modulo4/modulo4-b.pdf)
+
+### Laboratorio
+
+* [Laboratorio Modulo 4 (Testo)](slides/modulo4/Laboratorio/LaboratorioRmod4_esercizi.html)
+* [Laboratorio Modulo 4 (Template)](slides/modulo4/Laboratorio/LaboratorioRmod4_template.qmd)
+* [Laboratorio Modulo 4 (Soluzioni)](slides/modulo4/Laboratorio/LaboratorioRmod4_soluzioni.html)
+
+### Esercitazione
+
+* [Esercitazione Modulo 4 (Testo)](slides/modulo4/Laboratorio/Esercizi-Rmod4_esercizi.html)
+* [Esercitazione Modulo 4 (Template)](slides/modulo4/Laboratorio/Esercizi-Rmod4_template.qmd)
+* [Esercitazione Modulo 4 (Soluzioni)](slides/modulo4/Laboratorio/Esercizi-Rmod4_soluzioni.html)
+

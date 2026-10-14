@@ -181,3 +181,21 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Esercitazione Modulo 3 - Parte 3 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_template.qmd)
 * [Esercitazione Modulo 3 - Parte 3 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_Soluzioni.html)
 
+
+## Modulo 4
+
+* [Slides Parte 1](slides/modulo4/modulo4-a.pdf)
+* [Slides Parte 2](slides/modulo4/modulo4-b.pdf)
+
+### Laboratorio
+
+* [Laboratorio Modulo 4 (Testo)](slides/modulo4/Laboratorio/LaboratorioRmod4_esercizi.html)
+* [Laboratorio Modulo 4 (Template)](slides/modulo4/Laboratorio/LaboratorioRmod4_template.qmd)
+* [Laboratorio Modulo 4 (Soluzioni)](slides/modulo4/Laboratorio/LaboratorioRmod4_soluzioni.html)
+
+### Esercitazione
+
+* [Esercitazione Modulo 4 (Testo)](slides/modulo4/Laboratorio/Esercizi-Rmod4_esercizi.html)
+* [Esercitazione Modulo 4 (Template)](slides/modulo4/Laboratorio/Esercizi-Rmod4_template.qmd)
+* [Esercitazione Modulo 4 (Soluzioni)](slides/modulo4/Laboratorio/Esercizi-Rmod4_soluzioni.html)
+

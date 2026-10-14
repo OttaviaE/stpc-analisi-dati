@@ -1,0 +1,69 @@
+% ------------------------------------------------------------------
+% frontespizio.tex -- front page e retro della dispensa
+% Incluso nello YAML con: include-in-header: frontespizio.tex
+% Ridefinisce \maketitle (chiamato in automatico da Quarto)
+% ------------------------------------------------------------------
+\providecolor{blu}{rgb}{0.0,0.33,0.71}
+
+\renewcommand{\maketitle}{%
+  \begin{titlepage}
+    \centering
+    % --- Intestazione: ateneo, dipartimento, corso di laurea ---
+    {\large\scshape Università degli Studi di Trento\par}
+    \vspace{2mm}
+    {\normalsize Dipartimento di Psicologia e Scienze Cognitive\par}
+    \vspace{1mm}
+    {\normalsize Corso di Laurea in Scienze e Tecniche di Psicologia Cognitiva\par}
+    \vspace{6mm}
+    {\color{blu}\rule{\textwidth}{0.8pt}\par}
+
+    \vfill
+
+    % --- Corso e titolo ---
+    {\large Corso di\par}
+    \vspace{2mm}
+    {\LARGE\itshape Analisi dei dati con applicazioni informatiche\par}
+    \vspace{18mm}
+    {\color{blu}\fontsize{34}{40}\selectfont\bfseries Statistica descrittiva\par}
+    \vspace{6mm}
+    {\Large Dispensa -- Moduli 1, 2 e 3\par}
+
+    \vfill
+
+    % --- Autrice ---
+    {\color{blu}\rule{\textwidth}{0.8pt}\par}
+    \vspace{6mm}
+    {\large Ottavia M. Epifania\par}
+    \vspace{1mm}
+    {\small\ttfamily ottavia.epifania@unitn.it\par}
+  \end{titlepage}
+
+  % --- Retro del frontespizio: disclaimer e licenza ---
+  \thispagestyle{empty}
+  \null\vfill
+  \begin{small}
+  \noindent\textbf{Nota sul materiale}\par
+  \vspace{2mm}
+  \noindent Parte del materiale di questa dispensa è riadattato dal corso
+  \emph{Test per le organizzazioni} dell'Università degli Studi di Padova,
+  tenuto insieme alla Dott.ssa Margherita Calderan
+  (\url{https://ottaviae.github.io/test-organizzioni-fisppa/}).
+
+  \vspace{8mm}
+  \noindent\textbf{Licenza}\par
+  \vspace{2mm}
+  \noindent Quest'opera è distribuita con licenza
+  \href{https://creativecommons.org/licenses/by/4.0/deed.it}{Creative Commons
+  Attribuzione 4.0 Internazionale (CC BY 4.0)}.
+  Puoi copiare, ridistribuire e modificare il materiale con qualsiasi mezzo
+  e per qualsiasi fine, a condizione di citare l'autrice e di indicare se
+  sono state apportate modifiche.
+
+  \vspace{3mm}
+  \noindent Per citare questa dispensa:\\
+  Epifania, O. M. \emph{Statistica descrittiva. Dispensa del corso Analisi dei
+  dati con applicazioni informatiche, Moduli 1, 2 e 3}. Università degli Studi
+  di Trento.
+  \end{small}
+  \clearpage
+}
