@@ -2,11 +2,12 @@
 title: "Statistica descrittiva"
 subtitle: "Dispensa del corso *Analisi dei dati con applicazioni informatiche* -- Moduli 1, 2 e 3"
 author: "Ottavia M. Epifania"
-date: "A.A. 2026/2027"
+
 format:
   pdf:
     documentclass: scrreprt
     papersize: a4
+    include-in-header: frontespizio.tex
     toc: true
     toc-depth: 2
     toc-title: "Indice"
@@ -2776,9 +2777,12 @@ Ciascuna delle due variabili può essere descritta separatamente attraverso la s
 ```{=latex}
 \begin{table}[htbp]
 \centering
-\caption{Distribuzione di frequenza della variabile Istruzione}
+\caption{Distribuzioni di frequenza univariate.}
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\caption{Variabile Istruzione}
 \label{tbl-freq-x}
-\begin{tabular}{c c}
+\begin{tabular}{l c}
 \hline
 categoria $x_k$ & $n_{k.}$\\
 \hline
@@ -2787,15 +2791,12 @@ Secondaria Inferiore (SI) & \textcolor{red}{3}\\
 Secondaria Superiore (SS) & \textcolor{red}{5} \\
 \hline
 \end{tabular}
-\end{table}
-```
-
-```{=latex}
-\begin{table}[htbp]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
 \centering
-\caption{Distribuzione di frequenza della variabile Occupazione}
+\caption{Variabile Occupazione}
 \label{tbl-freq-y}
-\begin{tabular}{c c}
+\begin{tabular}{l c}
 \hline
 categoria $y_j$ & $n_{.j}$ \\
 \hline
@@ -2804,13 +2805,14 @@ Impiegato (I) & \textcolor{blue}{6}\\
 Dirigente (D) & \textcolor{blue}{3} \\
 \hline
 \end{tabular}
+\end{minipage}
 \end{table}
 ```
 
 Le distribuzioni univariate non dicono nulla su come le due variabili si combinano tra loro: sappiamo quante persone hanno un titolo di studio elementare e quante sono dirigenti, ma non quante persone con un titolo elementare sono dirigenti. Per rispondere a questa domanda bisogna considerare le due variabili *congiuntamente*, contando quante persone presentano ciascuna coppia di categorie $(x_k, y_j)$. Il risultato è la **tabella a doppia entrata** (o tavola di contingenza) in @tbl-doppia-entrata: le righe corrispondono alle categorie di $X$, le colonne alle categorie di $Y$, e ogni cella contiene la **frequenza congiunta** $n_{kj}$, cioè il numero di persone che possiedono contemporaneamente la categoria $x_k$ e la categoria $y_j$.
 
 ```{=latex}
-\begin{table}[htbp]
+\begin{table}[!h]
 \centering
 \caption{Tabella a doppia entrata di Istruzione e Occupazione}
 \label{tbl-doppia-entrata}
@@ -3069,9 +3071,11 @@ margin.table(mytab,2)
 `prop.table(T, margin = NULL)`: Probabilità condizionate: 
 
 :::{.callout-tip}
-`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**)
+`margin = 1`: Probabilità calcolate sul totale $n$, $p_{kj} = \dfrac{n_{kj}}{n}$
 
-`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**)
+`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**), $p_{kj} = \dfrac{n_{kj}}{n_{k.}}$
+
+`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**), $p_{kj} = \dfrac{n_{kj}}{n_{.j}}$
 :::
 
 :::: {.columns}
@@ -3256,19 +3260,19 @@ La CONNESSIONE tra due variabili categoriali equivale alla NON INDIPENDENZA!
 		
 \end{center}
 
-Tra le variabili $X$ e $Y$ c’è una forma di legame e \textbf{relazione} (\textbf{connessione}) $\rightarrow$ il variare di una implica un qualche cambiamento \textbf{non casuale} nell’altra
+Tra le variabili $X$ e $Y$ c’è una forma di legame e \textbf{relazione} (\textbf{connessione}) $\rightarrow$ il variare di una implica un qualche cambiamento \textbf{non casuale} nell’altra.
 
 ### $\chi^2$
 
-Quantifica la DISTANZA DALL'INDIPENDENZA tra due variabili categoriali
+Quantifica la DISTANZA DALL'INDIPENDENZA tra due variabili categoriali.
 
 * X con $h$ categorie $x_k$, con $k=1,\ldots,h$,
 * Y con $m$ categorie $y_j$, con $j=1,\ldots,m$
 
-Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attese** o **frequenze teoriche** ($n_{kj}^*$)
+Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attese** o **frequenze teoriche** ($n_{kj}^*$).
 
-:::: {.columns}
-:::{.column width=40%}
+\begin{columns}
+\begin{column}{0.40\textwidth}
 \begin{tabular}{|p{2.5cm}|p{1cm}|}
 \hline
 & \\
@@ -3282,13 +3286,13 @@ Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attes
 	
 \vspace{3mm}
 Frequenze osservate
-:::
-
-:::{.column width=10%}
+\end{column}
+\begin{column}{0.10\textwidth}
 VS.
-:::
+\end{colum}
+\begin{column}{0.50\textwidth}
 
-:::{.column width=40%}
+
 \begin{tabular}{|p{2.5cm}|p{1cm}|}
 \hline
 & \\
@@ -3301,21 +3305,25 @@ VS.
 
 \vspace{3mm}
 Frequenze teoriche
-:::
-::::
 
-$$n_{kj}^* = \dfrac{n_{k.} \times n_{.j}}{n}, \qquad n = \sum_{k=1}^h \sum_{j=1}^m n_{kj} = \sum_{k=1}^h \sum_{j=1}^m n_{kj}^*$$
+\end{colum}
+
+\end{columns}
+
+
+
 
 :::{.callout-tip}
 
 ## $n_{kj}^*$: Significato 
 
 Data l'ampiezza campionaria $n$, quali sono le frequenze che avremmo dovuto osservare se le due variabili fossero state indipendenti, ovvero se non avessero alcuna relazione?
+
+$$n_{kj}^* = \dfrac{n_{k.} \times n_{.j}}{n}, \qquad n = \sum_{k=1}^h \sum_{j=1}^m n_{kj} = \sum_{k=1}^h \sum_{j=1}^m n_{kj}^*$$
 :::
 
-$$
-n_{kj}^* = \frac{n_{k.}\,n_{.j}}{n}
-$$
+Siccome le frequenze teoriche sono le frequenze che si sarebbero osservate se le variabili fossero state indipendeti **data l'ampiezza campionaria e i marginali di riga e colonna osservati**, la somma di tutte le frequenze teoriche restituisce l'ampiezza campionaria $n$. Inoltre, i marginali di riga delle frequenze teoriche sono uguali ai marginali di riga delle frequenze osservate, così come i marginali di colonna delle frequenze teoriche sono uguali ai marginali di colonna delle frequenze osservate.
+
 
 ```{r}
 #| tbl-cap: Frequenze osservate
