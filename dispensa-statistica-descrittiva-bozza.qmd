@@ -4112,7 +4112,7 @@ La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$:
 
 Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione.
 
-La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale)
+La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale).
 
 ```{=latex}
 \columnratio{0.6,0.4}
@@ -4122,7 +4122,8 @@ La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo 
 ```{r}
 #| echo:  false
 #| fig-align: center
-
+#| fig-cap: Scatterplot X e Y
+#| label: fig-corReg
 par(mfrow=c(1,1))
 plot(dati$X, dati$Y, pch=19, cex=2)
 abline(v = mean(dati$X), lty=2)
@@ -4147,34 +4148,21 @@ dati
 \end{paracol}
 ```
 
-$$r = `r round(cor(X, Y), 2)`$$
+La @fig-corReg permette di capire che la relazione tra le due variabili è positiva e, calcolando il coefficiente di correlazione, si ottiene $r = `r round(cor(X, Y), 2)`$, a indicare una forte relazione tra le due variabili. Tuttavia, in base a queste informazioni, non è possibile dire quanto cambia $y$ in funzione di ogni cambiamento in $x$, né è possibile fare una predizione su quale valore di $y$ si può osservare dato un valore di $x$.
+Per poterlo fare, è necessario usare un modello statistico idoneo che, in questo caso, prevede la cortsuzione di una retta che passi attraverso la nuvola di punti (@fig-retta). Si tratta quindi di trovare, tra le infinite rette che possono passare per un piano cartesiano, quella che permette di predire *sufficientemente bene* tutti i punti (ovvero le osservazioni), ovvero quella retta che permetta di *minimizzare le distanze delle osservazioni*.
 
 ```{r}
 #| echo: false
 #| out-width: 70%
 #| fig-cap: Una retta che passi attraverso le coppie di osservazioni
+#| label: fig-retta
 set.seed(999)
 mymodel = lm(Y ~ X)
 plot(X, Y, pch = 19, cex = 2)
 abline(mymodel, col = "firebrick", lwd = 2)
 ```
 
-```{r}
-#| echo: false
-#| out-width: 70%
-#| fig-cap: Ma quale retta?
-plot(X, Y, pch = 19, cex = 2)
 
-y1 = rnorm(20, sd = 2)
-x1 = rnorm(20, sd = 2)
-abline(mymodel, col = "firebrick", lwd = 2)
-for (i in 1:length(x1)) {
-  abline(mymodel$coefficients[1] + y1[i],
-         mymodel$coefficients[2], col = i, lty = 2)
-}
-```
-
-Caso estremamente semplice dove varia solo l'intercetta -- le rette sono parallele
 
 La regressione lineare tra una *variabile indipendente* $X$ (predittore) ed una *variabile dipendente* $Y$ (criterio) calcola la migliore approssimazione lineare che identifica il legame tra le due variabili utilizzando la struttura di dati bivariata $(x_i,y_i)$ osservata su un campione di $n$ osservazioni.
 
@@ -4198,35 +4186,68 @@ $$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
 \end{paracol}
 ```
 
-$$Y = \beta_0 + \beta X $$
-$$y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)$$
+$$
+Y = \beta_0 + \beta X
+$$ {#eq-retta}
 
-$y_i$: Valore di $y$ atteso per l'i-esima osservazione 
+$$
+y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)
+$$ {#eq-modello}
+
+La @eq-retta descrive la retta di regressione, cioè la relazione lineare tra $X$ e $Y$: 
+
+La @eq-modello descrive quindi ogni osservazione $i$ come la somma di una parte spiegata dalla retta, $\beta_0 + \beta x_i$, e di un errore $\varepsilon_i$, che rappresenta la distanza tra il valore osservato $y_i$ e la retta.
+
+Dopo aver stimato $\beta_0$ e $\beta$ dai dati secondo il *principio dei minimi quadrati* (vedi @sec-sqe), si può predire il valore di $y$ per un dato valore di $x$:
+
+$$
+y_i^* = \hat{\beta}_0 + \hat{\beta} x_i
+$$ {#eq-predizione}
+
+Nella @eq-predizione l'errore non compare, perché la predizione $y_i^*$ è il punto sulla retta stimata.
+
+:::{.callout-note}
+## Significato dei coefficienti
+
+$y_i^*$: Valore di $y$ atteso per l'i-esima osservazione 
 
 $\beta_0$: Valore dell'intercetta, ovvero *valore atteso in $y$ quando $x_i = 0$*
 
-$\beta_1$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in y per ogni cambiamento unitario in $x$*
+$\beta$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in y per ogni cambiamento unitario in $x$*
 
 $\varepsilon_i$: Componente d'errore ($\mathcal{N}(0, \sigma^2)$)
+:::
 
-### Principio dei minimi quadrati
 
-$$SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2  = \sum_{i=1}^n e_i^2$$
+### Principio dei minimi quadrati {#sec-sqe}
 
-dove $y_i^* = \beta_0 + \beta x_i$, e $e_i = y_i - y_i^*$.  \normalsize
+La retta di regressione viene tracciata seguendo il principio dei minimi quadrati, secondo cui si vuole minimizzare la somma delle distanze al quadrato dei punti dalla retta (@eq-sqe, somma dei quadrati degli errori):
 
-Per il principio dei minimi quadrati si può dimostrare che lo stimatore ottimale per $\beta$ è
+$$
+SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2 = \sum_{i=1}^n e_i^2
+$$ {#eq-sqe}
 
-$$\hat{\beta} = \frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
-= \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$$
+dove $y_i^* = \beta_0 + \beta x_i$ ed $e_i = y_i - y_i^*$.
 
-mentre per $\beta_0$ è
+Si può dimostrare che i valori che minimizzano la @eq-sqe sono, per il coefficiente angolare $\beta$,
 
-$$\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$$
+$$
+\hat{\beta} = \frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
+= \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}
+$$ {#eq-beta}
+
+e, per l'intercetta $\beta_0$,
+
+$$
+\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}
+$$ {#eq-beta0}
+
+A partire dai dati osservati, si ottengono le stime $\hat{\beta}_0$ e $\hat{\beta}$, che sostituite nella @eq-retta definiscono la retta di regressione stimata, $y^* = \hat{\beta}_0 + \hat{\beta} x$. È la retta che passa più vicina possibile a tutti i punti e che si usa per fare predizioni (@eq-predizione).
 
 ```{r}
 #| echo:  false
 #| fig-align: center
+#| fig-cap: Retta di rgeressione stimata con il principio dei minimi quadrati
 plot(dati$X, dati$Y, pch=19, cex =2)
 mod <- lm(Y ~ X, data = dati)
 
@@ -4242,6 +4263,8 @@ segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
 
 #### Coefficiente angolare e correlazione
 
+Nella regressione **con un solo predittore**, il coefficiente angolare e il coefficiente di correlazione sono in stretta relazione tra loro, tanto che, conoscendo le deviazioni standard di $X$ e $Y$, si può ottenere l'uno a partire dall'altro:
+
 ```{=latex}
 \columnratio{0.5,0.5}
 \begin{paracol}{2}
@@ -4249,346 +4272,203 @@ segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
 
 $$\hat{\beta} = \dfrac{\cov(X,Y)}{sd(x)^2}$$
 
-
 ```{=latex}
 \switchcolumn
 ```
 
-$$r = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
+$$r = \dfrac{\cov(X,Y)}{sd(x)\,sd(y)}$$
 
 ```{=latex}
 \end{paracol}
 ```
 
-Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
+Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$ si ottiene:
 
-$$\hat{\beta} = r \, \dfrac{sd(y)}{sd(x)}$$
+$$
+\begin{aligned}
+\hat{\beta} &= \frac{\cov(X,Y)}{sd(x) \, sd(x)} \cdot \frac{sd(y)}{sd(y)} = \underbrace{\frac{\cov(X,Y)}{sd(x) \, sd(y)}}_{r} \cdot \frac{sd(y)}{sd(x)} = r \, \frac{sd(y)}{sd(x)}
+\end{aligned}
+$$ {#eq-beta-r}
 
-1. Il **segno** del coefficiente angolare è lo stesso di $r$: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale
 
-2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $\hat{y} = \hat{\beta}_0 + \hat{\beta}x$)
+Se $X$ e $Y$ sono standardizzate, cioè $sd(x) = sd(y) = 1$, il coefficiente angolare coincide con il coefficiente di correlazione. Nella regressione con più predittori questa relazione non vale più, perché ogni coefficiente dipende anche dalle correlazioni tra i predittori.
 
-#### Il bambino di prima
+Dalla @eq-beta-r e dalla @eq-beta0 seguono due proprietà:
+
+1. Il **segno** del coefficiente angolare è lo stesso di $r$, perché le deviazioni standard sono sempre positive: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale.
+
+2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$: sostituendo $x = \bar{x}$ in $y^* = \hat{\beta}_0 + \hat{\beta}x$ e usando $\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$, si ottiene $y^* = \bar{y} - \hat{\beta}\,\bar{x} + \hat{\beta}\,\bar{x} = \bar{y}$.
+
+:::{.callout-tip}
+## Esempio 
 
 ```{r}
 b <- cov(bimbo$eta, bimbo$peso) / var(bimbo$eta)
 b0 <- mean(bimbo$peso) - b * mean(bimbo$eta)
 c(b0, b)
-cor(bimbo$eta, bimbo$peso) * sd(bimbo$peso) / sd(bimbo$eta)
 ```
 
 Retta di regressione: $\hat{y} = `r round(b0, 2)` + `r round(b, 2)`x$
 
 Quale sarebbe il peso previsto a 48 mesi? $\hat{y}_{48} = `r round(b0, 2)` + `r round(b, 2)` \cdot 48 = `r round(b0 + b * 48, 2)`$ kg
 
+:::
+
 ### Indice di adattamento $R^2$
 
-$$R^2 = 1 - \dfrac{SQE/n-1}{Var(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
+Il principio dei minimi quadrati, con cui viene stimata la retta di regressione, garantisce che la retta ottenuta sia la migliore tra le infinite rette che si possono tracciare tra i punti, nel senso che è quella che rende minima la somma dei quadrati degli errori (@eq-sqe). Tuttavia, non dice nulla sulla bontà del modello, cioè sulla sua capacità di spiegare la relazione tra le variabili. In altre parole, non dice quanta parte della varianza di $Y$ è effettivamente spiegata dal modello e quindi, dato che c'è un solo predittore, quanta varianza di $Y$ è spiegata da $X$.
 
-$\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della componente di errore
+Per poter parlare di varianza spiegata e bontà del modello, bisogna ricorrere alla statistica $R^2$ (@eq-rsq) che quantifica la proporzione di **varianza di regressione** (ovvero la proporzione di varianza spiegata dal modello) rispetto alla varianza totale, ovvero la varianza d'errore sommata alla varianza di regressione:
 
-$0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto, $R^2 = r^2$
+
+
+$$R^2 = 1 - \dfrac{SQE/n-1}{Var(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2},$${#eq-rsq}
+
+dove $\varepsilon = \dfrac{SQE}{n-1}$ è lo stimatore campionario della varianza della componente di errore, ovvero degli scarti del modello, i sui residui.
+
+$0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. 
+
+Nella regressione con un solo predittore, $R^2$ è uguale al quadrato del coefficiente di correlazione tra $X$ e $Y$: $R^2 = r^2$, con cui ha una relazione come riportato in @fig-rRsq.
 
 ```{r}
 #| echo: false
-
+#| label: fig-rRsq
+#| fig-cap: "Relazione quadratica tra $r$ e $R$ quadro."
 r = seq(-1,1, length.out= 1000)
 plot(r, r^2, pch = 19, xlab = "r", ylab = expression(r^2),
      cex.lab =4, cex.axis=2)
 ```
 
+#### Esempi di relazione tra $r$ e $R^2$
+
 ```{r}
-#| echo: false
-#| out-width: 80%
-#| fig-align: center
+#| include: false
 
-set.seed(123)  # per riproducibilità
+# Funzione che simula i dati e stima la retta
+simula_reg <- function(beta1, sd_eps, n = 50, beta0 = 2) {
+  set.seed(123)  # per riproducibilità
+  X <- rnorm(n, mean = 10, sd = 5)
+  epsilon <- rnorm(n, mean = 0, sd = sd_eps)
+  Y <- beta0 + beta1 * X + epsilon
+  fit <- lm(Y ~ X)
+  list(X = X, Y = Y, fit = fit, Y_hat = fitted(fit),
+       R2 = round(summary(fit)$r.squared, 2),
+       r = round(cor(X, Y), 2))
+}
 
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- 1.5
+# Funzione che disegna punti, retta e residui
+grafico_reg <- function(d) {
+  plot(d$X, d$Y, pch = 19, col = "black",
+       xlab = "X", ylab = "Y",
+       ylim = c(min(d$Y, d$Y_hat), max(d$Y, d$Y_hat)))
+  abline(d$fit)
+  segments(d$X, d$Y, d$X, d$Y_hat, lty = 2)
+}
 
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 10)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+d1 <- simula_reg(beta1 = 1.5,  sd_eps = 10)
+d2 <- simula_reg(beta1 = -2,   sd_eps = 5)
+d3 <- simula_reg(beta1 = 3,    sd_eps = 3)
+d4 <- simula_reg(beta1 = -0.2, sd_eps = 10)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
-
 ```{r}
+#| label: fig-corr
 #| echo: false
-#| out-width: 80%
-#| fig-align: center
-set.seed(123)  # per riproducibilità
+#| fig-cap: "Retta di regressione e residui (linee tratteggiate) in quattro insiemi di dati simulati."
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#| layout-ncol: 2
+#| layout-nrow: 2
 
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- -2
-
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 5)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+grafico_reg(d1)
+grafico_reg(d2)
+grafico_reg(d3)
+grafico_reg(d4)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+- In @fig-corr-1 la relazione è positiva ma moderata ($r = `r d1$r`$): i punti sono piuttosto dispersi intorno alla retta e i residui sono grandi, quindi $X$ spiega solo una parte della varianza di $Y$ ($R^2 = `r d1$R2`$).
+- In @fig-corr-2 la relazione è negativa e forte ($r = `r d2$r`$): i punti sono vicini alla retta e il modello spiega gran parte della varianza di $Y$ ($R^2 = `r d2$R2`$).
+- In @fig-corr-3 la relazione è positiva e molto forte ($r = `r d3$r`$): i punti sono quasi allineati, i residui sono piccolissimi e $R^2 = `r d3$R2`$ è vicino a 1.
+- In @fig-corr-4 la relazione è praticamente assente ($r = `r d4$r`$): la retta è quasi orizzontale e, pur essendo la migliore secondo i minimi quadrati, spiega pochissima varianza di $Y$ ($R^2 = `r d4$R2`$).
+
+### La funzione: `lm()`
+
+I parametri del modello in R si stimano con la funzione `lm()` (**l**inear **m**odel):
+
+`lm(Y ~ X)`: Retituisce la stima dei parametri del modello di regressione lineare (secondo il principio dei minimi quadrati) dove si predicono i valori di $Y$ a seconda dei valori di $X$.
+
+`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5`. Altrimenti cercate "tilde" su google e copia e incollate.
 
 ```{r}
-#| echo: false
-#| out-width: 80%
-#| fig-align: center
-
-set.seed(123)  # per riproducibilità
-
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- 3
-
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 3)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 1.2)
-```
-
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
-
-```{r}
-#| echo: false
-#| out-width: 80%
-#| fig-align: center
-set.seed(123)  # per riproducibilità
-
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- -0.2
-
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 10)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
-```
-
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
-
-### `lm()`
-
-`lm(Y ~ X)`: Retituisce la stima dei parametri del modello di regressione lineare dove si predicono i valori di $Y$ a seconda dei valori di $X$
-
-`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5` (fonte non verificata)
-
-```{r}
+#| lst-cap: Stima del modello lineare secondo il principio dei minimi quadrati
 X <- c(9,8,12,9,10,14,5,4,13,7,5)
 Y <- c(9,6,8,9,7,10,8,4,11,5,4)
-lm(Y~X)
+lm(Y~X) # stima il modello
 ```
 
-### Assunti del modello
 
-#### Assunzioni
+```{r}
+#| lst-cap: Grafico a dispersione con retta di regressione
+
+plot(X, Y, pch = 19, col = "darkgreen", cex = 2) # disegna il grafico
+abline(lm(Y ~ X), lty = 2, lwd = 2, col = "darkorange") # aggiunge la retta
+```
+
+### Assunti del modello di regressione lineare
 
 - **Indipendenza dei predittori dall'errore**
 
-\vspace{1.5mm}
 
 > I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
 
 - **Indipendenza delle osservazioni**
 
-\vspace{1.5mm}
-
 > $\forall i \neq j, \, \varepsilon_i \perp\!\!\!\perp \varepsilon_j$ (le osservazioni sono state campionate indipendentemente l'una dall'altra)
 
 - **Linearità**
 
-\vspace{1.5mm}
-
 > Il valore atteso  dell'errore per un dato valore di $x$ è 0
-
-#### Assunzioni
 
 - **Normalità**
 
-\vspace{1.5mm}
 
 > $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: Anche $y_i$ è distribuita normalmente con media $\beta_0 + \beta_1x_i$
 
 - **Varianza costante** (omoschedasticità)
 
-\vspace{1.5mm}
-
 > La varianza degli errori è costante per qualunque valore di $X$
 
-\vspace{3mm}
+#### Assunzioni
 
-Gli errori $\varepsilon_i$ della popolazione non si osservano $\rightarrow$ si guardano i loro "rappresentanti" nel campione: i **residui** $e_i = y_i - \hat{y}_i$
+- **Indipendenza dei predittori dall'errore**
 
-**Indipendenza dei predittori dall'errore**
-
-\vspace{1.5mm}
 
 > I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
 
-\begin{center}
-\emph{Analisi dei residui}
-\end{center}
+- **Indipendenza delle osservazioni**
 
-I residui e il predittore **non devono essere correlati tra di loro**
+> $\forall i \neq j, \, \varepsilon_i \perp\!\!\!\perp \varepsilon_j$ (le osservazioni sono state campionate indipendentemente l'una dall'altra)
 
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-set.seed(123)
-n <- 100
-beta0 <- 1
-beta1 <- 2
-rho <- 1.0
-sigma_u <- 1
-x = rnorm(n)
-e = rnorm(length(x), sd= 3)
-y <- beta0 + beta1 * x + e
+- **Linearità**
 
-fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2)
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
+> Il valore atteso  dell'errore per un dato valore di $x$ è 0
 
-```
+- **Normalità**
 
-La linea intera rossa rappresenta quello che dovremmo osservare, ossia la totale assenza di relazione tra la $x$ e i residui del modello
 
-Le linea tratteggiata blu indica la relazione effettiva tra i residui e il predittore $x$. Questa linea deve essere il più vicina possibile alla linea rossa
+> Gli errori si distribuiscono normalmente con media 0 e varianza $\sigma^2$, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. Dato che, fissato $x_i$, la quantità $\beta_0 + \beta x_i$ è costante, ne segue che anche $y_i$, per un dato valore di $x_i$, si distribuisce normalmente con media $\beta_0 + \beta x_i$ e varianza $\sigma^2$: per ogni valore di $x$, i valori di $y$ si distribuiscono normalmente attorno alla retta. Questo non significa che la variabile $Y$ nel suo complesso debba essere normale: l'assunzione riguarda gli errori, ed è per questo che si verifica sui residui.
 
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-set.seed(123)
-n <- 100
-beta0 <- 1
-beta1 <- 2
-rho <- 1.0
-sigma_u <- 1
-x = rnorm(n)
-e = rnorm(length(x), sd= 3)
-y <- beta0 + beta1 * x + e
+- **Varianza costante** (omoschedasticità)
 
-fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2)
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
-```
+> La varianza degli errori è costante per qualunque valore di $X$
 
-$$r = `r round(cor(e, x),2)`$$
 
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-ecorr = x+rnorm(length(x), sd= 1)
-ycorr <- beta0 + beta1 * x + ecorr
+Gli errori $\varepsilon_i$ della popolazione non si osservano. Per verificare le assunzioni si usano quindi i loro "rappresentanti" nel campione, i **residui** $e_i = y_i - y_i^*$, cioè le differenze tra i valori osservati e i valori attesi in base alla retta stimata.
 
-fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(ycorr ~x), col ="royalblue4", lwd = 2, lty = 2)
-```
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-ecorr = x+rnorm(length(x), sd= 1)
-ycorr <- beta0 + beta1 * x + ecorr
-
-fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(ecorr ~x), col ="royalblue4", lwd = 2, lty = 2)
-```
-
-$$r = `r round(cor(ecorr, x),2)`$$
+Per mostrare come si verificano le assunzioni, si prende ad esempio la relazione tra il voto a un esame (`voto`) e le ore di studio (`ore`):
 
 ```{r}
 #| echo: false
@@ -4599,61 +4479,109 @@ studio$voto <- round(15 + 0.6 * studio$ore + rnorm(80, 0, 2), 1)
 
 ```{r}
 #| echo: true
-#| out-width: 55%
-#| fig-align: center
 head(studio)
 modello <- lm(voto ~ ore, data = studio)
 modello
 ```
 
-#### I valori attesi e i residui
+I valori attesi $y_i^*$ si ottengono con la funzione `fitted()` e i residui con la funzione `residuals()`:
 
 ```{r}
 #| echo: true
-studio$attesi <- fitted(modello)      # y cappello
-studio$residui <- residuals(modello)  # y - y cappello
+studio$attesi <- fitted(modello)      # valori attesi y*
+studio$residui <- residuals(modello)  # residui y - y*
 head(studio)
 ```
 
+I residui sono semplicemente la differenza tra i valori osservati e i valori attesi:
+
 ```{r}
 #| echo: true
-# i residui sono semplicemente osservati - attesi
 head(studio$voto - studio$attesi)
 ```
 
-#### Normalità degli errori
+##### Indipendenza dei predittori dall'errore
 
-La media dei residui è (sempre) 0:
+I predittori sono misurati senza errore, cioè i predittori e gli errori non sono correlati nella popolazione. Per questo è importante il campionamento casuale.
+
+Questa assunzione **non si può verificare con i residui**. Per come è costruita la retta dei minimi quadrati, i residui sono sempre non correlati con il predittore, anche quando l'assunzione è violata:
 
 ```{r}
 #| echo: true
-mean(studio$residui)
+cor(studio$residui, studio$ore)
 ```
 
-I residui dovrebbero distribuirsi in modo simmetrico attorno allo 0: la mediana deve essere il più vicina possibile a 0, il minimo e il massimo (così come il primo e il terzo quartile) dovrebbero essere simili in valore assoluto
+L'assunzione va quindi garantita a monte, con il disegno dello studio: campionando i partecipanti in modo casuale e usando misure affidabili del predittore.
+
+In una simulazione gli errori veri sono noti e si può vedere che cosa significa l'assunzione (@fig-err-pred-1). Se è rispettata (@fig-err-pred-1), gli errori non hanno alcuna relazione con $x$: la retta che descrive la relazione tra errori e $x$ (tratteggiata, in blu) coincide quasi con la retta orizzontale in 0 (continua, in rosso). Se è violata (@fig-err-pred-2), gli errori crescono al crescere di $x$ e la retta tratteggiata si allontana da quella orizzontale. Tuttavia, questo tipo di grafico è un controllo che va sempre fatto.
 
 ```{r}
-#| echo: true
-summary(studio$residui)
+#| include: false
+set.seed(123)
+n <- 100
+x <- rnorm(n)
+e <- rnorm(n, sd = 3)          # errori indipendenti da x
+e_corr <- x + rnorm(n, sd = 1) # errori correlati con x
 ```
 
-#### Residui vs predittore
+```{r}
+#| label: fig-err-pred
+#| echo: false
+#| fig-cap: "Relazione tra il predittore $x$ e gli errori in due insiemi di dati simulati."
+#| fig-subcap: 
+#|  - ""
+#|  - ""
+#| layout-ncol: 2
 
-Se la relazione è lineare, i residui si distribuiscono **casualmente** attorno allo 0, senza alcun andamento
+plot(x, e, pch = 19, xlab = "x", ylab = "errori")
+abline(h = 0, lwd = 2, col = "firebrick")
+abline(lm(e ~ x), col = "royalblue4", lwd = 2, lty = 2)
+
+plot(x, e_corr, pch = 19, xlab = "x", ylab = "errori", ylim = c(-4, 4))
+abline(h = 0, lwd = 2, col = "firebrick")
+abline(lm(e_corr ~ x), col = "royalblue4", lwd = 2, lty = 2)
+```
+
+##### Indipendenza delle osservazioni
+
+Gli errori di osservazioni diverse sono indipendenti tra loro, $\forall i \neq j, \, \varepsilon_i \perp\!\!\!\perp \varepsilon_j$, cioè le osservazioni sono state campionate indipendentemente l'una dall'altra.
+
+Anche questa assunzione dipende soprattutto da **come sono stati raccolti i dati**. È violata, per esempio, quando ci sono misure ripetute sulla stessa persona, studenti della stessa classe o dati raccolti nel tempo.
+
+Se i dati hanno un ordine, per esempio l'ordine di raccolta, si possono guardare i residui in quell'ordine (@fig-ordine). Se le osservazioni sono indipendenti, i residui oscillano attorno allo 0 senza alcun andamento.
 
 ```{r}
+#| label: fig-ordine
 #| echo: true
-#| out-width: 55%
+#| fig-cap: "Residui del modello nell'ordine di raccolta dei dati."
+#| out-width: 60%
+#| fig-align: center
+plot(studio$residui, type = "b", pch = 19,
+     xlab = "ordine di raccolta", ylab = "residui")
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+##### Linearità
+
+Il valore atteso dell'errore per un dato valore di $x$ è 0, cioè la relazione tra $X$ e $Y$ è descritta bene da una retta.
+
+Per verificarla si rappresentano i residui in funzione del predittore. Se la relazione è lineare, i residui si distribuiscono **casualmente** attorno allo 0, senza alcun andamento, come nella @fig-linearita.
+
+```{r}
+#| label: fig-linearita
+#| echo: true
+#| fig-cap: "Residui in funzione del predittore nell'esempio delle ore di studio."
+#| out-width: 60%
 #| fig-align: center
 plot(studio$ore, studio$residui, pch = 19,
      xlab = "ore", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
-#### Quando la relazione non è lineare
+Nella @fig-nonlin, invece, la relazione tra $x$ e $y$ non è lineare (@fig-nonlin-1). I residui hanno una chiara forma a "U" (@fig-nonlin-2): il modello lineare sovrastima i valori al centro e li sottostima agli estremi, quindi l'assunzione di linearità è violata.
 
 ```{r}
-#| echo: false
+#| include: false
 set.seed(42)
 nonlin <- data.frame(x = runif(80, 0, 10))
 nonlin$y <- 5 + 0.8 * (nonlin$x - 5)^2 + rnorm(80, 0, 2)
@@ -4662,49 +4590,66 @@ nonlin$residui <- residuals(mod_nonlin)
 ```
 
 ```{r}
+#| label: fig-nonlin
 #| echo: false
-#| fig-align: center
-#| out-width: 90%
-par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
-plot(nonlin$x, nonlin$y, pch = 19, cex = 1.5, xlab = "x", ylab = "y",
-     main = "Dati e retta", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+#| fig-cap: "Esempio di violazione dell'assunzione di linearità."
+#| fig-subcap:
+#|   - "Dati e retta di regressione"
+#|   - "Residui in funzione di $x$"
+#| layout-ncol: 2
+
+plot(nonlin$x, nonlin$y, pch = 19, xlab = "x", ylab = "y")
 abline(mod_nonlin, col = "royalblue4", lwd = 2)
-plot(nonlin$x, nonlin$residui, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     main = "Residui", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+
+plot(nonlin$x, nonlin$residui, pch = 19, xlab = "x", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
-I residui hanno una chiara forma a "U": il modello lineare sovrastima al centro e sottostima agli estremi $\rightarrow$ l'assunto di linearità è violato
+##### Normalità degli errori
 
-#### Istogramma dei residui
+Gli errori si distribuiscono normalmente con media 0 e varianza $\sigma^2$, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. Di conseguenza, anche $y_i$ è distribuita normalmente, con media $\beta_0 + \beta x_i$.
+
+La media dei residui è sempre 0, per come è costruita la retta dei minimi quadrati, quindi da sola non dice nulla sulla normalità:
 
 ```{r}
 #| echo: true
-#| out-width: 55%
-#| fig-align: center
-hist(studio$residui, freq = FALSE, xlab = "residui", col = "gray90")
-curve(dnorm(x, mean = 0, sd = sd(studio$residui)), 
-      add = TRUE, col = "firebrick", lwd = 2)
+mean(studio$residui)
 ```
 
-La linea rossa è la distribuzione normale con media 0 e sd pari a quella dei residui
+Per verificare la normalità si possono usare tre strumenti.
 
-#### Q-Q plot dei residui
-
-Confronta i quantili dei residui con quelli di una distribuzione normale: se i residui sono normali, i punti stanno **sulla retta**
+1. **Gli indici descrittivi dei residui.** Se i residui sono normali, si distribuiscono in modo simmetrico attorno allo 0: la mediana deve essere il più vicina possibile a 0, e il minimo e il massimo (così come il primo e il terzo quartile) devono essere simili in valore assoluto.
 
 ```{r}
 #| echo: true
-#| out-width: 50%
-#| fig-align: center
-qqnorm(studio$residui, pch = 19)
+summary(studio$residui)
+```
+
+2. **L'istogramma dei residui** (@fig-norm-1), a cui si sovrappone la distribuzione normale con media 0 e deviazione standard pari a quella dei residui (in rosso). Se i residui sono normali, l'istogramma segue la curva.
+
+3. **Il Q-Q plot dei residui** (@fig-norm-2), che confronta i quantili dei residui con quelli di una distribuzione normale. Se i residui sono normali, i punti stanno **sulla retta**.
+
+```{r}
+#| label: fig-norm
+#| echo: true
+#| fig-cap: "Verifica della normalità dei residui nell'esempio delle ore di studio."
+#| fig-subcap:
+#|   - "Istogramma"
+#|   - "Q-Q plot"
+#| layout-ncol: 2
+hist(studio$residui, freq = FALSE, main = "",
+     xlab = "residui", col = "gray90")
+curve(dnorm(x, mean = 0, sd = sd(studio$residui)),
+      add = TRUE, col = "firebrick", lwd = 2)
+
+qqnorm(studio$residui, pch = 19, main = "")
 qqline(studio$residui, col = "firebrick", lwd = 2)
 ```
 
-#### Quando i residui non sono normali
+Nella @fig-norm-viol, invece, i residui hanno una distribuzione asimmetrica, con una coda lunga a destra: l'istogramma non segue la curva normale (@fig-norm-viol-1) e nel Q-Q plot i punti si allontanano dalla retta agli estremi (@fig-norm-viol-2).
 
 ```{r}
-#| echo: false
+#| include: false
 set.seed(42)
 asim <- data.frame(x = runif(80, 0, 10))
 asim$y <- 2 + 1.5 * asim$x + rexp(80, rate = 0.3)
@@ -4713,36 +4658,43 @@ asim$residui <- residuals(mod_asim)
 ```
 
 ```{r}
+#| label: fig-norm-viol
 #| echo: false
-#| fig-align: center
-#| out-width: 80%
-par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
-hist(asim$residui, freq = FALSE, main = "Istogramma",
-     xlab = "residui", col = "gray90", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+#| fig-cap: "Esempio di violazione dell'assunzione di normalità degli errori."
+#| fig-subcap:
+#|   - "Istogramma"
+#|   - "Q-Q plot"
+#| layout-ncol: 2
+hist(asim$residui, freq = FALSE, main = "",
+     xlab = "residui", col = "gray90")
 curve(dnorm(x, mean = 0, sd = sd(asim$residui)),
       add = TRUE, col = "firebrick", lwd = 2)
-qqnorm(asim$residui, pch = 19, main = "Q-Q plot",
-       cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+
+qqnorm(asim$residui, pch = 19, main = "")
 qqline(asim$residui, col = "firebrick", lwd = 2)
 ```
 
-Distribuzione asimmetrica: coda lunga a destra, i punti si allontanano dalla retta agli estremi
+##### Varianza costante (omoschedasticità)
 
-#### Omoschedasticità
+La varianza degli errori è costante per qualunque valore di $X$.
 
-La variabilità dei residui deve essere **costante** per tutti i valori attesi: la "nuvola" deve avere la stessa ampiezza da sinistra a destra
+Per verificarla si rappresentano i residui in funzione dei valori attesi. La variabilità dei residui deve essere **costante** per tutti i valori attesi, cioè la "nuvola" di punti deve avere la stessa ampiezza da sinistra a destra, come nella @fig-omo.
 
 ```{r}
+#| label: fig-omo
 #| echo: true
-#| out-width: 55%
+#| fig-cap: "Residui in funzione dei valori attesi nell'esempio delle ore di studio."
+#| out-width: 60%
 #| fig-align: center
 plot(studio$attesi, studio$residui, pch = 19,
      xlab = "valori attesi", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
+Nella @fig-etero, invece, i punti si allargano al crescere di $x$ (@fig-etero-1) e i residui hanno una forma "a imbuto" (@fig-etero-2): sono sempre più dispersi al crescere dei valori attesi. In questo caso si parla di eteroschedasticità.
+
 ```{r}
-#| echo: false
+#| include: false
 set.seed(42)
 etero <- data.frame(x = runif(80, 0, 10))
 etero$y <- 2 + 1.5 * etero$x + rnorm(80, 0, 0.5 + 0.6 * etero$x)
@@ -4752,46 +4704,31 @@ etero$residui <- residuals(mod_etero)
 ```
 
 ```{r}
+#| label: fig-etero
 #| echo: false
-#| fig-align: center
-#| out-width: 80%
-par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
-plot(etero$x, etero$y, pch = 19, cex = 1.5, xlab = "x", ylab = "y",
-     main = "Dati e retta", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+#| fig-cap: "Esempio di violazione dell'assunzione di omoschedasticità."
+#| fig-subcap:
+#|   - "Dati e retta di regressione"
+#|   - "Residui in funzione dei valori attesi"
+#| layout-ncol: 2
+
+plot(etero$x, etero$y, pch = 19, xlab = "x", ylab = "y")
 abline(mod_etero, col = "royalblue4", lwd = 2)
-plot(etero$attesi, etero$residui, pch = 19, cex = 1.5,
-     xlab = "valori attesi", ylab = "residui",
-     main = "Residui", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+
+plot(etero$attesi, etero$residui, pch = 19,
+     xlab = "valori attesi", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
-Forma "a imbuto": i residui sono sempre più dispersi al crescere dei valori attesi $\rightarrow$ eteroschedasticità
+### Cosa guardare nei residui
 
-#### Indipendenza delle osservazioni
-
-Dipende soprattutto da **come sono stati raccolti i dati**: ogni osservazione deve essere indipendente dalle altre
-
-Esempi di violazione: misure ripetute sulla stessa persona, studenti della stessa classe, dati raccolti nel tempo
-
-Se i dati hanno un ordine (es. ordine di raccolta), si possono guardare i residui in quell'ordine: non deve esserci nessun andamento
-
-```{r}
-#| echo: true
-#| out-width: 45%
-#| fig-align: center
-plot(studio$residui, type = "b", pch = 19,
-     xlab = "ordine di raccolta", ylab = "residui")
-abline(h = 0, col = "firebrick", lwd = 2)
-```
-
-#### Cosa guardare nei residui
-
-| Assunto | Grafico | Cosa si deve vedere |
-|:--------|:--------|:--------------------|
-| Linearità | `plot(x, residui)` | Nuvola casuale attorno a 0 |
-| Normalità | `hist(residui)`, `qqnorm(residui)` | Forma a campana, punti sulla retta |
-| Omoschedasticità | `plot(attesi, residui)` | Ampiezza costante (niente imbuti) |
-| Indipendenza | `plot(residui, type = "b")` | Nessun andamento nell'ordine |
+| Assunzione | Come si verifica | Codice R | Cosa si deve vedere |
+|:-----------|:-----------------|:---------|:--------------------|
+| Indipendenza dei predittori dall'errore | Non si verifica con i residui: si garantisce con il campionamento casuale e con misure affidabili | — | — |
+| Indipendenza delle osservazioni | In base a come sono stati raccolti i dati; residui nell'ordine di raccolta | `plot(residui, type = "b")` | Nessun andamento nell'ordine |
+| Linearità | Residui in funzione del predittore | `plot(x, residui)` | Nuvola casuale attorno a 0 |
+| Normalità degli errori | Indici descrittivi, istogramma e Q-Q plot dei residui | `summary(residui)`, `hist(residui)`, `qqnorm(residui)` | Distribuzione simmetrica e a campana, punti sulla retta |
+| Omoschedasticità | Residui in funzione dei valori attesi | `plot(attesi, residui)` | Ampiezza costante della nuvola (niente imbuti) |
 
 \vspace{3mm}
 

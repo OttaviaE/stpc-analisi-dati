@@ -793,7 +793,7 @@ Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
 
 1. Il **segno** del coefficiente angolare è lo stesso di $r$: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale.
 
-2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $\hat{y} = \hat{\beta}_0 + \hat{\beta}x$).
+2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $y^* = \hat{\beta}_0 + \hat{\beta}x$).
 
 ### 
 
@@ -803,16 +803,15 @@ Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
 b <- cov(bimbo$eta, bimbo$peso) / var(bimbo$eta)
 b0 <- mean(bimbo$peso) - b * mean(bimbo$eta)
 c(b0, b)
-cor(bimbo$eta, bimbo$peso) * sd(bimbo$peso) / sd(bimbo$eta)
 ```
 
 \normalsize
 
-Retta di regressione: $\hat{y} = `r round(b0, 2)` + `r round(b, 2)`x$
+Retta di regressione: $y^* = `r round(b0, 2)` + `r round(b, 2)`x$
 
 
 
-Quale sarebbe il peso previsto a 48 mesi? $\hat{y}_{48} = `r round(b0, 2)` + `r round(b, 2)` \cdot 48 = `r round(b0 + b * 48, 2)`$ kg
+Quale sarebbe il peso previsto a 48 mesi? $y^*_{48} = `r round(b0, 2)` + `r round(b, 2)` \cdot 48 = `r round(b0 + b * 48, 2)`$ kg
 
 
 ## Indice di adattamento $R^2$
@@ -1062,7 +1061,7 @@ $$y_i \mid x_i \sim \mathcal{N}(\beta_0 + \beta_1 x_i, \, \sigma^2)$$
 
 
 
-Gli errori $\varepsilon_i$ della popolazione non si osservano $\rightarrow$ si guardano i loro "rappresentanti" nel campione: i **residui** $e_i = y_i - \hat{y}_i$
+Gli errori $\varepsilon_i$ della popolazione non si osservano $\rightarrow$ si guardano i loro "rappresentanti" nel campione: i **residui** $e_i = y_i - y^*_i$
 
 ###
 
