@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 4-A: Principali distribuzioni di probabilità"
+title: "Modulo Didattico 4-A: Cenni di calcolo di probabilità e distribuzioni di probabilità discrete"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
