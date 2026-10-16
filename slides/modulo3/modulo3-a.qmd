@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 3: Statistiche descrittive bivariata (Associazione tra variabili categoriali)"
+title: "Modulo Didattico 3: Statistica descrittiva bivariata (Associazione tra variabili categoriali)"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -375,9 +375,11 @@ margin.table(mytab,2)
 `prop.table(T, margin = NULL)`: Probabilità condizionate: 
 
 :::{.callout-tip}
-`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**)
+`margin = NULL`: Probabilità calcolate sul totale $n$, $p_{kj} = \dfrac{n_{kj}}{n}$
 
-`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**)
+`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**), $p_{j \mid k} = \dfrac{n_{kj}}{n_{k.}}$
+
+`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**), $p_{k \mid j} = \dfrac{n_{kj}}{n_{.j}}$
 :::
 
 ###
@@ -467,7 +469,7 @@ mosaicplot(
 
 
 
-## $P(\text{Titolo}|\text{Occupazione})$ (Frequenze percentuali di **riga**)
+## $P(\text{Istruzione} \mid \text{Occupazione})$ (Frequenze percentuali di **riga**)
 
 ### 
 
@@ -511,9 +513,9 @@ barplot(
 
 ::::
 
-*X% delle donne lavoratici/casalinghe hanno un titolo di studio basso/medio/alto*
+*Tra le donne lavoratrici/casalinghe, il X% ha un titolo di studio basso/medio/alto*
 
-## $P(\text{Occupazione}|\text{Titolo})$ (Frequenze percentuali di **colonna**)
+## $P(\text{Occupazione} \mid \text{Istruzione})$ (Frequenze percentuali di **colonna**)
 
 ### 
 
@@ -557,7 +559,7 @@ barplot(
 
 ::::
 
-*X% delle donne con titolo di studio basso/medio/alto che sono lavoratici/casalinghe*
+*Tra le donne con titolo di studio basso/medio/alto, il X% è lavoratrice/casalinga*
 
 
 
@@ -580,8 +582,8 @@ Tra le variabili $X$ e $Y$ c’è una forma di legame e \textbf{relazione} (\tex
 \small
 Quantifica la DISTANZA DALL'INDIPENDENZA tra due variabili categoriali
 
-* X con $h$ categorie $x_k$, con $k=1,\ldots,h$,
-* Y con $m$ categorie $y_j$, con $j=1,\ldots,m$
+* $X$ con $h$ categorie $x_k$, con $k=1,\ldots,h$,
+* $Y$ con $m$ categorie $y_j$, con $j=1,\ldots,m$
 
 Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attese** o **frequenze teoriche** ($n_{kj}^*$)
 
@@ -695,7 +697,7 @@ $\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 
 
 $$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
 
-$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
+$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala di tipo $[0, 1]$
 
 
 
@@ -715,7 +717,7 @@ chisq.test(mytab)$statistic
 ```
 
 
-### Calcolo $\chi_{max}^2$
+### Calcolo $\chi^2_{\max}$
 
 ```{r}
 #| echo: true

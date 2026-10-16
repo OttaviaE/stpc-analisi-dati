@@ -24,29 +24,21 @@ header-includes:
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
    - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
-   - \AtBeginSection[]
-          {
-             \begin{frame}[plain]
-             \small
-             \tableofcontents[
-               currentsection,
-               sectionstyle=show/shaded,
-               subsectionstyle=show/shaded/hide
-             ]
-             \end{frame}
-          }
-   - \AtBeginSubsection[]
-          {
-             \begin{frame}[plain]
-             \small
-             \tableofcontents[
-               currentsection,
-               currentsubsection,
-               sectionstyle=show/shaded,
-               subsectionstyle=show/shaded/hide
-             ]
-             \end{frame}
-          }
+   - |
+      \AtBeginSection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,hideallsubsections]
+        \end{frame}
+      }
+   - |
+      \AtBeginSubsection[]{
+        \begin{frame}[plain]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+        \end{frame}
+      }
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{template}{RGB}{72,79,89}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
 editor_options:
   chunk_output_type: console
 execute:
@@ -138,7 +130,7 @@ plot(X,Y,main="Grafico di dispersione", xlim=c(0,20),ylim=c(0,15))
 
 ###
 
-La **Covarianza** misura il grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{X}$ e $\bar{Y}$
+La **Covarianza** misura il grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{x}$ e $\bar{y}$
 
 :::: {.columns}
 
@@ -153,7 +145,7 @@ $$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
 :::
 ::::
 
-$$\cov(x,y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i
+$$\cov(X,Y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i
 -\bar{y})$$
 
 È (quasi) la **media dei prodotti degli scarti** di ogni variabile dalla propria media
@@ -161,7 +153,7 @@ $$\cov(x,y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i
 \footnotesize
 
 :::{.callout-note}
-Nota: alcuni testi dividono per $n$ invece che per $n-1$ (covarianza "descrittiva"). La funzione `cov()` di `R` divide per $n-1$, quindi useremo sempre questa versione
+Nota: alcuni testi dividono per $n$ invece che per $n-1$ (covarianza "descrittiva"). La funzione `cov()` di `R` divide per $n-1$, quindi useremo sempre questa versione. Anche `sd()` divide per $n-1$: in questo modulo $sd(X)$ indica questa deviazione standard (a differenza di $\sigma$ del Modulo 2, che divide per $n$)
 
 :::
 
@@ -229,7 +221,7 @@ text(15, 3.3, "(+)(-) = -", cex = 2.5, col = "firebrick")
 ::::
 
 \footnotesize
-Il prodotto $(x_i - \bar{x})(y_i - \bar{y})$ è più spesso positivo se $\cov > 0$, più spesso negativo se $\cov < 0$
+Il prodotto $(x_i - \bar{x})(y_i - \bar{y})$ è più spesso positivo se $\cov(X,Y) > 0$, più spesso negativo se $\cov(X,Y) < 0$
 
 ###
 
@@ -370,7 +362,7 @@ calcolo
 
 $\bar{x} = `r mean(bimbo$eta)`$, $\bar{y} = `r mean(bimbo$peso)`$, $\sum_i (x_i - \bar{x})(y_i - \bar{y}) = `r sum(calcolo$prodotto)`$
 
-$$\cov(x,y) = \dfrac{`r sum(calcolo$prodotto)`}{6-1} = `r round(cov(bimbo$eta, bimbo$peso), 2)`$$
+$$\cov(X,Y) = \dfrac{`r sum(calcolo$prodotto)`}{6-1} = `r round(cov(bimbo$eta, bimbo$peso), 2)`$$
 
 
 ## `cov()`
@@ -397,10 +389,10 @@ Per stabilire l'**intensità** della relazione la covarianza va *normalizzata*, 
 
 \vspace{2mm}
 
-$-sd(x)sd(y) \leq\cov(X,Y)\leq + sd(x)sd(y)$
+$-sd(X)\,sd(Y) \leq \cov(X,Y) \leq + sd(X)\,sd(Y)$
 
 
-$$r  = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
+$$r = \dfrac{\cov(X,Y)}{sd(X)\,sd(Y)}$$
 
 $$-1 \leq r \leq 1$$
 $r = +1$: legame **perfettamente lineare e diretto**; 
@@ -629,7 +621,7 @@ La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$:
 
 Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione.
 
-La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale).
+La relazione è *asimmetrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale).
 
 
 ###
@@ -665,7 +657,7 @@ dati
 ::::
 
 
-$$r = `r round(cor(X, Y), 2)`$$
+$$r = `r round(cor(dati$X, dati$Y), 2)`$$
 
 
 ###
@@ -675,8 +667,8 @@ $$r = `r round(cor(X, Y), 2)`$$
 #| out-width: 70%
 #| fig-cap: Una retta che passi attraverso le coppie di osservazioni
 set.seed(999)
-mymodel = lm(Y ~ X)
-plot(X, Y, pch = 19, cex = 2)
+mymodel = lm(Y ~ X, data = dati)
+plot(dati$X, dati$Y, pch = 19, cex = 2, xlab = "X", ylab = "Y")
 abline(mymodel, col = "firebrick", lwd = 2)
 ```
 
@@ -686,7 +678,7 @@ abline(mymodel, col = "firebrick", lwd = 2)
 #| echo: false
 #| out-width: 70%
 #| fig-cap: Ma quale retta?
-plot(X, Y, pch = 19, cex = 2)
+plot(dati$X, dati$Y, pch = 19, cex = 2, xlab = "X", ylab = "Y")
 
 y1 = rnorm(20, sd = 2)
 x1 = rnorm(20, sd = 2)
@@ -724,27 +716,29 @@ $$Y = \beta_0 + \beta X $$
 $$y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)$$
 \footnotesize
 
-$y_i$: Valore di $y$ atteso per l'i-esima osservazione 
+$y_i$: Valore di $y$ osservato per l'$i$-esima osservazione
+
+$y_i^* = \hat{\beta}_0 + \hat{\beta} x_i$: Valore di $y$ atteso per l'$i$-esima osservazione
 
 $\beta_0$: Valore dell'intercetta, ovvero *valore atteso in $y$ quando $x_i = 0$*
 
-$\beta_1$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in y per ogni cambiamento unitario in $x$*
+$\beta$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in $y$ per ogni cambiamento unitario in $x$*
 
-$\varepsilon_i$: Componente d'errore ($\mathcal{N}(0, \sigma^2)$)
+$\varepsilon_i$: Componente d'errore, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$
 
 ## Principio dei minimi quadrati
 
 ###
 
-$$SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2  = \sum_{i=1}^n e_i^2$$
+$$SQE(\beta_0, \beta) = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2$$
 \footnotesize
 
-dove $y_i^* = \beta_0 + \beta x_i$, e $e_i = y_i - y_i^*$.  \normalsize
+Si cercano i valori di $\beta_0$ e $\beta$ che minimizzano l'SQE. Con le stime $\hat{\beta}_0$ e $\hat{\beta}$: $y_i^* = \hat{\beta}_0 + \hat{\beta} x_i$, $e_i = y_i - y_i^*$ e $\min SQE = \sum_{i=1}^n e_i^2$.  \normalsize
 
 Per il principio dei minimi quadrati si può dimostrare che lo stimatore ottimale per $\beta$ è
 
 
-$$\hat{\beta} = \frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
+$$\hat{\beta} = \frac{\cov(X,Y)}{sd(X)^2}
 = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$$
 
 mentre per $\beta_0$ è
@@ -775,18 +769,18 @@ segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
 :::: {.columns}
 
 :::{.column width=50%}
-$$\hat{\beta} = \dfrac{\cov(X,Y)}{sd(x)^2}$$
+$$\hat{\beta} = \dfrac{\cov(X,Y)}{sd(X)^2}$$
 :::
 
 :::{.column width=50%}
-$$r = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
+$$r = \dfrac{\cov(X,Y)}{sd(X)\,sd(Y)}$$
 :::
 ::::
 
-Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
+Moltiplicando e dividendo $\hat{\beta}$ per $sd(Y)$:
 
 \begin{align*}
-\hat{\beta} &= \frac{\cov(X,Y)}{sd(x) \, sd(x)} \cdot \frac{sd(y)}{sd(y)} = \underbrace{\frac{\cov(X,Y)}{sd(x) \, sd(y)}}_{r} \cdot \frac{sd(y)}{sd(x)} = r \, \frac{sd(y)}{sd(x)}
+\hat{\beta} &= \frac{\cov(X,Y)}{sd(X) \, sd(X)} \cdot \frac{sd(Y)}{sd(Y)} = \underbrace{\frac{\cov(X,Y)}{sd(X) \, sd(Y)}}_{r} \cdot \frac{sd(Y)}{sd(X)} = r \, \frac{sd(Y)}{sd(X)}
 \end{align*}
 
 \footnotesize
@@ -818,11 +812,11 @@ Quale sarebbe il peso previsto a 48 mesi? $y^*_{48} = `r round(b0, 2)` + `r roun
 
 ###
 
-$$R^2 = 1 - \frac{\dfrac{SQE}{n-1}}{Var(Y)}
+$$R^2 = 1 - \frac{\dfrac{SQE}{n-1}}{\mathrm{Var}(Y)}
     = 1 - \frac{\dfrac{\sum_{i=1}^n e_i^2}{n-1}}{\dfrac{\sum_{i=1}^n (y_i - \bar{y})^2}{n-1}}
     = 1 - \frac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
 
-$\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della componente di errore
+$\dfrac{SQE}{n-1}$: varianza dei residui. Come stima di $\sigma^2$ si usa $\hat{\sigma}^2_\varepsilon = \dfrac{SQE}{n-2}$ (si stimano due parametri, $\beta_0$ e $\beta$)
 
 $0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto, $R^2 = r^2$
 
@@ -866,18 +860,18 @@ Y <- beta0 + beta1 * X + epsilon
 fit <- lm(Y ~ X)
 
 # Predizioni
-Y_hat <- fitted(fit)
+Y_star <- fitted(fit)
 
 # Grafico
 plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_star), max(Y, Y_star)))
 abline(fit)
 
 # Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+segments(X, Y, X, Y_star, lty = 2)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+$R^2 = `r round(summary(fit)$r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 ###
 
@@ -905,18 +899,18 @@ Y <- beta0 + beta1 * X + epsilon
 fit <- lm(Y ~ X)
 
 # Predizioni
-Y_hat <- fitted(fit)
+Y_star <- fitted(fit)
 
 # Grafico
 plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_star), max(Y, Y_star)))
 abline(fit)
 
 # Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+segments(X, Y, X, Y_star, lty = 2)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+$R^2 = `r round(summary(fit)$r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 
 ###
@@ -948,18 +942,18 @@ Y <- beta0 + beta1 * X + epsilon
 fit <- lm(Y ~ X)
 
 # Predizioni
-Y_hat <- fitted(fit)
+Y_star <- fitted(fit)
 
 # Grafico
 plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_star), max(Y, Y_star)))
 abline(fit)
 
 # Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 1.2)
+segments(X, Y, X, Y_star, lty = 2)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+$R^2 = `r round(summary(fit)$r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 ###
 
@@ -987,20 +981,20 @@ Y <- beta0 + beta1 * X + epsilon
 fit <- lm(Y ~ X)
 
 # Predizioni
-Y_hat <- fitted(fit)
+Y_star <- fitted(fit)
 
 # Grafico
 plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
+     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_star), max(Y, Y_star)))
 abline(fit)
 
 # Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+segments(X, Y, X, Y_star, lty = 2)
 ```
 
 
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+$R^2 = `r round(summary(fit)$r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 
 ## `lm()`
@@ -1010,7 +1004,7 @@ $R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
 
 \small
 
-`lm(Y ~ X)`: Retituisce la stima dei parametri del modello di regressione lineare dove si predicono i valori di $Y$ a seconda dei valori di $X$
+`lm(Y ~ X)`: Restituisce la stima dei parametri del modello di regressione lineare dove si predicono i valori di $Y$ a seconda dei valori di $X$
 
 `~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5`
 
@@ -1040,7 +1034,7 @@ lm(bimbo$peso~bimbo$eta)
 
 \vspace{1.5mm}
 
-> Il valore atteso  dell'errore per un dato valore di $x$ è 0
+> Il valore atteso dell'errore per un dato valore di $x$ è 0
 
 ### Assunzioni
 
@@ -1048,8 +1042,8 @@ lm(bimbo$peso~bimbo$eta)
 
 \vspace{1.5mm}
 
-> $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: per ogni valore fissato di $x_i$, anche $y_i$ è distribuita normalmente, con media $\beta_0 + \beta_1 x_i$ e varianza $\sigma^2$
-$$y_i \mid x_i \sim \mathcal{N}(\beta_0 + \beta_1 x_i, \, \sigma^2)$$
+> $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: per ogni valore fissato di $x_i$, anche $y_i$ è distribuita normalmente, con media $\beta_0 + \beta x_i$ e varianza $\sigma^2$
+$$y_i \mid x_i \sim \mathcal{N}(\beta_0 + \beta x_i, \, \sigma^2)$$
 
 - **Varianza costante** (omoschedasticità)
 
@@ -1071,11 +1065,11 @@ Gli errori $\varepsilon_i$ della popolazione non si osservano $\rightarrow$ si g
 
 > I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
 
-\begin{center}
-\emph{Analisi dei residui}
-\end{center}
+Questa assunzione **non si può verificare con i residui**: per come è costruita la retta dei minimi quadrati, i residui sono sempre non correlati con il predittore, anche quando l'assunzione è violata
 
-I residui e il predittore **non devono essere correlati tra di loro**
+$\rightarrow$ Va garantita a monte, con il disegno dello studio (campionamento casuale, misure affidabili del predittore)
+
+Nelle prossime slide: una simulazione, in cui gli errori veri sono noti, per capire che cosa significa l'assunzione
 
 
 ###
@@ -1095,7 +1089,7 @@ e = rnorm(length(x), sd= 3)
 y <- beta0 + beta1 * x + e
 
 fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
+plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "errori",
      cex.axis = 2, cex.lab = 2)
 abline(0,0, lwd = 2, col ="firebrick")
 abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
@@ -1104,9 +1098,9 @@ abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
 
 \footnotesize
 
-La linea intera rossa rappresenta quello che dovremmo osservare, ossia la totale assenza di relazione tra la $x$ e i residui del modello
+La linea intera rossa rappresenta quello che dovremmo osservare se l'assunzione è rispettata, ossia la totale assenza di relazione tra $x$ e gli errori
 
-Le linea tratteggiata blu indica la relazione effettiva tra i residui e il predittore $x$. Questa linea deve essere il più vicina possibile alla linea rossa
+La linea tratteggiata blu indica la relazione effettiva tra gli errori e il predittore $x$: se l'assunzione è rispettata, è molto vicina alla linea rossa
 
 ###
 
@@ -1125,7 +1119,7 @@ e = rnorm(length(x), sd= 3)
 y <- beta0 + beta1 * x + e
 
 fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
+plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "errori",
      cex.axis = 2, cex.lab = 2)
 abline(0,0, lwd = 2, col ="firebrick")
 abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
@@ -1143,10 +1137,10 @@ ecorr = x+rnorm(length(x), sd= 1)
 ycorr <- beta0 + beta1 * x + ecorr
 
 fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
+plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "errori",
+     cex.axis = 2, cex.lab = 2, ylim = c(-4, 4))
 abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(ycorr ~x), col ="royalblue4", lwd = 2, lty = 2)
+abline(lm(ecorr ~x), col ="royalblue4", lwd = 2, lty = 2)
 ```
 
 
@@ -1157,12 +1151,8 @@ abline(lm(ycorr ~x), col ="royalblue4", lwd = 2, lty = 2)
 #| echo: false
 #| fig-align: center
 #| out-width: 70%
-ecorr = x+rnorm(length(x), sd= 1)
-ycorr <- beta0 + beta1 * x + ecorr
-
-fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
+plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "errori",
+     cex.axis = 2, cex.lab = 2, ylim = c(-4, 4))
 abline(0,0, lwd = 2, col ="firebrick")
 abline(lm(ecorr ~x), col ="royalblue4", lwd = 2, lty = 2)
 ```
@@ -1198,8 +1188,8 @@ modello
 
 ```{r}
 #| echo: true
-studio$attesi <- fitted(modello)      # y cappello
-studio$residui <- residuals(modello)  # y - y cappello
+studio$attesi <- fitted(modello)      # valori attesi y*
+studio$residui <- residuals(modello)  # residui y - y*
 head(studio)
 ```
 
