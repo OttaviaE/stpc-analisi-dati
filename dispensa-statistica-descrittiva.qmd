@@ -1,13 +1,12 @@
 ---
 title: "Statistica descrittiva"
-subtitle: "Dispensa del corso *Analisi dei dati con applicazioni informatiche* -- Moduli 1, 2 e 3"
+subtitle: "Dispensa del corso *Analisi dei dati con applicazioni informatiche*"
 author: "Ottavia M. Epifania"
-
 format:
   pdf:
     documentclass: scrreprt
     papersize: a4
-    include-in-header: frontespizio.tex
+    include-in-header: frontespizio-bozza.tex
     toc: true
     toc-depth: 2
     toc-title: "Indice"
@@ -15,17 +14,13 @@ format:
     number-depth: 3
     colorlinks: true
     highlight-style: tango
-    geometry:
-      - top=2.5cm
-      - bottom=2.5cm
-      - left=2.5cm
-      - right=2.5cm
 callout-icon: false
 code-annotations: below
 header-includes:
   - \usepackage{tikz}
   - \usepackage{multirow}
   - \usepackage{multicol}
+  - \usepackage{paracol}
   - \newcommand{\cov}{\mathrm{Cov}}
   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,arrows.meta}
   - \definecolor{unipd}{RGB}{155,0,20}
@@ -60,11 +55,11 @@ knitr::include_graphics("slides/modulo1/img/Rstudio.png")
 
 **Ambiente/Environment** (Pannello in alto a dx). Contiene tutti gli oggetti che sono stati creati fino a quel momento nell'ambiente di lavoro. Viene automaticamente suddiviso in oggetti di tipo vettoriale o scalare (`values`) e oggetti più complessi come dataframe e liste.
 
-**Script**. (Pannelli in alto a sinistra). File di tipo testuale con estensione `.R` dove salvare il codice usato per generare gli oggetti presenti nell'ambiente. Si possono combinare codice e commenti (righe che non vengono eseguite e interpretate come codice, sono le righe precedute dal simbolo `#`, vedi @lst-example). Per eseguire i comandi negli script bisogna usare la combinazione di tasti `ctrl + invio` (per il mac, `cmd + invio `)
+**Script**. (Pannello in alto a sinistra). File di tipo testuale con estensione `.R` dove salvare il codice usato per generare gli oggetti presenti nell'ambiente. Si possono combinare codice e commenti (righe che non vengono eseguite e interpretate come codice, sono le righe precedute dal simbolo `#`, vedi @lst-example). Per eseguire i comandi negli script bisogna usare la combinazione di tasti `ctrl + invio` (per il mac, `cmd + invio`).
 
-**Console**. (Pannello in basso a sinistra). Pannello di lavoro dove i lavori vengono immediatamente eseguiti immediatamente quando si clicca invio. Le righe di comando non vengon salvate ma sono sempre accessibili premendo con la freccina in su della tastiera. Nella console appaiono anche i risultati dei codici eseguiti nello script. 
+**Console**. (Pannello in basso a sinistra). Pannello di lavoro dove i comandi vengono eseguiti immediatamente quando si preme invio. Le righe di comando non vengono salvate ma sono sempre accessibili premendo la freccina in su della tastiera. Nella console appaiono anche i risultati dei codici eseguiti nello script. 
 
-**Plot/Files**. (Pannello in basso a dx). Pannnello composto da diversi pannelli. Nel pannello `Plots` compaiono i grafici risultatinti dalle analisi statistiche svolte negli script. Nel pannello `Files` appaiono tutti i file e le cartelle dispoonibili in una data working directory (Vedi @sec-wd e @sec-project).
+**Plot/Files**. (Pannello in basso a dx). Pannello composto da diversi pannelli. Nel pannello `Plots` compaiono i grafici risultanti dalle analisi statistiche svolte negli script. Nel pannello `Files` appaiono tutti i file e le cartelle disponibili in una data working directory (Vedi @sec-wd e @sec-project).
 
 ```{r}
 #| lst-label: lst-example
@@ -98,7 +93,7 @@ Per far "correre" qualsiasi comando nello script
 
 L'output appare nella console.
 
-Per fare lo switch allo script $\rightarrow$ `ctr + 1`
+Per fare lo switch allo script $\rightarrow$ `ctrl + 1`
 
 :::
 
@@ -120,7 +115,7 @@ La `wd` si può cambiare con il comando `setwd()`:
 ```{r}
 #| eval: false
 #| lst-label: lst-wdSet
-#| lst-cap: Funzione per ottenere cambiare la wd dentro cui sta lavorando R. Dentro la funzione, va messo il percorso completo entro cui si vuole spostare la cartella di lavoro tra virgolette, come nell'esempio sottostante.
+#| lst-cap: Funzione per cambiare la wd dentro cui sta lavorando R. Dentro la funzione, va messo il percorso completo entro cui si vuole spostare la cartella di lavoro tra virgolette, come nell'esempio sottostante.
 setwd("C:/Users/Ottavia/Documents/altro-percorso")
 ```
 
@@ -141,7 +136,7 @@ my-project/
 |   +-- mydata.csv
 ```
 
-Nell'esempio precedente, la cartella di ordine superiore è la cartella `my-project`, ovvero la cartella che contiene tutto il vostro progetto. Al suo iinterno si trovano i seguenti file, a diversi livelli: 
+Nell'esempio precedente, la cartella di ordine superiore è la cartella `my-project`, ovvero la cartella che contiene tutto il vostro progetto. Al suo interno si trovano i seguenti file, a diversi livelli: 
 
 1. Primo Livello: `index.qmd`, `laboratorioTemplate.qmd`, `myScript.R` (file di quarto con estensione `qmd`, file R con estensione `R`) e una cartella `data`. Il file `my-project.Rproj` è il file del vostro progetto R con estensione `Rproj`.
 2. Secondo Livello: all'interno della cartella `data` si trova il file `mydata.csv`. Per accedere a questo file di dati da un file contenuto nella cartella di ordine superiore, bisogna semplicemente comunicare a R che si trova nella cartella data, `"data/mydata.csv"`. 
@@ -172,9 +167,9 @@ In @fig-project-1 selezionare l'opzione `New directory`.
 
 In @fig-project-2 selezionare l'opzione `New Project` (ignorate tutte le altre opzioni).
 
-In @fig-project-3 date un nome al progetto (e.g., `corso-analisi`) e secgliete la cartella entro cui salvarlo (consigliato: I Documenti del vostro computer). 
+In @fig-project-3 date un nome al progetto (e.g., `corso-analisi`) e scegliete la cartella entro cui salvarlo (consigliato: I Documenti del vostro computer). 
 
-@fig-pjCheck illsutra il controllo per capire se effettivamente siete dentro al progetto R. Se non siete dentro il progetto R, andate a cercarlo nella cartella dove lo avete creato e fate doppio click sul file con estensione `Rproj`.
+@fig-pjCheck illustra il controllo per capire se effettivamente siete dentro al progetto R. Se non siete dentro il progetto R, andate a cercarlo nella cartella dove lo avete creato e fate doppio click sul file con estensione `Rproj`.
 
 ```{r}
 #| echo: false
@@ -201,7 +196,7 @@ knitr::include_graphics("slides/modulo1/img/new-script.png")
     
 In alternativa, si può usare la sequenza di tasti: `Ctrl + shift + n` (`cmd + shift + n`)
 
-Per salvare uno script, bastare cliccare sull'icona del salvataggio. 
+Per salvare uno script, basta cliccare sull'icona del salvataggio. 
 
 ## Reporting con quarto
 
@@ -211,11 +206,11 @@ Permette la creazione di documenti (sia pdf sia html) che possono contenere chun
 
 In questo corso, useremo quarto per tutti gli esercizi. Vi verranno forniti dei template, specie all'inizio, nella speranza che riusciate a modificarli e a diventare via via più autonome nel suo utilizzo.
 
-Una parte dell'esame prevede l'utilizzo di quarto per lo svolgimento degli esercizi. le esercitazioni in intinere sono da svolgere su quarto. 
+Una parte dell'esame prevede l'utilizzo di quarto per lo svolgimento degli esercizi. Le esercitazioni in itinere sono da svolgere su quarto. 
 
 A [questo link](https://arca-dpss.github.io/shine-with-quarto/) trovate maggiori informazioni su quarto e una guida veloce sul suo funzionamento. 
 
-@fig-quarto-1 crea un nuovo file quarto, mentre @fig-quarto-2 illustra come specificare varie opzioni del docuemnto (titolo, autrice).
+@fig-quarto-1 crea un nuovo file quarto, mentre @fig-quarto-2 illustra come specificare varie opzioni del documento (titolo, autrice).
 
 ```{r}
 #| echo: false
@@ -241,20 +236,20 @@ include_graphics("slides/modulo1/img/quarto1.png")
 #| echo: false
 #| fig-align: center
 #| label: fig-example
-#| fig-cap: Deafult documento di quarto. In verde lo YAML, in rosso un chunk di codice eseguibile come qualsiasi script R
+#| fig-cap: Default documento di quarto. In verde lo YAML, in rosso un chunk di codice eseguibile come qualsiasi script R
 library(knitr)
 include_graphics("slides/modulo1/img/quarto2.png")
 ```
 
 In verde in @fig-example, lo YAML che controlla l'aspetto generale del documento. Va modificato per cambiare i metadati del documento. 
 
-In rosso in @fig-example, un chunk di codice eseguibile, ovvero una parte del docuemnto che funziona come un qualsaisi script di R e in quanto tale permette di esguire codice. 
+In rosso in @fig-example, un chunk di codice eseguibile, ovvero una parte del documento che funziona come un qualsiasi script di R e in quanto tale permette di eseguire codice. 
 
 
 :::{.callout-caution}
 ## Modifica importante allo YAML
 
-La parte `embed-resources: true` è fondamentale (e va scritta esattamente seguento l'indentazione riportata). Serve a fare in modo che tutti i codici, i risultati e i grafici prodotti nel documento rimangano nel documento quando lo compilate in html. 
+La parte `embed-resources: true` è fondamentale (e va scritta esattamente seguendo l'indentazione riportata). Serve a fare in modo che tutti i codici, i risultati e i grafici prodotti nel documento rimangano nel documento quando lo compilate in html. 
 
 ```{markdown}
 ---
@@ -338,7 +333,7 @@ X = 5
 X
 ```
 
-Gli elementi a destra del simbolo (contenuto) vengono assegnati all'elemento a sinsitra (contenitore) del simbolo
+Gli elementi a destra del simbolo (contenuto) vengono assegnati all'elemento a sinistra (contenitore) del simbolo
 
 :::{.callout-warning}
 ## Attenzione!
@@ -354,9 +349,11 @@ knitr::include_graphics("slides/modulo1/img/meme.jpg")
 
 Nomi validi sono lettere, numeri, punti, underscore (e.g., `variable_name`)
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-::: {.column}
 Buoni nomi per le variabili: 
 
 - `mean_rt`
@@ -365,9 +362,12 @@ Buoni nomi per le variabili:
 
 - `prop_item`
 
-:::
 
-::: {.column}
+
+```{=latex}
+\switchcolumn
+```
+
 Pessimi nomi per variabili: 
 
 - `x`
@@ -376,9 +376,10 @@ Pessimi nomi per variabili:
 
 - `ciccio`
 
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
 Non deve contenere caratteri speciali come #, &, $, ?, etc.
 
@@ -436,11 +437,11 @@ ls()
 
 ### Funzioni
 
-Ogni cosa fatta in R di fatto è riassumbile nelle *operazioni* fatte su *oggetti* 
+Ogni cosa fatta in R di fatto è riassumibile nelle *operazioni* fatte su *oggetti* 
 
-Le operazioni sono le **funzioni**, che permettono di modificare gli oggetti esistenti e di creare di nuovi.
+Le operazioni sono le **funzioni**, che permettono di modificare gli oggetti esistenti e di crearne di nuovi.
 
-Ad esempio, in @lst-sum viene usata la funzione `sum()` per sommare tutti gli elementi all'interno del vettore. Matematicamente, la funzione `sum()` equivale a $\displaystyle \sum_{i = 1}^k x_i$ dove $k$ è il totale di elementi $x$ all'interno del vettore $X$.
+Ad esempio, in @lst-sum viene usata la funzione `sum()` per sommare tutti gli elementi all'interno del vettore. Matematicamente, la funzione `sum()` equivale a $\displaystyle \sum_{i = 1}^n x_i$ dove $n$ è il numero di elementi $x_i$ all'interno del vettore $X$.
 
 ```{r}
 #| lst-label: lst-sum
@@ -461,7 +462,7 @@ Le funzioni in R sono come le funzioni matematiche $f(\cdot)$, dove viene preso 
 - Parentesi che racchiudono gli argomenti della funzione
 - argomenti: 
   - **obbligatori**, senza valori predefiniti senza di cui la funzione non può funzionare. Nel caso della funzione `mean()`, l'unico argomento obbligatorio è il vettore `x` di valori di cui si vuole calcolare la media
-  - **facoltativi** con valori di default (`trim = 0`, `na.rm = FALSE`), che vangono applicati qualora l'utente non ne specifichi di alternativi. Nel caso della media,  non viene applicato il trimming dei valori estremi e non vengono tolti i valori NA.
+  - **facoltativi** con valori di default (`trim = 0`, `na.rm = FALSE`), che vengono applicati qualora l'utente non ne specifichi di alternativi. Nel caso della media,  non viene applicato il trimming dei valori estremi e non vengono tolti i valori NA.
   
 
 ```{r}
@@ -503,7 +504,7 @@ library(nomePacchetto) # carica il pacchetto (va fatto correre tutte le volte)
 
 ### Operatori Matematici
 
-Tabella \ref{tbl-operatori} illustra alcuni operatori matematici di base, mentre Tabella \ref{tbl-funzioni-matematiche} illustrate le principali funzioni matematiche disponibili in R.
+Tabella \ref{tbl:operatori} illustra alcuni operatori matematici di base, mentre Tabella \ref{tbl:funzioni-matematiche} illustra le principali funzioni matematiche disponibili in R.
 
 ```{=latex}
 \begin{table}[htbp]
@@ -545,7 +546,7 @@ Funzione & Cosa fa? & Esempio & Risultato \\
 
 ### Operatori Relazionali
 
-In R è possibile valutare se una data relazione è vera o falsa. R valuterà le proposizioni e ci restituirà il valore **`TRUE`** se la proposizione è vera oppure **`FALSE`** se la proposizione è falsa. Per fare questo si usano gli operatori relazionali in Tabella \ref{tbl-operatori-relazionali}.
+In R è possibile valutare se una data relazione è vera o falsa. R valuterà le proposizioni e ci restituirà il valore **`TRUE`** se la proposizione è vera oppure **`FALSE`** se la proposizione è falsa. Per fare questo si usano gli operatori relazionali in Tabella \ref{tbl:operatori-relazionali}.
 
 ```{=latex}
 \begin{table}[htbp]
@@ -572,7 +573,7 @@ Funzione & Nome & Esempio & Risultato \\
 
 ### Insiemistici
 
-Per capire gli operatori insiemistici (Tabella \ref{tbl-operatori-logici}), definiziamo un oggetto, `x`, come segue:
+Per capire gli operatori insiemistici (Tabella \ref{tbl-operatori-logici}), definiamo un oggetto, `x`, come segue:
 
 ```{r,echo = TRUE}
 x = 30 
@@ -597,9 +598,9 @@ Funzione & Nome & Esempio & Risultato \\
 \end{table}
 ```
 
-La **congiunzione** testa che siano contemporaneamente vere entrambe le condizioni, ovvero restituisisce un risultato vero se e solo se entrambe le condizioni sono vere. 
+La **congiunzione** testa che siano contemporaneamente vere entrambe le condizioni, ovvero restituisce un risultato vero se e solo se entrambe le condizioni sono vere. 
 
-La **congiunzione** testa che sia vera almeno una delle condizioni, ovvero restituisisce un risultato vero se almeno una delle condizioni è vera. 
+La **disgiunzione** testa che sia vera almeno una delle condizioni, ovvero restituisce un risultato vero se almeno una delle condizioni è vera. 
 
 La **negazione** inverte il valore logico.
 
@@ -632,7 +633,7 @@ congiunzione <- data.frame(
 )
 kable(congiunzione,
       caption = "Congiunzione",
-      col.names = c("$a$", "$b$", "$a \\cap b$"))
+      col.names = c("$A$", "$B$", "$A \\cap B$"))
 
 # Tabella della disgiunzione
 disgiunzione <- data.frame(
@@ -642,7 +643,7 @@ disgiunzione <- data.frame(
 )
 kable(disgiunzione,
       caption = "Disgiunzione",
-      col.names = c("$a$", "$b$", "$a \\cup b$"))
+      col.names = c("$A$", "$B$", "$A \\cup B$"))
 
 # Tabella della negazione
 negazione <- data.frame(
@@ -651,7 +652,7 @@ negazione <- data.frame(
 )
 kable(negazione,
       caption = "Negazione",
-      col.names = c("$a$", "$\\lnot a$"))
+      col.names = c("$A$", "$\\overline{A}$"))
 
 xor <- data.frame(
   p  = c("V", "V", "F", "F"),
@@ -663,7 +664,7 @@ kable(
   xor,
   caption = "Differenza simmetrica (XOR)",
   escape = FALSE,
-  col.names = c("$p$", "$q$", "$p \\oplus q$"),
+  col.names = c("$A$", "$B$", "$A \\Delta B$"),
   row.names = FALSE
 )
 ```
@@ -676,7 +677,7 @@ Ci sono diversi livelli di **allerta** quando scriviamo codice:
 
 -   **`messaggi`**: la funzione ci restituisce qualcosa che è utile sapere, ma tutto liscio. Appaiono spesso quando si caricano dei pacchetti.
 
--   **`warnings`**: la funzione ci informa di qualcosa di *potenzialmente* problematico, ma (circa) tutto liscio. R ci sta dicendo che è successo qualcosa di insolito e di prestareattenzione, ma non per forza è un problema.
+-   **`warnings`**: la funzione ci informa di qualcosa di *potenzialmente* problematico, ma (circa) tutto liscio. R ci sta dicendo che è successo qualcosa di insolito e di prestare attenzione, ma non per forza è un problema.
 
 -   **`error`**: la funzione non solo ci informa di un **errore** ma le operazioni richieste non sono state eseguite. Solitamente il messaggio di errore ci dice anche cosa sta succedendo. 
 
@@ -686,7 +687,7 @@ Come risolvere?
 -   Leggere la documentazione della funzione
 -   Cercare il messaggio su internet
 -   Chiedere aiuto nei forum dedicati
--  Chidere all'IA
+-   Chiedere all'IA
 
 #### Esempi di errori
 
@@ -726,9 +727,9 @@ lenght(vettore)
 
 #### R e l'uso dell'IA
 
-I prompt devono più specifici possibile e centrati su quello che volete fare e come lo volete fare.
+I prompt devono essere il più specifici possibile e centrati su quello che volete fare e come lo volete fare.
 
-Dovete comunicare chiaramente che volete sempre la soluzioe in R base, possibilmente senza usare funzioni aggiuntive e dovete sempre chiedere che vi spieghi il codice.
+Dovete comunicare chiaramente che volete sempre la soluzione in R base, possibilmente senza usare funzioni aggiuntive e dovete sempre chiedere che vi spieghi il codice.
 
 :::{.callout-warning}
 
@@ -746,7 +747,7 @@ I vettori sono una struttura dati unidimensionale e sono la più semplice presen
 
 * **la lunghezza**: il numero di elementi da cui è formato il vettore. La funzione `length(x)` permette di ottenere la lunghezza del vettore x, ovvero permette di conoscere il numero di elementi di cui è composto il vettore.
 
-* **la tipologia**: la tipologia di dati da cui è formato il vettore. Un vettore infatti deve esssere formato da **elementi tutti dello stesso tipo** (vedi @sec-vec)!
+* **la tipologia**: la tipologia di dati da cui è formato il vettore. Un vettore infatti deve essere formato da **elementi tutti dello stesso tipo** (vedi @sec-vec)!
 
 I vettori sono caratterizzati da: 
 
@@ -788,19 +789,19 @@ months = c(5, 6, 8, 10, 12, 16); months
 weight = runif(6, 3, 18) ; weight
 ```
 
-I vettori logici si ottengono testando delle condizioni sulla base dei valori di altri vettori (@lst-test: 
+I vettori logici si ottengono testando delle condizioni sulla base dei valori di altri vettori (@lst-test): 
 
 ```{r}
-#| lst-cap: Testa se ci sono valori maggior di 12 all'interno del vettore
+#| lst-cap: Testa se ci sono valori maggiori di 12 all'interno del vettore
 #| lst-label: lst-test
 months > 12
 ```
 
-Il vettore logico risultante può essere utilizzato per filtrare i valori dal vettore orginale (vedi @sec-filterVec).
+Il vettore logico risultante può essere utilizzato per filtrare i valori dal vettore originale (vedi @sec-filterVec).
 
 
 
-La funzione `rep()` in @lst-rep crea un vettore di tipo character ripetendo i $K$ valori per $X$ volte. Nell'esempio in @lst-rep, le categorie `low`, `medium`, `high` vengono ripertute tutte per due volte (argomento `each = 2`).
+La funzione `rep()` in @lst-rep crea un vettore di tipo character ripetendo i $K$ valori per $X$ volte. Nell'esempio in @lst-rep, le categorie `low`, `medium`, `high` vengono ripetute tutte per due volte (argomento `each = 2`).
 
 La funzione `factor()` forza il vettore ad essere un vettore con $K$ categorie e un numero di valori uguale al numero di elementi dentro il vettore. 
 
@@ -814,14 +815,14 @@ ses
 L'argomento `levels` all'interno della funzione `factor()` (vedi @lst-levels) permette di specificare l'ordine delle categorie, altrimenti il default di R le mette in ordine alfabetico.
 
 ```{r}
-#| lst-cap: Ordinare i livelli della vraibile con levels
+#| lst-cap: Ordinare i livelli della variabile con levels
 #| lst-label: lst-levels
 ses = factor(ses, levels = c("low", "medium", "high"))
 ```
 
 ### Indicizzare i vettori {#sec-filterVec}
 
-I vttori si indicizzano usando le parentesi quadre: 
+I vettori si indicizzano usando le parentesi quadre: 
 
 `nome_vettore[indice]` dove l'indice è la posizione all'interno del vettore che si vuole ottenere. 
 
@@ -868,7 +869,7 @@ seq(1,5, by = 0.5)
 
 :::
 
-L'indicizzazione dei vettori funziona anche su vettori di tipo numerico, come negli esempi sequenti:
+L'indicizzazione dei vettori funziona anche su vettori di tipo numerico, come negli esempi seguenti:
 
 ```{r eval=TRUE}
 weight[2] # secondo elemento di weight
@@ -879,14 +880,14 @@ weight[-2] # rimuove il secondo elemento
 ```
 
 
-I vettori logici possono essere utilizzati per estrarre dteerminati valori da un vettore: 
+I vettori logici possono essere utilizzati per estrarre determinati valori da un vettore: 
 
 ```{r}
 weight > 7 
 ```
 
 
-Restituisce un vettore logico dove si `TRUE` se il valore in quella posizione è maggiore di 7 e `FALSE` in ogni altro caso. In questo caso si hanno valori veri (quindi osservazioni con un valore magggiore di 7) nelle seguenti posizioni del vettore: 
+Restituisce un vettore logico dove si ha `TRUE` se il valore in quella posizione è maggiore di 7 e `FALSE` in ogni altro caso. In questo caso si hanno valori veri (quindi osservazioni con un valore maggiore di 7) nelle seguenti posizioni del vettore: 
 
 ```{r}
 #| echo: false
@@ -913,7 +914,7 @@ Per creare una matrice in R si può usare la funzione `matrix()`, come segue
 
      `matrix(data, nrow, ncol, byrow = FALSE)`
      
-dove `data` sono i valori che si vogliono mettere all'interno della matrice, `nrow` e `ncol` specificano il numero di righe e di colonne che si vogliono mettere nella matrice e `byrow = FALSE` (default) indica che i dati vengono organizzati per colonna (ovvero la matrice viene rimpita seguendo le colonne).
+dove `data` sono i valori che si vogliono mettere all'interno della matrice, `nrow` e `ncol` specificano il numero di righe e di colonne che si vogliono mettere nella matrice e `byrow = FALSE` (default) indica che i dati vengono organizzati per colonna (ovvero la matrice viene riempita seguendo le colonne).
 
 
 ```{r}
@@ -931,7 +932,7 @@ A
 Nel caso precedente, la lunghezza del vettore organizzato nella matrice rientrava perfettamente nel numero di celle disponibili all'interno della matrice stessa. Se questo non succede, si hanno due casi: 
 
 :::{.callout-note}
-## Il numero di celle è un moltiplicando/dividendo della lunghezza del vettore 
+## Il numero di celle è un multiplo della lunghezza del vettore
 
 ```{r}
 data = 1:12
@@ -943,14 +944,14 @@ Non succede niente, non appaiono warning e la matrice viene creata ripetendo due
 :::
 
 :::{.callout-note}
-## Il numero di celle NON è un moltiplicando della lunghezza del vettore 
+## Il numero di celle NON è un multiplo della lunghezza del vettore
 
 ```{r}
 data = 1:12
 matrix(data, nrow = 3, ncol =2)
 ```
 
-Si ottiene un warning, ma R comunque crea la matrice come può.
+Si ottiene un warning, ma R crea comunque la matrice usando solo i primi valori del vettore (in questo caso i primi 6).
 
 :::
 
@@ -965,7 +966,7 @@ Le matrici di fatto sono la concatenazione bidimensionale di una serie di vettor
 
 ### Indicizzare le matrici
 
-La logica per l'indicizzaizone è la stessa che si usa per i vettori, solo che all'interno delle parentesi quadre va inserito anche l'indice per le colonne: 
+La logica per l'indicizzazione è la stessa che si usa per i vettori, solo che all'interno delle parentesi quadre va inserito anche l'indice per le colonne: 
 
 `my_matrix[righe, colonne]`
 
@@ -1025,11 +1026,11 @@ data = data.frame(id = paste0("id", 1:length(weight)),
 data
 ```
 
-Per convenzione, i dati sperimentali vengono organizzati in modo che le unità statistiche siano sulle righe e le variabili sulle colonne. In questo modo, sapendo il numero di righe si può ricavare il numero di unità statistiche, sapendo il numero di righe si può ricavare il numero di variabili misurate su quelle unità statistiche.
+Per convenzione, i dati sperimentali vengono organizzati in modo che le unità statistiche siano sulle righe e le variabili sulle colonne. In questo modo, sapendo il numero di righe si può ricavare il numero di unità statistiche, sapendo il numero di colonne si può ricavare il numero di variabili misurate su quelle unità statistiche.
 
 ### Indicizzare i dataframe {#sec-indDataframe}
 
-I dataframe si possono indicizzar come le matrici utilizzando le parentesi quadre e i rispettivi indici di riga e colonna: 
+I dataframe si possono indicizzare come le matrici utilizzando le parentesi quadre e i rispettivi indici di riga e colonna: 
 
 
     data[r, c]
@@ -1038,16 +1039,21 @@ Si può anche usare un'indicizzazione basata sull'estrazione delle singole colon
 
     data$nome_variabile
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width="50%"}
 ```{r}
 data
 ```
 
-:::
 
-:::{.column width="50%"}
+
+```{=latex}
+\switchcolumn
+```
+
 
 ```{r}
 
@@ -1055,41 +1061,49 @@ data[2, 1]
 data$weight
 data$weight[2]
 ```
-:::
-::::
 
-La stessa logica con cui dai vettori si estraggono tutte le osservazioni che soddisfano un determinato requisito
+```{=latex}
+\end{paracol}
+```
+
+Dai vettori si estraggono tutte le osservazioni che soddisfano un determinato requisito come segue:
 
 ```{r}
 weight[weight >= 7]
 ```
 
-Nel caso del dataframe: 
+Nel caso del dataframe si segue la stessa logica: 
 
-::::{.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width=50%}
 Estrae tutte le righe che soddisfano la condizione e tutte le colonne.
 ```{r}
 data[data$weight >=7, ]
 ```
-:::
 
-:::{.column width=50%}
-Estrare i valori del vettore `data$id` che soddisfano la condizione sulla variabile weight.
+
+```{=latex}
+\switchcolumn
+```
+
+Estrae i valori del vettore `data$id` che soddisfano la condizione sulla variabile weight.
 
 ```{r}
 data$id[data$weight >=7 & data$weight < 9]
 ```
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
 ### Attributi e caratteristiche
 
 Le funzioni **`names()`** , **`dim()`**, **`nrow()`**, **`ncol()`** sono alcune delle funzioni per ottenere informazioni sulle caratteristiche del dataframe. 
 
-La funzione più utile è **`str()`** poichè ci restituisce una veloce overview della struttura del dataframe: dimensioni, tipi di variabili.
+La funzione più utile è **`str()`** poiché ci restituisce una veloce overview della struttura del dataframe: dimensioni, tipi di variabili.
 
 ```{r,echo=TRUE}
 names(data) # estrae i nomi del dataset
@@ -1105,7 +1119,7 @@ ncol(data) # numero di colonne (equivale al numero di variabili)
 
 La funzione **`str()`** funziona su tutti gli oggetti di R (vettori, matrici, dataframe, liste). 
 
-Restituisce sempre le informazioni circa la dimensionalità e il numero (e tipo) di elementi contentui nell'oggetto.
+Restituisce sempre le informazioni circa la dimensionalità e il numero (e tipo) di elementi contenuti nell'oggetto.
 :::
 
 ## Liste
@@ -1113,7 +1127,7 @@ Restituisce sempre le informazioni circa la dimensionalità e il numero (e tipo)
       list(name1 = obj1, name2 = obj2, name3 = obj3, . . .)
       
 
-Permette di creare liste di oggetti diversi (matrici, vettori, variabli) di diverso tipo (`numeric`, `character`, `integer`). 
+Permette di creare liste di oggetti diversi (matrici, vettori, variabili) di diverso tipo (`numeric`, `character`, `integer`). 
 Ogni oggetto nella lista può avere un nome diverso che può essere utilizzato per l'indicizzazione (vedi @sec-indListe).
 
 Molti dei risultati ottenuti con le funzioni per le analisi statistiche sono organizzati in liste, proprio perché permettono di contenere oggetti di natura diversa e con dimensionalità diversa.
@@ -1147,7 +1161,7 @@ OgLista[[2]]
 Gli oggetti dentro le liste si possono indicizzare anche attraverso i loro nomi usando l'operatore `$` (vedi @lst-indList2):
 
 ```{r}
-#| lst-cap: Accede al'oggetto Mat nella lista usando il suo nome
+#| lst-cap: Accede all'oggetto Mat nella lista usando il suo nome
 #| lst-label: lst-indList2
 OgLista$Mat
 ```
@@ -1180,7 +1194,7 @@ Perché il codice di sopra funzioni, si assume che la cartella `data` sia all'in
 
 :::{.callout-warning}
 
-Questa alternativa è presentata solo per completezza di informazione, ma è fortemente sconsigliata visto che non può essere automatizzata dentro i documento quarto.
+Questa alternativa è presentata solo per completezza di informazione, ma è fortemente sconsigliata visto che non può essere automatizzata dentro i documenti quarto.
 :::
 
 ```{r}
@@ -1215,7 +1229,7 @@ knitr::include_graphics("slides/modulo1/img/import3.png")
 
 :::{.callout-warning}
 
-Questa funzione è la funzione base su cui poggia `read.csv2()`. Cambiano i default, che in questo caso sono ottimizzati per i file csv creati in altre regioni del mondo, dove "," è il sepratore di colonna di default e "." è il separatore di decimali di default.
+Questa funzione è la funzione base su cui poggia `read.csv2()`. Cambiano i default, che in questo caso sono ottimizzati per i file csv creati in altre regioni del mondo, dove "," è il separatore di colonna di default e "." è il separatore di decimali di default.
 
 :::
 
@@ -1263,9 +1277,11 @@ str(weight)
 
 ### L'inizio `head()` e la fine `tail()` di un oggetto
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-::: {.column width="50%"}
 `head()`
 
 Le prime 6 osservazioni del dataset
@@ -1273,9 +1289,12 @@ Le prime 6 osservazioni del dataset
 head(rock)
 ```
 
-:::
 
-::: {.column width="50%"}
+
+```{=latex}
+\switchcolumn
+```
+
 `tail()`
 
 le ultime 6 osservazioni del dataset
@@ -1284,9 +1303,10 @@ le ultime 6 osservazioni del dataset
 tail(rock)
 ```
 
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
 ### `apply()`
 
@@ -1359,7 +1379,7 @@ Genere
 as.factor(Genere) 
 ```
 
-`as.character()` produre una variabili categoriale, ma senza i livelli che caratterizzano i `factor`
+`as.character()` produce una variabile categoriale, ma senza i livelli che caratterizzano i `factor`
 
 **Più livelli**
 
@@ -1395,12 +1415,12 @@ Le etichette numeriche valgono per il loro ordine (non ha senso compiere operazi
 
 :::
 
-    factor(A,levels=c("a1","a2",..., "ak"), ordered=TRUE) 
+    factor(A, levels = c("a1", "a2", ..., "ak")) 
        
 Converte la variabile in una variabile con tanti livelli quanti sono i valori unici e viene forzato un ordine su questi livelli: 
 
 ```{r}
-#| lst-cap: Utilizzo dell'agormento levels per ordinare i livelli di una variabile categoriale ordinata
+#| lst-cap: Utilizzo dell'argomento levels per ordinare i livelli di una variabile categoriale ordinata
 #| lst-label: lst-order
 Voto <- c("alto","medio","medio","basso","alto") 
 Voto
@@ -1410,7 +1430,7 @@ factor(Voto,levels=c("basso","medio","alto"))
 
 :::{.callout-warning}
 
-L'utilizzo dell'argomento ordered è deprecato, sconsiglio di usarlo. In caso di variabili ordinali, è sufficiente ordinare i livelli attraverso l'argomento levels come mostrato oin @lst-order.
+Esiste anche l'argomento `ordered = TRUE`, che crea un fattore di classe `ordered`: alcune funzioni lo trattano in modo diverso da un fattore normale (ad esempio, nei modelli lineari vengono usati contrasti polinomiali). In questo corso non lo useremo: per le variabili ordinali è sufficiente ordinare i livelli attraverso l'argomento `levels`, come mostrato in @lst-order.
 :::
 
 ### Scala a intervalli equivalenti
@@ -1434,9 +1454,9 @@ Quello che si può dire:
 Infatti, volendo trasformare le due temperature in Fahrenheit tramite la relazione:
 
 $$F = \dfrac{9}{5}C + 32$$
-si vedrebbe che $T_a(F) = \dfrac{9}{5}5 + 32 = 41$ e $T_a(F) = \dfrac{9}{5}10 + 32 = 50$. 
+si vedrebbe che $T_a(F) = \dfrac{9}{5}5 + 32 = 41$ e $T_b(F) = \dfrac{9}{5}10 + 32 = 50$. 
 
-Rimane la relazione d'ordine, per cui anche $T_a(F) < T_b(F)$, ma cambia sia la differenza tra le due quantità $T_b(F) - T_a(F) = 9$ sia la relazione tra le due, per cui si vede chiaramente che $T_a(F) \neq T_b(F)$.
+Rimane la relazione d'ordine, per cui anche $T_a(F) < T_b(F)$, ma cambia sia la differenza tra le due quantità $T_b(F) - T_a(F) = 9$ sia la relazione tra le due, per cui si vede chiaramente che $T_b(F) \neq 2T_a(F)$.
 
 \begin{center}
 \includegraphics[width=0.5\linewidth]{slides/modulo2/img/intervalli.png}
@@ -1472,7 +1492,7 @@ La relazione tra $P_a$ e $P_b$ rimane **invariante** attraverso le diverse trasf
 Ad esempio, trasformando $P_a(K)$ e $P_b(K)$ in libbre ($L$) mediante la relazione
 
 $$L = K \times 2.20462$$
-per cui $P_a(L) = 10 \times 2.20462 = 22.0462$ e $P_b(L) = 20 \times 2.20462 = 44.0924$. La relazione d'ordine è matenuta e, al netto dei decimali, rimane anche invariante il rapporto tra i due pesi.
+per cui $P_a(L) = 10 \times 2.20462 = 22.0462$ e $P_b(L) = 30 \times 2.20462 = 66.1386$. La relazione d'ordine è mantenuta e, al netto dei decimali, rimane anche invariante il rapporto tra i due pesi.
 
 	
 \begin{center}
@@ -1498,7 +1518,7 @@ x = seq(-3, 3, by = .5); x # <1>
 y = rnorm(10, mean = 3, sd=2); y # <2>
 z = 1:15; z # <3>
 ```
-1. La funzione `seq()` genera un vettore di numeri da un minimo a un massimo, con un step progressivo definito dall'utente
+1. La funzione `seq()` genera un vettore di numeri da un minimo a un massimo, con uno step progressivo definito dall'utente
 2. La funzione `rnorm()` genera un vettore di lunghezza definita estraendo a caso da una distribuzione normale 
 3. L'operatore `:` genera una sequenza unitaria di valori da un minimo a un massimo
 
@@ -1518,12 +1538,12 @@ Le frequenze sono le statistiche descrittive più semplici che si possano calcol
 \centering
 \begin{tabular}{|c|c|c|}
 \hline
-Categoria $x_i$ & $n_i$ & $\%_i = \dfrac{n_i}{n}\cdot 100$ \\
+Categoria $x_i$ & $n_i$ & $n_i\% = \dfrac{n_i}{n}\cdot 100$ \\
 \hline
-$x_1$ & $n_1$ & $\%_1$ \\
-$x_2$ & $n_2$ & $\%_2$ \\
+$x_1$ & $n_1$ & $n_1\%$ \\
+$x_2$ & $n_2$ & $n_2\%$ \\
 $\vdots$ & $\vdots$ & $\vdots$ \\
-$x_k$ & $n_k$ & $\%_k$ \\
+$x_k$ & $n_k$ & $n_k\%$ \\
 \hline
 Totale & $n$ & $100$ \\
 \hline
@@ -1538,11 +1558,11 @@ $\displaystyle\sum_{i=1}^{k} n_i = n$
 
 \vspace{2mm}
 
-\textbf{Frequenza percentuale:} 
-La frequenza relativa semplice (o **frequenza percentuale**) è data dal rapporto tra la frequenza assoluta semplice di tale categoria e il numero totale di unità statistiche osservate. \quad
-$\%_i = \dfrac{n_i}{n}\cdot100$,
-con $0 \leq \%_i \leq 100$ e
-$\displaystyle\sum_{i=1}^{k}\%_i = 100$
+\textbf{Frequenza relativa e frequenza percentuale:} 
+La frequenza relativa semplice $f_i = \dfrac{n_i}{n}$ è data dal rapporto tra la frequenza assoluta semplice di tale categoria e il numero totale di unità statistiche osservate ($0 \leq f_i \leq 1$). Moltiplicata per 100, diventa la **frequenza percentuale**: \quad
+$n_i\% = \dfrac{n_i}{n}\cdot100$,
+con $0 \leq n_i\% \leq 100$ e
+$\displaystyle\sum_{i=1}^{k}n_i\% = 100$
 
 #### Frequenze univariate: `table()`
 
@@ -1607,13 +1627,15 @@ Modalità $x_i$ & $n_i$ & $N_i$ & $n_i\%$ & $N_i\%$ \\
 Totalmente in disaccordo  & 10 & 10 & 24.4\% & 24.4\% \\
 Abbastanza in disaccordo  &  8 & 18 & 19.5\% & 43.9\% \\
 Indifferente              &  6 & 24 & 14.6\% & 58.5\% \\
-Abbastanza d'accordo      & 14 & 38 & 34.2\% & 92.7\% \\
+Abbastanza d'accordo      & 14 & 38 & 34.1\% & 92.7\% \\
 Totalmente d'accordo      &  3 & 41 &  7.3\% & 100.0\% \\
 \hline
 Totale                     & 41 &    & 100.0\% & \\
 \hline
 \end{tabular}
 
+\vspace{1mm}
+{\footnotesize Le percentuali sono arrotondate al primo decimale, per cui la loro somma può non essere esattamente 100.}
 \end{table}
 
 #### Calcolare le frequenze cumulate: `cumsum()`
@@ -1725,14 +1747,14 @@ La moda $Mo$ di una variabile $X$ è la categoria a cui è associata la massima 
 	
 	
 \begin{center}
-	$Mo(X) = \max(n_i)$ \\ (categoria con massimo valore di $n_i$)
+	$Mo(X) = x_i$ tale che $n_i = \max(n_1, \ldots, n_k)$ \\ (categoria con massimo valore di $n_i$)
 \end{center}
 	
 	
 	
 :::{.callout-warning}
 		
-N.B: Si può calcolare per le variabili misurate a qualsiasi livello, anche se di fatto viene calcolata solo per le variabile categoriali, in quanto per altri livelli di misurazione si
+N.B: Si può calcolare per le variabili misurate a qualsiasi livello, anche se di fatto viene calcolata solo per le variabili categoriali, in quanto per altri livelli di misurazione si
 possono calcolare altri indici più informativi
 :::
 
@@ -1757,7 +1779,7 @@ La mediana $Me$ di una variabile $X$ è la categoria che occupa la posizione cen
 \end{itemize}
 
 \begin{equation*}
-Pos_{Me} = \dfrac{(N+1)}{2}
+Pos_{Me} = \dfrac{n+1}{2}
 \end{equation*}
 
 Il valore di $Pos_{Me}$ va cercato nella distribuzione delle frequenze cumulate e si sceglie la categoria con $N_i \geq Pos_{Me}$
@@ -1779,7 +1801,7 @@ Il quantile $x_p$ di ordine $p$ della variabile $X$ è quella categoria/valore c
 	
 \begin{itemize}
 \item preceduta da almeno $p$\% dei casi
-\item superata da almeno $(1-p)$\% dei casi
+\item superata da almeno $(100-p)$\% dei casi
 \end{itemize}
 
 \begin{center}
@@ -1911,7 +1933,7 @@ quantile(x, probs = seq(0,1, by = .10))
 La media è una sorta di baricentro della distribuzione dei dati. Data una variabile $X$ composta da $n$ valori:  
 
 \begin{equation*}
-\bar{X} = \dfrac{\sum_{i = 1}^{n}x_i}{n}
+\bar{x} = \dfrac{\sum_{i = 1}^{n}x_i}{n}
 \end{equation*}
 
 \begin{center}
@@ -1940,7 +1962,7 @@ La media è una sorta di baricentro della distribuzione dei dati. Data una varia
 \end{tikzpicture}}
 \end{center}
 
-I dati: $X = (0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2)$, la media $\bar{X} = 2.811$
+I dati: $X = (0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2)$, la media $\bar{x} = 2.811$
 
 
 \begin{center}
@@ -1985,13 +2007,13 @@ I dati: $X = (0.8,1.2,1.6,2.4,2.7,3.3,3.6,4.5,5.2)$, la media $\bar{X} = 2.811$
 \end{center}
 
 
-I dati: $X = (1.18,1.02,1.10,1.16,1.01,1.10,1.05,1.12,1.45,1.52,1.54,1.55,10.06,14.46)$, la media $\bar{X} = 2.809$
+I dati: $X = (1.18,1.02,1.10,1.16,1.01,1.10,1.05,1.12,1.45,1.52,1.54,1.55,10.06,14.46)$, la media $\bar{x} = 2.809$
 
 #### `mean()`
 
     mean(x, na.rm = FALSE)
     
-Funzione per calcolare la media di un vettore di valori `x`. L'agromento `na.rm = TRUE` serve per ottenere il calcolo della media nonostante la presenza di valori NA 
+Funzione per calcolare la media di un vettore di valori `x`. L'argomento `na.rm = TRUE` serve per ottenere il calcolo della media nonostante la presenza di valori NA 
 
 `rowMeans()`: Calcola la media per ogni riga (quindi attraverso le colonne)
 
@@ -2015,7 +2037,7 @@ Gli indici di variabilità possono assumere solo valori positivi (non ha senso p
 
 Il campo di variazione è la differenza tra il valore massimo e il valore minimo osservato:
 
-$$\text{gamma} = X_{max} - X_{min}$$
+$$\text{gamma} = x_{\max} - x_{\min}$$
 
 ```{r}
 team_A <- c(38, 42, 44, 36, 39, 42, 38, 41)
@@ -2034,7 +2056,7 @@ Dipende solo da due valori (massimo e minimo) e non considera la distribuzione d
 
 La varianza $\sigma^2$ è la media degli scarti al quadrato tra i dati e la media:
 
-$$\sigma^2 = \frac{\sum_i^n (X_i - \bar{X})^2}{n}$$
+$$\sigma^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n}$$
 
 La varianza assume valore minimo $0$ quando tutti i dati sono uguali tra loro e aumenta all'aumentare della dispersione.
 
@@ -2058,7 +2080,7 @@ La deviazione standard, a differenza della varianza, è espressa nella stessa un
 
 Il coefficiente di variazione è il rapporto tra la deviazione standard e il valore assoluto della media:
 
-$$CV = \frac{\sigma}{|\bar{X}|}$$
+$$CV = \frac{\sigma}{|\bar{x}|}$$
 
 Il CV è un indice di **variabilità relativa** fondamentale per eseguire **confronti** tra fenomeni misurati su **scale diverse**.
 
@@ -2067,13 +2089,13 @@ Il CV è un indice di **variabilità relativa** fondamentale per eseguire **conf
 
 La differenza interquartilica è la differenza tra il terzo e il primo quartile:
 
-$$IQR = Q_{75} - Q_{25}$$
+$$IQR = Q_3 - Q_1$$
 
 L'IQR misura la dispersione del 50% centrale dei dati ed è un indice **robusto** perché i valori estremi incidono poco o per nulla.
 
 **Outlier:** valori oltre $[Q_1 - 1.5 \times IQR \;;\; Q_3 + 1.5 \times IQR]$.
 
-Il **boxplot** (vedi sezione @sec-boxplot) visualizza Q1, mediana, Q3 e gli outlier in un unico grafico.
+Il **boxplot** (vedi @sec-boxplot) visualizza $Q_1$, mediana, $Q_3$ e gli outlier in un unico grafico.
 
 
 La funzione `IQR(x)` permette di calcolare la differenza interquartilica in R per qualsiasi variabile quantitativa.
@@ -2095,7 +2117,7 @@ to such decisions.
 Pastore et al. (2017)
 \end{flushright}
 
-Data set di Anscombe (@tbl-AnsCombe): Quattro dataset, di seguito le statistiche descrittive realitive alla variabile x e alla variabile y e la loro correlazione:
+Data set di Anscombe (@tbl-AnsCombe): Quattro dataset, di seguito le statistiche descrittive relative alla variabile x e alla variabile y e la loro correlazione:
 
 ```{r}
 #| echo: false
@@ -2135,7 +2157,7 @@ knitr::kable(
 )
 ```
 
-Guardando la @tbl-Anscombe, sembra che i quattro dataset siano identici, in termini di media, varianza e correlazione tra le variabili $x$ e $y$. Tuttavia, se si guardano i grafici a dispersione (vedi @sec-correlazione) tra le variabili $x$ e $y$ dei quattro dataset (@fig-data), appaiono delle differenze abbastanza palesi tra i diversi dataset.
+Guardando la @tbl-AnsCombe, sembra che i quattro dataset siano identici, in termini di media, varianza e correlazione tra le variabili $x$ e $y$. Tuttavia, se si guardano i grafici a dispersione (vedi @sec-correlazione) tra le variabili $x$ e $y$ dei quattro dataset (@fig-data), appaiono delle differenze abbastanza palesi tra i diversi dataset.
 
 ```{r}
 #| echo: false
@@ -2238,15 +2260,15 @@ barplot(x) # <5>
 1. Grafico di una variabile quantitativa
 2. Grafico a dispersione di due variabili quantitative (vedi @sec-correlazione)
 3. Istogramma di una variabile quantitativa (@sec-hist)
-4. Boxplot della distribuzione quartile di una (o più)  variabili (@sec-boxplot)
+4. Boxplot della distribuzione quartile di una (o più) variabili (@sec-boxplot)
 5. Grafico a barre per le frequenze delle variabili qualitative (@sec-barplot)
 
 ### Grafico a barre {#sec-barplot}
 
 Usato per variabili qualitative nominali o ordinali: 
 
-* Asse $x$: categoria $k$ 
-* Asse $y$: Frequenza $n_k$ (vale anche per le frequenze percentuali)
+* Asse $x$: categoria $x_i$ 
+* Asse $y$: Frequenza $n_i$ (vale anche per le frequenze percentuali)
 
 L'altezza della barretta è proporzionale alla sua frequenza
 
@@ -2269,7 +2291,7 @@ bp <- barplot(
   col = "darkorange",
   border = NA,
   xlab = "Categorie",
-  ylab = expression("Frequenza  " * n[k] * "  (o  " * f[k] * ")"),
+  ylab = expression("Frequenza  " * n[i] * "  (o  " * n[i] * "%)"),
   cex.names = 1.5,
   cex.axis = 1.3,
   cex.lab = 1.4
@@ -2312,7 +2334,7 @@ dati1 <- data.frame(
 
 knitr::kable(
   dati1,
-  col.names = c("Categoria", "$n_k$"),
+  col.names = c("Categoria", "$n_i$"),
   row.names = FALSE,
   align = c("c", "c")
 )
@@ -2323,7 +2345,7 @@ dati <- data.frame(Categoria = c("A", "B", "C"),
 
 knitr::kable(
   dati,
-  col.names = c("Categoria", "$n_k$"),
+  col.names = c("Categoria", "$n_i$"),
   row.names = FALSE,
   align = c("c", "c")
 )
@@ -2492,7 +2514,7 @@ hist(x, breaks = 145)
 \begin{center}
 Sturges: 
 
-$\displaystyle \frac{\max(x) - \min(x)}{\log_{2}(n + 1)}$
+$\displaystyle \frac{\max(x) - \min(x)}{\lceil \log_{2}(n) + 1 \rceil}$
 
 Scott: 
 
@@ -2510,7 +2532,7 @@ User defined:
 
 ### Boxplot {#sec-boxplot}
 
-`boxplot(x)` Produce un boxplot a partire da un vettore X di osservazioni quantitative.
+`boxplot(x)` produce un boxplot a partire da un vettore `x` di osservazioni quantitative.
 
 ```{r}
 #| echo: false
@@ -2663,7 +2685,7 @@ boxplot(y_floor, col ="lightblue")
 boxplot(y_ceiling, col = "gold")
 ```
 
-@fig-boxes-1: La distribuzione è equilibrata attorno alla mediana, situaata circa a metà della distribzuone tra il minimo e il massimo 
+@fig-boxes-1: La distribuzione è equilibrata attorno alla mediana, situata circa a metà della distribuzione tra il minimo e il massimo 
 
 @fig-boxes-2: La distribuzione è squilibrata verso il basso, ovvero verso il minimo, presentando una coda più "pesante" verso il massimo
 
@@ -2706,7 +2728,7 @@ boxplot(y_floor, col ="lightblue"); hist(y_floor, col ="lightblue")
 boxplot(y_ceiling, col ="gold"); hist(y_ceiling, col ="gold")
 ```
 
-Forzano i boxpolot ad essere in orizzontale attraverso l'argomento `horizontal = TRUE` (@fig-myFigure) si può apprezzare meglio la similutudine tra la forma della distribuzione vista con l'istogramma e la forma della distribuzione vista con il boxplot.
+Forzando i boxplot ad essere in orizzontale attraverso l'argomento `horizontal = TRUE` (@fig-myfigure) si può apprezzare meglio la similitudine tra la forma della distribuzione vista con l'istogramma e la forma della distribuzione vista con il boxplot.
 
 ```{r}
 #| label: fig-myfigure
@@ -3046,73 +3068,93 @@ sum(mytab) # permette di ottenere l'ampiezza campionaria
 mytab
 ```
 
-::::{.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width=50%}
 
 ```{r}
 #| echo: true
 margin.table(mytab,1)  
 ```
 
-:::
 
-:::{.column width=50%}
+
+```{=latex}
+\switchcolumn
+```
+
 ```{r}
 #| echo: true
 margin.table(mytab,2)  
 ```
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
 ### `prop.table()`
 
 `prop.table(T, margin = NULL)`: Probabilità condizionate: 
 
 :::{.callout-tip}
-`margin = 1`: Probabilità calcolate sul totale $n$, $p_{kj} = \dfrac{n_{kj}}{n}$
+`margin = NULL`: Probabilità calcolate sul totale $n$, $p_{kj} = \dfrac{n_{kj}}{n}$
 
-`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**), $p_{kj} = \dfrac{n_{kj}}{n_{k.}}$
+`margin = 1`: Probabilità condizionate di riga (**attraverso le colonne**), $p_{j \mid k} = \dfrac{n_{kj}}{n_{k.}}$
 
-`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**), $p_{kj} = \dfrac{n_{kj}}{n_{.j}}$
+`margin = 2`: Probabilità condizionate di colonna (**attraverso le righe**), $p_{k \mid j} = \dfrac{n_{kj}}{n_{.j}}$
 :::
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width="50%"}
 ```{r}
 #| echo: true
 mytab
 ```
 
-:::
 
-:::{.column width="50%"}
+
+```{=latex}
+\switchcolumn
+```
+
 ```{r}
 #| echo: true
 prop.table(mytab)   
 ```
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
-::::{.columns}
-:::{.column width=50%}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
+
 
 ```{r}
 #| echo: true
 prop.table(mytab,1)  # P(B|A)
 ```
-:::
 
-:::{.column width=50%}
+
+```{=latex}
+\switchcolumn
+```
+
 ```{r}
 #| echo: true
 prop.table(mytab,2)  # P(A|B)
 ```
-:::
-::::
+
+```{=latex}
+\end{paracol}
+```
 
 
 ### Frequenze percentuali e frequenze condizionate
@@ -3135,7 +3177,7 @@ knitr::kable(tabella, booktabs = TRUE, align = "c") |>
 
 Guardando le frequenze assolute si potrebbe essere tentati di concludere, ad esempio, che tra le donne con istruzione alta ci sono più lavoratrici (30) che casalinghe (20), e che tra quelle con istruzione bassa ci sono molte più casalinghe (40) che lavoratrici (10). Le frequenze assolute, però, non permettono confronti corretti, perché i gruppi hanno dimensioni diverse: nel campione ci sono 85 casalinghe e solo 55 lavoratrici, e anche i tre livelli di istruzione non hanno la stessa numerosità (50, 40 e 50). Un numero più alto in una cella può dipendere semplicemente dal fatto che quel gruppo è più numeroso.
 
-Per confrontare gruppi di dimensione diversa bisogna passare alle **frequenze percentuali condizionate**: invece di dividere ogni cella per il totale generale $n$ (quelo che fa la funzione `prop.table(tabella)` quando non viene specificato un margin), la si divide per il totale della sua riga o della sua colonna. In questo modo ogni riga (o ogni colonna) diventa una distribuzione percentuale che somma a 100, e i gruppi diventano confrontabili.
+Per confrontare gruppi di dimensione diversa bisogna passare alle **frequenze percentuali condizionate**: invece di dividere ogni cella per il totale generale $n$ (quello che fa la funzione `prop.table(tabella)` quando non viene specificato un margin), la si divide per il totale della sua riga o della sua colonna. In questo modo ogni riga (o ogni colonna) diventa una distribuzione percentuale che somma a 100, e i gruppi diventano confrontabili.
 
 La stessa tabella si può leggere in due modi diversi, a seconda di quale variabile si sceglie come *condizionante*, cioè di quale variabile si fissano le categorie per guardare come si distribuisce l'altra.
 
@@ -3266,13 +3308,13 @@ Tra le variabili $X$ e $Y$ c’è una forma di legame e \textbf{relazione} (\tex
 
 Quantifica la DISTANZA DALL'INDIPENDENZA tra due variabili categoriali.
 
-* X con $h$ categorie $x_k$, con $k=1,\ldots,h$,
-* Y con $m$ categorie $y_j$, con $j=1,\ldots,m$
+* $X$ con $h$ categorie $x_k$, con $k=1,\ldots,h$,
+* $Y$ con $m$ categorie $y_j$, con $j=1,\ldots,m$
 
 Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attese** o **frequenze teoriche** ($n_{kj}^*$).
 
-\begin{columns}
-\begin{column}{0.40\textwidth}
+\columnratio{0.4,0.1,0.5}
+\begin{paracol}{3}
 \begin{tabular}{|p{2.5cm}|p{1cm}|}
 \hline
 & \\
@@ -3286,11 +3328,9 @@ Richiede il confronto tra **frequenze osservate** ($n_{kj}$) e **frequenze attes
 	
 \vspace{3mm}
 Frequenze osservate
-\end{column}
-\begin{column}{0.10\textwidth}
+\switchcolumn
 VS.
-\end{colum}
-\begin{column}{0.50\textwidth}
+\switchcolumn
 
 
 \begin{tabular}{|p{2.5cm}|p{1cm}|}
@@ -3305,10 +3345,7 @@ VS.
 
 \vspace{3mm}
 Frequenze teoriche
-
-\end{colum}
-
-\end{columns}
+\end{paracol}
 
 
 
@@ -3322,7 +3359,7 @@ Data l'ampiezza campionaria $n$, quali sono le frequenze che avremmo dovuto osse
 $$n_{kj}^* = \dfrac{n_{k.} \times n_{.j}}{n}, \qquad n = \sum_{k=1}^h \sum_{j=1}^m n_{kj} = \sum_{k=1}^h \sum_{j=1}^m n_{kj}^*$$
 :::
 
-Siccome le frequenze teoriche sono le frequenze che si sarebbero osservate se le variabili fossero state indipendeti **data l'ampiezza campionaria e i marginali di riga e colonna osservati**, la somma di tutte le frequenze teoriche restituisce l'ampiezza campionaria $n$. Inoltre, i marginali di riga delle frequenze teoriche sono uguali ai marginali di riga delle frequenze osservate, così come i marginali di colonna delle frequenze teoriche sono uguali ai marginali di colonna delle frequenze osservate.
+Siccome le frequenze teoriche sono le frequenze che si sarebbero osservate se le variabili fossero state indipendenti **data l'ampiezza campionaria e i marginali di riga e colonna osservati**, la somma di tutte le frequenze teoriche restituisce l'ampiezza campionaria $n$. Inoltre, i marginali di riga delle frequenze teoriche sono uguali ai marginali di riga delle frequenze osservate, così come i marginali di colonna delle frequenze teoriche sono uguali ai marginali di colonna delle frequenze osservate.
 
 
 ```{r}
@@ -3371,7 +3408,7 @@ $\chi^2 = \chi_{\max}^2$: Relazione di perfetta dipendenza (dove $\chi_{\max}^2 
 
 $$\tilde{\chi}^2 = \dfrac{\chi^2}{\chi_{\max}^2}$$
 
-$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala ti tipo $[0, 1]$
+$\tilde{\chi}^2$ è il $\chi^2$ normalizzato, permette di esprimere il grado di associazione tra due variabili categoriali secondo una scala di tipo $[0, 1]$
 
 ### `chisq.test()`
 
@@ -3385,7 +3422,7 @@ mytab
 chisq.test(mytab)$statistic
 ```
 
-#### Calcolo $\chi_{max}^2$
+#### Calcolo $\chi^2_{\max}$
 
 ```{r}
 #| echo: true
@@ -3443,9 +3480,11 @@ barplot(round(prop.table(t(preferenze_tab), 1),2)*100, beside = T,
 
 ```
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width="50%"}
 **Frequenze osservate**
 ```{r}
 #| echo: true
@@ -3456,18 +3495,22 @@ obs_n = matrix(
   nrow = 3, byrow = TRUE) ; obs_n
 
 ```
-:::
 
-:::{.column width="50%"}
+
+```{=latex}
+\switchcolumn
+```
+
 **Frequenze teoriche**
 ```{r}
 #| echo: true
 #| warning: false
 chisq.test(obs_n)$expected
 ```
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
 <!-- ```{r} -->
 <!-- #| echo: false -->
@@ -3527,9 +3570,11 @@ barplot(round(prop.table(obs_n, 2),2)*100, beside = T,
         ylim=c(0,100), main ="Percentuali di colonna",cex.main =4)
 ```
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width="50%"}
 **Frequenze osservate**
 ```{r}
 #| echo: true
@@ -3540,18 +3585,22 @@ obs_n <- matrix(
   nrow = 3, byrow = TRUE) ; obs_n
 
 ```
-:::
 
-:::{.column width="50%"}
+
+```{=latex}
+\switchcolumn
+```
+
 **Frequenze teoriche**
 ```{r}
 #| echo: true
 #| warning: false
 chisq.test(obs_n)$expected
 ```
-:::
 
-::::
+```{=latex}
+\end{paracol}
+```
 
 ```{r}
 #| echo: false
@@ -3584,18 +3633,31 @@ sum(obs_n) * min(c(nrow(obs_n) -1,
                             ncol(obs_n) - 1))
 ```
 
-## Associazione (variabili quantitative)
+## Associazione (variabili quantitative) {#sec-correlazione}
 
 ### Relazione lineare
 
-Si vuole studiare la **relazione lineare** tra due variabili quantitative $X$ e $Y$ misurate sulle stesse unità statistiche
 
-Per relazione lineare si intende quanto le coppie di punti $(x_i, y_i)$ tendono a disporsi lungo una retta
+Si vuole studiare la **relazione lineare** tra due variabili quantitative $X$ e $Y$ misurate sulle stesse unità statistiche. Per ciascuna unità $i$ (con $i = 1, \ldots, n$) si dispone quindi di una coppia di valori $(x_i, y_i)$. Ad esempio, $x_i$ può essere l'età e $y_i$ il peso della stessa persona, oppure le ore di studio e il voto all'esame dello stesso studente.
+
+Le coppie $(x_i, y_i)$ possono essere rappresentate come punti su un piano cartesiano, con $X$ sull'asse orizzontale e $Y$ sull'asse verticale. Questo è il **grafico a dispersione** (*scatterplot*, @fig-scatter), che è il primo strumento da utilizzare per farsi un'idea della relazione tra due variabili quantitative.
+
+Per relazione lineare si intende quanto le coppie di punti $(x_i, y_i)$ tendono a disporsi lungo una retta. Osservando il grafico a dispersione, la relazione può essere descritta in base a due caratteristiche:
+
+- **Direzione**: la relazione è *positiva* se all'aumentare dei valori di $X$ tendono ad aumentare anche i valori di $Y$ (la nuvola di punti "sale" da sinistra verso destra). È *negativa* se all'aumentare dei valori di $X$ i valori di $Y$ tendono a diminuire (la nuvola di punti "scende").
+
+- **Forza**: quanto i punti sono vicini alla retta. Più i punti sono stretti attorno alla retta, più la relazione lineare è forte. Più sono sparsi, più la relazione è debole. Se i punti non mostrano nessuna tendenza a disporsi lungo una retta, non c'è relazione lineare tra le due variabili.
+
+L'assenza di relazione *lineare* non implica l'assenza di *qualsiasi* relazione. Due variabili possono essere legate da una relazione non lineare, ad esempio a forma di U o di U rovesciata, che gli indici presentati in questa sezione non sono in grado di cogliere. Per questo motivo è sempre buona norma guardare il grafico a dispersione prima di calcolare qualsiasi indice.
+
+Si hanno a disposizione due indici, l'indice di **covarianza**, che permette di studiare la direzione della relazione tra le variabili, e il **coefficiente di correlazione lineare di Bravais-Pearson**, che permette di studiarne la direzione E l'intensità.
 
 ```{r}
 #| echo: false
 #| out-width: 45%
 #| fig-align: center
+#| fig-cap: Grafico a dispersione delle variabili X e Y
+#| label: fig-scatter
 set.seed(10)
 xr <- rnorm(60, 10, 3)
 yr <- 2 + 0.8 * xr + rnorm(60, 0, 1.2)
@@ -3616,32 +3678,31 @@ dati <- data.frame(
 
 ```
 
-:::: {.columns}
-
-:::{.column width=60%}
 ```{r}
 #| echo:  false
-#| fig-cap: Grafico a dispersione delle variabili X e Y
 #| fig-align: center
-plot(dati$X, dati$Y, cex = 2, cex.axis =3, pch = 20, col = "firebrick")
+#| fig-cap: Grafico a dispersione delle due variabili X e Y. 
+#| label: fig-MyScatter
+plot(dati$X, dati$Y, cex.axis =1.2, pch = 20, col = "firebrick")
 abline(v = mean(dati$X), lty=2)
 abline(h = mean(dati$Y), lty=2)
 points(mean(dati$X), mean(dati$Y), pch=19, cex = 4)
 ```
 
-:::
-
-:::{.column width=40%}
-```{r}
-#| echo: false
-dati
-
-```
-
-:::
-::::
+:::{.callout-note}
+## Scatter plot in R
 
 `plot(x, y)`: Grafico di dispersione di due variabili quantitative appaiate `(x,y)` aventi lo stesso numero di osservazioni
+
+:::
+
+In @fig-MyScatter è riportato lo scatterplot tra due variabili. I punti rossi rappresentano le coppie di osservazioni $(x_i, y_i)$ di ciascuna unità statistica $i$. Le linee tratteggiate indicano la media di $X$ (linea verticale) e la media di $Y$ (linea orizzontale), che diventano i **baricentri** per il calcolo della covarianza.
+
+I baricentri danno origine a un nuovo sistema di assi cartesiani, la cui origine è il punto di incontro tra le due medie, $(\bar{x}, \bar{y})$. In questo nuovo sistema, ogni punto è descritto dai suoi **scarti** dalle medie, $(x_i - \bar{x})$ e $(y_i - \bar{y})$, e il piano risulta diviso in quattro quadranti.
+
+La covarianza è la media dei prodotti di questi scarti. Il segno del prodotto $(x_i - \bar{x})(y_i - \bar{y})$ dipende dal quadrante in cui cade il punto: è positivo quando entrambi gli scarti hanno lo stesso segno (quadranti in alto a destra e in basso a sinistra) e negativo quando hanno segno opposto (quadranti in alto a sinistra e in basso a destra). Se la maggior parte dei punti cade nei quadranti "positivi", la covarianza sarà positiva; se cade in quelli "negativi", sarà negativa.
+
+
 
 ```{r}
 #| out-width: 60%
@@ -3651,108 +3712,88 @@ Y <- c(9,6,8,9,7,10,8,4,11,5,4)
 plot(X,Y,main="Grafico di dispersione", xlim=c(0,20),ylim=c(0,15))
 ```
 
-La **Covarianza** misura il grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{X}$ e $\bar{Y}$
+La covarianza è quindi una misura del grado di *dispersione* e *covariazione* di due variabili quantitative appaiate $(X,Y)$ attorno ai loro baricentri (medie) $\bar{x}$ e $\bar{y}$
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width=50%}
 $x = (x_1, x_2, \ldots, x_n)$
 
 $y = (y_1, y_2, \ldots, y_n)$
-:::
 
-:::{.column width=50%}
+
+```{=latex}
+\switchcolumn
+```
+
 $$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
-:::
-::::
 
-$$\cov(x,y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i
--\bar{y})$$
+```{=latex}
+\end{paracol}
+```
 
-È (quasi) la **media dei prodotti degli scarti** di ogni variabile dalla propria media
+$$\cov(X,Y) = \dfrac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})(y_i-\bar{y})$$ {#eq-cov}
+
+È (quasi) la **media dei prodotti degli scarti** di ogni variabile dalla propria media.
 
 :::{.callout-note}
-Nota: alcuni testi dividono per $n$ invece che per $n-1$ (covarianza "descrittiva"). La funzione `cov()` di `R` divide per $n-1$, quindi useremo sempre questa versione
+Nota: alcuni testi dividono per $n$ invece che per $n-1$ (covarianza "descrittiva"). La funzione `cov()` di `R` divide per $n-1$, quindi useremo sempre questa versione. Per coerenza, in questo modulo $sd(X)$ indica la deviazione standard calcolata dalla funzione `sd()`, che divide anch'essa per $n-1$ (a differenza di $\sigma$ del Modulo 2, che divide per $n$). Nel calcolo di $r$ e di $\hat{\beta}$ la scelta non cambia il risultato, purché covarianza e deviazioni standard usino lo stesso divisore.
 
 :::
 
-<!-- ### Formula operativa -->
+### Il "nuovo" sistema cartesiano
 
-<!-- Svolgendo i prodotti si ottiene una formula più comoda per il calcolo "a mano": -->
-
-<!-- $$\cov(x,y) = \dfrac{\sum_{i=1}^n x_i y_i - n\,\bar{x}\,\bar{y}}{n-1}$$ -->
-
-<!-- \vspace{2mm} -->
-
-<!-- \footnotesize -->
-
-:::: {.columns}
-
-:::{.column width="50%"}
-$\cov(X,Y) > 0$ 
+@fig-cov riporta due esempi per illustrare l'andamento della nuvola dei punti in base al segno dei prodotti tra gli scarti, sapendo che il prodotto $(x_i - \bar{x})(y_i - \bar{y})$ è più spesso positivo se $\cov(X,Y) > 0$ (@fig-cov-1), più spesso negativo se $\cov(X,Y) < 0$ (@fig-cov-2).
 
 ```{r}
 #| echo: false
 #| out-width: 100%
+#| layout-ncol: 2
 #| fig-align: center
+#| label: fig-cov
+#| fig-cap: Covarianza
+#| fig-subcap: 
+#|   - "$\\mathrm{Cov}(X,Y) > 0$"
+#|   - "$\\mathrm{Cov}(X,Y) < 0$"
 prod_scarti <- (dati$X - mean(dati$X)) * (dati$Y - mean(dati$Y))
 plot(dati$X, dati$Y, pch = 19, cex = 3,
      col = ifelse(prod_scarti > 0, "royalblue", "firebrick"),
-     xlab = "X", ylab = "Y", cex.axis = 2, cex.lab = 2,
+     xlab = "X", ylab = "Y", cex.axis = 1.2, cex.lab = 1.2,
      xlim = c(2, 16), ylim = c(3, 12))
 abline(v = mean(dati$X), lty = 2)
 abline(h = mean(dati$Y), lty = 2)
-text(15, 11.8, "(+)(+) = +", cex = 2.5, col = "royalblue")
-text(3, 3.3, "(-)(-) = +", cex = 2.5, col = "royalblue")
-text(3, 11.8, "(-)(+) = -", cex = 2.5, col = "firebrick")
-text(15, 3.3, "(+)(-) = -", cex = 2.5, col = "firebrick")
-```
+text(15, 11.8, "(+)(+) = +", cex = 1.5, col = "royalblue")
+text(3, 3.3, "(-)(-) = +", cex = 1.5, col = "royalblue")
+text(3, 11.8, "(-)(+) = -", cex = 1.5, col = "firebrick")
+text(15, 3.3, "(+)(-) = -", cex = 1.5, col = "firebrick")
 
-:::
-
-:::{.column width="50%"}
-$\cov(X,Y) < 0$ 
-
-```{r}
-#| echo: false
-#| out-width: 100%
-#| fig-align: center
 dati_neg <- data.frame(X = dati$X, 
                        Y = 2 * mean(dati$Y) - dati$Y)   # Y specchiata attorno alla media
 
 prod_scarti_neg <- (dati_neg$X - mean(dati_neg$X)) * (dati_neg$Y - mean(dati_neg$Y))
-plot(dati_neg$X, dati_neg$Y, pch = 19, cex = 3,
+plot(dati_neg$X, dati_neg$Y, pch = 19, cex = 1.5,
      col = ifelse(prod_scarti_neg > 0, "royalblue", "firebrick"),
-     xlab = "X", ylab = "Y", cex.axis = 2, cex.lab = 2,
+     xlab = "X", ylab = "Y", cex.axis = 1.2, cex.lab = 1.2,
      xlim = c(2, 16), ylim = c(3, 12))
 abline(v = mean(dati_neg$X), lty = 2)
 abline(h = mean(dati_neg$Y), lty = 2)
-text(15, 11.8, "(+)(+) = +", cex = 2.5, col = "royalblue")
-text(3, 3.3, "(-)(-) = +", cex = 2.5, col = "royalblue")
-text(3, 11.8, "(-)(+) = -", cex = 2.5, col = "firebrick")
-text(15, 3.3, "(+)(-) = -", cex = 2.5, col = "firebrick")
+text(15, 11.8, "(+)(+) = +", cex = 1.5, col = "royalblue")
+text(3, 3.3, "(-)(-) = +", cex = 1.5, col = "royalblue")
+text(3, 11.8, "(-)(+) = -", cex = 1.5, col = "firebrick")
+text(15, 3.3, "(+)(-) = -", cex = 1.5, col = "firebrick")
 ```
 
-:::
-::::
+Chiaramente, se gli scarti sono entrambi positivi (quindi sono sopra la media di X e Y), il loro prodotto sarà positivo. Se sono entrambi negativi (ovvero entrambi sotto la media di X e Y), il loro prodotto sarà comunque positivo. I punti dello scatter plot si troveranno (*per la maggior parte*) nel primo e terzo quadrante (@fig-cov-1). 
 
-Il prodotto $(x_i - \bar{x})(y_i - \bar{y})$ è più spesso positivo se $\cov > 0$, più spesso negativo se $\cov < 0$
+Viceversa, se lo scarto dalla X è positivo (sopra la media) e dalla Y è negativo (sotto la media), il loro prodotto sarà negativo. Similmente,  se lo scarto dalla X è negativo (sotto la media) e dalla Y è positivo (sopra la media), il loro prodotto sarà negativo. I punti dello scatter plot si troveranno  (*per la maggior parte*) nel secondo e quarto quadrante (@fig-cov-2). 
 
-- La covarianza può assumere **tutti i valori reali**
 
-\vspace{3mm}
 
-- $\cov(X,Y) > 0$: tendenza alla linearità positiva (**crescente**)
+La covarianza può assumere **tutti i valori reali**. Il suo valore dipende dall'unità di misura delle variabili $\rightarrow$ ci dice la **direzione** della relazione ma non la sua **intensità**. L'unica cosa che si può concludere quindi è se esiste una relazione positiva o negativa, e, al massimo, se c'è *assenza di relazione lineare*.
 
-\vspace{3mm}
 
-- $\cov(X,Y) < 0$: tendenza alla linearità negativa (**decrescente**)
-
-\vspace{3mm}
-
-- $\cov(X,Y) \approx 0$: nessuna tendenza lineare
-
-Il valore della covarianza dipende dall'unità di misura delle variabili $\rightarrow$ ci dice la **direzione** della relazione ma non la sua **intensità**
 
 ```{r}
 #| echo: false
@@ -3797,7 +3838,8 @@ mycov = list(
 #| layout-ncol: 2
 #| layout-nrow: 2
 #| out-width: 60%
-#| fig-cap: "Covarianza"
+#| label: fig-covExamples
+#| fig-cap: "Esempi di relazione Covarianza"
 #| fig-subcap:
 #|   - "Cov = 0"
 #|   - "Cov = 0"
@@ -3810,15 +3852,20 @@ plot(df2$X, df2$Y, pch = 19, col = "royalblue", cex = 3)
 plot(df3$X, df3$Y, pch = 19, col = "royalblue", cex = 3)
 ```
 
+#### Calcolo della covarianza
+
+
 ```{r}
 #| echo: false
 bimbo <- data.frame(eta = c(3, 6, 9, 12, 24, 36),
                     peso = c(6, 8, 9, 10, 13, 20))
 ```
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.45,0.55}
+\begin{paracol}{2}
+```
 
-:::{.column width=45%}
 
 Età (in mesi) e peso (in kg) di un bambino rilevati in 6 momenti
 
@@ -3827,26 +3874,35 @@ Età (in mesi) e peso (in kg) di un bambino rilevati in 6 momenti
 bimbo
 ```
 
-:::
 
-:::{.column width=55%}
+
+```{=latex}
+\switchcolumn
+```
+
 
 ```{r}
 #| echo: false
 #| fig-cap: Grafico a dispersione
-plot(bimbo$eta, bimbo$peso, pch = 19, cex = 3,
-     xlab = "Età (mesi)", ylab = "Peso (kg)", cex.lab = 2, cex.axis = 2)
+plot(bimbo$eta, bimbo$peso, pch = 19, cex = 1.3,
+     xlab = "Età (mesi)", ylab = "Peso (kg)", cex.lab = 1.2, cex.axis = 1.2)
 abline(v = mean(bimbo$eta), lty = 2)
 abline(h = mean(bimbo$peso), lty = 2)
 ```
 
-:::
-::::
 
-#### Calcolo della covarianza
+```{=latex}
+\end{paracol}
+```
+
+Dal grafico, si vede chiaramente che al crescere del peso, si osserva un aumento dell'età e che all'aumentare dell'età si osserva una crescita del peso (sono valide entrambe le interpretazioni, osserviamo covariazione non causalità).
+
+La covarianza si può calcolare a mano (nel senso con codice R) data la formula in @eq-cov (vedi @lst-baseCov).
 
 ```{r}
-#| echo: false
+#| lst-label: lst-baseCov
+#| lst-cap: "Codice per ottenere gli elementi di base del calcolo della covarianza."
+#| echo: true
 calcolo <- data.frame(x = bimbo$eta, y = bimbo$peso,
                       sx = bimbo$eta - mean(bimbo$eta),
                       sy = bimbo$peso - mean(bimbo$peso))
@@ -3857,13 +3913,12 @@ calcolo
 
 $\bar{x} = `r mean(bimbo$eta)`$, $\bar{y} = `r mean(bimbo$peso)`$, $\sum_i (x_i - \bar{x})(y_i - \bar{y}) = `r sum(calcolo$prodotto)`$
 
-$$\cov(x,y) = \dfrac{`r sum(calcolo$prodotto)`}{6-1} = `r round(cov(bimbo$eta, bimbo$peso), 2)`$$
+$$\cov(X,Y) = \dfrac{`r sum(calcolo$prodotto)`}{6-1} = `r round(cov(bimbo$eta, bimbo$peso), 2)`$$
 
-E quindi? Sappiamo che la relazione è **positiva**, ma è forte o debole?
 
-### `cov()`
+#### La funzione `cov()`
 
-`cov()`: Restituisce la covarianza campionaria tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
+`cov()`: Restituisce la covarianza campionaria (@eq-cov) tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
 
 ```{r}
 X <- c(9,8,12,9,10,14,5,4,13,7,5)
@@ -3876,24 +3931,26 @@ cov(bimbo$eta, bimbo$peso)
 
 ### Correlazione campionaria
 
-Per stabilire l'**intensità** della relazione la covarianza va *normalizzata*, ovvero divisa per il suo valore massimo
+Per stabilire l'**intensità** della relazione la covarianza va *normalizzata*, ovvero divisa per il suo valore massimo, ovvero il prodotto tra le deviazioni standard delle due variabili.
 
-\vspace{2mm}
 
-$-sd(x)sd(y) \leq\cov(X,Y)\leq + sd(x)sd(y)$
 
-$$r  = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
 
-$$-1 \leq r \leq 1$$
-$r = +1$: legame **perfettamente lineare e diretto**; 
+$$-sd(X)\,sd(Y) \leq \cov(X,Y) \leq + sd(X)\,sd(Y),$$
 
-$r = -1$: legame **perfettamente lineare e inverso**
+per cui il coefficiente di correlazione di Bravais-Pearson $r$ si ottiene con:
 
-$r = 0$: **incorrelazione**: non esiste un legame *lineare*... ma questo non implica che le variabili non siano in relazione tra loro
+$$r = \dfrac{\cov(X,Y)}{sd(X)\,sd(Y)}.$$ {#eq-cor}
 
+Si ottiene quindi un indice che ha un range di variabilità molto bene definito: 
+
+$$-1 \leq r \leq 1,$$
+
+dove $r = +1$ indica un legame **perfettamente lineare e diretto**, $r = -1$ indica un legame **perfettamente lineare e inverso** e $r = 0$ indica **incorrelazione**, ovvero la mancanza di una relazione *lineare*. Tuttavia le variabili potrebbero avere qualche altra forma di relazione (quadratica, esponenziale, logaritmica ecc.).
 
 ```{r}
 #| echo: false
+#| fig-cap: Esemplificazioni dei valori limite del coefficiente di correlazione.
 #| fig-align: center
 #| out-width: 100%
 set.seed(2)
@@ -3908,9 +3965,9 @@ plot(xx, (xx - mean(xx))^2, pch = 19, cex = 2, xlab = "X", ylab = "Y",
      cex.main = 3, cex.lab = 2.5, cex.axis = 2)
 ```
 
-### `cor()`
+#### La funzione `cor()`
 
-`cor()`: Restituisce la correlazione (lineare) campionaria tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni
+`cor()`: Restituisce la correlazione (lineare) campionaria (@eq-cor) tra due variabili quantitative appaiate $(X,Y)$ aventi lo stesso numero di osservazioni:
 
 ```{r}
 #| echo: true
@@ -3921,7 +3978,7 @@ cor(X,Y)
 cor(X,Z)
 ```
 
-#### Il bambino di prima
+Riprendendo l'esempio del peso e dell'età del bambino:
 
 ```{r}
 cov(bimbo$eta, bimbo$peso) / (sd(bimbo$eta) * sd(bimbo$peso))
@@ -3930,60 +3987,11 @@ cor(bimbo$eta, bimbo$peso)
 
 $$r = \dfrac{`r round(cov(bimbo$eta, bimbo$peso), 2)`}{`r round(sd(bimbo$eta), 2)` \cdot `r round(sd(bimbo$peso), 2)`} = `r round(cor(bimbo$eta, bimbo$peso), 3)`$$
 
-Le variabili presentano una **fortissima correlazione positiva**: i punti tendono a disporsi lungo una retta crescente
+Le variabili presentano una **fortissima correlazione positiva**: i punti tendono a disporsi lungo una retta crescente.
 
-```{r}
-#| echo: false
-library(MASS)
 
-set.seed(123)  # per riproducibilità
-
-n <- 100  # numero di osservazioni
-
-# --- 1. Cov > 0 (correlazione positiva) ---
-mu1 <- c(10, 10)                 # medie
-Sigma1 <- matrix(c(20, 15,       # var(X), cov(X,Y)
-                   15, 20), 2)   # cov(Y,X), var(Y)
-pos <- mvrnorm(n, mu = mu1, Sigma = Sigma1)
-
-# --- 2. Cov < 0 (correlazione negativa) ---
-mu2 <- c(10, 10)
-Sigma2 <- matrix(c(20, -15,
-                  -15, 20), 2)
-neg <- mvrnorm(n, mu = mu2, Sigma = Sigma2)
-
-# --- 3. Cov ~ 0 (nessuna correlazione) ---
-mu3 <- c(10, 10)
-Sigma3 <- matrix(c(20, 0,
-                    0, 20), 2)
-null <- mvrnorm(n, mu = mu3, Sigma = Sigma3)
-
-# Controllo covarianze e correlazioni
-mylist = list(
-  cov_pos  = cov(pos)[1,2],
-  cor_pos  = cor(pos)[1,2],
-  cov_neg  = cov(neg)[1,2],
-  cor_neg  = cor(neg)[1,2],
-  cov_null = cov(null)[1,2],
-  cor_null = cor(null)[1,2]
-)
-
-# Grafici
-par(mfrow=c(1,3))
-plot(pos, xlab="X1", ylab="Y1", main=paste("cov = ",  round(mylist$cov_pos, 2), ", r = ", round(mylist$cor_pos, 2)), pch = 19, cex = 2, cex.main = 2, xlim=c(-0.20,20))
-plot(neg, xlab="X2", ylab="Y2", main=paste("cov = ",  round(mylist$cov_neg, 2), ", r = ", round(mylist$cor_neg, 2)), pch = 19, cex = 2, cex.main = 2, xlim=c(-0.20,20))
-plot(null, xlab="X3", ylab="Y3", main=paste("cov = ",  round(mylist$cov_null, 2), ", r = ", round(mylist$cor_null, 2)), pch = 19, cex = 2, cex.main = 2, xlim=c(-0.20,20))
-```
-
-```{r}
-#| echo: false
-#| fig-align: center
-knitr::include_graphics("slides/modulo3/cor2.jpg")
-```
-
-### Usi e abusi di $r$
-
-#### In $\psi$
+:::{.callout-note}
+## Dove si può trovare $r$
 
 - Attendibilità test-retest
 
@@ -3995,27 +4003,42 @@ knitr::include_graphics("slides/modulo3/cor2.jpg")
 
 - ...
 
-#### Statistics doesn't lie, but liars use statistics
+:::
+
+
+:::{.callout-caution}
+
+## Statistics doesn't lie, but liars use statistics
 
 Due variabili possono essere fortemente correlate senza che esista alcun legame tra di loro
 
 \vspace{3mm}
 
-\begin{center}
+\centering
+
 \url{https://www.tylervigen.com/spurious-correlations}
-\end{center}
 
 \vspace{3mm}
 
-\begin{center}
+
 \textbf{Correlazione $\neq$ causalità}
-\end{center}
+
 
 \vspace{2mm}
 
-\begin{center}
-\textit{L'ignoranza afferma o nega rotondamente; la scienza dubita} (Voltaire)
-\end{center}
+
+*L'ignoranza afferma o nega rotondamente; la scienza dubita (Voltaire)*
+
+:::
+
+### Tipi di relazione 
+
+:::{.callout-caution}
+## ATTENZIONE
+
+Le diverse forme di relazione (diretta, indiretta, spuria) fanno riferimento a ipotesi sui *meccanismi causali* che legano le variabili. Gli indici di associazione visti non permettono di distinguere tra queste forme: una correlazione elevata può essere il risultato di una relazione diretta, indiretta o spuria. Stabilire che $X$ è causa di $Y$ richiede, oltre alla covariazione tra le due variabili, che $X$ preceda $Y$ nel tempo e che si possano escludere spiegazioni alternative, condizione che in genere può essere soddisfatta solo attraverso un disegno sperimentale.
+
+:::
 
 #### Relazione diretta
 
@@ -4031,9 +4054,8 @@ Due variabili possono essere fortemente correlate senza che esista alcun legame 
 \end{center}
 ```
 
-\vspace{5mm}
 
-Ma ne siamo proprio sicuri?
+Si parla di **relazione diretta** tra due variabili $X$ e $Y$ quando $X$ influenza $Y$ senza che intervengano altre variabili: la variazione di $X$ si riflette direttamente in una variazione di $Y$ ($X \rightarrow Y$). L'associazione osservata tra le due variabili è quindi dovuta interamente al legame che le unisce, e non alla presenza di una terza variabile che agisce su entrambe o che fa da tramite tra l'una e l'altra.
 
 #### Relazione indiretta
 
@@ -4054,7 +4076,8 @@ Ma ne siamo proprio sicuri?
 \end{center}
 ```
 
-La relazione tra $X$ e $Y$ passa attraverso altre variabili (mediatori)
+Si parla di **relazione indiretta** tra due variabili $X$ e $Y$ quando $X$ influenza $Y$ non in modo diretto, ma attraverso una o più variabili intermedie, chiamate **mediatori** ($Z$): $X \rightarrow Z \rightarrow Y$. Una variazione di $X$ produce una variazione di $Z$, che a sua volta produce una variazione di $Y$. L'associazione osservata tra $X$ e $Y$ è quindi reale, ma il legame tra le due variabili *passa attraverso* il mediatore. Se si tiene costante il mediatore (ad esempio confrontando solo unità con lo stesso valore di $Z$), l'associazione tra $X$ e $Y$ scompare (mediazione totale) o si riduce (mediazione parziale, quando oltre al percorso indiretto esiste anche una componente diretta $X \rightarrow Y$).
+
 
 #### Relazione spuria
 
@@ -4073,33 +4096,31 @@ La relazione tra $X$ e $Y$ passa attraverso altre variabili (mediatori)
 \end{center}
 ```
 
-$X$ e $Y$ sono correlate solo perché entrambe dipendono da una terza variabile
 
-\vspace{3mm}
+Si parla di **relazione spuria** tra due variabili $X$ e $Y$ quando tra le due si osserva un'associazione, ma questa non è dovuta a un legame causale tra $X$ e $Y$: entrambe dipendono da una terza variabile $Z$, detta **variabile confondente** (o causa comune), che le fa variare insieme ($X \leftarrow Z \rightarrow Y$). L'associazione tra $X$ e $Y$ è quindi solo apparente: se si tiene costante $Z$ (ad esempio confrontando solo unità con lo stesso valore di $Z$), l'associazione tra $X$ e $Y$ scompare.
 
-\begin{center}
-\normalsize LA STATISTICA SOSTIENE, NON ILLUMINA!
-\end{center}
 
 ## Previsione variabili quantitative
 
 ### Regressione lineare
 
-#### Quanto varia $y$ in funzione di $x$?
 
-La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$: **modello simmetrico** per determinare *l'intensità della relazione*
+La correlazione permette di stabilire quanto covariano due variabili, $x$ e $y$: **modello simmetrico** per determinare *l'intensità della relazione*.
 
-Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione
+Con un modello di regressione si vuole andare più a fondo per capire **quanto** varia $y$ in funzione di ogni cambiamento in $x$: stabilire non solo se le variabili sono associate o meno ma la portata della variazione.
 
-La relazione è *asimettrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale)
+La relazione è *asimmetrica*: si vuole spiegare $y$ in funzione di $x$ (questo non vuol dire in alcun modo che la relazione sia causale).
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.6,0.4}
+\begin{paracol}{2}
+```
 
-:::{.column width=60%}
 ```{r}
 #| echo:  false
 #| fig-align: center
-
+#| fig-cap: Scatterplot X e Y
+#| label: fig-corReg
 par(mfrow=c(1,1))
 plot(dati$X, dati$Y, pch=19, cex=2)
 abline(v = mean(dati$X), lty=2)
@@ -4107,91 +4128,123 @@ abline(h = mean(dati$Y), lty=2)
 points(mean(dati$X), mean(dati$Y), pch=19, cex = 4, col ="firebrick")
 ```
 
-:::
 
-:::{.column width=40%}
+
+```{=latex}
+\switchcolumn
+```
+
 ```{r}
 #| echo: false
 dati
 
 ```
 
-:::
-::::
 
-$$r = `r round(cor(X, Y), 2)`$$
+```{=latex}
+\end{paracol}
+```
+
+La @fig-corReg permette di capire che la relazione tra le due variabili è positiva e, calcolando il coefficiente di correlazione, si ottiene $r = `r round(cor(dati$X, dati$Y), 2)`$, a indicare una forte relazione tra le due variabili. Tuttavia, in base a queste informazioni, non è possibile dire quanto cambia $y$ in funzione di ogni cambiamento in $x$, né è possibile fare una predizione su quale valore di $y$ si può osservare dato un valore di $x$.
+Per poterlo fare, è necessario usare un modello statistico idoneo che, in questo caso, prevede la costruzione di una retta che passi attraverso la nuvola di punti (@fig-retta). Si tratta quindi di trovare, tra le infinite rette che possono passare per un piano cartesiano, quella che permette di predire *sufficientemente bene* tutti i punti (ovvero le osservazioni), ovvero quella retta che permetta di *minimizzare le distanze delle osservazioni*.
 
 ```{r}
 #| echo: false
 #| out-width: 70%
 #| fig-cap: Una retta che passi attraverso le coppie di osservazioni
+#| label: fig-retta
 set.seed(999)
-mymodel = lm(Y ~ X)
-plot(X, Y, pch = 19, cex = 2)
+mymodel = lm(Y ~ X, data = dati)
+plot(dati$X, dati$Y, pch = 19, cex = 2, xlab = "X", ylab = "Y")
 abline(mymodel, col = "firebrick", lwd = 2)
 ```
 
-```{r}
-#| echo: false
-#| out-width: 70%
-#| fig-cap: Ma quale retta?
-plot(X, Y, pch = 19, cex = 2)
 
-y1 = rnorm(20, sd = 2)
-x1 = rnorm(20, sd = 2)
-abline(mymodel, col = "firebrick", lwd = 2)
-for (i in 1:length(x1)) {
-  abline(mymodel$coefficients[1] + y1[i],
-         mymodel$coefficients[2], col = i, lty = 2)
-}
-```
-
-Caso estremamente semplice dove varia solo l'intercetta -- le rette sono parallele
 
 La regressione lineare tra una *variabile indipendente* $X$ (predittore) ed una *variabile dipendente* $Y$ (criterio) calcola la migliore approssimazione lineare che identifica il legame tra le due variabili utilizzando la struttura di dati bivariata $(x_i,y_i)$ osservata su un campione di $n$ osservazioni.
 
-:::: {.columns}
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width=50%}
 $x = (x_1, x_2, \ldots, x_n)$
 
 $y = (y_1, y_2, \ldots, y_n)$
-:::
 
-:::{.column width=50%}
+
+```{=latex}
+\switchcolumn
+```
+
 $$d = ((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n))$$
-:::
-::::
 
-$$Y = \beta_0 + \beta X $$
-$$y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)$$
+```{=latex}
+\end{paracol}
+```
 
-$y_i$: Valore di $y$ atteso per l'i-esima osservazione 
+$$
+Y = \beta_0 + \beta X
+$$ {#eq-retta}
+
+$$
+y_i = \beta_0 + \beta x_i + \varepsilon_i \quad (i = 1, \ldots, n)
+$$ {#eq-modello}
+
+La @eq-retta descrive la retta di regressione, cioè la relazione lineare tra $X$ e $Y$: 
+
+La @eq-modello descrive quindi ogni osservazione $i$ come la somma di una parte spiegata dalla retta, $\beta_0 + \beta x_i$, e di un errore $\varepsilon_i$, che rappresenta la distanza tra il valore osservato $y_i$ e la retta.
+
+Dopo aver stimato $\beta_0$ e $\beta$ dai dati secondo il *principio dei minimi quadrati* (vedi @sec-sqe), si può predire il valore di $y$ per un dato valore di $x$:
+
+$$
+y_i^* = \hat{\beta}_0 + \hat{\beta} x_i
+$$ {#eq-predizione}
+
+Nella @eq-predizione l'errore non compare, perché la predizione $y_i^*$ è il punto sulla retta stimata.
+
+:::{.callout-note}
+## Significato dei coefficienti
+
+$y_i^*$: Valore di $y$ atteso per l'$i$-esima osservazione 
 
 $\beta_0$: Valore dell'intercetta, ovvero *valore atteso in $y$ quando $x_i = 0$*
 
-$\beta_1$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in y per ogni cambiamento unitario in $x$*
+$\beta$: Coefficiente angolare ovvero la pendenza della retta. Definisce *il cambiamento medio atteso in $y$ per ogni cambiamento unitario in $x$*
 
-$\varepsilon_i$: Componente d'errore ($\mathcal{N}(0, \sigma^2)$)
+$\varepsilon_i$: Componente d'errore, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$
+:::
 
-### Principio dei minimi quadrati
 
-$$SQE = \sum_{i=1}^n (y_i - y_i^*)^2 = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2  = \sum_{i=1}^n e_i^2$$
+### Principio dei minimi quadrati {#sec-sqe}
 
-dove $y_i^* = \beta_0 + \beta x_i$, e $e_i = y_i - y_i^*$.  \normalsize
+La retta di regressione viene tracciata seguendo il principio dei minimi quadrati, secondo cui si cercano i valori di $\beta_0$ e $\beta$ che rendono minima la somma delle distanze al quadrato dei punti dalla retta (@eq-sqe, somma dei quadrati degli errori):
 
-Per il principio dei minimi quadrati si può dimostrare che lo stimatore ottimale per $\beta$ è
+$$
+SQE(\beta_0, \beta) = \sum_{i=1}^n \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2
+$$ {#eq-sqe}
 
-$$\hat{\beta} = \frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
-= \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$$
+In corrispondenza dei valori che la minimizzano, $\hat{\beta}_0$ e $\hat{\beta}$, si ottengono i valori attesi $y_i^* = \hat{\beta}_0 + \hat{\beta} x_i$ e i residui $e_i = y_i - y_i^*$, per cui il valore minimo dell'SQE è $\sum_{i=1}^n (y_i - y_i^*)^2 = \sum_{i=1}^n e_i^2$.
 
-mentre per $\beta_0$ è
+Si può dimostrare che i valori che minimizzano la @eq-sqe sono, per il coefficiente angolare $\beta$,
 
-$$\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$$
+$$
+\hat{\beta} = \frac{\cov(X,Y)}{sd(X)^2}
+= \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}
+$$ {#eq-beta}
+
+e, per l'intercetta $\beta_0$,
+
+$$
+\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}
+$$ {#eq-beta0}
+
+A partire dai dati osservati, si ottengono le stime $\hat{\beta}_0$ e $\hat{\beta}$, che sostituite nella @eq-retta definiscono la retta di regressione stimata, $y^* = \hat{\beta}_0 + \hat{\beta} x$. È la retta che passa più vicina possibile a tutti i punti e che si usa per fare predizioni (@eq-predizione).
 
 ```{r}
 #| echo:  false
 #| fig-align: center
+#| fig-cap: Retta di regressione stimata con il principio dei minimi quadrati
 plot(dati$X, dati$Y, pch=19, cex =2)
 mod <- lm(Y ~ X, data = dati)
 
@@ -4207,346 +4260,216 @@ segments(dati$X, dati$Y, dati$X, pred, col = "red", lty = 2)
 
 #### Coefficiente angolare e correlazione
 
-:::: {.columns}
+Nella regressione **con un solo predittore**, il coefficiente angolare e il coefficiente di correlazione sono in stretta relazione tra loro, tanto che, conoscendo le deviazioni standard di $X$ e $Y$, si può ottenere l'uno a partire dall'altro:
 
-:::{.column width=50%}
-$$\hat{\beta} = \dfrac{\cov(X,Y)}{sd(x)^2}$$
-:::
+```{=latex}
+\columnratio{0.5,0.5}
+\begin{paracol}{2}
+```
 
-:::{.column width=50%}
-$$r = \dfrac{\cov(X,Y)}{sd(x)sd(y)}$$
-:::
-::::
+$$\hat{\beta} = \dfrac{\cov(X,Y)}{sd(X)^2}$$
 
-Moltiplicando e dividendo $\hat{\beta}$ per $sd(y)$:
+```{=latex}
+\switchcolumn
+```
 
-$$\hat{\beta} = r \, \dfrac{sd(y)}{sd(x)}$$
+$$r = \dfrac{\cov(X,Y)}{sd(X)\,sd(Y)}$$
 
-1. Il **segno** del coefficiente angolare è lo stesso di $r$: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale
+```{=latex}
+\end{paracol}
+```
 
-2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$ (basta sostituire $x = \bar{x}$ in $\hat{y} = \hat{\beta}_0 + \hat{\beta}x$)
+Moltiplicando e dividendo $\hat{\beta}$ per $sd(Y)$ si ottiene:
 
-#### Il bambino di prima
+$$
+\begin{aligned}
+\hat{\beta} &= \frac{\cov(X,Y)}{sd(X) \, sd(X)} \cdot \frac{sd(Y)}{sd(Y)} = \underbrace{\frac{\cov(X,Y)}{sd(X) \, sd(Y)}}_{r} \cdot \frac{sd(Y)}{sd(X)} = r \, \frac{sd(Y)}{sd(X)}
+\end{aligned}
+$$ {#eq-beta-r}
+
+
+Se $X$ e $Y$ sono standardizzate, cioè $sd(X) = sd(Y) = 1$, il coefficiente angolare coincide con il coefficiente di correlazione. Nella regressione con più predittori questa relazione non vale più, perché ogni coefficiente dipende anche dalle correlazioni tra i predittori.
+
+Dalla @eq-beta-r e dalla @eq-beta0 seguono due proprietà:
+
+1. Il **segno** del coefficiente angolare è lo stesso di $r$, perché le deviazioni standard sono sempre positive: $r > 0 \Rightarrow$ retta crescente, $r < 0 \Rightarrow$ retta decrescente, $r = 0 \Rightarrow$ retta orizzontale.
+
+2. La retta passa sempre per il **punto delle medie** $(\bar{x}, \bar{y})$: sostituendo $x = \bar{x}$ in $y^* = \hat{\beta}_0 + \hat{\beta}x$ e usando $\hat{\beta}_0 = \bar{y} - \hat{\beta}\,\bar{x}$, si ottiene $y^* = \bar{y} - \hat{\beta}\,\bar{x} + \hat{\beta}\,\bar{x} = \bar{y}$.
+
+:::{.callout-tip}
+## Esempio 
 
 ```{r}
 b <- cov(bimbo$eta, bimbo$peso) / var(bimbo$eta)
 b0 <- mean(bimbo$peso) - b * mean(bimbo$eta)
 c(b0, b)
-cor(bimbo$eta, bimbo$peso) * sd(bimbo$peso) / sd(bimbo$eta)
 ```
 
-Retta di regressione: $\hat{y} = `r round(b0, 2)` + `r round(b, 2)`x$
+Retta di regressione: $y^* = `r round(b0, 2)` + `r round(b, 2)`x$
 
-Quale sarebbe il peso previsto a 48 mesi? $\hat{y}_{48} = `r round(b0, 2)` + `r round(b, 2)` \cdot 48 = `r round(b0 + b * 48, 2)`$ kg
+Quale sarebbe il peso previsto a 48 mesi? $y^*_{48} = `r round(b0, 2)` + `r round(b, 2)` \cdot 48 = `r round(b0 + b * 48, 2)`$ kg
+
+:::
 
 ### Indice di adattamento $R^2$
 
-$$R^2 = 1 - \dfrac{SQE/n-1}{Var(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$
+Il principio dei minimi quadrati, con cui viene stimata la retta di regressione, garantisce che la retta ottenuta sia la migliore tra le infinite rette che si possono tracciare tra i punti, nel senso che è quella che rende minima la somma dei quadrati degli errori (@eq-sqe). Tuttavia, non dice nulla sulla bontà del modello, cioè sulla sua capacità di spiegare la relazione tra le variabili. In altre parole, non dice quanta parte della varianza di $Y$ è effettivamente spiegata dal modello e quindi, dato che c'è un solo predittore, quanta varianza di $Y$ è spiegata da $X$.
 
-$\varepsilon = \dfrac{SQE}{n-1}$: Stimatore campionario della varianza della componente di errore
+Per poter parlare di varianza spiegata e bontà del modello, bisogna ricorrere alla statistica $R^2$ (@eq-rsq) che quantifica la proporzione di **varianza di regressione** (ovvero la proporzione di varianza spiegata dal modello) rispetto alla varianza totale, ovvero la varianza d'errore sommata alla varianza di regressione:
 
-$0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. Di fatto, $R^2 = r^2$
+
+
+$$R^2 = 1 - \dfrac{SQE/(n-1)}{\mathrm{Var}(Y)} = 1 - \dfrac{\sum_{i=1}^n e_i^2}{\sum_{i=1}^n (y_i - \bar{y})^2},$${#eq-rsq}
+
+dove $\dfrac{SQE}{n-1}$ è la varianza dei residui, ovvero degli scarti del modello. Come stima della varianza della componente d'errore $\sigma^2$ si usa invece $\hat{\sigma}^2_\varepsilon = \dfrac{SQE}{n-2}$, perché dai dati sono stati stimati due parametri ($\beta_0$ e $\beta$).
+
+$0\leq R^2 \leq 1$: Più $R^2$ è vicino ad 1, migliore è il modello. 
+
+Nella regressione con un solo predittore, $R^2$ è uguale al quadrato del coefficiente di correlazione tra $X$ e $Y$: $R^2 = r^2$, con cui ha una relazione come riportato in @fig-rRsq.
 
 ```{r}
 #| echo: false
-
+#| label: fig-rRsq
+#| fig-cap: "Relazione quadratica tra $r$ e $R^2$."
 r = seq(-1,1, length.out= 1000)
 plot(r, r^2, pch = 19, xlab = "r", ylab = expression(r^2),
      cex.lab =4, cex.axis=2)
 ```
 
+#### Esempi di relazione tra $r$ e $R^2$
+
 ```{r}
-#| echo: false
-#| out-width: 80%
-#| fig-align: center
+#| include: false
 
-set.seed(123)  # per riproducibilità
+# Funzione che simula i dati e stima la retta
+simula_reg <- function(beta1, sd_eps, n = 50, beta0 = 2) {
+  set.seed(123)  # per riproducibilità
+  X <- rnorm(n, mean = 10, sd = 5)
+  epsilon <- rnorm(n, mean = 0, sd = sd_eps)
+  Y <- beta0 + beta1 * X + epsilon
+  fit <- lm(Y ~ X)
+  list(X = X, Y = Y, fit = fit, Y_star = fitted(fit),
+       R2 = round(summary(fit)$r.squared, 2),
+       r = round(cor(X, Y), 2))
+}
 
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- 1.5
+# Funzione che disegna punti, retta e residui
+grafico_reg <- function(d) {
+  plot(d$X, d$Y, pch = 19, col = "black",
+       xlab = "X", ylab = "Y",
+       ylim = c(min(d$Y, d$Y_star), max(d$Y, d$Y_star)))
+  abline(d$fit)
+  segments(d$X, d$Y, d$X, d$Y_star, lty = 2)
+}
 
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 10)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+d1 <- simula_reg(beta1 = 1.5,  sd_eps = 10)
+d2 <- simula_reg(beta1 = -2,   sd_eps = 5)
+d3 <- simula_reg(beta1 = 3,    sd_eps = 3)
+d4 <- simula_reg(beta1 = -0.2, sd_eps = 10)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
-
 ```{r}
+#| label: fig-corr
 #| echo: false
-#| out-width: 80%
-#| fig-align: center
-set.seed(123)  # per riproducibilità
+#| fig-cap: "Retta di regressione e residui (linee tratteggiate) in quattro insiemi di dati simulati."
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#| layout-ncol: 2
+#| layout-nrow: 2
 
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- -2
-
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 5)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
+grafico_reg(d1)
+grafico_reg(d2)
+grafico_reg(d3)
+grafico_reg(d4)
 ```
 
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
+- In @fig-corr-1 la relazione è positiva ma moderata ($r = `r d1$r`$): i punti sono piuttosto dispersi intorno alla retta e i residui sono grandi, quindi $X$ spiega solo una parte della varianza di $Y$ ($R^2 = `r d1$R2`$).
+- In @fig-corr-2 la relazione è negativa e forte ($r = `r d2$r`$): i punti sono vicini alla retta e il modello spiega gran parte della varianza di $Y$ ($R^2 = `r d2$R2`$).
+- In @fig-corr-3 la relazione è positiva e molto forte ($r = `r d3$r`$): i punti sono quasi allineati, i residui sono piccolissimi e $R^2 = `r d3$R2`$ è vicino a 1.
+- In @fig-corr-4 la relazione è praticamente assente ($r = `r d4$r`$): la retta è quasi orizzontale e, pur essendo la migliore secondo i minimi quadrati, spiega pochissima varianza di $Y$ ($R^2 = `r d4$R2`$).
+
+### La funzione: `lm()`
+
+I parametri del modello in R si stimano con la funzione `lm()` (**l**inear **m**odel):
+
+`lm(Y ~ X)`: Restituisce la stima dei parametri del modello di regressione lineare (secondo il principio dei minimi quadrati) dove si predicono i valori di $Y$ a seconda dei valori di $X$.
+
+`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5`. Altrimenti cercate "tilde" su google e copiatela e incollatela.
+
+
+:::{.callout-tip}
+## Come ottenere tilde (`~`) su Windows11 e 10
+
+Una soluzione è aggiungere il layout **Stati Uniti** come seconda tastiera e passare da una all'altra quando serve.
+
+**Windows 11**
+
+1. Aprite **Impostazioni** (`Win + I`) e andate in **Data/ora e lingua** $\rightarrow$ **Lingua e area geografica**.
+2. Accanto a **Italiano**, cliccate sui tre puntini **…** e scegliete **Opzioni lingua**.
+3. Nella sezione **Tastiere**, cliccate su **Aggiungi una tastiera** e selezionate **Stati Uniti** (QWERTY).
+
+**Windows 10**
+
+1. Aprite **Impostazioni** $\rightarrow$ **Ora e lingua** $\rightarrow$ **Lingua**.
+2. Cliccate su **Italiano** e poi su **Opzioni**.
+3. In **Tastiere**, cliccate su **Aggiungi una tastiera** e selezionate **Stati Uniti** (QWERTY).
+
+**Come si passa da una tastiera all'altra**
+
+Premete `Win + Spazio`, oppure cliccate sulla sigla **ITA**/**ENG** nella barra delle applicazioni, vicino all'orologio.
+
+**Come scrivere la tilde (`~`)**
+
+- Con la tastiera **Stati Uniti**: `Shift` + il tasto in alto a sinistra, sotto `Esc` e accanto all'`1` (lo stesso tasto del backtick `` ` ``).
+- Con la tastiera **italiana**: tenete premuto `Alt` e digitate `126` sul tastierino numerico. Su molti computer funziona anche `AltGr + ì`.
+:::
 
 ```{r}
-#| echo: false
-#| out-width: 80%
-#| fig-align: center
-
-set.seed(123)  # per riproducibilità
-
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- 3
-
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 3)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 1.2)
-```
-
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
-
-```{r}
-#| echo: false
-#| out-width: 80%
-#| fig-align: center
-set.seed(123)  # per riproducibilità
-
-# Parametri della simulazione
-n <- 50
-beta0 <- 2
-beta1 <- -0.2
-
-# Genero X da una normale
-X <- rnorm(n, mean = 10, sd = 5)
-
-# Genero il rumore
-epsilon <- rnorm(n, mean = 0, sd = 10)
-
-# Costruisco Y
-Y <- beta0 + beta1 * X + epsilon
-
-# Regressione lineare
-fit <- lm(Y ~ X)
-
-# Predizioni
-Y_hat <- fitted(fit)
-
-# Grafico
-plot(X, Y, pch = 19, col = "black",
-     xlab = "X", ylab = "Y", ylim = c(min(Y, Y_hat), max(Y, Y_hat)))
-abline(fit)
-
-# Aggiungo i residui
-segments(X, Y, X, Y_hat, lty = 2)
-```
-
-$R^2 = `r round(summary(fit)$adj.r.squared, 2)`$, $r = `r round(cor(X, Y),2)`$
-
-### `lm()`
-
-`lm(Y ~ X)`: Retituisce la stima dei parametri del modello di regressione lineare dove si predicono i valori di $Y$ a seconda dei valori di $X$
-
-`~`: (Per i PC con tastierino numerico): `ALT + 126`, Per i MAC: `ALT + 5` (fonte non verificata)
-
-```{r}
+#| lst-cap: Stima del modello lineare secondo il principio dei minimi quadrati
 X <- c(9,8,12,9,10,14,5,4,13,7,5)
 Y <- c(9,6,8,9,7,10,8,4,11,5,4)
-lm(Y~X)
+lm(Y~X) # stima il modello
 ```
 
-### Assunti del modello
 
-#### Assunzioni
+```{r}
+#| lst-cap: Grafico a dispersione con retta di regressione
+
+plot(X, Y, pch = 19, col = "darkgreen", cex = 2) # disegna il grafico
+abline(lm(Y ~ X), lty = 2, lwd = 2, col = "darkorange") # aggiunge la retta
+```
+
+### Assunti del modello di regressione lineare
 
 - **Indipendenza dei predittori dall'errore**
 
-\vspace{1.5mm}
 
 > I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
 
 - **Indipendenza delle osservazioni**
 
-\vspace{1.5mm}
-
 > $\forall i \neq j, \, \varepsilon_i \perp\!\!\!\perp \varepsilon_j$ (le osservazioni sono state campionate indipendentemente l'una dall'altra)
 
 - **Linearità**
 
-\vspace{1.5mm}
-
-> Il valore atteso  dell'errore per un dato valore di $x$ è 0
-
-#### Assunzioni
+> Il valore atteso dell'errore per un dato valore di $x$ è 0
 
 - **Normalità**
 
-\vspace{1.5mm}
 
-> $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$: Anche $y_i$ è distribuita normalmente con media $\beta_0 + \beta_1x_i$
+> Gli errori si distribuiscono normalmente con media 0 e varianza $\sigma^2$, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. Dato che, fissato $x_i$, la quantità $\beta_0 + \beta x_i$ è costante, ne segue che anche $y_i$, per un dato valore di $x_i$, si distribuisce normalmente con media $\beta_0 + \beta x_i$ e varianza $\sigma^2$: per ogni valore di $x$, i valori di $y$ si distribuiscono normalmente attorno alla retta. Questo non significa che la variabile $Y$ nel suo complesso debba essere normale: l'assunzione riguarda gli errori, ed è per questo che si verifica sui residui.
 
 - **Varianza costante** (omoschedasticità)
 
-\vspace{1.5mm}
-
 > La varianza degli errori è costante per qualunque valore di $X$
 
-\vspace{3mm}
 
-Gli errori $\varepsilon_i$ della popolazione non si osservano $\rightarrow$ si guardano i loro "rappresentanti" nel campione: i **residui** $e_i = y_i - \hat{y}_i$
+Gli errori $\varepsilon_i$ della popolazione non si osservano. Per verificare le assunzioni si usano quindi i loro "rappresentanti" nel campione, i **residui** $e_i = y_i - y_i^*$, cioè le differenze tra i valori osservati e i valori attesi in base alla retta stimata.
 
-**Indipendenza dei predittori dall'errore**
-
-\vspace{1.5mm}
-
-> I predittori sono misurati senza errore, ovvero i predittori e gli errori di misura non sono correlati nella popolazione (per questo è importante il campionamento casuale)
-
-\begin{center}
-\emph{Analisi dei residui}
-\end{center}
-
-I residui e il predittore **non devono essere correlati tra di loro**
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-set.seed(123)
-n <- 100
-beta0 <- 1
-beta1 <- 2
-rho <- 1.0
-sigma_u <- 1
-x = rnorm(n)
-e = rnorm(length(x), sd= 3)
-y <- beta0 + beta1 * x + e
-
-fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2)
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
-
-```
-
-La linea intera rossa rappresenta quello che dovremmo osservare, ossia la totale assenza di relazione tra la $x$ e i residui del modello
-
-Le linea tratteggiata blu indica la relazione effettiva tra i residui e il predittore $x$. Questa linea deve essere il più vicina possibile alla linea rossa
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-set.seed(123)
-n <- 100
-beta0 <- 1
-beta1 <- 2
-rho <- 1.0
-sigma_u <- 1
-x = rnorm(n)
-e = rnorm(length(x), sd= 3)
-y <- beta0 + beta1 * x + e
-
-fit <- lm(y ~ x)
-plot(x, e, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2)
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(e ~x), col ="royalblue4", lwd = 2, lty = 2)
-```
-
-$$r = `r round(cor(e, x),2)`$$
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-ecorr = x+rnorm(length(x), sd= 1)
-ycorr <- beta0 + beta1 * x + ecorr
-
-fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(ycorr ~x), col ="royalblue4", lwd = 2, lty = 2)
-```
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| out-width: 70%
-ecorr = x+rnorm(length(x), sd= 1)
-ycorr <- beta0 + beta1 * x + ecorr
-
-fitcorr <- lm(ycorr ~ x)
-plot(x, ecorr, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     cex.axis = 2, cex.lab = 2, ylim=-c(4,-4))
-abline(0,0, lwd = 2, col ="firebrick")
-abline(lm(ecorr ~x), col ="royalblue4", lwd = 2, lty = 2)
-```
-
-$$r = `r round(cor(ecorr, x),2)`$$
+Per mostrare come si verificano le assunzioni, si prende ad esempio la relazione tra il voto a un esame (`voto`) e le ore di studio (`ore`):
 
 ```{r}
 #| echo: false
@@ -4557,61 +4480,109 @@ studio$voto <- round(15 + 0.6 * studio$ore + rnorm(80, 0, 2), 1)
 
 ```{r}
 #| echo: true
-#| out-width: 55%
-#| fig-align: center
 head(studio)
 modello <- lm(voto ~ ore, data = studio)
 modello
 ```
 
-#### I valori attesi e i residui
+I valori attesi $y_i^*$ si ottengono con la funzione `fitted()` e i residui con la funzione `residuals()`:
 
 ```{r}
 #| echo: true
-studio$attesi <- fitted(modello)      # y cappello
-studio$residui <- residuals(modello)  # y - y cappello
+studio$attesi <- fitted(modello)      # valori attesi y*
+studio$residui <- residuals(modello)  # residui y - y*
 head(studio)
 ```
 
+I residui sono semplicemente la differenza tra i valori osservati e i valori attesi:
+
 ```{r}
 #| echo: true
-# i residui sono semplicemente osservati - attesi
 head(studio$voto - studio$attesi)
 ```
 
-#### Normalità degli errori
+##### Indipendenza dei predittori dall'errore
 
-La media dei residui è (sempre) 0:
+I predittori sono misurati senza errore, cioè i predittori e gli errori non sono correlati nella popolazione. Per questo è importante il campionamento casuale.
+
+Questa assunzione **non si può verificare con i residui**. Per come è costruita la retta dei minimi quadrati, i residui sono sempre non correlati con il predittore, anche quando l'assunzione è violata:
 
 ```{r}
 #| echo: true
-mean(studio$residui)
+cor(studio$residui, studio$ore)
 ```
 
-I residui dovrebbero distribuirsi in modo simmetrico attorno allo 0: la mediana deve essere il più vicina possibile a 0, il minimo e il massimo (così come il primo e il terzo quartile) dovrebbero essere simili in valore assoluto
+L'assunzione va quindi garantita a monte, con il disegno dello studio: campionando i partecipanti in modo casuale e usando misure affidabili del predittore.
+
+In una simulazione gli errori veri sono noti e si può vedere che cosa significa l'assunzione (@fig-err-pred). Se è rispettata (@fig-err-pred-1), gli errori non hanno alcuna relazione con $x$: la retta che descrive la relazione tra errori e $x$ (tratteggiata, in blu) coincide quasi con la retta orizzontale in 0 (continua, in rosso). Se è violata (@fig-err-pred-2), gli errori crescono al crescere di $x$ e la retta tratteggiata si allontana da quella orizzontale. Con dati reali, però, gli errori veri non si conoscono: questo grafico si può costruire solo in una simulazione e serve a capire il significato dell'assunzione, non a verificarla.
 
 ```{r}
-#| echo: true
-summary(studio$residui)
+#| include: false
+set.seed(123)
+n <- 100
+x <- rnorm(n)
+e <- rnorm(n, sd = 3)          # errori indipendenti da x
+e_corr <- x + rnorm(n, sd = 1) # errori correlati con x
 ```
 
-#### Residui vs predittore
+```{r}
+#| label: fig-err-pred
+#| echo: false
+#| fig-cap: "Relazione tra il predittore $x$ e gli errori in due insiemi di dati simulati."
+#| fig-subcap: 
+#|  - ""
+#|  - ""
+#| layout-ncol: 2
 
-Se la relazione è lineare, i residui si distribuiscono **casualmente** attorno allo 0, senza alcun andamento
+plot(x, e, pch = 19, xlab = "x", ylab = "errori")
+abline(h = 0, lwd = 2, col = "firebrick")
+abline(lm(e ~ x), col = "royalblue4", lwd = 2, lty = 2)
+
+plot(x, e_corr, pch = 19, xlab = "x", ylab = "errori", ylim = c(-4, 4))
+abline(h = 0, lwd = 2, col = "firebrick")
+abline(lm(e_corr ~ x), col = "royalblue4", lwd = 2, lty = 2)
+```
+
+##### Indipendenza delle osservazioni
+
+Gli errori di osservazioni diverse sono indipendenti tra loro, $\forall i \neq j, \, \varepsilon_i \perp\!\!\!\perp \varepsilon_j$, cioè le osservazioni sono state campionate indipendentemente l'una dall'altra.
+
+Anche questa assunzione dipende soprattutto da **come sono stati raccolti i dati**. È violata, per esempio, quando ci sono misure ripetute sulla stessa persona, studenti della stessa classe o dati raccolti nel tempo.
+
+Se i dati hanno un ordine, per esempio l'ordine di raccolta, si possono guardare i residui in quell'ordine (@fig-ordine). Se le osservazioni sono indipendenti, i residui oscillano attorno allo 0 senza alcun andamento.
 
 ```{r}
+#| label: fig-ordine
 #| echo: true
-#| out-width: 55%
+#| fig-cap: "Residui del modello nell'ordine di raccolta dei dati."
+#| out-width: 60%
+#| fig-align: center
+plot(studio$residui, type = "b", pch = 19,
+     xlab = "ordine di raccolta", ylab = "residui")
+abline(h = 0, col = "firebrick", lwd = 2)
+```
+
+##### Linearità
+
+Il valore atteso dell'errore per un dato valore di $x$ è 0, cioè la relazione tra $X$ e $Y$ è descritta bene da una retta.
+
+Per verificarla si rappresentano i residui in funzione del predittore. Se la relazione è lineare, i residui si distribuiscono **casualmente** attorno allo 0, senza alcun andamento, come nella @fig-linearita.
+
+```{r}
+#| label: fig-linearita
+#| echo: true
+#| fig-cap: "Residui in funzione del predittore nell'esempio delle ore di studio."
+#| out-width: 60%
 #| fig-align: center
 plot(studio$ore, studio$residui, pch = 19,
      xlab = "ore", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
-#### Quando la relazione non è lineare
+Nella @fig-nonlin, invece, la relazione tra $x$ e $y$ non è lineare (@fig-nonlin-1). I residui hanno una chiara forma a "U" (@fig-nonlin-2): il modello lineare sovrastima i valori al centro e li sottostima agli estremi, quindi l'assunzione di linearità è violata.
 
 ```{r}
-#| echo: false
+#| include: false
 set.seed(42)
 nonlin <- data.frame(x = runif(80, 0, 10))
 nonlin$y <- 5 + 0.8 * (nonlin$x - 5)^2 + rnorm(80, 0, 2)
@@ -4620,49 +4591,66 @@ nonlin$residui <- residuals(mod_nonlin)
 ```
 
 ```{r}
+#| label: fig-nonlin
 #| echo: false
-#| fig-align: center
-#| out-width: 90%
-par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
-plot(nonlin$x, nonlin$y, pch = 19, cex = 1.5, xlab = "x", ylab = "y",
-     main = "Dati e retta", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+#| fig-cap: "Esempio di violazione dell'assunzione di linearità."
+#| fig-subcap:
+#|   - "Dati e retta di regressione"
+#|   - "Residui in funzione di $x$"
+#| layout-ncol: 2
+
+plot(nonlin$x, nonlin$y, pch = 19, xlab = "x", ylab = "y")
 abline(mod_nonlin, col = "royalblue4", lwd = 2)
-plot(nonlin$x, nonlin$residui, pch = 19, cex = 1.5, xlab = "x", ylab = "residui",
-     main = "Residui", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+
+plot(nonlin$x, nonlin$residui, pch = 19, xlab = "x", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
-I residui hanno una chiara forma a "U": il modello lineare sovrastima al centro e sottostima agli estremi $\rightarrow$ l'assunto di linearità è violato
+##### Normalità degli errori
 
-#### Istogramma dei residui
+Gli errori si distribuiscono normalmente con media 0 e varianza $\sigma^2$, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. Di conseguenza, anche $y_i$ è distribuita normalmente, con media $\beta_0 + \beta x_i$.
+
+La media dei residui è sempre 0, per come è costruita la retta dei minimi quadrati, quindi da sola non dice nulla sulla normalità:
 
 ```{r}
 #| echo: true
-#| out-width: 55%
-#| fig-align: center
-hist(studio$residui, freq = FALSE, xlab = "residui", col = "gray90")
-curve(dnorm(x, mean = 0, sd = sd(studio$residui)), 
-      add = TRUE, col = "firebrick", lwd = 2)
+mean(studio$residui)
 ```
 
-La linea rossa è la distribuzione normale con media 0 e sd pari a quella dei residui
+Per verificare la normalità si possono usare tre strumenti.
 
-#### Q-Q plot dei residui
-
-Confronta i quantili dei residui con quelli di una distribuzione normale: se i residui sono normali, i punti stanno **sulla retta**
+1. **Gli indici descrittivi dei residui.** Se i residui sono normali, si distribuiscono in modo simmetrico attorno allo 0: la mediana deve essere il più vicina possibile a 0, e il minimo e il massimo (così come il primo e il terzo quartile) devono essere simili in valore assoluto.
 
 ```{r}
 #| echo: true
-#| out-width: 50%
-#| fig-align: center
-qqnorm(studio$residui, pch = 19)
+summary(studio$residui)
+```
+
+2. **L'istogramma dei residui** (@fig-norm-1), a cui si sovrappone la distribuzione normale con media 0 e deviazione standard pari a quella dei residui (in rosso). Se i residui sono normali, l'istogramma segue la curva.
+
+3. **Il Q-Q plot dei residui** (@fig-norm-2), che confronta i quantili dei residui con quelli di una distribuzione normale. Se i residui sono normali, i punti stanno **sulla retta**.
+
+```{r}
+#| label: fig-norm
+#| echo: true
+#| fig-cap: "Verifica della normalità dei residui nell'esempio delle ore di studio."
+#| fig-subcap:
+#|   - "Istogramma"
+#|   - "Q-Q plot"
+#| layout-ncol: 2
+hist(studio$residui, freq = FALSE, main = "",
+     xlab = "residui", col = "gray90")
+curve(dnorm(x, mean = 0, sd = sd(studio$residui)),
+      add = TRUE, col = "firebrick", lwd = 2)
+
+qqnorm(studio$residui, pch = 19, main = "")
 qqline(studio$residui, col = "firebrick", lwd = 2)
 ```
 
-#### Quando i residui non sono normali
+Nella @fig-norm-viol, invece, i residui hanno una distribuzione asimmetrica, con una coda lunga a destra: l'istogramma non segue la curva normale (@fig-norm-viol-1) e nel Q-Q plot i punti si allontanano dalla retta agli estremi (@fig-norm-viol-2).
 
 ```{r}
-#| echo: false
+#| include: false
 set.seed(42)
 asim <- data.frame(x = runif(80, 0, 10))
 asim$y <- 2 + 1.5 * asim$x + rexp(80, rate = 0.3)
@@ -4671,36 +4659,43 @@ asim$residui <- residuals(mod_asim)
 ```
 
 ```{r}
+#| label: fig-norm-viol
 #| echo: false
-#| fig-align: center
-#| out-width: 80%
-par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
-hist(asim$residui, freq = FALSE, main = "Istogramma",
-     xlab = "residui", col = "gray90", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+#| fig-cap: "Esempio di violazione dell'assunzione di normalità degli errori."
+#| fig-subcap:
+#|   - "Istogramma"
+#|   - "Q-Q plot"
+#| layout-ncol: 2
+hist(asim$residui, freq = FALSE, main = "",
+     xlab = "residui", col = "gray90")
 curve(dnorm(x, mean = 0, sd = sd(asim$residui)),
       add = TRUE, col = "firebrick", lwd = 2)
-qqnorm(asim$residui, pch = 19, main = "Q-Q plot",
-       cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+
+qqnorm(asim$residui, pch = 19, main = "")
 qqline(asim$residui, col = "firebrick", lwd = 2)
 ```
 
-Distribuzione asimmetrica: coda lunga a destra, i punti si allontanano dalla retta agli estremi
+##### Varianza costante (omoschedasticità)
 
-#### Omoschedasticità
+La varianza degli errori è costante per qualunque valore di $X$.
 
-La variabilità dei residui deve essere **costante** per tutti i valori attesi: la "nuvola" deve avere la stessa ampiezza da sinistra a destra
+Per verificarla si rappresentano i residui in funzione dei valori attesi. La variabilità dei residui deve essere **costante** per tutti i valori attesi, cioè la "nuvola" di punti deve avere la stessa ampiezza da sinistra a destra, come nella @fig-omo.
 
 ```{r}
+#| label: fig-omo
 #| echo: true
-#| out-width: 55%
+#| fig-cap: "Residui in funzione dei valori attesi nell'esempio delle ore di studio."
+#| out-width: 60%
 #| fig-align: center
 plot(studio$attesi, studio$residui, pch = 19,
      xlab = "valori attesi", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
+Nella @fig-etero, invece, i punti si allargano al crescere di $x$ (@fig-etero-1) e i residui hanno una forma "a imbuto" (@fig-etero-2): sono sempre più dispersi al crescere dei valori attesi. In questo caso si parla di eteroschedasticità.
+
 ```{r}
-#| echo: false
+#| include: false
 set.seed(42)
 etero <- data.frame(x = runif(80, 0, 10))
 etero$y <- 2 + 1.5 * etero$x + rnorm(80, 0, 0.5 + 0.6 * etero$x)
@@ -4710,48 +4705,33 @@ etero$residui <- residuals(mod_etero)
 ```
 
 ```{r}
+#| label: fig-etero
 #| echo: false
-#| fig-align: center
-#| out-width: 80%
-par(mfrow = c(1, 2), mar = c(5, 5, 4, 2))
-plot(etero$x, etero$y, pch = 19, cex = 1.5, xlab = "x", ylab = "y",
-     main = "Dati e retta", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+#| fig-cap: "Esempio di violazione dell'assunzione di omoschedasticità."
+#| fig-subcap:
+#|   - "Dati e retta di regressione"
+#|   - "Residui in funzione dei valori attesi"
+#| layout-ncol: 2
+
+plot(etero$x, etero$y, pch = 19, xlab = "x", ylab = "y")
 abline(mod_etero, col = "royalblue4", lwd = 2)
-plot(etero$attesi, etero$residui, pch = 19, cex = 1.5,
-     xlab = "valori attesi", ylab = "residui",
-     main = "Residui", cex.main = 2, cex.lab = 2, cex.axis = 1.5)
+
+plot(etero$attesi, etero$residui, pch = 19,
+     xlab = "valori attesi", ylab = "residui")
 abline(h = 0, col = "firebrick", lwd = 2)
 ```
 
-Forma "a imbuto": i residui sono sempre più dispersi al crescere dei valori attesi $\rightarrow$ eteroschedasticità
+### Cosa guardare nei residui
 
-#### Indipendenza delle osservazioni
+| Assunzione | Come si verifica | Codice R | Cosa si deve vedere |
+|:-----------|:-----------------|:---------|:--------------------|
+| Indipendenza dei predittori dall'errore | Non si verifica con i residui: si garantisce con il campionamento casuale e con misure affidabili | — | — |
+| Indipendenza delle osservazioni | In base a come sono stati raccolti i dati; residui nell'ordine di raccolta | `plot(res, type = "b")` | Nessun andamento nell'ordine |
+| Linearità | Residui in funzione del predittore | `plot(x, res)` | Nuvola casuale attorno a 0 |
+| Normalità degli errori | Indici descrittivi, istogramma e Q-Q plot dei residui | `summary(res)`, `hist(res)`, `qqnorm(res)` | Distribuzione simmetrica e a campana, punti sulla retta |
+| Omoschedasticità | Residui in funzione dei valori attesi | `plot(attesi, res)` | Ampiezza costante della nuvola (niente imbuti) |
 
-Dipende soprattutto da **come sono stati raccolti i dati**: ogni osservazione deve essere indipendente dalle altre
-
-Esempi di violazione: misure ripetute sulla stessa persona, studenti della stessa classe, dati raccolti nel tempo
-
-Se i dati hanno un ordine (es. ordine di raccolta), si possono guardare i residui in quell'ordine: non deve esserci nessun andamento
-
-```{r}
-#| echo: true
-#| out-width: 45%
-#| fig-align: center
-plot(studio$residui, type = "b", pch = 19,
-     xlab = "ordine di raccolta", ylab = "residui")
-abline(h = 0, col = "firebrick", lwd = 2)
-```
-
-#### Cosa guardare nei residui
-
-| Assunto | Grafico | Cosa si deve vedere |
-|:--------|:--------|:--------------------|
-| Linearità | `plot(x, residui)` | Nuvola casuale attorno a 0 |
-| Normalità | `hist(residui)`, `qqnorm(residui)` | Forma a campana, punti sulla retta |
-| Omoschedasticità | `plot(attesi, residui)` | Ampiezza costante (niente imbuti) |
-| Indipendenza | `plot(residui, type = "b")` | Nessun andamento nell'ordine |
-
-\vspace{3mm}
+`res` nella tabella è l'oggetto R che contiene i residui.
 
 Tutto parte da due funzioni:
 
@@ -4765,8 +4745,6 @@ residui <- residuals(modello)
 ## Materiale supplementare
 
 ### Outliers e casi influenti
-
-#### Definizioni
 
 **Outlier**: Il valore di un'osservazione nella variabile dipendente è anomalo dato il valore del predittore (ha un residuo molto grande)
 
@@ -4809,48 +4787,68 @@ disegna_caso <- function(nuovo, posizione_legenda) {
 }
 ```
 
-#### Un outlier living the life
+
 
 ```{r}
 #| echo: false
 #| out-width: 75%
 #| fig-align: center
+#| label: fig-outlier
+#| fig-cap: "Un outlier (triangolo rosa)"
 disegna_caso(c(soggetto = 11, eta = 9, statura = 155), "bottomright")
 ```
 
-Il triangolo rosa è un outlier: è anomalo rispetto alla nuvola di punti, ma essendo vicino alla media dell'età sposta la retta di poco (soprattutto in alto, l'intercetta)
+Il triangolo rosa in @fig-outlier è un outlier: è valore anomalo rispetto alla nuvola di punti, ma essendo vicino alla media dell'età sposta la retta di poco (soprattutto in alto, l'intercetta).
 
-#### Un punto ad alta leva living the life
+
 
 ```{r}
 #| echo: false
 #| out-width: 75%
 #| fig-align: center
+#| label: fig-leva
+#| fig-cap: "Una leva (triangolo rosa)"
 disegna_caso(c(soggetto = 11, eta = 18, statura = 182), "bottomright")
 ```
 
-Il triangolo rosa è lontano dagli altri sull'asse delle $x$ (alta leva), ma è in linea con l'andamento dei dati: la retta non cambia
+Il triangolo rosa in @fig-leva è lontano dagli altri sull'asse delle $x$ (alta leva) e, di conseguenza, anche sull'asse delle $y$. Considerando solo la statura sarebbe un valore estremo, ma in regressione conta la $y$ *dato* il valore di $x$: il punto è in linea con l'andamento dei dati (residuo quasi nullo), quindi non è un outlier e la retta non cambia.
 
-#### Un outlier influential case living the life
+
 
 ```{r}
 #| echo: false
 #| out-width: 75%
 #| fig-align: center
+#| label: fig-levaOut
+#| fig-cap: "Un outlier influential case (triangolo rosa)"
 disegna_caso(c(soggetto = 11, eta = 18, statura = 120), "topleft")
 ```
 
-Il triangolo rosa è anomalo **e** lontano dagli altri sull'asse delle $x$: ne sposta drasticamente la pendenza
+Il triangolo rosa in @fig-levaOut è anomalo **e** lontano dagli altri sull'asse delle $x$: ne sposta **da solo** drasticamente la pendenza.
 
-### Leverage e distanza di Cook
+#### Leverage e distanza di Cook
 
-#### Tirare fuori leverage e distanza di Cook
+**Leverage** ($h_i$). Misura quanto il valore $x_i$ di un'osservazione è lontano dalla media del predittore. Nella regressione semplice si calcola come:
 
-Come per i residui, anche gli indici di influenza si estraggono dal modello e si guardano
+$$
+h_i = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{\sum_{j=1}^n (x_j - \bar{x})^2}
+$$
 
-`hatvalues()`: leverage di ogni osservazione
+- Dipende **solo da $x$**: la $y$ non entra nel calcolo. Per questo il leverage indica quanto un punto *potrebbe* spostare la retta, non quanto la sposta davvero.
+- Varia tra $\frac{1}{n}$ (quando $x_i = \bar{x}$) e 1. La media dei leverage è $\frac{2}{n}$, dove 2 è il numero di parametri stimati ($\hat{\beta}_0$ e $\hat{\beta}$).
+- Regola pratica: un'osservazione ha un leverage alto se $h_i > 2 \times \frac{2}{n}$, cioè se supera il doppio del leverage medio.
 
-`cooks.distance()`: distanza di Cook $\rightarrow$ quanto cambiano *tutti* i valori attesi se l'osservazione viene tolta (combina residuo e leverage)
+**Distanza di Cook** ($D_i$). Misura quanto cambiano *tutti* i valori attesi se si toglie l'osservazione $i$ e si ristima il modello:
+
+$$
+D_i = \frac{\sum_{j=1}^n \left(y_j^* - y_{j(-i)}^*\right)^2}{2 \, s^2}
+$$
+
+dove $y_{j(-i)}^*$ è il valore atteso per l'osservazione $j$ stimato *senza* l'osservazione $i$, e $s^2 = \frac{\sum_{i=1}^n e_i^2}{n-2}$ è la varianza dei residui.
+
+Combina residuo e leverage: un'osservazione è influente solo se è **sia** anomala (residuo grande) **sia** ad alta leva. Un outlier vicino a $\bar{x}$ o un punto ad alta leva sulla retta hanno una distanza di Cook bassa.
+
+Regola pratica: un'osservazione è da guardare con attenzione se $D_i > \frac{4}{n}$ (@fig-cook). Se $D_i > 1$, l'osservazione è sicuramente influente.
 
 ```{r}
 #| echo: true
@@ -4865,7 +4863,6 @@ influente$cook <- cooks.distance(mod_inf)
 round(influente, 2)
 ```
 
-#### Il grafico della distanza di Cook
 
 Una soglia spesso usata: $D_i > 4/n$
 
@@ -4873,6 +4870,8 @@ Una soglia spesso usata: $D_i > 4/n$
 #| echo: true
 #| out-width: 50%
 #| fig-align: center
+#| fig-cap: "Distanza di Cook"
+#| label: fig-cook
 plot(influente$cook, type = "h", lwd = 3,
      xlab = "osservazione", ylab = "distanza di Cook")
 abline(h = 4 / nrow(influente), col = "firebrick", lty = 2, lwd = 2)
@@ -4887,7 +4886,7 @@ which(influente$cook > 4 / nrow(influente))
 
 ## Operatori
 
-### Artitmetici
+### Aritmetici
 
 | Simbolo | Significato      | Note |
 |---------|------------------|----------------------|
@@ -4915,8 +4914,8 @@ which(influente$cook > 4 / nrow(influente))
 | &       | Congiunzione      | Intersezione tra insiemi $\land$ ($\cap$) |
 | \|     | Disgiunzione      | Unione tra insiemi  $\lor$ $\cup$ |
 | !       | Negazione         |                    $\lnot$  |
-| &!      | Disgiunzione esclusiva |                |
-| %in%   | Incluzione | |
+| `xor(A, B)` | Disgiunzione esclusiva |                |
+| %in%   | Inclusione | |
 
 ## Valori di verità
 
@@ -4934,7 +4933,7 @@ which(influente$cook > 4 / nrow(influente))
 | `vettore[i]`    | Operatore di selezione per i vettori, dove `i` è l'indice della posizione a cui si vuole accedere  | Es. `A<-c(1,8,5,0)`; `A[c(1,4)]` restituisce valori in posizione 1 e 4 |
 | `dati[i, j]`    | Operatore di selezione per strutture di dati (matrici, dataframe), dove `i` è l'indice della riga, `j`  della colonna  | Es. `data[4, 12]` restituisce il valore della cella che si trova all'incrocio tra la quarta riga e la dodicesima colonna|
 | `data$variabile`        | Visualizza la variabile richiamata |  |
-| `read.csv2("")` | Legge un file di dati esterno | `sep =";", dec =",", header = TRUE"` |
+| `read.csv2("")` | Legge un file di dati esterno | `sep =";", dec =",", header = TRUE` |
 
 ## Convertitori
 
@@ -4942,7 +4941,7 @@ which(influente$cook > 4 / nrow(influente))
 |----------|-------------|----------------------|
 | `as.numeric(A)` | Converte in variabile numerica | |
 | `as.factor(A)` | Converte in variabile categoriale/nominale | Richiede variabile testuale |
-| `factor(A, levels=c("a1",...,"ak"), ordered=TRUE)` | Converte in variabile ordinale | Va inserito ordine dei livelli teorici |
+| `factor(A, levels=c("a1",...,"ak"))` | Converte in variabile categoriale con i livelli nell'ordine indicato | Va inserito l'ordine dei livelli teorici |
 | `as.matrix(data.frame)` | Converte un data.frame in oggetto numerico | |
 
 ## Strumenti
@@ -4999,7 +4998,7 @@ which(influente$cook > 4 / nrow(influente))
 | `matrix(y, r, c)` | Matrice $r \times c$ con valori `y` | Riempimento per colonne |
 | `matrix(y, r, c, byrow=TRUE)` | Matrice |Riempimento per righe  |
 | `t(M)` | Trasposta di M | |
-| `*` | Prodotto tra matrici | |
+| `%*%` | Prodotto tra matrici | `*` fa invece il prodotto elemento per elemento |
 
 ## Liste e Data Frame
 
@@ -5035,8 +5034,6 @@ which(influente$cook > 4 / nrow(influente))
 | `runif(N,0,1)` | `N` valori casuali presi da distribuzione uniforme | tra 0 e 1 |
 | `density(X,bw)` | Stima densità | Usare `plot(density(...))` |
 | `par(mfrow=c(n1,n2))` | Imposta finestra grafica multipla | `n1`=righe, `n2`=colonne |
-| `skew(...)` | Misura asimmetria | |
-| `kurt(...)` | Misura curtosi | |
 | `plot(X,Y)` | Grafico di dispersione | |
 
 ## Associazione variabili categoriali
@@ -5052,5 +5049,5 @@ which(influente$cook > 4 / nrow(influente))
 |----------|-------------|----------------------|
 | `lm(Y~X)` | Modello regressione lineare | Y dipendente, X indipendente |
 | `abline(retta,...) `| Traccia retta sul grafico | `abline(lm(Y~X))` |
-| `cor(X,Y)^2` | Bontà di adattamento (R^2) | |
+| `cor(X,Y)^2` | Bontà di adattamento ($R^2$) | |
 | `retta$residuals` | Residui modello | Es. `plot(X,E); abline(0,0)` |

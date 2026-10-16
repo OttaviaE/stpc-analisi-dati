@@ -84,6 +84,8 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 ## Dispense R 
 
+[Dispensa statistica descrittiva](dispensa-statistica-descrittiva.pdf)
+
 #### Moduli 1, 2, 3
 
 [Dispense delle funzioni](slides/TAB_MOD_1-2-3.html)
