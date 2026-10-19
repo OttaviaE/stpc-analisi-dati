@@ -21,6 +21,9 @@ header-includes:
    - \usepackage{colortbl}
    - \usepackage{tikz}
    - \usepackage{multirow}
+   - \usepackage{fancyvrb}
+   - \usepackage{tikz}
+   - \usetikzlibrary{tikzmark, fit}
    - \newcommand{\cov}{\mathrm{Cov}}
    - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,fit}
    - \AtBeginSubsection{}
@@ -57,6 +60,76 @@ editor_options:
 execute:
   echo: true
 ---
+
+
+### {.fragile .plain}
+
+```{r}
+#| echo: false
+#| results: asis
+out <- capture.output(t.test(mpg ~ am, data = mtcars))
+out <- trimws(gsub("\t", "", out), "right")
+while (!nzchar(out[1])) out <- out[-1]
+# va a capo sulle righe troppo lunghe per la slide
+out <- unlist(lapply(out, function(l)
+  if (nchar(l) > 72) strwrap(l, 72, exdent = 2) else l))
+
+mark <- function(x, pattern, name)
+  sub(pattern, sprintf("\\\\tikzmarknode{%s}{\\1}", name), x)
+out <- mark(out, "^(.*t-test)$", "test")
+out <- mark(out, "(t = -?[0-9.]+)", "stat")
+out <- mark(out, "(df = [0-9.]+)", "df")
+out <- mark(out, "(p-value [=<] [0-9.e-]+)", "pval")
+out <- mark(out, "((not equal to|less than|greater than) 0)", "h1")
+i <- grep("confidence interval", out) + 1
+out[i] <- sprintf(" \\tikzmarknode{ic}{%s}", trimws(out[i]))
+j <- grep("^mean (in|of)", out) + 1
+out[j] <- sprintf(" \\tikzmarknode{medie}{%s}", trimws(out[j]))
+
+cat("```{=latex}\n",
+    "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
+    "> t.test(mpg ~ am, data = mtcars)\n",
+    paste(out, collapse = "\n"),
+    "\n\\end{Verbatim}\n```\n", sep = "")
+```
+
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]  (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(df)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(pval)]  (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(h1)]    (b5) {}; \node[num] at (b5.north east) {5};}
+  {\node[box, fit=(ic)]    (b6) {}; \node[num] at (b6.north east) {6};}
+  {\node[box, fit=(medie)] (b7) {}; \node[num] at (b7.north east) {7};}
+\end{tikzpicture}
+
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Tipo di test (Welch: varianze non assunte uguali)
+  \item Statistica test $t$
+  \item Gradi di libertà
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+    \item $p$-value
+  \item $H_1$: bidirezionale
+  \item Intervallo di confidenza al 95\%
+  \item  Medie dei due gruppi
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
 
 # Inferenza statistica
 
@@ -560,6 +633,8 @@ $$\text{H}:\; \mu = 12$$
 
 È una *forzatura* dei due approcci: prende $H_0$ e il $p$-value da Fisher, $H_1$, $\alpha$ e $\beta$ da Neyman e Pearson, e li mette insieme (anche se i due approcci hanno logiche diverse)
 :::
+
+![](img/meme_nhst.png){width=20% fig-align="right"}
 
 ###
 
