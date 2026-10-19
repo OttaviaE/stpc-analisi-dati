@@ -205,7 +205,7 @@ La **statistica inferenziale** ha pertanto l'obiettivo di stimare incogniti para
 
 \vspace{3mm}
 
-Si calcolano, quindi, le **STATISTICHE** (ad es., $M$) del campione per conoscere i **PARAMETRI** (ad es., $\mu$) della popolazione.
+Si calcolano, quindi, le **STATISTICHE** (ad es., $\bar{x}$) del campione per conoscere i **PARAMETRI** (ad es., $\mu$) della popolazione.
 
 \vspace{3mm}
 
@@ -218,7 +218,7 @@ Questo passaggio dalle STATISTICHE ai PARAMETRI si basa sulla conoscenza delle p
 Obiettivi dell'inferenza statistica:
 
 - Stima dei parametri
-- **Verifica di ipotesi**
+- **Test di ipotesi**
 
 ![](frecciadown.png){width=6% fig-align="center"}
 
@@ -237,7 +237,7 @@ Procedura che si svolge per passi logici successivi:
 Le ipotesi di ricerca sono ipotesi statistiche:
 
 - consistono in affermazioni di tipo logico-matematico che definiscono i rapporti fra i parametri di una o più popolazioni
-- la verifica delle ipotesi consiste in un **processo di decisione che termina nell'accettazione --o non rifiuto-- delle affermazioni contenute nelle ipotesi stesse**
+- il test  delle ipotesi consiste in un **processo di decisione che termina nell'accettazione --o non rifiuto-- delle affermazioni contenute nelle ipotesi stesse**
 - Un'ipotesi statistica è un'asserzione o supposizione sulla distribuzione di una o più variabili casuali, o su uno o più parametri della stessa, e si indica con la lettera ***H***.
 
 :::{.callout-note}
@@ -543,7 +543,7 @@ $$\mu = \dfrac{6 + 8 + 10 + 3 + 8}{5} = 7$$
 :::
 
 ::: {.column width=32%}
-\pause
+
 
 \centering
 **Campione** $n = 2$
@@ -559,7 +559,7 @@ $$\bar{X} = \dfrac{6 + 8}{2} = 7$$
 :::
 
 ::: {.column width=32%}
-\pause
+
 
 \centering
 E un altro campione?
@@ -609,7 +609,7 @@ $$\bar{X} = \dfrac{8 + 10}{2} = 9$$
 
 $$\mu_{\bar{x}} = \dfrac{6 \cdot 1 + 7 \cdot 4 + 8 \cdot 6 + 4.5 \cdot 2 + 9 \cdot 4 + 5.5 \cdot 4 + 10 \cdot 1 + 6.5 \cdot 2 + 3 \cdot 1}{25} = 7$$
 
-\pause
+
 
 $$\mu = \mu_{\bar{x}} = 7$$
 
@@ -813,7 +813,7 @@ $T_0 = 2.70$, $p$-value = $.0073$ ($p < .01$)
 
 Replicando per molte molte volte l'esperimento, quante volte ci si aspetta di rifiutare $H_0$?
 
-\pause
+
 
 $P(T_0 \geq 2.70|H_0) = .0073$: Se fosse vera $H_0$, il risultato osservato sarebbe un risultato estremamente poco probabile, per cui questo risultato si osserverebbe meno dell'1\% delle volte
 :::
