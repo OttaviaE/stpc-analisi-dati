@@ -34,7 +34,7 @@ header-includes:
    - |
       \AtBeginSubsection[]{
         \begin{frame}[plain]
-          \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+          \tableofcontents[currentsection,currentsubsection,hideothersubsections,subsectionstyle=show/shaded/hide]
         \end{frame}
       }
    - \definecolor{unipd}{RGB}{155,0,20}
