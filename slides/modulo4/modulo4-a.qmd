@@ -452,7 +452,9 @@ Esperimento dicotomico con solo 2 possibili esiti, di cui si conosce la probabil
 
 La variabile casuale $X$ che conta il numero di successi in $n$ prove è detta **binomiale**: $X \sim \text{Bin}(n, \pi)$
 
-### Distribuzione di probabilità binomiale
+## Probabilità di massa
+
+### 
 
 $$f_X(x|\pi) = \Pr[X = x] = \binom{n}{x}\, \pi^x (1-\pi)^{\,n-x},
 \qquad x = 0,1,\ldots,n,$$
@@ -466,7 +468,12 @@ dove $\pi \in [0,1]$ e $S = \{0, 1, \ldots, n\}$.
 - $\pi^x$: probabilità degli $x$ successi indipendenti
 - $(1-\pi)^{n-x}$: probabilità degli $n-x$ insuccessi indipendenti
 
-\normalsize
+\footnotesize
+:::{.callout-tip}
+## `dbinom(x, size, prob)`
+
+`x`: Supporto $S$, `size`: $n$, `prob`: $\pi$
+:::
 
 ### Coefficiente binomiale
 
@@ -574,6 +581,8 @@ segments(x,0, x, dbinom(x,max(x), prob =.85), lwd = 2)
 
 ```
 
+## Probabilità cumulata
+
 ### 
 
 La *funzione di probabilità cumulata* di una variabile casuale discreta $X$ si indica con $F_X(x|\theta)$ ed è definita come:
@@ -581,11 +590,13 @@ La *funzione di probabilità cumulata* di una variabile casuale discreta $X$ si 
 $$F_X(x|\theta) = \Pr[X \leq x]
 = \sum_{s \in S: \, s \leq x} f_X(s|\theta).$$
 
-In altre parole, $F_X(x|\theta)$ rappresenta la probabilità che $X$ assuma un valore minore o uguale a $x$.  
+$F_X(x|\theta)$ rappresenta la probabilità che $X$ assuma un valore minore o uguale a $x$.  
 Chiaramente,
 $$F_X : \mathbb{R} \times \Theta \longrightarrow [0,1].$$
 
-### Distribuzione binomiale cumulata
+
+
+### 
 
 Se $X \sim \text{Bin}(n,\pi)$, allora la funzione di probabilità cumulata è:
 
@@ -593,6 +604,14 @@ $$F_X(x|\pi) = \sum_{z=0}^{x} \binom{n}{z}\, \pi^z (1-\pi)^{\,n-z},
 \qquad x = 0,1,\ldots,n,$$
 
 dove $\pi \in [0,1]$.
+
+\footnotesize
+:::{.callout-tip}
+## `pbinom(q, size, prob)`
+
+`x`: quantile $s \in S: s \leq
+x$, `size`: $n$, `prob`: $\pi$
+:::
 
 ###
 
@@ -666,7 +685,9 @@ plot(x, pbinom(x, max(x), prob = .85), pch = 19,
      cex.main = 3, cex.axis = 2, ylab = "F(x)", cex =2)
 ```
 
-### La binomiale in R
+## La binomiale in R
+
+###
 
 \small
 
