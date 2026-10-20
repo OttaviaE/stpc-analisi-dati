@@ -58,11 +58,11 @@ execute:
 
 Sia $X$ una variabile casuale continua distribuita secondo la funzione di densità $f_X(x|\theta)$:
 
-$$f_X : \mathbb{R} \times \Theta \to \mathbb{R}^+$$
+$$f_X : \mathbb{R} \times \Theta \to \mathbb{R}_0^+$$
 
 $f_X$ è una funzione di densità parametrica con parametri $\theta \in \Theta$.
 
-La *funzione di densità cumulata* $F_X(x|\theta)$ è definita come
+La *funzione di ripartizione** (*funzione di distribuzione cumulata*) $F_X(x|\theta)$ è definita come
 
 $$F_X(x|\theta) = \Pr[X \leq x]
 = \int_{-\infty}^x f_X(z|\theta)\,dz$$
@@ -147,23 +147,28 @@ curve(dnorm(x), add = TRUE, lwd = 4, col = "orange")
 
 :::: {.columns}
 
-:::{.column width=50%}
-Distribuzione Normale, $X \sim \mathcal{N}(\mu, \sigma^2)$
+::: {.column width="50%"}
+**Distribuzione Normale**, $X \sim \mathcal{N}(\mu, \sigma^2)$
 
-$$f_X(x|\theta) = {\displaystyle {\dfrac {1}{\sigma {\sqrt {2\pi }}}}e^{-{\dfrac {1}{2}}\left({\dfrac {x-\mu }{\sigma }}\right)^{2}}}$$
+$$
+f_X(x \mid \theta) = \frac{1}{\sigma\sqrt{2\pi}}\,
+  e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2},
+  \qquad x \in \mathbb{R}
+$$
 
-$\theta = (\mu, \sigma^2)$, $\Theta = (\mathbb{R} \times \mathbb{R}^+)$
+$\theta = (\mu, \sigma^2)$, $\quad \Theta = \mathbb{R} \times \mathbb{R}_0^+$
 :::
 
-:::{.column width=50%}
-Distribuzione Normale Standard, $Z \sim \mathcal{N}(0, 1)$
+::: {.column width="50%"}
+**Distribuzione Normale Standard**, $Z \sim \mathcal{N}(0, 1)$
 
+$$
+f_Z(z) = \frac{1}{\sqrt{2\pi}}\, e^{-\frac{1}{2}z^2},
+  \qquad z \in \mathbb{R}
+$$
 
-$$f_Z(z) = \frac{1}{\sqrt{2\pi}}\, e^{-\frac{1}{2}z^2}, \qquad z \in \mathbb{R}$$
-
-$\theta = (\mu, \sigma) = (0, 1)$, \quad $\Theta = \{(0, 1)\}$
+$\theta = (\mu, \sigma^2) = (0, 1)$, $\quad \Theta = \{(0, 1)\}$
 :::
-
 
 ::::
 
@@ -744,7 +749,7 @@ legend("topleft",
 ###
 
 
-I gradi di libertà $df$ dipendono dal numero di catgerie che vengono prese in considerazione. 
+I gradi di libertà $df$ dipendono dal numero di categorie che vengono prese in considerazione. 
 
 :::: {.columns}
 
