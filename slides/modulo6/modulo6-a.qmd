@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 5: Statistica inferenziale - Indici di centralità attraverso il $t$-test"
+title: "Modulo Didattico 6-A: Statistica Inferenziale -- Indici di tendenza centrale"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -14,33 +14,54 @@ format:
     innertheme: rounded
     outertheme: miniframes
 callout-icon: false
-lang: it
 code-annotations: below
 header-includes: 
-   - \usepackage{graphicx} 
+   - \usepackage{graphicx}
    - \usepackage{xcolor}
+   - \usepackage{colortbl}
    - \usepackage{tikz}
    - \usepackage{multirow}
+   - \usepackage{fancyvrb}
+   - \usepackage{tikz}
+   - \usetikzlibrary{tikzmark, fit}
    - \newcommand{\cov}{\mathrm{Cov}}
-   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,fit}
    - \AtBeginSubsection{}
-   - \AtBeginSection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection, hideallsubsections]
-              \end{frame}
-          }
-   - \AtBeginSubsection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
-             \end{frame}
-          }
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ Univeristà di Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{template}{RGB}{72,79,89}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+   - \definecolor{evid}{RGB}{70,130,180}
+   - \definecolor{evidB}{RGB}{230,140,60}
+   - \definecolor{giallo}{RGB}{204,204,204}
+   - |
+    \AtBeginSection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,hideallsubsections]
+      \end{frame}
+    }
+    \AtBeginSubsection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,currentsubsection,hideothersubsections,subsectionstyle=show/shaded/hide]
+      \end{frame}
+    }
+    \newcolumntype{a}{>{\columncolor{evid!30}}c}
+    \tikzset{type1/.style={circle, fill=blue},
+      type2/.style={circle, fill=red},
+      type3/.style={circle, fill=olive},
+      type4/.style={circle, fill=cyan},
+      type5/.style={circle, fill=giallo},
+      type6/.style={circle, fill=blu},
+      info/.style = {rectangle, rounded corners, minimum width=3.5cm, minimum height=0.1cm, text centered, draw=black, text width=3.5cm},
+      stat/.style = {rectangle, rounded corners, minimum width=2.5cm, minimum height=0.1cm, text centered, draw=white, text width=2.5cm}}
 editor_options: 
   chunk_output_type: console
 execute: 
   echo: true
 ---
+
+# Scelta del test statistico
 
 
 # Un campione 

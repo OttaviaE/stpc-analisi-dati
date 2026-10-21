@@ -1,0 +1,874 @@
+---
+title: "Modulo Didattico 6-A: Statistica Inferenziale -- Indici di tendenza centrale"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx}
+   - \usepackage{xcolor}
+   - \usepackage{colortbl}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \usepackage{fancyvrb}
+   - \usepackage{tikz}
+   - \usetikzlibrary{tikzmark, fit}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,fit}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ Univeristà di Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027}}
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{template}{RGB}{72,79,89}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+   - \definecolor{evid}{RGB}{70,130,180}
+   - \definecolor{evidB}{RGB}{230,140,60}
+   - \definecolor{giallo}{RGB}{204,204,204}
+   - |
+    \AtBeginSection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,hideallsubsections]
+      \end{frame}
+    }
+    \AtBeginSubsection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,currentsubsection,hideothersubsections,subsectionstyle=show/shaded/hide]
+      \end{frame}
+    }
+    \newcolumntype{a}{>{\columncolor{evid!30}}c}
+    \tikzset{type1/.style={circle, fill=blue},
+      type2/.style={circle, fill=red},
+      type3/.style={circle, fill=olive},
+      type4/.style={circle, fill=cyan},
+      type5/.style={circle, fill=giallo},
+      type6/.style={circle, fill=blu},
+      info/.style = {rectangle, rounded corners, minimum width=3.5cm, minimum height=0.1cm, text centered, draw=black, text width=3.5cm},
+      stat/.style = {rectangle, rounded corners, minimum width=2.5cm, minimum height=0.1cm, text centered, draw=white, text width=2.5cm}}
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+# Riepilogo
+
+### Il workflow dell'inferenza
+
+```{=latex}
+\centering
+\begin{tikzpicture}[
+  box/.style = {rectangle, rounded corners, draw = evid, thick, fill = evid!8,
+                text width = 4.05cm, minimum height = 0.9cm, align = center,
+                font = \small},
+  inf/.style = {box, draw = evidB, fill = evidB!10},
+  nota/.style = {font = \scriptsize, text = gray!70!black, align = left},
+  freccia/.style = {-latex, thick, evid},
+  node distance = 0.32cm and 0.9cm
+]
+% --- colonna sinistra: dalla popolazione allo stimatore
+\node[box] (pop) {\textbf{Popolazione}\\[-1pt] {\scriptsize parametro ignoto: $\mu$}};
+\node[box, below = of pop] (camp) {\textbf{Estrazione del campione}\\[-1pt] {\scriptsize $\mathbf{x} = (x_1, \ldots, x_N)$}};
+\node[box, below = of camp] (stim) {\textbf{Stima nel campione}\\[-1pt] {\scriptsize statistica: $\bar{x}$}};
+\node[box, below = of stim, minimum height = 1.15cm] (dist) {\textbf{Distribuzione campionaria}\\[-1pt] {\scriptsize come varia $\bar{x}$ da campione a campione}};
+\draw[freccia] (pop) -- (camp);
+\draw[freccia] (camp) -- (stim);
+\draw[freccia] (stim) -- (dist);
+
+% --- colonna destra: inferenza sul parametro
+\uncover<2->{
+\node[inf, right = of pop] (inf) {\textbf{Inferenza sul parametro $\mu$}};
+\node[inf, below = of inf] (punt) {\textbf{Stima puntuale}\\[-1pt] {\scriptsize $\bar{x}$ è la nostra miglior ipotesi su $\mu$}};
+\node[inf, below = of punt] (int) {\textbf{Stima intervallare}\\[-1pt] {\scriptsize intervallo di confidenza}};
+\node[inf, below = of int, minimum height = 1.15cm] (ver) {\textbf{Verifica d'ipotesi}\\[-1pt] {\scriptsize $H_0$ vs $H_A$, statistica test, $p$-value}};
+\draw[freccia, evidB] (inf) -- (punt);
+\draw[freccia, evidB] (punt) -- (int);
+\draw[freccia, evidB] (int) -- (ver);
+\draw[freccia] (dist.east) -- ++(0.7,0) |- (inf.west);
+}
+
+\end{tikzpicture}
+```
+
+### Come scegliere il test statistico
+
+```{=latex}
+\centering
+\begin{tikzpicture}[
+  dom/.style  = {rectangle, rounded corners, draw = evid, thick, fill = evid!8,
+                 align = center, font = \scriptsize, text width = 1.9cm, minimum height = 0.8cm},
+  foglia/.style = {rectangle, rounded corners, draw = evidB, thick, fill = evidB!10,
+                 align = left, font = \scriptsize, text width = 6.3cm, minimum height = 0.75cm,
+                 anchor = west},
+  freccia/.style = {-latex, thick, gray!70!black}
+]
+% radice
+\node[dom, fill = evid!25] (rad) at (0,0.1) {\textbf{Che variabile\\ ho misurato?}};
+
+% primo livello
+\node[dom] (quant) at (2.5, 1.6)  {\textbf{Quantitativa}\\ test sulle medie};
+\node[dom] (cat)   at (2.5, -1.3) {\textbf{Categoriale}\\ frequenze e\\ proporzioni};
+\draw[freccia] (rad.east) -- ++(0.2,0) |- (quant.west);
+\draw[freccia] (rad.east) -- ++(0.2,0) |- (cat.west);
+
+% foglie: variabile quantitativa
+\node[foglia] (t1) at (4.15, 2.55) {\textbf{1 campione} vs un valore teorico $\mu_0$\\ \texttt{t.test(x, mu = mu0)}};
+\node[foglia] (t2) at (4.15, 1.6)  {\textbf{2 gruppi indipendenti}\\ \texttt{t.test(x, y)}};
+\node[foglia] (t3) at (4.15, 0.65) {\textbf{2 misure sugli stessi soggetti} (appaiati)\\ \texttt{t.test(x, y, paired = TRUE)}};
+\foreach \f in {t1, t2, t3}
+  \draw[freccia] (quant.east) -- ++(0.25,0) |- (\f.west);
+
+% foglie: variabile categoriale
+\node[foglia] (c1) at (4.15, -0.65) {\textbf{1 variabile}: proporzione vs $\pi$, equidistribuzione\\ \texttt{prop.test(x, n, p)}, \texttt{chisq.test(tab)}};
+\node[foglia] (c2) at (4.15, -2.0) {\textbf{2 variabili o 2 gruppi}: associazione,\\ confronto tra proporzioni\\ \texttt{chisq.test(tab)}\\ \texttt{prop.test(c(x1, x2), c(n1, n2))}};
+\foreach \f in {c1, c2}
+  \draw[freccia] (cat.east) -- ++(0.25,0) |- (\f.west);
+
+% la parte di oggi
+\uncover<2->{
+\node[draw = evidB, very thick, dashed, rounded corners, inner sep = 3pt, fit = (quant)(t1)(t3)] (box) {};
+\node[font = \scriptsize\bfseries, text = evidB, anchor = north west] at (box.north west) {oggi};
+}
+\end{tikzpicture}
+```
+
+# Un campione 
+
+### 
+
+**un solo campione** di $N$ unità statistiche, con media $\bar{x}$.
+
+```{=latex}
+\centering
+\begin{tikzpicture}[font = \small, scale = 0.8, yscale = 0.8]
+% popolazione ipotizzata da H0
+\fill[evid!15] (-2.6,0) -- plot[domain = -2.6:2.6, samples = 80, smooth] (\x, {1.7*exp(-\x*\x/1.3)}) -- (2.6,0) -- cycle;
+\draw[evid, very thick] plot[domain = -2.6:2.6, samples = 80, smooth] (\x, {1.7*exp(-\x*\x/1.3)});
+\draw[-latex, gray] (-2.9,0) -- (3,0) node[right] {\scriptsize $X$};
+\draw[dashed, evid] (0,0) -- (0,1.75) node[above] {$\mu_0$};
+\node[align = center, below] at (0,-0.05) {\scriptsize\textbf{Popolazione ipotizzata da $H_0$}\\ \scriptsize $X \sim \mathcal{N}(\mu_0, \sigma^2)$};
+% campione osservato
+\node[draw = evidB, thick, rounded corners, fill = evidB!10, minimum width = 3.2cm, minimum height = 1.6cm] (camp) at (7,0.9) {};
+\foreach \p in {(6.0,0.6), (6.4,1.2), (6.8,0.7), (7.1,1.35), (7.5,0.55), (7.8,1.1), (8.2,0.8), (6.6,0.35), (7.4,0.95)}
+  \fill[evidB] \p circle (2.2pt);
+\node[above, align = center] at (camp.north) {\scriptsize\textbf{Il campione osservato}};
+\node[below, align = center] at (camp.south) {\scriptsize $\mathbf{x} = (x_1, \ldots, x_N)$, \; $\bar{x}$};
+% domanda
+\draw[-latex, very thick, gray, dashed] (2.4,1.3) to[bend left = 20] node[above, text = black] {\Large ?} (camp.west);
+\end{tikzpicture}
+```
+
+::: {.callout-note appearance="default"}
+## La domanda del test
+
+Il campione può provenire da una popolazione in cui $X \sim \mathcal{N}(\mu_0, \sigma^2)$? Se $\bar{x}$ è *troppo lontana* da $\mu_0$ $\rightarrow$ rifiutiamo $H_0$.
+:::
+
+### Se conoscessimo $\sigma$: il test z
+
+Se la deviazione standard della popolazione $\sigma$ fosse **nota**:
+
+::::{.columns}
+
+:::{.column width=50%}
+
+**Distribuzione Campionaria** 
+
+$\mu_{\bar{x}} = \mu, \quad \sigma_{\bar{x}} = \dfrac{\sigma}{\sqrt{n}}$
+
+:::
+
+:::{.column width=50%}
+
+**Statistica test**
+
+
+$$z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{N}} \sim \mathcal{N}(0, 1)$$
+
+:::
+
+
+::::
+
+Si confrontano i valori di test con i quantili della normale standard (ad es. $\pm 1.96$ per $\alpha = .05$ e $H_1$ a due code). 
+
+::: {.callout-warning appearance="default"}
+## Il problema
+
+$\sigma$ è un **parametro della popolazione**: non si conosce quasi mai
+:::
+
+### 
+
+Non conoscendo $\sigma$ della popolazione, $\sigma_{\bar{x}}$ viene stimato a partire dalla *deviazione standard campionaria*
+
+:::: {.columns}
+
+::: {.column width=50%}
+
+\centering
+
+$\sigma$ noto: 
+
+
+$$\sigma_{\bar{x}} = \dfrac{\sigma}{\sqrt{n}}$$
+
+:::
+
+::: {.column width=50%}
+
+\centering
+
+$\sigma$ NON noto: 
+
+$$\sigma_{\bar{x}} = \dfrac{\mathrm{sd}(x)}{\sqrt{n - 1}}$$
+
+:::
+
+::::
+
+$$\text{Statistica Test} = \dfrac{\bar{x} - \mu_0}{\sigma_{\bar{x}}}$$
+
+La distribuzione $t$ di Student ha **code più pesanti** della normale, e quanto più pesanti dipende dai gradi di libertà ($n - 1$).
+
+### 
+
+```{r}
+#| echo: false
+#| out-width: 75%
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 4.2
+xx <- seq(-4, 4, length.out = 400)
+plot(xx, dnorm(xx), type = "l", lwd = 3, col = "black",
+     xlab = "", ylab = "Densità", ylim = c(0, 0.42))
+lines(xx, dt(xx, df = 2), lwd = 2, lty = 2, col = rgb(230, 140, 60, maxColorValue = 255))
+lines(xx, dt(xx, df = 5), lwd = 2, lty = 3, col = rgb(70, 130, 180, maxColorValue = 255))
+lines(xx, dt(xx, df = 30), lwd = 2, lty = 4, col = "darkred")
+legend("topright", bty = "n", lwd = c(3, 2, 2, 2), lty = 1:4,
+       col = c("black", rgb(230, 140, 60, maxColorValue = 255),
+               rgb(70, 130, 180, maxColorValue = 255), "darkred"),
+       legend = c("Normale N(0, 1)", "t, gdl = 2", "t, gdl = 5", "t, gdl = 30"))
+```
+
+Al crescere di $n$ la $t_{n-1}$ si avvicina alla $\mathcal{N}(0,1)$: con campioni grandi test t e test z danno risultati praticamente uguali.
+
+###
+
+- In R base esiste `t.test()`, ma **non** esiste una funzione per il test z: il caso in cui $\sigma$ è nota non capita quasi mai con dati reali
+
+- Quando $N$ è grande, `t.test()` dà comunque risultati praticamente identici al test z
+
+- Se $\sigma$ fosse davvero nota, il test z si calcola a mano in due righe:
+
+\small
+
+```{r}
+#| eval: false
+z <- (mean(x) - mu0) / (sigma / sqrt(length(x)))
+2 * (1 - pnorm(abs(z)))  # p-value a due code
+```
+
+\normalsize
+
+Da qui in avanti: **test t**
+
+### 
+
+::: {.callout-note appearance="default"}
+## Scopo
+
+permette di valutare se la media $\mu$ della popolazione di un dato campione *x* sia significativamente differente (risp. maggiore/minore) rispetto ad una specifica soglia teorica $\mu_0$
+:::
+
+Sia $\mathbf{x} = (x_1, x_2, \dots, x_N)$ un campione empirico di $n$ osservazioni quantitative indipendenti tali che $x_i \sim \mathcal{N}(\mu, \sigma^2)$, dove $\mu$ e $\sigma^2$ sono parametri ignoti della popolazione di $\mathbf{x}$.
+
+Inoltre sia $\mu_0 \in \mathbb{R}$ il parametro della popolazione sotto $H_0$
+
+:::: {.columns}
+
+::: {.column width=60%}
+$$t = \frac{\bar{x} - \mu_0}{\mathrm{sd}(x)/\sqrt{n}}$$
+:::
+
+::: {.column width=40%}
+$\bar{x}$: Media campionaria di $\mathbf{x}$
+
+$\mathrm{sd}(x)$: D.s. campionaria $\mathbf{x}$
+:::
+
+::::
+
+###
+
+
+:::{.callout-note}
+## Test a due code (two-sided)
+
+$H_0 : \mu = \mu_0 \qquad H_1 : \mu \ne \mu_0$
+
+:::
+
+:::{.callout-note}
+## Una coda-destra (one-sided right)
+
+$H_0 : \mu \leq \mu_0 \qquad H_1 : \mu > \mu_0$
+
+:::
+
+
+:::{.callout-note}
+## Una coda sinistra (one-sided left)
+
+$H_0: \mu \ge \mu_0 \qquad H_1: \mu < \mu_0$  
+
+:::
+
+## In R 
+
+### 
+
+
+`t.test(x, mu = 0, alternative = "two.sided")`
+
+Svolge il test su un campione di osservazioni $x$, considerando $\mu_0= 0$ (`mu = 0`) come default e ipotesi alternativa bidirezionale  (`alternative = "two.sided"`): 
+
+| **Definizione ipotesi in R**                  | **Significato**                     |
+|:----------------------------------------------|:------------------------------------|
+| `alternative = "two.sided"`                   | $H_1$: $\mu \neq \mu_0$              |
+| `alternative = "greater"`                     | $H_1$: $\mu > \mu_0$                  |
+| `alternative = "less"`                        | $H_1$: $\mu < \mu_0$                  |
+
+## Esempi 
+
+```{r}
+#| include: false
+# stampa l'output di t.test() con i segnaposto tikzmark per le annotazioni
+annota_ttest <- function(chiamata) {
+  out <- capture.output(eval(parse(text = chiamata)))
+  out <- trimws(gsub("\t", "", out), "right")
+  while (!nzchar(out[1])) out <- out[-1]
+  while (!nzchar(out[length(out)])) out <- out[-length(out)]
+  out <- unlist(lapply(out, function(l)
+    if (nchar(l) > 72) strwrap(l, 72, exdent = 2) else l))
+  mark <- function(x, pattern, name)
+    sub(pattern, sprintf("\\\\tikzmarknode{%s}{\\1}", name), x)
+  out <- mark(out, "^(.*t-test)$", "test")
+  out <- mark(out, "(t = -?[0-9.]+)", "stat")
+  out <- mark(out, "(df = [0-9.]+)", "df")
+  out <- mark(out, "(p-value [=<] [0-9.e-]+)", "pval")
+  out <- mark(out, "((not equal to|less than|greater than) -?[0-9.]+)", "h1")
+  i <- grep("confidence interval", out) + 1
+  out[i] <- sprintf(" \\tikzmarknode{ic}{%s}", trimws(out[i]))
+  j <- grep("^mean (in|of)", out) + 1
+  out[j] <- sprintf(" \\tikzmarknode{medie}{%s}", trimws(out[j]))
+  cat("```{=latex}\n",
+      "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
+      "> ", chiamata, "\n",
+      paste(out, collapse = "\n"),
+      "\n\\end{Verbatim}\n```\n", sep = "")
+}
+```
+
+###
+
+\small 
+
+```{r}
+#| results: hide
+set.seed(999)
+x = rnorm(11, mean = 12, sd = 7.5)
+mu0 = 10
+t.test(x, mu = mu0, alternative = "two.sided")
+
+```
+
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, mu = mu0)')
+```
+
+```{r}
+#| echo: false
+myt = t.test(x, mu = mu0) # test a due code
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]  (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(df)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(pval)]  (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(h1)]    (b5) {}; \node[num] at (b5.north east) {5};}
+  {\node[box, fit=(ic)]    (b6) {}; \node[num] at (b6.north east) {6};}
+  {\node[box, fit=(medie)] (b7) {}; \node[num] at (b7.north east) {7};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Tipo di test
+  \item Statistica test $t_0$
+  \item Gradi di libertà: $df = n - 1$
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $p$-value
+  \item Ipotesi alternativa $H_1$: bidirezionale
+  \item Intervallo di confidenza al 95\% per $\mu$
+  \item Media campionaria $\bar{x}$
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### 
+
+$$\begin{aligned}
+p\text{-value} &= \int_{-\infty}^{-|t_o|} f_T(t \mid \theta) \, dt 
+               + \int_{|t_o|}^{\infty} f_T(t \mid \theta) \, dt \\
+               &= 2 \int_{|t_o|}^{\infty} f_T(t \mid \theta) \, dt
+\end{aligned}$$
+
+:::: {.columns}
+
+:::{.column width=50%}
+
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+mx = seq(-3,3, length.out=100)
+plot(mx, dt(mx, df = 10), type = "l", ylab = "Density", 
+     main = "Distribuzione t di student con df = 10", cex = 3)
+polygon(c(-3, 
+          mx[mx < myt$statistic],
+          myt$statistic), 
+        c(0, dt(mx[mx < myt$statistic], 10), 0), 
+        col = rgb(1, 0, 0, 0.25))
+polygon(c(abs(myt$statistic), 
+          mx[mx > abs(myt$statistic)],
+          3), 
+        c(0, dt(mx[mx > abs(myt$statistic)], 10), 0), 
+        col = rgb(1, 0, 0, 0.25))
+```
+
+:::
+
+:::{.column width=50%}
+$t_0$: Statistica test osservata `r round(myt$statistic,4)`
+
+$f_T(t|\theta)$: Distribuzione $t$ di Student con parametro $\theta$ (ovvero i gdl)
+
+\footnotesize
+
+```{r}
+# calcolo p-value
+2*(1-pt(abs(-0.72806),10))
+```
+
+
+:::
+
+::::
+
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, mu = mu0, alternative = "greater")')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(h1)]        (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item $H_1$: $\mu > \mu_0$
+  \item $t_0$ e gradi di libertà: \textbf{identici} al test a due code
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p = P(T \geq t_0)$, area a destra di $t_0$: qui $t_0 < 0$ va nella direzione \textbf{opposta} a $H_1$ $\rightarrow$ $p$ grande
+  \item IC \textbf{unidirezionale}: solo il limite inferiore, l'altro estremo è \texttt{Inf}
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+###
+
+$$p\text{-value} = \int_{t_o}^{\infty} f_T(t \mid \theta) \, dt$$
+
+:::: {.columns}
+
+:::{.column width=50%}
+
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+mx = seq(-3,3, length.out=100)
+plot(mx, dt(mx, df = 10), type = "l", ylab = "Density", 
+     main = "Distribuzione t di student con df = 10", cex = 3)
+myt = t.test(x, mu = mu0, 
+       alternative = "greater") # test a una coda destra
+polygon(c((myt$statistic), 
+          mx[mx > (myt$statistic)]), 
+        c(0, dt(mx[mx > (myt$statistic)], 10)), 
+        col = rgb(1, 0, 0, 0.25))
+```
+
+
+
+
+:::
+
+:::{.column width=50%}
+$t_0$: Statistica test osservata `r round(myt$statistic,4)`
+
+$f_T(t|\theta)$: Distribuzione $t$ di Student con parametro $\theta$ (ovvero i gdl)
+
+\footnotesize
+
+```{r}
+# calcolo p-value
+1-pt(-0.72806, 10)
+```
+
+
+:::
+
+::::
+
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, mu = mu0, alternative = "less")')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(h1)]        (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item $H_1$: $\mu < \mu_0$
+  \item $t_0$ e gradi di libertà: \textbf{identici} al test a due code
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p = P(T \leq t_0)$, area a sinistra di $t_0$: qui $t_0 < 0$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item IC \textbf{unidirezionale}: solo il limite superiore, l'altro estremo è \texttt{-Inf}
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+###
+
+$$p\text{-value} = \int_{-\infty}^{t_o} f_T(t \mid \theta) \, dt$$
+
+:::: {.columns}
+
+:::{.column width=50%}
+
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+mx = seq(-3,3, length.out=100)
+plot(mx, dt(mx, df = 10), type = "l", ylab = "Density", 
+     main = "Distribuzione t di student con df = 10", cex = 3)
+myt = t.test(x, mu = mu0, 
+       alternative = "less") # test a una coda sinistra
+polygon(c(-3, 
+          mx[mx < myt$statistic],
+          myt$statistic), 
+        c(0, dt(mx[mx < myt$statistic], 10), 0), 
+        col = rgb(1, 0, 0, 0.25))
+```
+
+
+
+
+:::
+
+:::{.column width=50%}
+$t_0$: Statistica test osservata `r round(myt$statistic,4)`
+
+$f_T(t|\theta)$: Distribuzione $t$ di Student con parametro $\theta$ (ovvero i gdl)
+
+\footnotesize
+
+```{r}
+# calcolo p-value
+pt(-0.72806, 10)
+```
+
+
+:::
+
+::::
+
+
+### Perché l'IC ha un estremo infinito?
+
+```{=latex}
+\small
+\texttt{t.test()} riporta sempre l'intervallo \textbf{coerente con $H_1$}: rifiutiamo $H_0$ ($\alpha = .05$) se e solo se $\mu_0$ cade \textbf{fuori} dall'intervallo.
+
+\vspace{2mm}
+\centering
+\begin{tikzpicture}[font = \footnotesize, xscale = 0.8,
+  ic/.style = {line width = 3pt, evid},
+  lab/.style = {anchor = west, align = left, font = \scriptsize}]
+% riferimenti: media campionaria e mu0
+\draw[dashed, gray] (0, -0.2) -- (0, 3.1) node[above, text = black] {$\bar{x}$};
+\draw[dashed, evidB, thick] (0.7, -0.2) -- (0.7, 3.1) node[above, text = evidB] {$\mu_0$};
+% bidirezionale
+\node[lab, anchor = east] at (-3.3, 2.4) {\texttt{"two.sided"}};
+\draw[ic] (-2.2, 2.4) -- (2.2, 2.4);
+\draw[evid, thick] (-2.2, 2.25) -- (-2.2, 2.55) (2.2, 2.25) -- (2.2, 2.55);
+\node[lab] at (3.3, 2.4) {$\left[\bar{x} - t_{1-\alpha/2}\,SE;\ \bar{x} + t_{1-\alpha/2}\,SE\right]$\\ $\alpha$ divisa nelle due code};
+% unidirezionale destra
+\node[lab, anchor = east] at (-3.3, 1.3) {\texttt{"greater"}};
+\draw[ic, -latex] (-1.8, 1.3) -- (3.1, 1.3);
+\draw[evid, thick] (-1.8, 1.15) -- (-1.8, 1.45);
+\node[lab] at (3.3, 1.3) {$\left[\bar{x} - t_{1-\alpha}\,SE;\ +\infty\right)$\\ tutta $\alpha$ in una coda};
+% unidirezionale sinistra
+\node[lab, anchor = east] at (-3.3, 0.2) {\texttt{"less"}};
+\draw[ic, latex-] (-3.1, 0.2) -- (1.8, 0.2);
+\draw[evid, thick] (1.8, 0.05) -- (1.8, 0.35);
+\node[lab] at (3.3, 0.2) {$\left(-\infty;\ \bar{x} + t_{1-\alpha}\,SE\right]$\\ tutta $\alpha$ in una coda};
+\end{tikzpicture}
+
+\vspace{1mm}
+\raggedright
+\scriptsize
+$SE = \sqrt{\mathrm{var}(\mathbf{x})/N}$. Con $H_1: \mu > \mu_0$ ci interessa solo se $\mu$ è \textit{abbastanza grande}: basta un limite inferiore (e viceversa per $H_1: \mu < \mu_0$). L'IC per la media che useremo di solito è quello bidirezionale: lo vedremo nella parte sugli intervalli di confidenza.
+```
+
+
+# Due campioni indipendenti
+
+### 
+::: {.callout-note appearance="default"}
+## Scopo
+
+Permette di valutare se la media $\mu_X$ della popolazione di un campione di dati $x$ sia significativamente differente (risp. maggiore/minore) rispetto alla media $\mu_Y$ della popolazione di un campione di dati $y$.
+:::
+
+\small
+
+Sia $\mathbf{x} = (x_1, x_2, \ldots, x_N)$ un campione empirico di $N$ osservazioni quantitative indipendenti tali che $x_i \sim N(\mu_X, \sigma^2)$ e sia $\mathbf{y} = (y_1, y_2, \ldots, y_M)$ un campione empirico di $M$ osservazioni quantitative indipendenti tali che $y_j \sim N(\mu_Y, \sigma^2)$, dove $\sigma^2$ è la varianza comune ad entrambe le popolazioni.
+
+
+:::: {.columns}
+
+::: {.column width=60%}
+$$t = \frac{(\overline{x} - \overline{y}) - (\mu_x - \mu_y)}{s \sqrt{\frac{1}{N} + \frac{1}{M}}}$$
+:::
+
+::: {.column width=40%}
+\small
+$s = \sqrt{\frac{(N-1)\mathrm{var}(\mathbf{x}) + (M-1)\mathrm{var}(\mathbf{y})}{N + M - 2}}$
+:::
+
+::::
+
+### 
+
+
+:::{.callout-note}
+## Test a due code (two-sided)
+
+$H_0 : \mu_X = \mu_Y \qquad H_A : \mu_X \ne \mu_Y$
+
+\footnotesize
+
+$H_0 : \mu_X -\mu_Y = 0 \qquad H_A : \mu_X - \mu_Y \ne 0$
+:::
+
+:::{.callout-note}
+## Una coda-destra (one-sided right)
+
+$H_0 : \mu_X \leq \mu_Y \qquad H_A : \mu_X > \mu_Y$
+
+\footnotesize
+
+$H_0 : \mu_X - \mu_Y \leq 0 \qquad H_A : \mu_X -\mu_Y > 0$
+:::
+
+
+:::{.callout-note}
+## Una coda sinistra (one-sided left)
+
+$H_0: \mu_X \ge \mu_Y \qquad H_A: \mu_X < \mu_Y$  
+
+\footnotesize
+
+$H_0: \mu_X - \mu_Y \ge 0 \qquad H_A: \mu_X - \mu_Y < 0$  
+:::
+
+## In R 
+
+### 
+| **Simbolo R** | **Significato** |
+|:--------------|:----------------|
+| `t.test(x, y, var.equal = TRUE)` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **a due code**. |
+| `t.test(x, y, var.equal = TRUE, alternative = "greater")` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (destra)**. |
+| `t.test(x, y, var.equal = TRUE, alternative = "less")` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (sinistra)**. |
+
+
+## Esempi
+
+###
+
+```{r}
+#| results: hide
+
+x <- c(12.2,23.2,14,20.3,9.2,3.7,8,16.8,3.7,1.9,20.5)
+y <- c(8.5,3.2,4,10.5,7.7,3.1,2,3.9)
+t.test(x,y,var.equal=TRUE)
+t.test(x,y,var.equal=TRUE,alternative="greater")
+t.test(x,y,var.equal=TRUE,alternative="less")
+t.test(x,y)
+```
+
+
+### Test a due code `var.equal=TRUE`
+
+\small
+```{r}
+t.test(x,y,var.equal=TRUE)
+```
+
+### `var.equal=FALSE`
+
+\small
+
+```{r}
+t.test(x,y)
+```
+
+# Due campioni appaiati 
+
+###
+
+::: {.callout-note appearance="default"}
+## Scopo
+
+Permette di valutare se le medie $\mu_x$ e $\mu_y$ delle popolazioni di due campioni di dati appaiati $(x,y)$ siano significativamente differenti (risp. maggiore/minore).
+:::
+
+Sia $\mathbf{(x, y)} = \big( (x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N) \big)$ un campione bivariato di $N$ osservazioni $(x_i, y_i)$ indipendenti. 
+Inoltre sia $d_i \sim N(d \mid \mu_D, \sigma^2)$ l’osservazione differenziale $d_i = x_i - y_i$ derivata da $\mathbf{(x, y)}$. 
+I parametri $\mu_D$ e $\sigma^2$ sono i termini ignoti della variabile differenziale $D$.
+
+$$t = \dfrac{\overline{d}}{\sqrt{\operatorname{var}(\mathbf{d})/N}}$$
+
+### 
+
+
+:::{.callout-tip}
+## Test a due code (two-sided)
+
+$H_0 : \mu_D = 0 \qquad H_A : \mu_D \ne 0$
+
+:::
+
+:::{.callout-note}
+## Una coda-destra (one-sided right)
+
+$H_0 : \mu_D \leq 0 \qquad H_A : \mu_D > 0$
+
+:::
+
+
+:::{.callout-note}
+## Una coda sinistra (one-sided left)
+
+$H_0: \mu_D \ge 0 \qquad H_A: \mu_D < 0$  
+
+:::
+
+## In R 
+
+###
+
+| **Simbolo R** | **Significato** |
+|:--------------|:----------------|
+| `t.test(x, y, paired = TRUE)` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **a due code**. |
+| `t.test(x, y, paired = "greater")` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (destra)**. |
+| `t.test(x, y, paired = "less")` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (sinistra)**. |
+
+## Esempi 
+
+### 
+
+```{r}
+#| results: hide
+x = c(5.2,3.5,3.4,7.1,6.2,3.0,1,4) 
+y = c(8.5,3.2,4,10.5,7.7,3.1,2,3.9)
+
+t.test(x,y,paired=TRUE) 
+t.test(x,y,paired=TRUE,alternative="less") 
+t.test(x,y,paired=TRUE,alternative="greater")
+```
+
+
+### 
+
+```{r}
+t.test(x,y,paired=TRUE,alternative="less") 
+```
+

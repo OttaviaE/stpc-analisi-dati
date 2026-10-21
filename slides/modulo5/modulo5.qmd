@@ -268,7 +268,7 @@ Stima:
 
 ### Proprietà di uno stimatore
 
-\footnotesize
+\small
 
 Uno stimatore è tanto migliore quanto più rispetta queste proprietà:
 
@@ -409,7 +409,7 @@ Campione: $n = 2$, somministrato un test con punteggio 0--10
 | Giorgio | 6 |
 | Alessandra | 8 |
 | Francesco | 10 |
-| Livio | 3 |
+| Luca | 3 |
 | Jessica | 8 |
 
 $$\mu = \dfrac{6 + 8 + 10 + 3 + 8}{5} = 7$$
@@ -449,7 +449,7 @@ $$\bar{x} = \dfrac{8 + 10}{2} = 9$$
 
 ::::
 
-### Tutti i campioni possibili
+### {.plain}
 
 ```{=latex}
 \begin{center}
@@ -478,19 +478,9 @@ $$\bar{x} = \dfrac{8 + 10}{2} = 9$$
 \end{center}
 ```
 
-\footnotesize
 
-$$\mu_{\bar{x}} = \dfrac{6 \cdot 1 + 7 \cdot 4 + 8 \cdot 6 + 4.5 \cdot 2 + 9 \cdot 4 + 5.5 \cdot 4 + 10 \cdot 1 + 6.5 \cdot 2 + 3 \cdot 1}{25} = 7$$
+\scriptsize
 
-
-
-$$\mu = \mu_{\bar{x}} = 7$$
-
-### 
-
-\small
-
-Frequenza di ciascun valore della media sui 25 campioni possibili (passo 3 della definizione):
 
 ```{=latex}
 \begin{center}
@@ -528,6 +518,19 @@ Frequenza di ciascun valore della media sui 25 campioni possibili (passo 3 della
 \end{tikzpicture}
 \end{center}
 ```
+
+### 
+
+
+
+$$\mu_{\bar{x}} = \dfrac{6 \cdot 1 + 7 \cdot 4 + 8 \cdot 6 + 4.5 \cdot 2 + 9 \cdot 4 + 5.5 \cdot 4 + 10 \cdot 1 + 6.5 \cdot 2 + 3 \cdot 1}{25} = 7$$
+
+
+
+$$\mu = \mu_{\bar{x}} = 7$$
+
+
+
 
 Le medie campionarie si distribuiscono **attorno a $\mu = 7$**: alcuni campioni sovrastimano $\mu$, altri lo sottostimano, ma **in media** lo stimatore restituisce il valore del parametro (correttezza)
 
@@ -575,7 +578,11 @@ Obiettivi dell'inferenza statistica:
 - Stima dei parametri
 - **Test di ipotesi**
 
-![](frecciadown.png){width=6% fig-align="center"}
+\Large
+
+$$\downarrow$$
+
+\normalsize
 
 Procedura che si svolge per passi logici successivi:
 
@@ -604,7 +611,7 @@ $$\text{H}:\; \mu = 12$$
 
 ## Null Hypothesis Significance Testing (NHST)
 
-### Due approcci... e un ibrido
+### {.plain}
 
 \small
 
@@ -634,7 +641,7 @@ $$\text{H}:\; \mu = 12$$
 È una *forzatura* dei due approcci: prende $H_0$ e il $p$-value da Fisher, $H_1$, $\alpha$ e $\beta$ da Neyman e Pearson, e li mette insieme (anche se i due approcci hanno logiche diverse)
 :::
 
-![](img/meme_nhst.png){width=20% fig-align="right"}
+![](img/meme_nhst.png){width=20% fig-align="center"}
 
 ###
 
@@ -648,7 +655,7 @@ Le distribuzioni di probabilità a livello delle popolazioni che identificano lo
 - **H$_0$**: definita come **l'ipotesi nulla**
 - **H$_A$**: definita come **l'ipotesi alternativa**
 
-L'ipotesi alternativa viene indicata con altri simboli equivalenti come **H$_1$** oppure **K**, che sono di fatto sinonimi del più diffuso H$_A$.
+L'ipotesi alternativa viene indicata con altri simboli equivalenti come **H$_1$** oppure **K**
 :::
 
 :::{.callout-warning}
@@ -759,7 +766,7 @@ In base alla regione in cui andrà a cadere il valore campionario, si prenderà 
 
 ###
 
-Le regioni di rifiuto e di accettazione corrispondono ad aree di probabilità sottese alla curva
+Le regioni di rifiuto e di non rifiuto corrispondono ad aree di probabilità sottese alla curva
 
 ![](regioneRifiutobi.pdf){width=45% fig-align="center"}
 
@@ -768,7 +775,7 @@ Le regioni di rifiuto e di accettazione corrispondono ad aree di probabilità so
 :::: {.columns}
 
 ::: {.column width=50%}
-\footnotesize
+\small
 **Regione di non rifiuto**: valori delle statistiche campionarie con probabilità maggiori di verificarsi *data $H_0$ vera*
 :::
 
@@ -1028,8 +1035,8 @@ In generale, se indichiamo con $\psi_c$ e $\psi_o$ rispettivamente il **valore c
     \begin{minipage}{0.85\textwidth}
       \[
       \begin{aligned}
-        p\text{-value} &< \alpha \Rightarrow H_A \\
-        p\text{-value} &\geq \alpha \Rightarrow \neg H_A
+        p\text{-value} &< \alpha \Rightarrow H_1 \\
+        p\text{-value} &\geq \alpha \Rightarrow \neg H_1
       \end{aligned}
       \]
     \end{minipage}
@@ -1046,9 +1053,9 @@ In generale, se indichiamo con $\psi_c$ e $\psi_o$ rispettivamente il **valore c
     \begin{minipage}{0.85\textwidth}
       \[
       \begin{aligned}
-        \text{Bidir.: } |\psi_o| &> |\psi_c| \Rightarrow H_A \\
-        \text{Destra: } \psi_o &> \psi_c \Rightarrow H_A \\
-        \text{Sinistra: } \psi_o &< \psi_c \Rightarrow H_A
+        \text{Bidir.: } |\psi_o| &> |\psi_c| \Rightarrow H_1 \\
+        \text{Destra: } \psi_o &> \psi_c \Rightarrow H_1 \\
+        \text{Sinistra: } \psi_o &< \psi_c \Rightarrow H_1
       \end{aligned}
       \]
     \end{minipage}
@@ -1066,7 +1073,7 @@ In generale, se indichiamo con $\psi_c$ e $\psi_o$ rispettivamente il **valore c
 **\underline{Statisticamente non significativo}** (non si rifiuta $H_0$): $\psi_o$ cade nella regione di non rifiuto, cioè $p\text{-value} \geq \alpha$
 :::
 
-## Cos'è il $p$-value?
+# Cos'è il $p$-value?
 
 ###
 
@@ -1175,7 +1182,7 @@ $p = P(Z \geq z_{oss})$
 \centering
 Stesso $z_{oss}$, tre $p$-value diversi: conta la direzione di $H_1$
 
-### `pnorm()`: la distribuzione cumulata
+### 
 
 \small
 
@@ -1240,94 +1247,3 @@ oppure `pnorm(2.1, lower.tail = FALSE)`
 
 ::::
 
-# Un esempio completo
-
-### La moneta: ipotesi e livello di significatività
-
-\small
-
-Si lancia la moneta **30 volte** e si ottengono **21 teste**. La moneta è truccata?
-
-\vspace{2mm}
-
-1. **Ipotesi** (bidirezionale: non si sa in quale direzione potrebbe essere truccata)
-$$H_0: \pi = .50 \qquad H_1: \pi \neq .50$$
-
-2. **Livello di significatività** (fissato prima di lanciare la moneta): $\alpha = .05$
-
-3. **Statistica**: la proporzione di teste nel campione, $\hat{p} = \frac{21}{30} = .70$
-
-\vspace{2mm}
-
-\footnotesize
-$\hat{p}$ è una media: se si codifica testa = 1 e croce = 0, la proporzione di teste è la media dei 30 valori 0/1
-
-### La moneta: distribuzione campionaria sotto $H_0$
-
-\small
-
-Se $H_0$ è vera, ogni lancio vale 1 con probabilità $.50$ e 0 con probabilità $.50$: nella "popolazione" dei lanci $\mu = .50$ e $\sigma = \sqrt{.50 \times .50} = .50$
-
-\vspace{2mm}
-
-4. **Distribuzione campionaria** di $\hat{p}$ sotto $H_0$:
-
-- centro: $\mu_{\hat{p}} = .50$
-- errore standard: $\sigma_{\hat{p}} = \frac{\sigma}{\sqrt{n}} = \frac{.50}{\sqrt{30}} = .091$
-- forma: con $n = 30$ è approssimativamente normale (teorema del limite centrale)
-
-\vspace{2mm}
-
-5. **Statistica test** (standardizzazione):
-$$z_o = \frac{\hat{p} - \pi_0}{\sigma_{\hat{p}}} = \frac{.70 - .50}{.091} = 2.19$$
-
-### La moneta: valore critico e $p$-value
-
-\small
-
-6. **Valore critico**: test bidirezionale con $\alpha = .05$ $\rightarrow$ $z_c = \pm 1.96$
-
-```{=latex}
-\begin{center}
-\begin{tikzpicture}[scale=0.75]
-  \fill[unipd!35] (-3.3,0) -- plot[domain=-3.3:-1.96,samples=60] (\x,{2.2*exp(-\x*\x/2)}) -- (-1.96,0) -- cycle;
-  \fill[unipd!35] (1.96,0) -- plot[domain=1.96:3.3,samples=60] (\x,{2.2*exp(-\x*\x/2)}) -- (3.3,0) -- cycle;
-  \draw[thick] plot[domain=-3.3:3.3,samples=60] (\x,{2.2*exp(-\x*\x/2)});
-  \draw (-3.3,0) -- (3.3,0);
-  \draw[dashed] (-1.96,0) -- (-1.96,2.4); \node[below, font=\scriptsize] at (-1.96,0) {$-1.96$};
-  \draw[dashed] (1.96,0) -- (1.96,2.4); \node[below, font=\scriptsize] at (1.96,0) {$1.96$};
-  \draw[very thick, blu, ->] (2.19,2.2) -- (2.19,0.12);
-  \node[above, blu, font=\scriptsize] at (2.19,2.2) {$z_o = 2.19$};
-  \node[font=\scriptsize] at (0,0.9) {Non rifiuto};
-  \node[font=\scriptsize, unipd] at (-2.7,0.9) {Rifiuto};
-  \node[font=\scriptsize, unipd] at (2.9,0.9) {Rifiuto};
-\end{tikzpicture}
-\end{center}
-```
-
-7. **$p$-value**: $P(|Z| \geq 2.19 \mid H_0) = 2 \times .014 = .029$
-
-```r
-2 * (1 - pnorm(2.19))   # 0.0285
-```
-
-### La moneta: decisione
-
-\small
-
-:::{.callout-important}
-## Decisione
-
-$|z_o| = 2.19 > 1.96$ e $p = .029 < .05$ $\rightarrow$ **si rifiuta $H_0$**: 21 teste su 30 lanci è un risultato poco compatibile con una moneta non truccata
-:::
-
-\vspace{2mm}
-
-- Le due regole (valore critico e $p$-value) portano sempre alla stessa decisione
-- La decisione può essere sbagliata: se la moneta in realtà non fosse truccata, si starebbe commettendo un **errore di I tipo**, la cui probabilità è $\alpha = .05$
-- Con $\alpha = .01$ ($z_c = \pm 2.58$) la decisione sarebbe stata diversa: non si rifiuterebbe $H_0$
-
-\vspace{2mm}
-
-\footnotesize
-Con la distribuzione binomiale esatta (`binom.test(21, 30)`) si ottiene $p = .043$: la decisione con $\alpha = .05$ non cambia
