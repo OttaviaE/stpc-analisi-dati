@@ -62,7 +62,7 @@ $$f_X : \mathbb{R} \times \Theta \to \mathbb{R}_0^+$$
 
 $f_X$ è una funzione di densità parametrica con parametri $\theta \in \Theta$.
 
-La *funzione di ripartizione** (*funzione di distribuzione cumulata*) $F_X(x|\theta)$ è definita come
+La **funzione di ripartizione** (*funzione di distribuzione cumulata*) $F_X(x|\theta)$ è definita come
 
 $$F_X(x|\theta) = \Pr[X \leq x]
 = \int_{-\infty}^x f_X(z|\theta)\,dz$$
@@ -228,7 +228,10 @@ $\mu = Mo=Me$
 **ASINTOTICA**: 
 
 >	si avvicina all’asse delle $X$ senza mai toccarlo.
->	La curva mostra due **PUNTI DI FLESSO**: da concava diventa convessa nella metà sinistra e da convessa diventa concava nella metà destra (in corrispondenza di valori di x uguali alla media meno o più una ds)
+
+**PUNTI DI FLESSO**:
+
+> La curva da concava diventa convessa nella metà sinistra e da convessa diventa concava nella metà destra (in corrispondenza di valori di x uguali alla media meno o più una ds)
 
 
 ### 
@@ -449,7 +452,8 @@ for (i in 1:length(mysd)) {
 legend("topleft", 
        fill = c( mycol[-length(mycol)]), 
        legend = c(paste("sd = ", mysd)), cex = 2)
-
+abline(h = .50, lty = 2, col = "firebrick")
+segments(0, 0,x1=0, y1 = .50, lty =2, col = "firebrick")
 ```
 
 
@@ -486,14 +490,14 @@ for (i in 1:length(mymean)) {
 legend("topleft", 
        fill = c( mycol[-length(mycol)]), 
        legend = c(paste("M = ", mymean)), cex = 2)
-
+abline(h = .50, lty = 2, col = "firebrick")
+segments(c(-2,0,1,3), 0,x1=c(-2,0,1,3), y1 = .50, lty =2, col =  c("seagreen", "black","royalblue", "orange", "orchid"))
 ```
 
 
 ## Normale standardizzata
 
-### Standardizzazione
-
+###
 \small
 
 Per gli usi pratici della distribuzione normale si ricorre alla **normale standardizzata** $Z \sim \mathcal{N}(0, 1)$:
