@@ -1,0 +1,58 @@
+% ------------------------------------------------------------------
+% frontespizio-inferenziale.tex -- front page e retro della dispensa
+% di statistica inferenziale
+% Incluso nello YAML con: include-in-header: frontespizio-inferenziale.tex
+% Ridefinisce \maketitle (chiamato in automatico da Quarto)
+% ------------------------------------------------------------------
+\providecolor{blu}{rgb}{0.0,0.33,0.71}
+
+\renewcommand{\maketitle}{%
+  \begin{titlepage}
+    \centering
+    % --- Intestazione: ateneo, dipartimento, corso di laurea ---
+    {\large\scshape Università degli Studi di Trento\par}
+    \vspace{2mm}
+    {\normalsize Dipartimento di Psicologia e Scienze Cognitive\par}
+    \vspace{1mm}
+    {\normalsize Corso di Laurea in Scienze e Tecniche di Psicologia Cognitiva\par}
+    \vspace{6mm}
+    {\color{blu}\rule{\textwidth}{0.8pt}\par}
+
+    \vfill
+
+    % --- Corso e titolo ---
+    {\large Corso di\par}
+    \vspace{2mm}
+    {\LARGE\itshape Analisi dei dati con applicazioni informatiche\par}
+    \vspace{18mm}
+    {\color{blu}\fontsize{34}{40}\selectfont\bfseries Statistica inferenziale\par}
+
+    \vfill
+
+    % --- Autrice ---
+    {\color{blu}\rule{\textwidth}{0.8pt}\par}
+    \vspace{6mm}
+    {\large Ottavia M. Epifania\par}
+    \vspace{1mm}
+    {\small\ttfamily ottavia.epifania@unitn.it\par}
+  \end{titlepage}
+
+  % --- Retro del frontespizio: disclaimer e licenza ---
+  \thispagestyle{empty}
+  \null\vfill
+  \noindent\textbf{Licenza}\par
+  \vspace{2mm}
+  \noindent Quest'opera è distribuita con licenza
+  \href{https://creativecommons.org/licenses/by/4.0/deed.it}{Creative Commons
+  Attribuzione 4.0 Internazionale (CC BY 4.0)}.
+  Puoi copiare, ridistribuire e modificare il materiale con qualsiasi mezzo
+  e per qualsiasi fine, a condizione di citare l'autrice e di indicare se
+  sono state apportate modifiche.
+
+  \vspace{3mm}
+  \noindent Per citare questa dispensa:\\
+  Epifania, O. M. \emph{Statistica inferenziale. Dispensa del corso Analisi dei
+  dati con applicazioni informatiche, Modulo 4}. Università degli Studi
+  di Trento.
+  \clearpage
+}

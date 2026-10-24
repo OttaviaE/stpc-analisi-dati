@@ -201,3 +201,8 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Esercitazione Modulo 4 (Template)](slides/modulo4/Laboratorio/Esercizi-Rmod4_template.qmd)
 * [Esercitazione Modulo 4 (Soluzioni)](slides/modulo4/Laboratorio/Esercizi-Rmod4_soluzioni.html)
 
+## Modulo 5 
+
+*Questo modulo è la base teorica su cui si costruirà il resto del corso.*
+
+[Slides modulo 5](slides/modulo5/modulo5.pdf)
