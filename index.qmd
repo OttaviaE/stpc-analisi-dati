@@ -183,6 +183,11 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Esercitazione Modulo 3 - Parte 3 (Template)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_template.qmd)
 * [Esercitazione Modulo 3 - Parte 3 (Soluzioni)](slides/modulo3/laboratorio/EsercitazioneRmod3-b_Soluzioni.html)
 
+## Esercitazione completa statistica descrittiva
+
+* [Esercitazione completa statistica descrittiva (Testo)](slides/esercitazioni-complessive/data/esercitazione-aggiuntiva-statistica-descrittiva.html)
+* [Esercitazione completa statistica descrittiva (Soluzioni)](slides/esercitazioni-complessive/esercitazione-aggiuntiva-statistica-descrittiva-soluzioni.html)
+
 
 ## Modulo 4
 

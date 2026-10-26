@@ -1,0 +1,777 @@
+---
+title: "Esercitazione: burnout e supporto sociale al lavoro"
+subtitle: "Soluzioni"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Il contesto
+
+Un'azienda di medie dimensioni ha chiesto al servizio di psicologia del lavoro di indagare il benessere dei propri dipendenti. A 200 dipendenti è stato somministrato un questionario che misura:
+
+- l'**esaurimento emotivo**, una delle componenti del burnout;
+- il **supporto sociale percepito** da parte di colleghi e superiori, considerato un possibile fattore di protezione.
+
+Sono stati inoltre raccolti alcuni dati socio-anagrafici e lavorativi. I dati sono nel file `benessere_lavoro.csv`.
+
+| Variabile | Descrizione |
+|---|---|
+| `id` | codice identificativo del dipendente |
+| `genere` | genere del dipendente (`F`, `M`) |
+| `eta` | età in anni |
+| `anni_servizio` | anni di servizio nell'azienda |
+| `anzianita` | anzianità in azienda: `junior` (fino a 3 anni), `intermedio` (da 4 a 6 anni), `senior` (più di 6 anni) |
+| `titolo_studio` | titolo di studio più alto: `diploma`, `laurea triennale`, `laurea magistrale` |
+| `reparto` | reparto di appartenenza: `amministrazione`, `produzione`, `commerciale`, `risorse umane` |
+| `supporto_sociale` | punteggio di supporto sociale percepito (da 1 a 7; punteggi alti = più supporto) |
+| `burnout` | punteggio di esaurimento emotivo (da 0 a 54; punteggi alti = più esaurimento) |
+
+# Importazione e preparazione dei dati
+
+##
+
+*Salvare il file `benessere_lavoro.csv` nella cartella `data` del progetto e importarlo in un oggetto chiamato `dati`. Nel file le colonne sono separate da `;` e i decimali da `,`. La scelta della funzione usata per importare il dataset dipende da questi dettagli.*
+
+Le colonne sono separate da punto e virgola e i decimali sono indicati con la virgola: la funzione adatta è `read.csv2()`, che ha già questi valori come default (`sep = ";"`, `dec = ","`).
+
+```{r}
+dati = read.csv2("data/benessere_lavoro.csv")
+```
+
+##
+
+*Esaminare la struttura del dataset. Quanti dipendenti sono presenti nel dataset? Quante informazioni sono state raccolte su ciascuno?*
+
+```{r}
+str(dati)
+nrow(dati)
+ncol(dati)
+```
+
+Nel dataset ci sono `r nrow(dati)` dipendenti (le righe) e su ciascuno sono state raccolte `r ncol(dati)` informazioni (le colonne), compreso il codice identificativo `id`.
+
+##
+
+***Per ogni variabile del dataset dichiarare di che tipo di variabile si tratta** (qualitativa o quantitativa; per le qualitative, nominale od ordinale; per le quantitative, discreta o continua) e su quale scala di misura è rilevata.*
+
+| Variabile | Tipo | Scala di misura |
+|---|---|---|
+| `id` | qualitativa (è solo un'etichetta che identifica il dipendente, non va analizzata) | nominale |
+| `genere` | qualitativa | nominale |
+| `eta` | quantitativa discreta (età in anni compiuti) | a rapporti |
+| `anni_servizio` | quantitativa discreta | a rapporti |
+| `anzianita` | qualitativa | ordinale |
+| `titolo_studio` | qualitativa | ordinale |
+| `reparto` | qualitativa | nominale |
+| `supporto_sociale` | quantitativa continua (punteggio con decimali) | a intervalli |
+| `burnout` | quantitativa discreta (punteggio intero) | a intervalli |
+
+`anzianita` è ottenuta raggruppando in classi la variabile `anni_servizio`: passando dagli anni alle classi si perde informazione e si scende da una scala a rapporti a una scala ordinale.
+
+##
+
+*Confrontare il tipo di ciascuna variabile con il modo in cui R l'ha importata. Trasformare le variabili che non sono state importate nel modo adeguato, rispettando l'ordine dei livelli quando esiste un ordine naturale (vedi la tabella di descrizione del dataset).*
+
+Dalla struttura si vede che le variabili quantitative sono state importate correttamente come numeriche (`int` o `num`), mentre le variabili qualitative `genere`, `anzianita`, `titolo_studio` e `reparto` sono state importate come stringhe di caratteri (`chr`) e vanno trasformate in factor.
+
+Per `genere` e `reparto` (nominali) l'ordine dei livelli non è rilevante:
+
+```{r}
+dati$genere = factor(dati$genere)
+dati$reparto = factor(dati$reparto)
+```
+
+Per `anzianita` e `titolo_studio` (ordinali) l'ordine va specificato con l'argomento `levels`. 
+
+```{r}
+levels(factor(dati$anzianita))
+levels(factor(dati$titolo_studio))
+```
+
+```{r}
+dati$anzianita = factor(dati$anzianita,
+                        levels = c("junior", "intermedio", "senior"))
+dati$titolo_studio = factor(dati$titolo_studio,
+                            levels = c("diploma", "laurea triennale", "laurea magistrale"))
+```
+
+##
+
+*Verificare che le trasformazioni abbiano funzionato e che i livelli siano nell'ordine corretto.*
+
+```{r}
+str(dati)
+levels(dati$anzianita)
+levels(dati$titolo_studio)
+```
+
+Le quattro variabili sono ora factor e i livelli delle variabili ordinali sono nell'ordine corretto.
+
+# Descrizione del campione
+
+##
+
+*Come sono distribuiti i dipendenti tra uomini e donne? Rappresentare graficamente la distribuzione.*
+
+`genere` è una variabile nominale: si descrive con le frequenze assolute e relative e si rappresenta con un grafico a barre.
+
+```{r}
+freq_genere = table(dati$genere)
+freq_genere
+(freq_genere/sum(freq_genere)) * 100
+
+barplot(freq_genere,
+        names.arg = c("Donne", "Uomini"),
+        ylab = "Frequenza assoluta",
+        main = "Distribuzione dei dipendenti per genere")
+```
+
+Nel campione ci sono `r freq_genere["F"]` donne (`r round(prop.table(freq_genere)["F"] * 100, 1)`%) e `r freq_genere["M"]` uomini (`r round(prop.table(freq_genere)["M"] * 100, 1)`%).
+
+##
+
+*Qual è il reparto con più dipendenti? Che percentuale dei dipendenti lavora in questo reparto? Rappresentare graficamente la distribuzione percentuale.*
+
+Il reparto con più dipendenti è la moda della variabile `reparto`, cioè la modalità con la frequenza più alta.
+
+```{r}
+freq_reparto = table(dati$reparto)
+perc_reparto = (freq_reparto/sum(freq_reparto)) * 100
+freq_reparto
+round(perc_reparto, 1)
+
+names(freq_reparto)[freq_reparto == max(freq_reparto)]
+
+barplot(perc_reparto,
+        ylab = "Percentuale di dipendenti",
+        main = "Distribuzione percentuale dei dipendenti per reparto")
+```
+
+Il reparto con più dipendenti è `r names(freq_reparto)[which.max(freq_reparto)]`, in cui lavora il `r round(max(perc_reparto), 1)`% dei dipendenti.
+
+##
+
+*Come sono distribuiti i dipendenti nei tre livelli di anzianità? Rappresentare graficamente la distribuzione con il grafico più adatto.*
+
+`anzianita` è una variabile ordinale: si usa un grafico a barre, con le barre nell'ordine naturale dei livelli (garantito dalla trasformazione in factor fatta prima).
+
+```{r}
+freq_anz = table(dati$anzianita)
+freq_anz
+round((freq_anz/sum(freq_anz)) * 100, 1)
+
+barplot(freq_anz,
+        xlab = "Anzianità",
+        ylab = "Frequenza assoluta",
+        main = "Distribuzione dei dipendenti per anzianità")
+```
+
+I dipendenti sono distribuiti in modo abbastanza equilibrato nei tre livelli, con un numero leggermente più alto di junior (`r freq_anz["junior"]`).
+
+##
+
+*Che percentuale di dipendenti ha al massimo la laurea triennale? Che percentuale ha almeno la laurea triennale?*
+
+Per una variabile ordinale queste informazioni si ricavano dalle frequenze relative cumulate.
+
+```{r}
+perc_titolo = (table(dati$titolo_studio)/sum(table(dati$titolo_studio))) * 100
+perc_titolo
+perc_cum = cumsum(perc_titolo)
+perc_cum
+```
+
+"Al massimo la laurea triennale" significa diploma o laurea triennale: è la percentuale cumulata fino alla laurea triennale, cioè il `r perc_cum["laurea triennale"]`%.
+
+"Almeno la laurea triennale" significa laurea triennale o laurea magistrale: si ottiene togliendo da 100 la percentuale di chi ha solo il diploma.
+
+```{r}
+100 - perc_cum["diploma"]
+# oppure
+perc_titolo["laurea triennale"] + perc_titolo["laurea magistrale"]
+```
+
+Ha almeno la laurea triennale il `r 100 - perc_cum["diploma"]`% dei dipendenti.
+
+##
+
+*Qual è l'età tipica dei dipendenti dell'azienda? Qual è l'età del dipendente più giovane e di quello più anziano? Rappresentare graficamente la distribuzione della variabile.*
+
+L'età è una variabile quantitativa: il valore tipico si descrive con media e mediana, e la distribuzione si rappresenta con un istogramma.
+
+```{r}
+mean(dati$eta)
+median(dati$eta); quantile(dati$eta, prob = .50) # stesso risultato
+min(dati$eta)
+max(dati$eta)
+# oppure, tutto insieme
+summary(dati$eta)
+
+hist(dati$eta,
+     xlab = "Età (anni)",
+     ylab = "Frequenza",
+     main = "Distribuzione dell'età dei dipendenti")
+```
+
+L'età media dei dipendenti è `r round(mean(dati$eta), 2)` anni e la mediana è `r median(dati$eta)` anni: i due valori sono vicini, coerentemente con una distribuzione abbastanza simmetrica. Il dipendente più giovane ha `r min(dati$eta)` anni, il più anziano `r max(dati$eta)`.
+
+##
+
+*Qual è il numero di anni di servizio medio in azienda? Rappresentare graficamente la distribuzione della variabile.*
+
+```{r}
+mean(dati$anni_servizio)
+median(dati$anni_servizio)
+
+hist(dati$anni_servizio,
+     xlab = "Anni di servizio",
+     ylab = "Frequenza",
+     main = "Distribuzione degli anni di servizio")
+```
+
+In media i dipendenti lavorano in azienda da `r round(mean(dati$anni_servizio), 2)` anni. La distribuzione è asimmetrica a destra: molti dipendenti hanno pochi anni di servizio e pochi ne hanno molti. Per questo la media è più alta della mediana (`r median(dati$anni_servizio)` anni), perché risente dei valori alti. In questo caso la mediana descrive meglio il valore tipico.
+
+
+
+##
+
+*Rappresentare graficamente la distribuzione quantilica dell'età delle dipendenti e dei dipendenti. Calcolare la loro età media.*
+
+La distribuzione quantilica si rappresenta con il boxplot, che riporta minimo, quartili e massimo (ed eventuali valori anomali).
+
+```{r}
+boxplot(dati$eta ~ dati$genere,
+        names = c("Donne", "Uomini"),
+        xlab = "Genere",
+        ylab = "Età (anni)",
+        main = "Età per genere")
+
+mean(dati$eta[dati$genere == "F"])
+mean(dati$eta[dati$genere == "M"])
+```
+
+Le dipendenti hanno in media `r round(tapply(dati$eta, dati$genere, mean)["F"], 2)` anni, i dipendenti `r round(tapply(dati$eta, dati$genere, mean)["M"], 2)`. Dal boxplot si vede che la distribuzione dell'età degli uomini è spostata leggermente verso l'alto rispetto a quella delle donne, ma la variabilità è simile nei due gruppi.
+
+# Burnout e supporto sociale
+
+##
+
+*Qual è il livello tipico di burnout dei dipendenti? E di supporto sociale percepito? Rappresentare graficamente le due variabili. Identificare anche eventuali valori estremi.*
+
+```{r}
+summary(dati$burnout)
+summary(dati$supporto_sociale)
+```
+
+Il punteggio medio di burnout è `r round(mean(dati$burnout), 2)` (mediana `r median(dati$burnout)`), il punteggio medio di supporto sociale è `r round(mean(dati$supporto_sociale), 2)` (mediana `r median(dati$supporto_sociale)`). In entrambi i casi media e mediana sono molto vicine.
+
+Per rappresentare le due variabili e individuare i valori estremi si usano istogramma e boxplot:
+
+```{r}
+par(mfrow = c(2, 2)) # crea una finestra grafica con due righe 
+# e due colonne per disporre i 4 grafici
+hist(dati$burnout, xlab = "Burnout", main = "Burnout")
+hist(dati$supporto_sociale, xlab = "Supporto sociale", main = "Supporto sociale")
+boxplot(dati$burnout, ylab = "Burnout", main = "Burnout")
+boxplot(dati$supporto_sociale, ylab = "Supporto sociale", main = "Supporto sociale")
+par(mfrow = c(1, 1)) # fa tornare a posto la finestra grafica
+```
+
+I valori estremi sono i punti rappresentati oltre i baffi del boxplot (più distanti di 1.5 volte la differenza interquartile dal primo o dal terzo quartile). 
+
+Per il burnout ci sono `r length(boxplot.stats(dati$burnout)$out)` valori estremi verso l'alto ( i due punti oltre il baffo superiore nel grafico), mentre per il supporto sociale non ci sono valori estremi.
+
+##
+
+*Il 25% dei dipendenti con il burnout più basso ha un punteggio inferiore a quale valore? Il 25% dei dipendenti con il burnout più alto ha un punteggio superiore a quale valore? Aiutarsi con la rappresentazione grafica appropriata.*
+
+I valori richiesti sono il primo e il terzo quartile.
+
+```{r}
+q_burnout = quantile(dati$burnout, probs = c(0.25, 0.75))
+q_burnout
+
+```
+
+Il 25% dei dipendenti con il burnout più basso ha un punteggio inferiore a `r q_burnout[1]` (primo quartile); il 25% con il burnout più alto ha un punteggio superiore a `r q_burnout[2]` (terzo quartile).
+
+##
+
+*Entro quale intervallo di punteggi si colloca il 50% centrale dei dipendenti per il burnout? E per il supporto sociale? Quanto è ampio questo intervallo nei due casi?*
+
+Il 50% centrale delle osservazioni è compreso tra il primo e il terzo quartile; l'ampiezza dell'intervallo è la differenza interquartile.
+
+```{r}
+q_supporto = quantile(dati$supporto_sociale, probs = c(0.25, 0.75))
+q_burnout
+q_supporto
+
+IQR(dati$burnout)
+IQR(dati$supporto_sociale)
+# oppure
+q_burnout[2] - q_burnout[1]
+q_supporto[2] - q_supporto[1]
+```
+
+Il 50% centrale dei dipendenti ha un punteggio di burnout tra `r q_burnout[1]` e `r q_burnout[2]` (intervallo ampio `r IQR(dati$burnout)` punti) e un punteggio di supporto sociale tra `r q_supporto[1]` e `r q_supporto[2]` (intervallo ampio `r round(IQR(dati$supporto_sociale), 2)` punti). Le due ampiezze non si possono confrontare direttamente, perché le due variabili sono misurate su scale diverse (0–54 e 1–7).
+
+##
+
+*Il 10% dei dipendenti che percepisce meno supporto sociale ha un punteggio inferiore a quale valore? Il 10% che ne percepisce di più ha un punteggio superiore a quale valore?*
+
+I valori richiesti sono il 10° e il 90° percentile.
+
+```{r}
+p_supporto = quantile(dati$supporto_sociale, probs = c(0.10, 0.90))
+p_supporto
+```
+
+Il 10% dei dipendenti che percepisce meno supporto ha un punteggio inferiore a `r p_supporto[1]`, il 10% che ne percepisce di più ha un punteggio superiore a `r p_supporto[2]`.
+
+# Il burnout nei diversi gruppi
+
+##
+
+*Rappresentare graficamente la distribuzione quantilica del burnout delle dipendenti e dei dipendenti. Calcolare i punteggi medi a seconda del gruppo di appartenenza.*
+
+```{r}
+boxplot(dati$burnout[dati$genere == "F"], dati$burnout[dati$genere == "M"],
+        names = c("Donne", "Uomini"),
+        xlab = "Genere",
+        ylab = "Burnout",
+        main = "Burnout per genere")
+# oppure 
+boxplot(dati$burnout ~ dati$genere,
+        names = c("Donne", "Uomini"),
+        xlab = "Genere",
+        ylab = "Burnout",
+        main = "Burnout per genere")
+
+
+mean(dati$burnout[dati$genere == "F"])
+mean(dati$burnout[dati$genere == "M"])
+```
+
+Il punteggio medio di burnout è `r round(tapply(dati$burnout, dati$genere, mean)["F"], 2)` per le donne e `r round(tapply(dati$burnout, dati$genere, mean)["M"], 2)` per gli uomini. Le medie sono molto simili e le due scatole del boxplot si sovrappongono quasi completamente: il burnout non sembra cambiare con il genere. Nel gruppo delle donne ci sono due valori estremi verso l'alto.
+
+##
+
+*Ripetere le analisi del punto precedente considerando i livelli di anzianità.*
+
+```{r}
+boxplot(dati$burnout[dati$anzianita == "junior"], 
+        dati$burnout[dati$anzianita == "intermedio"],
+        dati$burnout[dati$anzianita == "senior"],
+        names = levels(dati$anzianita),
+        xlab = "Anzianità",
+        ylab = "Burnout",
+        main = "Burnout per anzianità")
+# oppure
+boxplot(dati$burnout ~ dati$anzianita,
+        xlab = "Anzianità",
+        ylab = "Burnout",
+        main = "Burnout per anzianità")
+
+mean(dati$burnout[dati$anzianita == "junior"])
+mean(dati$burnout[dati$anzianita == "intermedio"])
+mean(dati$burnout[dati$anzianita == "senior"])
+```
+
+Il burnout medio dei senior (`r round(tapply(dati$burnout, dati$anzianita, mean)["senior"], 2)`) è più alto di quello di junior (`r round(tapply(dati$burnout, dati$anzianita, mean)["junior"], 2)`) e intermedi (`r round(tapply(dati$burnout, dati$anzianita, mean)["intermedio"], 2)`). Dal boxplot si vede che la mediana dei senior è più alta del terzo quartile degli junior: la distribuzione del burnout dei senior è spostata verso l'alto.
+
+##
+
+*Ripetere le analisi dei due punti precedenti considerando la variabile **supporto sociale**.*
+
+```{r}
+par(mfrow = c(1, 2))
+boxplot(dati$supporto_sociale ~ dati$genere,
+        names = c("Donne", "Uomini"),
+        xlab = "Genere",
+        ylab = "Supporto sociale",
+        main = "Supporto sociale per genere")
+boxplot(dati$supporto_sociale ~ dati$anzianita,
+        xlab = "Anzianità",
+        ylab = "Supporto sociale",
+        main = "Supporto sociale per anzianità")
+par(mfrow = c(1, 1))
+
+mean(dati$supporto_sociale[dati$genere == "F"])
+mean(dati$supporto_sociale[dati$genere == "M"])
+mean(dati$supporto_sociale[dati$anzianita == "junior"])
+mean(dati$supporto_sociale[dati$anzianita == "intermedio"])
+mean(dati$supporto_sociale[dati$anzianita == "senior"])
+```
+
+Il supporto sociale medio è praticamente uguale per donne e uomini e cambia poco nei tre livelli di anzianità: le distribuzioni si sovrappongono molto. A differenza del burnout, il supporto sociale non sembra dipendere né dal genere né dall'anzianità.
+
+# Punteggi di cut-off
+
+##
+
+*Creare una nuova variabile `burnout_alto` nel dataset, con valore `">=27"` se il punteggio di burnout è maggiore o uguale a 27 e `"<27"` altrimenti. Trasformarla nel tipo adeguato, con i livelli nell'ordine `"<27"`, `">=27"`. Verificare che la nuova variabile sia stata creata correttamente.*
+
+```{r}
+dati$burnout_alto = rep("<27", nrow(dati))
+dati$burnout_alto[dati$burnout >= 27] = ">=27"
+dati$burnout_alto = factor(dati$burnout_alto, 
+                           levels = c("<27", ">=27"))
+
+```
+
+Per verificare la nuova variabile si controllano i livelli e il valore minimo e massimo di `burnout` in ciascun gruppo: nel gruppo `"<27"` il massimo deve essere al più 26, nel gruppo `">=27"` il minimo deve essere 27.
+
+```{r}
+str(dati$burnout_alto)
+levels(dati$burnout_alto)
+max(dati$burnout[dati$burnout_alto == "<27"]) <= 26
+min(dati$burnout[dati$burnout_alto == ">=27"]) >= 27
+```
+
+##
+
+*Quanti dipendenti hanno un livello di burnout alto? Che percentuale del totale rappresentano?*
+
+```{r}
+freq_alto = table(dati$burnout_alto)
+freq_alto
+(freq_alto/sum(freq_alto)) * 100
+```
+
+Hanno un livello di burnout alto `r freq_alto[">=27"]` dipendenti, il `r prop.table(freq_alto)[">=27"] * 100`% del totale.
+
+##
+
+*Che percentuale dei dipendenti è senior **e** ha un livello di burnout alto?*
+
+È una frequenza relativa congiunta: si calcola sulla tabella di contingenza dividendo ogni cella per il totale dei dipendenti.
+
+```{r}
+tab_anz = table(dati$anzianita, dati$burnout_alto)
+tab_anz
+addmargins(tab_anz)
+
+(tab_anz/sum(tab_anz)) * 100
+```
+
+È senior e ha un burnout alto il `r prop.table(tab_anz)["senior", ">=27"] * 100`% dei dipendenti.
+
+##
+
+*Tra i dipendenti junior, che percentuale ha un livello di burnout alto? E tra gli intermedi e i senior? Rappresentare graficamente il confronto.*
+
+Qui la percentuale va calcolata all'interno di ciascun livello di anzianità: sono le frequenze relative condizionate di riga, $P(\text{burnout alto} | \text{anzianità})$.
+
+```{r}
+perc_anz = prop.table(tab_anz, 1) * 100
+round(perc_anz, 1)
+
+barplot(t(perc_anz),
+        beside = TRUE,
+        legend.text = TRUE,
+        args.legend = list(title = "Burnout", x = "topleft"),
+        xlab = "Anzianità",
+        ylab = "Percentuale di dipendenti",
+        main = "Livello di burnout per anzianità")
+```
+
+Ha un burnout alto il `r round(perc_anz["junior", ">=27"], 1)`% degli junior, il `r round(perc_anz["intermedio", ">=27"], 1)`% degli intermedi e il `r round(perc_anz["senior", ">=27"], 1)`% dei senior. Tra i senior più di un dipendente su due ha un livello di burnout alto.
+
+##
+
+*C'è associazione tra anzianità e livello di burnout? Utilizzare gli indici appropriati.*
+
+Per l'associazione tra due variabili qualitative si usa il $\chi^2$, che confronta le frequenze osservate con quelle attese nel caso di indipendenza. Dato che il valore del $\chi^2$ dipende dalla numerosità e dalla dimensione della tabella, lo si normalizza dividendolo per il suo valore massimo:
+
+$$\chi^2_N = \dfrac{\chi^2}{N \times \min[(r-1); (c-1)]}$$
+
+```{r}
+chi2_anz = chisq.test(tab_anz)$statistic
+chi2_anz
+chi2max_anz = nrow(dati) * min(dim(tab_anz) - 1)
+chi2max_anz
+chi2norm_anz = chi2_anz / chi2max_anz
+chi2norm_anz
+```
+
+Le frequenze attese nel caso di indipendenza si possono vedere con:
+
+```{r}
+chisq.test(tab_anz)$expected
+```
+
+Tra i senior si osservano molti più dipendenti con burnout alto di quelli attesi in caso di indipendenza (`r tab_anz["senior", ">=27"]` contro `r round(chisq.test(tab_anz)$expected["senior", ">=27"], 1)`). Il $\chi^2$ è `r round(chi2_anz, 2)` e il $\chi^2$ normalizzato è `r round(chi2norm_anz, 3)`: c'è un'associazione tra anzianità e livello di burnout, dovuta soprattutto alla percentuale molto più alta di burnout alto tra i senior.
+
+##
+
+*C'è associazione tra genere e livello di burnout? Precedere il calcolo della statistica con l'opportuna rappresentazione grafica.*
+
+```{r}
+tab_gen = table(dati$genere, dati$burnout_alto)
+addmargins(tab_gen)
+perc_gen = prop.table(tab_gen, 1) * 100
+round(perc_gen, 1)
+
+barplot(t(perc_gen),
+        beside = TRUE,
+        names.arg = c("Donne", "Uomini"),
+        legend.text = TRUE,
+        args.legend = list(title = "Burnout", x = "topright"),
+        xlab = "Genere",
+        ylab = "Percentuale di dipendenti",
+        main = "Livello di burnout per genere")
+```
+
+```{r}
+chi2_gen = chisq.test(tab_gen)$statistic
+chi2_gen
+chi2max_gen = nrow(dati) * min(c(nrow(tab_gen) - 1, ncol(tab_gen) - 1))
+chi2norm_gen = chi2_gen / chi2max_gen
+chi2norm_gen
+```
+
+Ha un burnout alto il `r round(perc_gen["F", ">=27"], 1)`% delle donne e il `r round(perc_gen["M", ">=27"], 1)`% degli uomini: la differenza è piccola e il grafico mostra barre simili nei due gruppi. Il $\chi^2$ normalizzato (`r round(chi2norm_gen, 3)`) è molto vicino a 0: l'associazione tra genere e livello di burnout è praticamente nulla.
+
+Nota: per le tabelle $2 \times 2$ la funzione `chisq.test()` applica di default la correzione di continuità di Yates, per cui il valore è un po' più basso di quello calcolato a mano con la formula del $\chi^2$. Il valore senza correzione si ottiene con `chisq.test(tab_gen, correct = FALSE)$statistic`.
+
+##
+
+*Quale delle due variabili, anzianità o genere, è più associata al livello di burnout?*
+
+```{r}
+chi2norm_anz
+chi2norm_gen
+```
+
+Il $\chi^2$ normalizzato si può usare per confrontare tabelle di dimensioni diverse. L'anzianità (`r round(chi2norm_anz, 3)`) è molto più associata al livello di burnout rispetto al genere (`r round(chi2norm_gen, 3)`), coerentemente con quanto visto nei boxplot della sezione precedente.
+
+##
+
+*Rappresentare graficamente la relazione tra supporto sociale e burnout. Che direzione ha la relazione?*
+
+Le due variabili sono quantitative: la relazione si rappresenta con un diagramma di dispersione.
+
+```{r}
+plot(dati$supporto_sociale, dati$burnout,
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout",
+     main = "Relazione tra supporto sociale e burnout")
+```
+
+La nuvola di punti ha un andamento lineare decrescente: all'aumentare del supporto sociale il burnout tende a diminuire. La relazione è negativa.
+
+##
+
+*Quanto è forte la relazione lineare tra supporto sociale e burnout? Interpretare il risultato.*
+
+La covarianza indica la direzione della relazione, ma il suo valore dipende dalle unità di misura delle variabili e quindi non dice quanto la relazione è forte. Per l'intensità si usa il coefficiente di correlazione di Pearson, che varia tra $-1$ e $1$.
+
+```{r}
+cov(dati$supporto_sociale, dati$burnout)
+r_sup = cor(dati$supporto_sociale, dati$burnout)
+r_sup
+```
+
+La covarianza è negativa e conferma la direzione osservata nel grafico. La correlazione è $r =$ `r round(r_sup, 2)`: la relazione lineare tra supporto sociale e burnout è negativa e di intensità moderata. I dipendenti che percepiscono più supporto da colleghi e superiori tendono ad avere livelli di esaurimento emotivo più bassi.
+
+##
+
+*Quanto è forte la relazione lineare tra anni di servizio e burnout? E tra età e anni di servizio?*
+
+```{r}
+par(mfrow = c(1, 2))
+plot(dati$anni_servizio, dati$burnout,
+     pch = 19,
+     xlab = "Anni di servizio",
+     ylab = "Burnout",
+     main = "Anni di servizio e burnout")
+plot(dati$eta, dati$anni_servizio,
+     pch = 19,
+     xlab = "Età",
+     ylab = "Anni di servizio",
+     main = "Età e anni di servizio")
+par(mfrow = c(1, 1))
+
+r_anni = cor(dati$anni_servizio, dati$burnout)
+r_anni
+cor(dati$eta, dati$anni_servizio)
+```
+
+La correlazione tra anni di servizio e burnout è $r =$ `r round(r_anni, 2)`: la relazione è positiva e di intensità moderata, chi lavora da più anni in azienda tende ad avere un burnout più alto. La correlazione tra età e anni di servizio ($r =$ `r round(cor(dati$eta, dati$anni_servizio), 2)`) è positiva e forte, come ci si aspetta: per lavorare da molti anni in azienda bisogna avere un'età più alta.
+
+##
+
+*Stimare un modello di regressione lineare (chiamato `m1`) per prevedere il burnout a partire dal supporto sociale. Aggiungere la retta di regressione al grafico a dispersione.*
+
+Il burnout è la variabile dipendente ($y$), il supporto sociale la variabile indipendente ($x$).
+
+```{r}
+m1 = lm(burnout ~ supporto_sociale, data = dati)
+m1
+
+plot(dati$supporto_sociale, dati$burnout,
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout",
+     main = "Relazione tra supporto sociale e burnout")
+abline(m1, col = "red", lwd = 2)
+```
+
+###
+
+*Scrivere l'equazione della retta di regressione nella forma $y^* = a + b x$ e interpretare intercetta e coefficiente angolare. Qual è il punteggio di burnout atteso per un dipendente con supporto sociale pari a 2? Per un dipendente con supporto sociale pari a 6?*
+
+```{r}
+a1 = coef(m1)[1]
+b1 = coef(m1)[2]
+a1
+b1
+```
+
+L'equazione della retta è:
+
+$$y^* = `r round(a1, 2)` `r round(b1, 2)`x$$
+
+- **Intercetta** ($a =$ `r round(a1, 2)`): è il burnout atteso per un dipendente con supporto sociale pari a 0. Dato che il punteggio di supporto sociale va da 1 a 7, il valore 0 non è possibile e l'intercetta non ha un significato concreto.
+- **Coefficiente angolare** ($b =$ `r round(b1, 2)`): per ogni punto in più di supporto sociale, il burnout atteso diminuisce di `r abs(round(b1, 2))` punti.
+
+```{r}
+a1 + b1 * c(2, 6)
+```
+
+Il burnout atteso è `r round(a1 + b1 * 2, 2)` per un dipendente con supporto sociale pari a 2 e `r round(a1 + b1 * 6, 2)` per un dipendente con supporto sociale pari a 6. La differenza tra i due valori (`r round(abs(b1 * 4), 2)` punti) è pari a 4 volte il coefficiente angolare, perché i due dipendenti differiscono di 4 punti di supporto sociale.
+
+###
+
+*Quale quota della variabilità del burnout è spiegata dal supporto sociale?*
+
+```{r}
+R2_m1 = cor(dati$supporto_sociale, dati$burnout)^2
+R2_m1
+```
+
+Il supporto sociale spiega il `r round(R2_m1 * 100, 1)`% della variabilità del burnout ($R^2 =$ `r round(R2_m1, 2)`). Il restante `r round((1 - R2_m1) * 100, 1)`% dipende da altri fattori non considerati nel modello.
+
+##
+
+*Studiare il comportamento dei residui del modello di regressione utilizzando un'opportuna rappresentazione grafica.*
+
+I residui sono le differenze tra i valori osservati e quelli stimati dal modello ($y - y^*$).
+
+```{r}
+res_m1 = residuals(m1)
+# equivalente a: dati$burnout - fitted(m1)
+summary(res_m1)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+
+hist(res_m1, xlab = "Residui", main = "Distribuzione dei residui")
+
+qqnorm(res_m1)
+qqline(res_m1, col = "red")
+
+plot(fitted(m1), res_m1,
+     xlab = "Valori stimati", ylab = "Residui",
+     main = "Residui e valori stimati")
+abline(h = 0, col = "red")
+
+plot(dati$supporto_sociale, res_m1,
+     xlab = "Supporto sociale", ylab = "Residui",
+     main = "Residui e supporto sociale")
+abline(h = 0, col = "red")
+
+par(mfrow = c(1, 1))
+```
+
+```{r}
+plot(1:nrow(dati), res_m1,
+     xlab = "Ordine delle osservazioni", ylab = "Residui",
+     main = "Residui e ordine delle osservazioni")
+abline(h = 0, col = "red")
+```
+
+I residui hanno media 0 e una distribuzione approssimativamente simmetrica e normale (l'istogramma ha una forma a campana e nel Q-Q plot i punti sono vicini alla retta). Nei grafici di dispersione i residui sono distribuiti in modo casuale intorno allo 0, senza andamenti particolari e con una variabilità simile per tutti i valori di supporto sociale e per tutto l'ordine delle osservazioni. Il modello lineare è quindi adeguato a descrivere la relazione.
+
+##
+
+*Stimare un secondo modello di regressione (`m2`) per prevedere il burnout a partire dagli anni di servizio e ripetere tutti i punti legati al modello di regressione precedente.*
+
+```{r}
+m2 = lm(burnout ~ anni_servizio, data = dati)
+m2
+
+plot(dati$anni_servizio, dati$burnout,
+     pch = 19,
+     xlab = "Anni di servizio",
+     ylab = "Burnout",
+     main = "Relazione tra anni di servizio e burnout")
+abline(m2, col = "red", lwd = 2)
+```
+
+**Equazione e interpretazione**
+
+```{r}
+a2 = coef(m2)[1]
+b2 = coef(m2)[2]
+a2
+b2
+```
+
+$$y^* = `r round(a2, 2)` + `r round(b2, 2)`x$$
+
+- **Intercetta** ($a =$ `r round(a2, 2)`): è il burnout atteso per un dipendente con 0 anni di servizio, cioè appena assunto. Nel dataset il valore minimo di anni di servizio è `r min(dati$anni_servizio)`, quindi l'intercetta è un'estrapolazione appena fuori dai dati osservati.
+- **Coefficiente angolare** ($b =$ `r round(b2, 2)`): per ogni anno di servizio in più, il burnout atteso aumenta di `r round(b2, 2)` punti.
+
+Dato che la consegna chiede di ripetere tutti i punti, si calcolano anche i valori attesi per 2 e 6 anni di servizio:
+
+```{r}
+a2 + b2 * c(2, 6)
+```
+
+**Quota di variabilità spiegata**
+
+```{r}
+R2_m2 = cor(dati$anni_servizio, dati$burnout)^2
+R2_m2
+```
+
+Gli anni di servizio spiegano il `r round(R2_m2 * 100, 1)`% della variabilità del burnout, meno del supporto sociale (`r round(R2_m1 * 100, 1)`%): tra i due, il modello `m1` è quello che descrive meglio il burnout.
+
+**Residui**
+
+```{r}
+res_m2 = residuals(m2)
+summary(res_m2)
+
+par(mfrow = c(2, 2))
+
+hist(res_m2, xlab = "Residui", main = "Distribuzione dei residui")
+
+qqnorm(res_m2)
+qqline(res_m2, col = "red")
+
+plot(fitted(m2), res_m2,
+     xlab = "Valori stimati", ylab = "Residui",
+     main = "Residui e valori stimati")
+abline(h = 0, col = "red")
+
+plot(dati$anni_servizio, res_m2,
+     xlab = "Anni di servizio", ylab = "Residui",
+     main = "Residui e anni di servizio")
+abline(h = 0, col = "red")
+
+par(mfrow = c(1, 1))
+```
+
+Anche in questo caso i residui sono distribuiti in modo approssimativamente simmetrico intorno allo 0. Nei grafici di dispersione i punti si dispongono in colonne verticali perché gli anni di servizio sono numeri interi, ma non si vedono andamenti sistematici: i residui restano distribuiti in modo casuale intorno allo 0.

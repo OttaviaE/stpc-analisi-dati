@@ -1,0 +1,192 @@
+---
+title: "Esercitazione: burnout e supporto sociale al lavoro"
+subtitle: "Moduli 2 e 3 — statistica descrittiva e associazione tra variabili"
+format:
+  html:
+    toc: true
+    number-sections: true
+---
+
+# Il contesto
+
+Un'azienda di medie dimensioni ha chiesto al servizio di psicologia del lavoro di indagare il benessere dei propri dipendenti. A 200 dipendenti è stato somministrato un questionario che misura:
+
+- l'**esaurimento emotivo**, una delle componenti del burnout;
+- il **supporto sociale percepito** da parte di colleghi e superiori, considerato un possibile fattore di protezione.
+
+Sono stati inoltre raccolti alcuni dati socio-anagrafici e lavorativi. I dati sono nel file `benessere_lavoro.csv`.
+
+| Variabile | Descrizione |
+|---|---|
+| `id` | codice identificativo del dipendente |
+| `genere` | genere del dipendente (`F`, `M`) |
+| `eta` | età in anni |
+| `anni_servizio` | anni di servizio nell'azienda |
+| `anzianita` | anzianità in azienda: `junior` (fino a 3 anni), `intermedio` (da 4 a 6 anni), `senior` (più di 6 anni) |
+| `titolo_studio` | titolo di studio più alto: `diploma`, `laurea triennale`, `laurea magistrale` |
+| `reparto` | reparto di appartenenza: `amministrazione`, `produzione`, `commerciale`, `risorse umane` |
+| `supporto_sociale` | punteggio di supporto sociale percepito (da 1 a 7; punteggi alti = più supporto) |
+| `burnout` | punteggio di esaurimento emotivo (da 0 a 54; punteggi alti = più esaurimento) |
+
+Per ogni esercizio scrivere il codice R in un chunk e rispondere alle domande nel testo del documento. Quando una domanda chiede un'informazione, individuare la statistica o il grafico adatti per ricavarla e motivare brevemente la scelta.
+
+# Importazione e preparazione dei dati
+
+## 
+
+Salvare il file `benessere_lavoro.csv` nella cartella `data` del progetto e importarlo in un oggetto chiamato `dati`. Nel file le colonne sono separate da `;` e i decimali da `,`. La scelta della funzione usata per importare il dataset dipende da questi dettagli.
+## 
+
+Esaminare la struttura del dataset. Quanti dipendenti sono presenti nel dataset? Quante informazioni sono state raccolte su ciascuno?
+
+##
+
+**Per ogni variabile del dataset dichiarare di che tipo di variabile si tratta** (qualitativa o quantitativa; per le qualitative, nominale od ordinale; per le quantitative, discreta o continua) e su quale scala di misura è rilevata. Questa classificazione guiderà la scelta delle statistiche e dei grafici in tutta l'esercitazione.
+
+## 
+
+Confrontare il tipo di ciascuna variabile con il modo in cui R l'ha importata. Trasformare le variabili che non sono state importate nel modo adeguato, rispettando l'ordine dei livelli quando esiste un ordine naturale (vedi la tabella di descrizione del dataset).
+
+##
+
+Verificare che le trasformazioni abbiano funzionato e che i livelli siano nell'ordine corretto.
+
+# Descrizione del campione
+
+##
+
+
+Come sono distribuiti i dipendenti tra uomini e donne? Rappresentare graficamente la distribuzione.
+
+## 
+
+Qual è il reparto con più dipendenti? Che percentuale dei dipendenti lavora in questo reparto? Rappresentare graficamente la distribuzione percentuale.
+
+## 
+
+Come sono distribuiti i dipendenti nei tre livelli di anzianità? Rappresentare graficamente la distribuzione con il grafico più adatto.
+
+## 
+
+Che percentuale di dipendenti ha al massimo la laurea triennale?  Che percentuale ha almeno la laurea triennale?
+
+## 
+
+Qual è l'età tipica dei dipendenti dell'azienda? Qual è l'età del dipendente più giovane e di quello più anziano? Rappresentare graficamente la distribuzione della variabile.
+
+## 
+
+Qual è il numero di anni di servizio medio in azienda?  Rappresentare graficamente la distribuzione della variabile.
+
+## 
+
+Rappresentare graficamente la distribuzione quantilica dell'età delle dipendenti e dei dipendenti. Calcolare la loro età media. 
+
+
+# Burnout e supporto sociale
+
+##
+
+Qual è il livello tipico di burnout dei dipendenti? E di supporto sociale percepito? Rappresentare graficamente le due variabili. Identificare anche eventuali valori estremi.
+
+
+##
+
+Il 25% dei dipendenti con il burnout più basso ha un punteggio inferiore a quale valore? Il 25% dei dipendenti con il burnout più alto ha un punteggio superiore a quale valore? Aiutarsi con la rappresentazione grafica appropriata.
+
+
+## 
+
+Entro quale intervallo di punteggi si colloca il 50% centrale dei dipendenti per il burnout? E per il supporto sociale? Quanto è ampio questo intervallo nei due casi?
+
+
+## 
+
+Il 10% dei dipendenti che percepisce meno supporto sociale ha un punteggio inferiore a quale valore? Il 10% che ne percepisce di più ha un punteggio superiore a quale valore?
+
+
+
+# Il burnout nei diversi gruppi
+
+##
+
+Rappresentare graficamente la distribuzione quantilica del burnout delle dipendenti e dei dipendenti. Calcolare i punteggi medi a seconda del gruppo di appartenzenza
+
+## 
+
+Ripetere le analisi del punto precedente considerando i livelli di anzianità.
+
+## 
+
+Ripetere le analisi dei due punti precendenti considerando la variabile **supporto sociale**.
+
+
+# Punteggi di cut-off
+
+Nell'esercitazione si considera che punteggi di esaurimento emotivo pari o superiori a **27** indichino un livello di burnout **alto**.
+
+##
+
+ Creare una nuova variabile `burnout_alto` nel dataset, con valore `">=27"` se il punteggio di burnout è maggiore o uguale a 27 e `"<27"` altrimenti. Trasformarla nel tipo adeguato, con i livelli nell'ordine `"<27"`, `">=27"`.
+Verificare che la nuova variabile sia stata creata correttamente.
+
+##
+
+Quanti dipendenti hanno un livello di burnout alto? Che percentuale del totale rappresentano?
+
+##
+
+Che percentuale dei dipendenti è senior **e** ha un livello di burnout alto?
+
+
+## 
+
+Tra i dipendenti junior, che percentuale ha un livello di burnout alto? E tra gli intermedi e i senior? Rappresentare graficamente il confronto.
+
+##
+
+C'è associazione tra anzianità e livello di burnout? Utilizzare gli indici appropriati.
+
+##
+
+C'è associazione tra genere e livello di burnout? Precedere il calcolo della statistica con l'opportuna rappresentazione grafica.
+
+##
+
+Quale delle due variabili, anzianità o genere, è più associata al livello di burnout? 
+
+##
+
+Rappresentare graficamente la relazione tra supporto sociale e burnout. Che direzione ha la relazione? 
+
+##
+
+Quanto è forte la relazione lineare tra supporto sociale e burnout? Interpretare il risultato.
+
+## 
+
+Quanto è forte la relazione lineare tra anni di servizio e burnout? E tra età e anni di servizio? 
+
+## 
+
+Stimare un modello di regressione lineare (chiamato `m1`) per prevedere il burnout a partire dal supporto sociale. Aggiungere la retta di regressione al grafico a dispersione. 
+
+###
+
+Scrivere l'equazione della retta di regressione nella forma $y^* = a + b x$ e interpretare intercetta e coefficiente angolare. Qual è il punteggio di burnout atteso per un dipendente con supporto sociale pari a 2? Per un dipendente con supporto sociale pari a 6? 
+
+###
+
+Quale quota della variabilità del burnout è spiegata dal supporto sociale? 
+
+## 
+
+Studiare il comportamento dei residui del modello di regressione utilizzando un’opportuna rappresentazione grafica.
+
+##
+
+Stimare un secondo modello di regressione (`m2`) per prevedere il burnout a partire dagli anni di servizio e ripetere tutti i punti legati al modello di regressione precedente. 
+
+
+
+

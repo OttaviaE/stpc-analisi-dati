@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Esercitazione: burnout e supporto sociale al lavoro</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/clipboard/clipboard.min.js"></script>
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/popper.min.js"></script>
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/anchor.min.js"></script>
+<link href="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="esercitazione-aggiuntiva-statistica-descrittiva_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#il-contesto" id="toc-il-contesto" class="nav-link active" data-scroll-target="#il-contesto"><span class="header-section-number">1</span> Il contesto</a></li>
+  <li><a href="#importazione-e-preparazione-dei-dati" id="toc-importazione-e-preparazione-dei-dati" class="nav-link" data-scroll-target="#importazione-e-preparazione-dei-dati"><span class="header-section-number">2</span> Importazione e preparazione dei dati</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">2.1</span> </a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"><span class="header-section-number">2.2</span> </a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"><span class="header-section-number">2.3</span> </a></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3"><span class="header-section-number">2.4</span> </a></li>
+  </ul></li>
+  <li><a href="#descrizione-del-campione" id="toc-descrizione-del-campione" class="nav-link" data-scroll-target="#descrizione-del-campione"><span class="header-section-number">3</span> Descrizione del campione</a>
+  <ul class="collapse">
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4"><span class="header-section-number">3.1</span> </a></li>
+  <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5"><span class="header-section-number">3.2</span> </a></li>
+  <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6"><span class="header-section-number">3.3</span> </a></li>
+  <li><a href="#section-7" id="toc-section-7" class="nav-link" data-scroll-target="#section-7"><span class="header-section-number">3.4</span> </a></li>
+  <li><a href="#section-8" id="toc-section-8" class="nav-link" data-scroll-target="#section-8"><span class="header-section-number">3.5</span> </a></li>
+  <li><a href="#section-9" id="toc-section-9" class="nav-link" data-scroll-target="#section-9"><span class="header-section-number">3.6</span> </a></li>
+  <li><a href="#section-10" id="toc-section-10" class="nav-link" data-scroll-target="#section-10"><span class="header-section-number">3.7</span> </a></li>
+  </ul></li>
+  <li><a href="#burnout-e-supporto-sociale" id="toc-burnout-e-supporto-sociale" class="nav-link" data-scroll-target="#burnout-e-supporto-sociale"><span class="header-section-number">4</span> Burnout e supporto sociale</a>
+  <ul class="collapse">
+  <li><a href="#section-11" id="toc-section-11" class="nav-link" data-scroll-target="#section-11"><span class="header-section-number">4.1</span> </a></li>
+  <li><a href="#section-12" id="toc-section-12" class="nav-link" data-scroll-target="#section-12"><span class="header-section-number">4.2</span> </a></li>
+  <li><a href="#section-13" id="toc-section-13" class="nav-link" data-scroll-target="#section-13"><span class="header-section-number">4.3</span> </a></li>
+  <li><a href="#section-14" id="toc-section-14" class="nav-link" data-scroll-target="#section-14"><span class="header-section-number">4.4</span> </a></li>
+  </ul></li>
+  <li><a href="#il-burnout-nei-diversi-gruppi" id="toc-il-burnout-nei-diversi-gruppi" class="nav-link" data-scroll-target="#il-burnout-nei-diversi-gruppi"><span class="header-section-number">5</span> Il burnout nei diversi gruppi</a>
+  <ul class="collapse">
+  <li><a href="#section-15" id="toc-section-15" class="nav-link" data-scroll-target="#section-15"><span class="header-section-number">5.1</span> </a></li>
+  <li><a href="#section-16" id="toc-section-16" class="nav-link" data-scroll-target="#section-16"><span class="header-section-number">5.2</span> </a></li>
+  <li><a href="#section-17" id="toc-section-17" class="nav-link" data-scroll-target="#section-17"><span class="header-section-number">5.3</span> </a></li>
+  </ul></li>
+  <li><a href="#punteggi-di-cut-off" id="toc-punteggi-di-cut-off" class="nav-link" data-scroll-target="#punteggi-di-cut-off"><span class="header-section-number">6</span> Punteggi di cut-off</a>
+  <ul class="collapse">
+  <li><a href="#section-18" id="toc-section-18" class="nav-link" data-scroll-target="#section-18"><span class="header-section-number">6.1</span> </a></li>
+  <li><a href="#section-19" id="toc-section-19" class="nav-link" data-scroll-target="#section-19"><span class="header-section-number">6.2</span> </a></li>
+  <li><a href="#section-20" id="toc-section-20" class="nav-link" data-scroll-target="#section-20"><span class="header-section-number">6.3</span> </a></li>
+  <li><a href="#section-21" id="toc-section-21" class="nav-link" data-scroll-target="#section-21"><span class="header-section-number">6.4</span> </a></li>
+  <li><a href="#section-22" id="toc-section-22" class="nav-link" data-scroll-target="#section-22"><span class="header-section-number">6.5</span> </a></li>
+  <li><a href="#section-23" id="toc-section-23" class="nav-link" data-scroll-target="#section-23"><span class="header-section-number">6.6</span> </a></li>
+  <li><a href="#section-24" id="toc-section-24" class="nav-link" data-scroll-target="#section-24"><span class="header-section-number">6.7</span> </a></li>
+  <li><a href="#section-25" id="toc-section-25" class="nav-link" data-scroll-target="#section-25"><span class="header-section-number">6.8</span> </a></li>
+  <li><a href="#section-26" id="toc-section-26" class="nav-link" data-scroll-target="#section-26"><span class="header-section-number">6.9</span> </a></li>
+  <li><a href="#section-27" id="toc-section-27" class="nav-link" data-scroll-target="#section-27"><span class="header-section-number">6.10</span> </a></li>
+  <li><a href="#section-28" id="toc-section-28" class="nav-link" data-scroll-target="#section-28"><span class="header-section-number">6.11</span> </a>
+  <ul class="collapse">
+  <li><a href="#section-29" id="toc-section-29" class="nav-link" data-scroll-target="#section-29"><span class="header-section-number">6.11.1</span> </a></li>
+  <li><a href="#section-30" id="toc-section-30" class="nav-link" data-scroll-target="#section-30"><span class="header-section-number">6.11.2</span> </a></li>
+  </ul></li>
+  <li><a href="#section-31" id="toc-section-31" class="nav-link" data-scroll-target="#section-31"><span class="header-section-number">6.12</span> </a></li>
+  <li><a href="#section-32" id="toc-section-32" class="nav-link" data-scroll-target="#section-32"><span class="header-section-number">6.13</span> </a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Esercitazione: burnout e supporto sociale al lavoro</h1>
+<p class="subtitle lead">Moduli 2 e 3 — statistica descrittiva e associazione tra variabili</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="il-contesto" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Il contesto</h1>
+<p>Un’azienda di medie dimensioni ha chiesto al servizio di psicologia del lavoro di indagare il benessere dei propri dipendenti. A 200 dipendenti è stato somministrato un questionario che misura:</p>
+<ul>
+<li>l’<strong>esaurimento emotivo</strong>, una delle componenti del burnout;</li>
+<li>il <strong>supporto sociale percepito</strong> da parte di colleghi e superiori, considerato un possibile fattore di protezione.</li>
+</ul>
+<p>Sono stati inoltre raccolti alcuni dati socio-anagrafici e lavorativi. I dati sono nel file <code>benessere_lavoro.csv</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variabile</th>
+<th>Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>codice identificativo del dipendente</td>
+</tr>
+<tr class="even">
+<td><code>genere</code></td>
+<td>genere del dipendente (<code>F</code>, <code>M</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>eta</code></td>
+<td>età in anni</td>
+</tr>
+<tr class="even">
+<td><code>anni_servizio</code></td>
+<td>anni di servizio nell’azienda</td>
+</tr>
+<tr class="odd">
+<td><code>anzianita</code></td>
+<td>anzianità in azienda: <code>junior</code> (fino a 3 anni), <code>intermedio</code> (da 4 a 6 anni), <code>senior</code> (più di 6 anni)</td>
+</tr>
+<tr class="even">
+<td><code>titolo_studio</code></td>
+<td>titolo di studio più alto: <code>diploma</code>, <code>laurea triennale</code>, <code>laurea magistrale</code></td>
+</tr>
+<tr class="odd">
+<td><code>reparto</code></td>
+<td>reparto di appartenenza: <code>amministrazione</code>, <code>produzione</code>, <code>commerciale</code>, <code>risorse umane</code></td>
+</tr>
+<tr class="even">
+<td><code>supporto_sociale</code></td>
+<td>punteggio di supporto sociale percepito (da 1 a 7; punteggi alti = più supporto)</td>
+</tr>
+<tr class="odd">
+<td><code>burnout</code></td>
+<td>punteggio di esaurimento emotivo (da 0 a 54; punteggi alti = più esaurimento)</td>
+</tr>
+</tbody>
+</table>
+<p>Per ogni esercizio scrivere il codice R in un chunk e rispondere alle domande nel testo del documento. Quando una domanda chiede un’informazione, individuare la statistica o il grafico adatti per ricavarla e motivare brevemente la scelta.</p>
+</section>
+<section id="importazione-e-preparazione-dei-dati" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Importazione e preparazione dei dati</h1>
+<section id="section" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="section"><span class="header-section-number">2.1</span> </h2>
+<p>Salvare il file <code>benessere_lavoro.csv</code> nella cartella <code>data</code> del progetto e importarlo in un oggetto chiamato <code>dati</code>. Nel file le colonne sono separate da <code>;</code> e i decimali da <code>,</code>. La scelta della funzione usata per importare il dataset dipende da questi dettagli. ##</p>
+<p>Esaminare la struttura del dataset. Quanti dipendenti sono presenti nel dataset? Quante informazioni sono state raccolte su ciascuno?</p>
+</section>
+<section id="section-1" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="section-1"><span class="header-section-number">2.2</span> </h2>
+<p><strong>Per ogni variabile del dataset dichiarare di che tipo di variabile si tratta</strong> (qualitativa o quantitativa; per le qualitative, nominale od ordinale; per le quantitative, discreta o continua) e su quale scala di misura è rilevata. Questa classificazione guiderà la scelta delle statistiche e dei grafici in tutta l’esercitazione.</p>
+</section>
+<section id="section-2" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="section-2"><span class="header-section-number">2.3</span> </h2>
+<p>Confrontare il tipo di ciascuna variabile con il modo in cui R l’ha importata. Trasformare le variabili che non sono state importate nel modo adeguato, rispettando l’ordine dei livelli quando esiste un ordine naturale (vedi la tabella di descrizione del dataset).</p>
+</section>
+<section id="section-3" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="section-3"><span class="header-section-number">2.4</span> </h2>
+<p>Verificare che le trasformazioni abbiano funzionato e che i livelli siano nell’ordine corretto.</p>
+</section>
+</section>
+<section id="descrizione-del-campione" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Descrizione del campione</h1>
+<section id="section-4" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="section-4"><span class="header-section-number">3.1</span> </h2>
+<p>Come sono distribuiti i dipendenti tra uomini e donne? Rappresentare graficamente la distribuzione.</p>
+</section>
+<section id="section-5" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="section-5"><span class="header-section-number">3.2</span> </h2>
+<p>Qual è il reparto con più dipendenti? Che percentuale dei dipendenti lavora in questo reparto? Rappresentare graficamente la distribuzione percentuale.</p>
+</section>
+<section id="section-6" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="section-6"><span class="header-section-number">3.3</span> </h2>
+<p>Come sono distribuiti i dipendenti nei tre livelli di anzianità? Rappresentare graficamente la distribuzione con il grafico più adatto.</p>
+</section>
+<section id="section-7" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="section-7"><span class="header-section-number">3.4</span> </h2>
+<p>Che percentuale di dipendenti ha al massimo la laurea triennale? Che percentuale ha almeno la laurea triennale?</p>
+</section>
+<section id="section-8" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="section-8"><span class="header-section-number">3.5</span> </h2>
+<p>Qual è l’età tipica dei dipendenti dell’azienda? Qual è l’età del dipendente più giovane e di quello più anziano? Rappresentare graficamente la distribuzione della variabile.</p>
+</section>
+<section id="section-9" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="section-9"><span class="header-section-number">3.6</span> </h2>
+<p>Qual è il numero di anni di servizio medio in azienda? Rappresentare graficamente la distribuzione della variabile.</p>
+</section>
+<section id="section-10" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="section-10"><span class="header-section-number">3.7</span> </h2>
+<p>Rappresentare graficamente la distribuzione quantilica dell’età delle dipendenti e dei dipendenti. Calcolare la loro età media.</p>
+</section>
+</section>
+<section id="burnout-e-supporto-sociale" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Burnout e supporto sociale</h1>
+<section id="section-11" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="section-11"><span class="header-section-number">4.1</span> </h2>
+<p>Qual è il livello tipico di burnout dei dipendenti? E di supporto sociale percepito? Rappresentare graficamente le due variabili. Identificare anche eventuali valori estremi.</p>
+</section>
+<section id="section-12" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="section-12"><span class="header-section-number">4.2</span> </h2>
+<p>Il 25% dei dipendenti con il burnout più basso ha un punteggio inferiore a quale valore? Il 25% dei dipendenti con il burnout più alto ha un punteggio superiore a quale valore? Aiutarsi con la rappresentazione grafica appropriata.</p>
+</section>
+<section id="section-13" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="section-13"><span class="header-section-number">4.3</span> </h2>
+<p>Entro quale intervallo di punteggi si colloca il 50% centrale dei dipendenti per il burnout? E per il supporto sociale? Quanto è ampio questo intervallo nei due casi?</p>
+</section>
+<section id="section-14" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="section-14"><span class="header-section-number">4.4</span> </h2>
+<p>Il 10% dei dipendenti che percepisce meno supporto sociale ha un punteggio inferiore a quale valore? Il 10% che ne percepisce di più ha un punteggio superiore a quale valore?</p>
+</section>
+</section>
+<section id="il-burnout-nei-diversi-gruppi" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Il burnout nei diversi gruppi</h1>
+<section id="section-15" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="section-15"><span class="header-section-number">5.1</span> </h2>
+<p>Rappresentare graficamente la distribuzione quantilica del burnout delle dipendenti e dei dipendenti. Calcolare i punteggi medi a seconda del gruppo di appartenzenza</p>
+</section>
+<section id="section-16" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="section-16"><span class="header-section-number">5.2</span> </h2>
+<p>Ripetere le analisi del punto precedente considerando i livelli di anzianità.</p>
+</section>
+<section id="section-17" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="section-17"><span class="header-section-number">5.3</span> </h2>
+<p>Ripetere le analisi dei due punti precendenti considerando la variabile <strong>supporto sociale</strong>.</p>
+</section>
+</section>
+<section id="punteggi-di-cut-off" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Punteggi di cut-off</h1>
+<p>Nell’esercitazione si considera che punteggi di esaurimento emotivo pari o superiori a <strong>27</strong> indichino un livello di burnout <strong>alto</strong>.</p>
+<section id="section-18" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="section-18"><span class="header-section-number">6.1</span> </h2>
+<p>Creare una nuova variabile <code>burnout_alto</code> nel dataset, con valore <code>"&gt;=27"</code> se il punteggio di burnout è maggiore o uguale a 27 e <code>"&lt;27"</code> altrimenti. Trasformarla nel tipo adeguato, con i livelli nell’ordine <code>"&lt;27"</code>, <code>"&gt;=27"</code>. Verificare che la nuova variabile sia stata creata correttamente.</p>
+</section>
+<section id="section-19" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="section-19"><span class="header-section-number">6.2</span> </h2>
+<p>Quanti dipendenti hanno un livello di burnout alto? Che percentuale del totale rappresentano?</p>
+</section>
+<section id="section-20" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="section-20"><span class="header-section-number">6.3</span> </h2>
+<p>Che percentuale dei dipendenti è senior <strong>e</strong> ha un livello di burnout alto?</p>
+</section>
+<section id="section-21" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="section-21"><span class="header-section-number">6.4</span> </h2>
+<p>Tra i dipendenti junior, che percentuale ha un livello di burnout alto? E tra gli intermedi e i senior? Rappresentare graficamente il confronto.</p>
+</section>
+<section id="section-22" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="section-22"><span class="header-section-number">6.5</span> </h2>
+<p>C’è associazione tra anzianità e livello di burnout? Utilizzare gli indici appropriati.</p>
+</section>
+<section id="section-23" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="section-23"><span class="header-section-number">6.6</span> </h2>
+<p>C’è associazione tra genere e livello di burnout? Precedere il calcolo della statistica con l’opportuna rappresentazione grafica.</p>
+</section>
+<section id="section-24" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="section-24"><span class="header-section-number">6.7</span> </h2>
+<p>Quale delle due variabili, anzianità o genere, è più associata al livello di burnout?</p>
+</section>
+<section id="section-25" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="section-25"><span class="header-section-number">6.8</span> </h2>
+<p>Rappresentare graficamente la relazione tra supporto sociale e burnout. Che direzione ha la relazione?</p>
+</section>
+<section id="section-26" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="section-26"><span class="header-section-number">6.9</span> </h2>
+<p>Quanto è forte la relazione lineare tra supporto sociale e burnout? Interpretare il risultato.</p>
+</section>
+<section id="section-27" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="section-27"><span class="header-section-number">6.10</span> </h2>
+<p>Quanto è forte la relazione lineare tra anni di servizio e burnout? E tra età e anni di servizio?</p>
+</section>
+<section id="section-28" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="section-28"><span class="header-section-number">6.11</span> </h2>
+<p>Stimare un modello di regressione lineare (chiamato <code>m1</code>) per prevedere il burnout a partire dal supporto sociale. Aggiungere la retta di regressione al grafico a dispersione.</p>
+<section id="section-29" class="level3" data-number="6.11.1">
+<h3 data-number="6.11.1" class="anchored" data-anchor-id="section-29"><span class="header-section-number">6.11.1</span> </h3>
+<p>Scrivere l’equazione della retta di regressione nella forma <span class="math inline">\(y^* = a + b x\)</span> e interpretare intercetta e coefficiente angolare. Qual è il punteggio di burnout atteso per un dipendente con supporto sociale pari a 2? Per un dipendente con supporto sociale pari a 6?</p>
+</section>
+<section id="section-30" class="level3" data-number="6.11.2">
+<h3 data-number="6.11.2" class="anchored" data-anchor-id="section-30"><span class="header-section-number">6.11.2</span> </h3>
+<p>Quale quota della variabilità del burnout è spiegata dal supporto sociale?</p>
+</section>
+</section>
+<section id="section-31" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="section-31"><span class="header-section-number">6.12</span> </h2>
+<p>Studiare il comportamento dei residui del modello di regressione utilizzando un’opportuna rappresentazione grafica.</p>
+</section>
+<section id="section-32" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="section-32"><span class="header-section-number">6.13</span> </h2>
+<p>Stimare un secondo modello di regressione (<code>m2</code>) per prevedere il burnout a partire dagli anni di servizio e ripetere tutti i punti legati al modello di regressione precedente.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
