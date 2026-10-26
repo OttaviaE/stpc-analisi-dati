@@ -1,0 +1,201 @@
+id;genere;eta;anni_servizio;anzianita;titolo_studio;reparto;supporto_sociale;burnout
+1;M;48;12;senior;laurea magistrale;produzione;3,4;31
+2;M;32;6;intermedio;diploma;amministrazione;4,1;21
+3;F;44;12;senior;laurea triennale;commerciale;2,8;27
+4;F;48;15;senior;laurea magistrale;amministrazione;4,9;28
+5;F;42;17;senior;diploma;produzione;4,6;44
+6;M;38;5;intermedio;diploma;amministrazione;3,2;26
+7;F;29;3;junior;laurea triennale;amministrazione;5,5;16
+8;F;47;11;senior;laurea triennale;amministrazione;5,5;25
+9;M;45;20;senior;laurea magistrale;amministrazione;2,9;39
+10;M;37;14;senior;laurea triennale;amministrazione;2,9;33
+11;M;56;19;senior;laurea magistrale;produzione;4,1;34
+12;F;26;1;junior;diploma;commerciale;5,6;13
+13;M;49;19;senior;laurea triennale;amministrazione;5;18
+14;F;32;8;senior;laurea triennale;commerciale;5,4;25
+15;M;44;17;senior;diploma;commerciale;5,5;16
+16;F;26;1;junior;laurea triennale;risorse umane;4,8;10
+17;F;36;2;junior;laurea triennale;commerciale;3,8;22
+18;F;31;6;intermedio;laurea triennale;produzione;4,2;33
+19;F;39;5;intermedio;diploma;risorse umane;3,6;24
+20;F;43;6;intermedio;laurea magistrale;risorse umane;3,9;25
+21;F;41;5;intermedio;laurea triennale;amministrazione;3,3;16
+22;M;32;5;intermedio;laurea magistrale;commerciale;2,7;27
+23;F;36;2;junior;laurea magistrale;produzione;5,6;8
+24;M;41;14;senior;laurea magistrale;produzione;5,2;11
+25;F;39;2;junior;diploma;amministrazione;3,8;14
+26;F;34;5;intermedio;laurea triennale;risorse umane;5,2;17
+27;M;43;5;intermedio;diploma;produzione;5,7;10
+28;F;31;2;junior;diploma;amministrazione;2,9;18
+29;M;57;20;senior;laurea magistrale;amministrazione;3,7;29
+30;M;41;5;intermedio;laurea magistrale;produzione;5,2;17
+31;F;33;1;junior;laurea magistrale;produzione;2,9;19
+32;F;35;7;senior;laurea triennale;commerciale;5,8;12
+33;M;40;5;intermedio;laurea magistrale;risorse umane;5,7;20
+34;M;36;5;intermedio;laurea triennale;risorse umane;3;24
+35;M;40;12;senior;diploma;risorse umane;5,7;20
+36;F;36;1;junior;laurea triennale;produzione;5,9;10
+37;F;29;5;intermedio;laurea triennale;commerciale;4,4;18
+38;F;42;11;senior;laurea triennale;risorse umane;5,1;26
+39;M;39;1;junior;laurea magistrale;risorse umane;5,2;0
+40;F;42;4;intermedio;diploma;amministrazione;4,7;26
+41;M;36;8;senior;laurea magistrale;amministrazione;4,6;18
+42;M;41;6;intermedio;laurea magistrale;commerciale;4,3;21
+43;F;43;5;intermedio;diploma;produzione;5,2;20
+44;M;30;2;junior;diploma;commerciale;4,6;19
+45;F;41;3;junior;diploma;amministrazione;4,2;23
+46;F;31;4;intermedio;diploma;amministrazione;4,6;24
+47;M;24;1;junior;diploma;produzione;3,7;32
+48;F;42;16;senior;laurea triennale;risorse umane;4,7;30
+49;F;28;4;intermedio;diploma;amministrazione;4,8;15
+50;F;30;3;junior;laurea magistrale;commerciale;4,8;25
+51;M;44;10;senior;laurea magistrale;produzione;4;20
+52;M;40;15;senior;diploma;amministrazione;4,2;25
+53;F;39;6;intermedio;laurea triennale;commerciale;5,2;26
+54;F;29;4;intermedio;laurea triennale;risorse umane;5,2;23
+55;M;24;1;junior;laurea magistrale;commerciale;5,3;18
+56;M;33;4;intermedio;laurea triennale;risorse umane;6,6;13
+57;F;28;1;junior;laurea magistrale;produzione;4,7;23
+58;F;33;2;junior;laurea triennale;risorse umane;6,5;12
+59;M;46;9;senior;laurea triennale;amministrazione;3,6;29
+60;F;43;9;senior;laurea triennale;risorse umane;4,1;23
+61;M;42;5;intermedio;laurea triennale;produzione;2,8;24
+62;F;40;6;intermedio;laurea triennale;commerciale;4,8;14
+63;F;28;3;junior;laurea triennale;amministrazione;7;7
+64;F;45;7;senior;diploma;produzione;6,2;16
+65;F;39;4;intermedio;laurea triennale;produzione;5,6;18
+66;F;31;3;junior;laurea magistrale;produzione;4,7;10
+67;F;46;9;senior;diploma;commerciale;5,1;18
+68;F;41;17;senior;laurea triennale;commerciale;3,8;26
+69;F;42;4;intermedio;diploma;risorse umane;4,5;25
+70;F;41;3;junior;laurea triennale;commerciale;5,4;12
+71;M;33;2;junior;laurea triennale;amministrazione;3,5;24
+72;F;37;3;junior;diploma;amministrazione;4,3;36
+73;M;39;4;intermedio;laurea triennale;amministrazione;4;25
+74;F;47;11;senior;laurea triennale;produzione;2,8;40
+75;F;56;18;senior;laurea magistrale;produzione;5,4;27
+76;F;45;13;senior;diploma;risorse umane;4,9;25
+77;F;27;2;junior;laurea triennale;amministrazione;1,9;36
+78;F;28;5;intermedio;laurea triennale;produzione;5,4;15
+79;M;26;3;junior;laurea triennale;commerciale;7;8
+80;F;36;4;intermedio;laurea magistrale;commerciale;2,2;25
+81;F;41;5;intermedio;diploma;commerciale;4,3;27
+82;M;41;16;senior;laurea triennale;produzione;4,4;27
+83;F;29;3;junior;laurea triennale;amministrazione;6,1;9
+84;F;27;3;junior;laurea triennale;commerciale;2,8;15
+85;F;38;1;junior;laurea triennale;amministrazione;4,3;29
+86;F;28;2;junior;laurea magistrale;produzione;3,7;30
+87;F;41;4;intermedio;laurea triennale;amministrazione;3,5;18
+88;F;26;3;junior;laurea triennale;amministrazione;5,2;22
+89;M;40;15;senior;diploma;risorse umane;4;41
+90;F;33;1;junior;laurea magistrale;produzione;5,3;19
+91;M;25;1;junior;laurea triennale;amministrazione;4,6;22
+92;M;32;3;junior;laurea magistrale;produzione;4,6;18
+93;F;38;14;senior;laurea triennale;risorse umane;4,2;26
+94;F;37;1;junior;diploma;commerciale;5,7;16
+95;M;40;5;intermedio;laurea magistrale;commerciale;5,5;25
+96;F;28;4;intermedio;laurea magistrale;amministrazione;5,4;17
+97;M;35;1;junior;laurea magistrale;amministrazione;4,6;20
+98;F;29;2;junior;diploma;risorse umane;3,3;23
+99;M;43;9;senior;laurea triennale;risorse umane;5,2;25
+100;F;52;16;senior;laurea magistrale;amministrazione;4,2;34
+101;F;31;6;intermedio;laurea triennale;amministrazione;3,4;21
+102;M;37;6;intermedio;laurea magistrale;amministrazione;4;20
+103;M;39;5;intermedio;laurea magistrale;produzione;3,6;24
+104;F;31;4;intermedio;diploma;commerciale;5,5;9
+105;F;37;11;senior;diploma;amministrazione;3,7;29
+106;F;44;16;senior;diploma;risorse umane;2,6;39
+107;F;29;6;intermedio;laurea triennale;commerciale;5,3;18
+108;M;42;4;intermedio;laurea magistrale;commerciale;5,8;0
+109;F;38;6;intermedio;diploma;commerciale;5;19
+110;M;40;3;junior;laurea triennale;amministrazione;2,7;28
+111;M;29;2;junior;laurea magistrale;amministrazione;5,1;19
+112;M;46;10;senior;diploma;amministrazione;5;26
+113;M;48;11;senior;laurea magistrale;amministrazione;5,4;21
+114;M;49;16;senior;diploma;produzione;4,2;33
+115;F;36;3;junior;laurea magistrale;amministrazione;5,1;22
+116;F;43;6;intermedio;laurea triennale;risorse umane;3,5;25
+117;F;38;1;junior;laurea triennale;amministrazione;4,4;1
+118;F;30;5;intermedio;diploma;amministrazione;6,6;14
+119;M;44;17;senior;laurea magistrale;amministrazione;5,4;28
+120;F;43;6;intermedio;laurea magistrale;amministrazione;3,9;23
+121;F;41;3;junior;diploma;risorse umane;4,6;16
+122;F;32;1;junior;diploma;amministrazione;5,2;17
+123;F;34;6;intermedio;diploma;amministrazione;4,4;24
+124;F;44;6;intermedio;diploma;commerciale;4,1;29
+125;F;40;9;senior;diploma;risorse umane;5,6;21
+126;M;31;1;junior;laurea triennale;commerciale;5,2;17
+127;F;37;2;junior;laurea triennale;risorse umane;5,1;16
+128;F;30;4;intermedio;laurea triennale;produzione;5;22
+129;F;36;4;intermedio;laurea magistrale;produzione;2,9;28
+130;F;41;16;senior;diploma;produzione;5,1;25
+131;F;46;20;senior;laurea magistrale;risorse umane;2,8;47
+132;F;40;2;junior;diploma;risorse umane;3,9;24
+133;M;37;10;senior;laurea triennale;amministrazione;4,9;28
+134;M;36;2;junior;laurea magistrale;amministrazione;6,4;2
+135;M;40;3;junior;laurea magistrale;risorse umane;4;22
+136;M;43;10;senior;diploma;produzione;4,6;30
+137;F;38;6;intermedio;laurea magistrale;produzione;5,5;4
+138;F;35;2;junior;laurea magistrale;commerciale;5,2;14
+139;F;40;3;junior;laurea magistrale;produzione;3;32
+140;F;40;3;junior;laurea magistrale;risorse umane;4,5;13
+141;M;27;4;intermedio;laurea triennale;produzione;5;25
+142;M;27;2;junior;diploma;produzione;3,5;28
+143;M;27;4;intermedio;laurea triennale;risorse umane;4,7;15
+144;F;31;2;junior;laurea triennale;produzione;4,9;10
+145;M;43;15;senior;laurea magistrale;produzione;3,3;29
+146;M;39;7;senior;laurea triennale;commerciale;6,1;36
+147;M;34;11;senior;laurea triennale;risorse umane;4,2;38
+148;M;45;20;senior;diploma;produzione;5,1;26
+149;F;26;2;junior;diploma;risorse umane;5,4;2
+150;M;30;6;intermedio;laurea magistrale;produzione;4,5;19
+151;F;32;3;junior;laurea triennale;commerciale;6,4;10
+152;M;38;1;junior;laurea magistrale;produzione;7;16
+153;M;39;5;intermedio;laurea triennale;amministrazione;5,4;8
+154;F;41;4;intermedio;laurea magistrale;risorse umane;3,8;24
+155;F;37;2;junior;laurea magistrale;produzione;5,1;15
+156;F;30;5;intermedio;laurea triennale;produzione;4;20
+157;F;40;8;senior;laurea magistrale;amministrazione;4;21
+158;F;34;9;senior;laurea magistrale;commerciale;4,1;37
+159;F;31;2;junior;diploma;commerciale;6,7;11
+160;M;49;15;senior;laurea magistrale;risorse umane;3,9;34
+161;F;35;4;intermedio;laurea magistrale;amministrazione;6;8
+162;M;30;4;intermedio;laurea triennale;amministrazione;5,5;20
+163;F;28;2;junior;laurea triennale;commerciale;3,1;32
+164;M;29;6;intermedio;laurea magistrale;amministrazione;3,9;22
+165;F;34;1;junior;laurea triennale;produzione;4,3;22
+166;M;39;2;junior;laurea magistrale;commerciale;4,7;15
+167;F;28;2;junior;laurea magistrale;risorse umane;2,4;17
+168;M;27;1;junior;laurea triennale;produzione;5,9;7
+169;F;36;5;intermedio;diploma;commerciale;4,2;16
+170;M;36;12;senior;laurea magistrale;commerciale;5;13
+171;F;32;5;intermedio;laurea magistrale;produzione;5,8;9
+172;M;34;1;junior;diploma;amministrazione;5,6;11
+173;M;49;20;senior;laurea triennale;amministrazione;5,2;35
+174;M;26;2;junior;diploma;commerciale;5,4;12
+175;M;40;2;junior;laurea magistrale;commerciale;3,9;21
+176;M;44;6;intermedio;laurea triennale;amministrazione;4;27
+177;M;39;6;intermedio;laurea triennale;amministrazione;3,7;14
+178;F;43;6;intermedio;laurea triennale;risorse umane;4,2;21
+179;F;38;7;senior;laurea triennale;risorse umane;2,7;38
+180;M;47;13;senior;laurea magistrale;commerciale;4,6;7
+181;F;31;3;junior;laurea triennale;risorse umane;4,5;24
+182;F;36;1;junior;laurea magistrale;commerciale;5,1;20
+183;F;25;1;junior;diploma;risorse umane;5;21
+184;M;40;5;intermedio;laurea magistrale;commerciale;5,8;14
+185;M;40;9;senior;laurea triennale;produzione;4,6;28
+186;F;45;8;senior;laurea magistrale;commerciale;5,2;29
+187;F;45;11;senior;diploma;risorse umane;5,5;23
+188;F;47;16;senior;laurea magistrale;produzione;5,9;22
+189;F;54;17;senior;laurea magistrale;risorse umane;4;35
+190;F;41;11;senior;laurea triennale;risorse umane;6;17
+191;F;34;9;senior;diploma;amministrazione;4;28
+192;M;41;5;intermedio;laurea triennale;amministrazione;4,4;16
+193;M;30;1;junior;laurea magistrale;commerciale;4,6;14
+194;M;34;6;intermedio;laurea magistrale;produzione;4,3;21
+195;M;39;1;junior;diploma;produzione;2,7;30
+196;M;41;9;senior;laurea magistrale;produzione;4,1;21
+197;F;34;3;junior;laurea magistrale;produzione;5,8;15
+198;M;47;11;senior;laurea triennale;commerciale;3;30
+199;M;32;2;junior;laurea triennale;commerciale;5,8;13
+200;F;32;3;junior;laurea triennale;produzione;2,6;27
