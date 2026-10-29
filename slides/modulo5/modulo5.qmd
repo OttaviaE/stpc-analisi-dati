@@ -641,7 +641,7 @@ $$\text{H}:\; \mu = 12$$
 È una *forzatura* dei due approcci: prende $H_0$ e il $p$-value da Fisher, $H_1$, $\alpha$ e $\beta$ da Neyman e Pearson, e li mette insieme (anche se i due approcci hanno logiche diverse)
 :::
 
-![](img/meme_nhst.png){width=20% fig-align="center"}
+![](img/meme_nhst.png){width=40% fig-align="center"}
 
 ###
 
