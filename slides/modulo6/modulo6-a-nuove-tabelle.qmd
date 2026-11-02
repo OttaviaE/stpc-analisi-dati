@@ -370,7 +370,7 @@ annota_ttest <- function(chiamata) {
   out <- mark(out, "((not equal to|less than|greater than) -?[0-9.]+)", "h1")
   i <- grep("confidence interval", out) + 1
   out[i] <- sprintf(" \\tikzmarknode{ic}{%s}", trimws(out[i]))
-  j <- grep("^mean (in|of)", out) + 1
+  j <- grep("^mean (in|of|difference)", out) + 1
   out[j] <- sprintf(" \\tikzmarknode{medie}{%s}", trimws(out[j]))
   cat("```{=latex}\n",
       "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
@@ -382,10 +382,9 @@ annota_ttest <- function(chiamata) {
 
 ###
 
-\small 
+\footnotesize 
 
 ```{r}
-#| results: hide
 set.seed(999)
 x = rnorm(11, mean = 12, sd = 7.5)
 mu0 = 10
@@ -759,45 +758,152 @@ $H_0: \mu_X \ge \mu_Y \qquad H_A: \mu_X < \mu_Y$
 $H_0: \mu_X - \mu_Y \ge 0 \qquad H_A: \mu_X - \mu_Y < 0$  
 :::
 
-## In R 
+## In R
 
-### 
-| **Simbolo R** | **Significato** |
-|:--------------|:----------------|
-| `t.test(x, y, var.equal = TRUE)` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **a due code**. |
-| `t.test(x, y, var.equal = TRUE, alternative = "greater")` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (destra)**. |
-| `t.test(x, y, var.equal = TRUE, alternative = "less")` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (sinistra)**. |
+###
 
+`t.test(x, y, var.equal = TRUE, alternative = "two.sided")`
+
+Svolge il test su due campioni indipendenti di osservazioni $x$ e $y$, assumendo che le varianze delle due popolazioni siano uguali (`var.equal = TRUE`), con ipotesi alternativa bidirezionale come default (`alternative = "two.sided"`):
+
+| **Definizione ipotesi in R**                  | **Significato**                     |
+|:----------------------------------------------|:------------------------------------|
+| `alternative = "two.sided"`                   | $H_A$: $\mu_X \neq \mu_Y$            |
+| `alternative = "greater"`                     | $H_A$: $\mu_X > \mu_Y$               |
+| `alternative = "less"`                        | $H_A$: $\mu_X < \mu_Y$               |
+
+Il default di R è `var.equal = FALSE`: senza specificare `var.equal = TRUE`, R svolge il test di Welch, che non assume varianze uguali.
 
 ## Esempi
 
 ###
 
-```{r}
-#| results: hide
+\footnotesize
 
-x <- c(12.2,23.2,14,20.3,9.2,3.7,8,16.8,3.7,1.9,20.5)
-y <- c(8.5,3.2,4,10.5,7.7,3.1,2,3.9)
-t.test(x,y,var.equal=TRUE)
-t.test(x,y,var.equal=TRUE,alternative="greater")
-t.test(x,y,var.equal=TRUE,alternative="less")
-t.test(x,y)
+```{r}
+x = c(12.2, 23.2, 14, 20.3, 9.2, 3.7, 8, 16.8, 3.7, 1.9, 20.5)
+y = c(8.5, 3.2, 4, 10.5, 7.7, 3.1, 2, 3.9)
+t.test(x, y, var.equal = TRUE, alternative = "two.sided")
 ```
 
+### {.fragile}
 
-### Test a due code `var.equal=TRUE`
-
-\small
 ```{r}
-t.test(x,y,var.equal=TRUE)
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, var.equal = TRUE)')
 ```
 
-### `var.equal=FALSE`
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]  (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(df)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(pval)]  (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(h1)]    (b5) {}; \node[num] at (b5.north east) {5};}
+  {\node[box, fit=(ic)]    (b6) {}; \node[num] at (b6.north east) {6};}
+  {\node[box, fit=(medie)] (b7) {}; \node[num] at (b7.north east) {7};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Tipo di test
+  \item Statistica test $t_0$
+  \item Gradi di libertà: $df = N + M - 2$
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $p$-value
+  \item Ipotesi alternativa $H_A$: bidirezionale ($\mu_X - \mu_Y \neq 0$)
+  \item Intervallo di confidenza al 95\% per $\mu_X - \mu_Y$
+  \item Medie campionarie $\bar{x}$ e $\bar{y}$
+\end{enumerate}
+\end{column}
+\end{columns}
+```
 
-\small
+### {.fragile}
 
 ```{r}
-t.test(x,y)
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, var.equal = TRUE, alternative = "greater")')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(h1)]        (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item $H_A$: $\mu_X > \mu_Y$ ($\mu_X - \mu_Y > 0$)
+  \item $t_0$ e gradi di libertà: \textbf{identici} al test a due code
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p = P(T \geq t_0)$, area a destra di $t_0$: qui $\bar{x} > \bar{y}$ va nella \textbf{stessa} direzione di $H_A$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item IC \textbf{unidirezionale}: solo il limite inferiore, l'altro estremo è \texttt{Inf}
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### `var.equal = FALSE` (test di Welch) {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y)')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]      (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Test di Welch: le varianze delle due popolazioni \textbf{non} sono assunte uguali (default di R)
+  \item $t_0$ e gradi di libertà \textbf{diversi} dal test con \texttt{var.equal = TRUE}: i $df$ sono corretti e non sono interi
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p$-value
+  \item Intervallo di confidenza al 95\% per $\mu_X - \mu_Y$
+\end{enumerate}
+\end{column}
+\end{columns}
 ```
 
 # Due campioni appaiati 
@@ -841,34 +947,111 @@ $H_0: \mu_D \ge 0 \qquad H_A: \mu_D < 0$
 
 :::
 
-## In R 
+## In R
 
 ###
 
-| **Simbolo R** | **Significato** |
-|:--------------|:----------------|
-| `t.test(x, y, paired = TRUE)` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **a due code**. |
-| `t.test(x, y, paired = "greater")` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (destra)**. |
-| `t.test(x, y, paired = "less")` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (sinistra)**. |
+`t.test(x, y, paired = TRUE, alternative = "two.sided")`
 
-## Esempi 
+Svolge il test su due campioni appaiati di osservazioni $x$ e $y$ (`paired = TRUE`), cioè un test t su un campione sulle differenze $d_i = x_i - y_i$ con $\mu_0 = 0$, con ipotesi alternativa bidirezionale come default (`alternative = "two.sided"`):
 
-### 
+| **Definizione ipotesi in R**                  | **Significato**                     |
+|:----------------------------------------------|:------------------------------------|
+| `alternative = "two.sided"`                   | $H_A$: $\mu_D \neq 0$                |
+| `alternative = "greater"`                     | $H_A$: $\mu_D > 0$                   |
+| `alternative = "less"`                        | $H_A$: $\mu_D < 0$                   |
+
+## Esempi
+
+###
+
+\footnotesize
 
 ```{r}
-#| results: hide
-x = c(5.2,3.5,3.4,7.1,6.2,3.0,1,4) 
-y = c(8.5,3.2,4,10.5,7.7,3.1,2,3.9)
-
-t.test(x,y,paired=TRUE) 
-t.test(x,y,paired=TRUE,alternative="less") 
-t.test(x,y,paired=TRUE,alternative="greater")
+x = c(5.2, 3.5, 3.4, 7.1, 6.2, 3.0, 1, 4)
+y = c(8.5, 3.2, 4, 10.5, 7.7, 3.1, 2, 3.9)
+t.test(x, y, paired = TRUE, alternative = "two.sided")
 ```
 
-
-### 
+### {.fragile}
 
 ```{r}
-t.test(x,y,paired=TRUE,alternative="less") 
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, paired = TRUE)')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]  (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(df)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(pval)]  (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(h1)]    (b5) {}; \node[num] at (b5.north east) {5};}
+  {\node[box, fit=(ic)]    (b6) {}; \node[num] at (b6.north east) {6};}
+  {\node[box, fit=(medie)] (b7) {}; \node[num] at (b7.north east) {7};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Tipo di test
+  \item Statistica test $t_0$
+  \item Gradi di libertà: $df = N - 1$ ($N$ = numero di coppie)
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $p$-value
+  \item Ipotesi alternativa $H_A$: bidirezionale ($\mu_D \neq 0$)
+  \item Intervallo di confidenza al 95\% per $\mu_D$
+  \item Media delle differenze $\bar{d}$
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, paired = TRUE, alternative = "less")')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(h1)]        (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item $H_A$: $\mu_D < 0$
+  \item $t_0$ e gradi di libertà: \textbf{identici} al test a due code
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p = P(T \leq t_0)$, area a sinistra di $t_0$: qui $\bar{d} < 0$ va nella \textbf{stessa} direzione di $H_A$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item IC \textbf{unidirezionale}: solo il limite superiore, l'altro estremo è \texttt{-Inf}
+\end{enumerate}
+\end{column}
+\end{columns}
 ```
 
