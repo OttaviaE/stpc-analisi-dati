@@ -653,18 +653,23 @@ $$\text{H}:\; \mu = 12$$
 Le distribuzioni di probabilità a livello delle popolazioni che identificano lo schema logico del confronto sono classificate in due gruppi distinti:
 
 - **H$_0$**: definita come **l'ipotesi nulla**
-- **H$_A$**: definita come **l'ipotesi alternativa**
+- **H$_1$**: definita come **l'ipotesi alternativa**
 
-L'ipotesi alternativa viene indicata con altri simboli equivalenti come **H$_1$** oppure **K**
+L'ipotesi alternativa viene indicata con altri simboli equivalenti come **H$_A$** oppure **K**
 :::
 
+\scriptsize
 :::{.callout-warning}
 ## Nota
 
-H$_0$ è definita come la **negazione logica** di H$_A$ e viceversa.
+$H_0$ e $H_1$ devono essere **mutuamente esclusive**: $\Theta_0 \cap \Theta_A = \emptyset$.
 
-Ad esempio, supponiamo che H$_0$ affermi che $\mu \leq \mu_0$, allora H$_A$ indica la relazione complementare $\mu > \mu_0$.
-$$\Theta_0 = (\Theta_A)^c$$
+Non devono per forza essere complementari: 
+
+\begin{itemize}
+  \item $H_0: \mu = \mu_0$ e $H_1: \mu \neq \mu_0$ sono complementari;
+  \item $H_0: \mu = \mu_0$ e $H_1: \mu > \mu_0$ non lo sono, perché non considerano i valori $\mu < \mu_0$.
+\end{itemize}
 :::
 
 ###
@@ -764,11 +769,32 @@ Ogni test statistico divide lo spazio campionario:
 
 In base alla regione in cui andrà a cadere il valore campionario, si prenderà una decisione sull'ipotesi $H_0$
 
-###
+### {.plain}
 
 Le regioni di rifiuto e di non rifiuto corrispondono ad aree di probabilità sottese alla curva
 
-![](regioneRifiutobi.pdf){width=45% fig-align="center"}
+
+```{r}
+#| echo: FALSE
+#| fig-align: center
+#| out-width: 70%
+x = seq(-4, 4, length.out = 1001)
+dx = dnorm(x, sd = 1)
+
+plot(x, dx, type = "l", lwd = 2, axes = FALSE, ann = FALSE)
+polygon(c(x[x <= -1.64], -1.64),
+        c(dx[x <= -1.64], 0), col = "firebrick")
+polygon(c(1.64, x[x >= 1.64]),
+        c(0, dx[x >= 1.64]), col = "firebrick")
+polygon(c(-1.64, x[x >= -1.64 & x <= 1.64], 1.64),
+        c(0, dx[x >= -1.64 & x <= 1.64], 0), col = "darkgreen")
+
+text(0, 0.15, expression(atop("Regione di non rifiuto", "di " * H[0])),
+     col = "white", cex = 1.5)
+text(c(-2.9, 2.9), 0.1, expression(atop("Regione di rifiuto", "di " * H[0])),
+     col = "firebrick", cex = 1.5)
+```
+
 
 \vspace{-2.5mm}
 

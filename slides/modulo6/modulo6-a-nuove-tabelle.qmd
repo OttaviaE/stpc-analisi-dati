@@ -90,7 +90,7 @@ execute:
 \node[inf, right = of pop] (inf) {\textbf{Inferenza sul parametro $\mu$}};
 \node[inf, below = of inf] (punt) {\textbf{Stima puntuale}\\[-1pt] {\scriptsize $\bar{x}$ è la nostra miglior ipotesi su $\mu$}};
 \node[inf, below = of punt] (int) {\textbf{Stima intervallare}\\[-1pt] {\scriptsize intervallo di confidenza}};
-\node[inf, below = of int, minimum height = 1.15cm] (ver) {\textbf{Verifica d'ipotesi}\\[-1pt] {\scriptsize $H_0$ vs $H_A$, statistica test, $p$-value}};
+\node[inf, below = of int, minimum height = 1.15cm] (ver) {\textbf{Verifica d'ipotesi}\\[-1pt] {\scriptsize $H_0$ vs $H_1$, statistica test, $p$-value}};
 \draw[freccia, evidB] (inf) -- (punt);
 \draw[freccia, evidB] (punt) -- (int);
 \draw[freccia, evidB] (int) -- (ver);
@@ -162,7 +162,7 @@ execute:
 \foreach \p in {(6.0,0.6), (6.4,1.2), (6.8,0.7), (7.1,1.35), (7.5,0.55), (7.8,1.1), (8.2,0.8), (6.6,0.35), (7.4,0.95)}
   \fill[evidB] \p circle (2.2pt);
 \node[above, align = center] at (camp.north) {\scriptsize\textbf{Il campione osservato}};
-\node[below, align = center] at (camp.south) {\scriptsize $\mathbf{x} = (x_1, \ldots, x_N)$, \; $\bar{x}$};
+\node[below, align = center] at (camp.south) {\scriptsize $\mathbf{x} = (x_1, \ldots, x_n)$, \; $\bar{x}$};
 % domanda
 \draw[-latex, very thick, gray, dashed] (2.4,1.3) to[bend left = 20] node[above, text = black] {\Large ?} (camp.west);
 \end{tikzpicture}
@@ -193,7 +193,7 @@ $\mu_{\bar{x}} = \mu, \quad \sigma_{\bar{x}} = \dfrac{\sigma}{\sqrt{n}}$
 **Statistica test**
 
 
-$$z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{N}} \sim \mathcal{N}(0, 1)$$
+$$z = \frac{\bar{x} - \mu_0}{\sigma_{\bar{x}}} \sim \mathcal{N}(0, 1)$$
 
 :::
 
@@ -267,7 +267,7 @@ Al crescere di $n$ la $t_{n-1}$ si avvicina alla $\mathcal{N}(0,1)$: con campion
 
 - In R base esiste `t.test()`, ma **non** esiste una funzione per il test z: il caso in cui $\sigma$ è nota non capita quasi mai con dati reali
 
-- Quando $N$ è grande, `t.test()` dà comunque risultati praticamente identici al test z
+- Quando $n$ è grande, `t.test()` dà comunque risultati praticamente identici al test z
 
 - Se $\sigma$ fosse davvero nota, il test z si calcola a mano in due righe:
 
@@ -275,30 +275,28 @@ Al crescere di $n$ la $t_{n-1}$ si avvicina alla $\mathcal{N}(0,1)$: con campion
 
 ```{r}
 #| eval: false
-z <- (mean(x) - mu0) / (sigma / sqrt(length(x)))
+z = (mean(x) - mu0) / (sigma / sqrt(length(x)))
 2 * (1 - pnorm(abs(z)))  # p-value a due code
 ```
 
-\normalsize
-
-Da qui in avanti: **test t**
+dove `mu0` è il parametro della popolazione definito in $H_0$.
 
 ### 
 
 ::: {.callout-note appearance="default"}
 ## Scopo
 
-permette di valutare se la media $\mu$ della popolazione di un dato campione *x* sia significativamente differente (risp. maggiore/minore) rispetto ad una specifica soglia teorica $\mu_0$
+permette di valutare se la media $\mu$ della popolazione di un dato campione *X* sia significativamente differente (risp. maggiore/minore) rispetto ad una specifica soglia teorica $\mu_0$
 :::
 
-Sia $\mathbf{x} = (x_1, x_2, \dots, x_N)$ un campione empirico di $n$ osservazioni quantitative indipendenti tali che $x_i \sim \mathcal{N}(\mu, \sigma^2)$, dove $\mu$ e $\sigma^2$ sono parametri ignoti della popolazione di $\mathbf{x}$.
+Sia $\mathbf{x} = (x_1, x_2, \dots, x_n)$ un campione empirico di $n$ osservazioni quantitative indipendenti tali che $x_i \sim \mathcal{N}(\mu, \sigma^2)$, dove $\mu$ e $\sigma^2$ sono parametri ignoti della popolazione di $\mathbf{x}$.
 
 Inoltre sia $\mu_0 \in \mathbb{R}$ il parametro della popolazione sotto $H_0$
 
 :::: {.columns}
 
 ::: {.column width=60%}
-$$t = \frac{\bar{x} - \mu_0}{\mathrm{sd}(x)/\sqrt{n}}$$
+$$t = \frac{\bar{x} - \mu_0}{\sigma_{\bar{x}}}, \quad \sigma_{\bar{x}} = \mathrm{sd}(x)/\sqrt{n}$$
 :::
 
 ::: {.column width=40%}
