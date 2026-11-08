@@ -211,3 +211,7 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 *Questo modulo è la base teorica su cui si costruirà il resto del corso.*
 
 [Slides modulo 5](slides/modulo5/modulo5.pdf)
+
+## Modulo 6
+
+* [Slides Parte 1](slides/modulo6/modulo6-a.pdf)

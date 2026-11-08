@@ -320,7 +320,7 @@ $H_0 : \mu = \mu_0 \qquad H_1 : \mu \ne \mu_0$
 :::{.callout-note}
 ## Una coda-destra (one-sided right)
 
-$H_0 : \mu \leq \mu_0 \qquad H_1 : \mu > \mu_0$
+$H_0 : \mu = \mu_0 \qquad H_1 : \mu > \mu_0$
 
 :::
 
@@ -328,7 +328,7 @@ $H_0 : \mu \leq \mu_0 \qquad H_1 : \mu > \mu_0$
 :::{.callout-note}
 ## Una coda sinistra (one-sided left)
 
-$H_0: \mu \ge \mu_0 \qquad H_1: \mu < \mu_0$  
+$H_0: \mu = \mu_0 \qquad H_1: \mu < \mu_0$  
 
 :::
 
@@ -690,8 +690,6 @@ pt(-0.72806, 10)
 
 \vspace{1mm}
 \raggedright
-\scriptsize
-$SE = \sqrt{\mathrm{var}(\mathbf{x})/N}$. Con $H_1: \mu > \mu_0$ ci interessa solo se $\mu$ è \textit{abbastanza grande}: basta un limite inferiore (e viceversa per $H_1: \mu < \mu_0$). L'IC per la media che useremo di solito è quello bidirezionale: lo vedremo nella parte sugli intervalli di confidenza.
 ```
 
 
@@ -728,32 +726,32 @@ $s = \sqrt{\frac{(N-1)\mathrm{var}(\mathbf{x}) + (M-1)\mathrm{var}(\mathbf{y})}{
 :::{.callout-note}
 ## Test a due code (two-sided)
 
-$H_0 : \mu_X = \mu_Y \qquad H_A : \mu_X \ne \mu_Y$
+$H_0 : \mu_X = \mu_Y \qquad H_1 : \mu_X \ne \mu_Y$
 
 \footnotesize
 
-$H_0 : \mu_X -\mu_Y = 0 \qquad H_A : \mu_X - \mu_Y \ne 0$
+$H_0 : \mu_X -\mu_Y = 0 \qquad H_1 : \mu_X - \mu_Y \ne 0$
 :::
 
 :::{.callout-note}
 ## Una coda-destra (one-sided right)
 
-$H_0 : \mu_X \leq \mu_Y \qquad H_A : \mu_X > \mu_Y$
+$H_0 : \mu_X = \mu_Y \qquad H_1 : \mu_X > \mu_Y$
 
 \footnotesize
 
-$H_0 : \mu_X - \mu_Y \leq 0 \qquad H_A : \mu_X -\mu_Y > 0$
+$H_0 : \mu_X - \mu_Y = 0 \qquad H_1 : \mu_X -\mu_Y > 0$
 :::
 
 
 :::{.callout-note}
 ## Una coda sinistra (one-sided left)
 
-$H_0: \mu_X \ge \mu_Y \qquad H_A: \mu_X < \mu_Y$  
+$H_0: \mu_X = \mu_Y \qquad H_1: \mu_X < \mu_Y$  
 
 \footnotesize
 
-$H_0: \mu_X - \mu_Y \ge 0 \qquad H_A: \mu_X - \mu_Y < 0$  
+$H_0: \mu_X - \mu_Y \= 0 \qquad H_1: \mu_X - \mu_Y < 0$  
 :::
 
 ## In R
@@ -866,7 +864,8 @@ annota_ttest('t.test(x, y, var.equal = TRUE, alternative = "greater")')
 \end{columns}
 ```
 
-### `var.equal = FALSE` (test di Welch) {.fragile}
+### `var.equal = FALSE` (test di Welch) {.fragile .plain}
+
 
 ```{r}
 #| echo: false
@@ -933,7 +932,7 @@ $H_0 : \mu_D = 0 \qquad H_A : \mu_D \ne 0$
 :::{.callout-note}
 ## Una coda-destra (one-sided right)
 
-$H_0 : \mu_D \leq 0 \qquad H_A : \mu_D > 0$
+$H_0 : \mu_D = 0 \qquad H_A : \mu_D > 0$
 
 :::
 
@@ -941,7 +940,7 @@ $H_0 : \mu_D \leq 0 \qquad H_A : \mu_D > 0$
 :::{.callout-note}
 ## Una coda sinistra (one-sided left)
 
-$H_0: \mu_D \ge 0 \qquad H_A: \mu_D < 0$  
+$H_0: \mu_D = 0 \qquad H_A: \mu_D < 0$  
 
 :::
 
@@ -1052,4 +1051,17 @@ annota_ttest('t.test(x, y, paired = TRUE, alternative = "less")')
 \end{column}
 \end{columns}
 ```
+
+# Intervalli di confidenza 
+
+###
+
+L'intervallo di confidenza viene calcolato come: 
+
+$$IC_{1-\alpha} = \hat{\theta} \pm c_{1-\alpha/2} \cdot SE(\hat{\theta})$$
+\begin{itemize}
+\item $\hat{\theta}$: stimatore generico del parametro $\theta$, ad esempio $\bar{x}$ per $\mu$;
+\item $c_{1-\alpha/2}$: valore critico della distribuzione di riferimento, ad esempio $z$ o $t$;
+\item $SE(\hat{\theta})$: errore standard dello stimatore.
+\end{itemize}
 

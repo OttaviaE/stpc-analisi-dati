@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 6-A: Statistica Inferenziale -- Indici di tendenza centrale"
+title: "Modulo Didattico 6-A: Test su Indici di tendenza centrale"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -90,7 +90,7 @@ execute:
 \node[inf, right = of pop] (inf) {\textbf{Inferenza sul parametro $\mu$}};
 \node[inf, below = of inf] (punt) {\textbf{Stima puntuale}\\[-1pt] {\scriptsize $\bar{x}$ è la nostra miglior ipotesi su $\mu$}};
 \node[inf, below = of punt] (int) {\textbf{Stima intervallare}\\[-1pt] {\scriptsize intervallo di confidenza}};
-\node[inf, below = of int, minimum height = 1.15cm] (ver) {\textbf{Verifica d'ipotesi}\\[-1pt] {\scriptsize $H_0$ vs $H_A$, statistica test, $p$-value}};
+\node[inf, below = of int, minimum height = 1.15cm] (ver) {\textbf{Verifica d'ipotesi}\\[-1pt] {\scriptsize $H_0$ vs $H_1$, statistica test, $p$-value}};
 \draw[freccia, evidB] (inf) -- (punt);
 \draw[freccia, evidB] (punt) -- (int);
 \draw[freccia, evidB] (int) -- (ver);
@@ -162,7 +162,7 @@ execute:
 \foreach \p in {(6.0,0.6), (6.4,1.2), (6.8,0.7), (7.1,1.35), (7.5,0.55), (7.8,1.1), (8.2,0.8), (6.6,0.35), (7.4,0.95)}
   \fill[evidB] \p circle (2.2pt);
 \node[above, align = center] at (camp.north) {\scriptsize\textbf{Il campione osservato}};
-\node[below, align = center] at (camp.south) {\scriptsize $\mathbf{x} = (x_1, \ldots, x_N)$, \; $\bar{x}$};
+\node[below, align = center] at (camp.south) {\scriptsize $\mathbf{x} = (x_1, \ldots, x_n)$, \; $\bar{x}$};
 % domanda
 \draw[-latex, very thick, gray, dashed] (2.4,1.3) to[bend left = 20] node[above, text = black] {\Large ?} (camp.west);
 \end{tikzpicture}
@@ -193,7 +193,7 @@ $\mu_{\bar{x}} = \mu, \quad \sigma_{\bar{x}} = \dfrac{\sigma}{\sqrt{n}}$
 **Statistica test**
 
 
-$$z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{N}} \sim \mathcal{N}(0, 1)$$
+$$z = \frac{\bar{x} - \mu_0}{\sigma_{\bar{x}}} \sim \mathcal{N}(0, 1)$$
 
 :::
 
@@ -231,7 +231,7 @@ $$\sigma_{\bar{x}} = \dfrac{\sigma}{\sqrt{n}}$$
 
 $\sigma$ NON noto: 
 
-$$\sigma_{\bar{x}} = \dfrac{\mathrm{sd}(x)}{\sqrt{n - 1}}$$
+$$\sigma_{\bar{x}} = \dfrac{\mathrm{sd}(x)}{\sqrt{n}}$$
 
 :::
 
@@ -267,7 +267,7 @@ Al crescere di $n$ la $t_{n-1}$ si avvicina alla $\mathcal{N}(0,1)$: con campion
 
 - In R base esiste `t.test()`, ma **non** esiste una funzione per il test z: il caso in cui $\sigma$ è nota non capita quasi mai con dati reali
 
-- Quando $N$ è grande, `t.test()` dà comunque risultati praticamente identici al test z
+- Quando $n$ è grande, `t.test()` dà comunque risultati praticamente identici al test z
 
 - Se $\sigma$ fosse davvero nota, il test z si calcola a mano in due righe:
 
@@ -275,34 +275,32 @@ Al crescere di $n$ la $t_{n-1}$ si avvicina alla $\mathcal{N}(0,1)$: con campion
 
 ```{r}
 #| eval: false
-z <- (mean(x) - mu0) / (sigma / sqrt(length(x)))
+z = (mean(x) - mu0) / (sigma / sqrt(length(x)))
 2 * (1 - pnorm(abs(z)))  # p-value a due code
 ```
 
-\normalsize
-
-Da qui in avanti: **test t**
+dove `mu0` è il parametro della popolazione definito in $H_0$.
 
 ### 
 
 ::: {.callout-note appearance="default"}
 ## Scopo
 
-permette di valutare se la media $\mu$ della popolazione di un dato campione *x* sia significativamente differente (risp. maggiore/minore) rispetto ad una specifica soglia teorica $\mu_0$
+permette di valutare se la media $\mu$ della popolazione di un dato campione *X* sia significativamente differente (risp. maggiore/minore) rispetto ad una specifica soglia teorica $\mu_0$
 :::
 
-Sia $\mathbf{x} = (x_1, x_2, \dots, x_N)$ un campione empirico di $n$ osservazioni quantitative indipendenti tali che $x_i \sim \mathcal{N}(\mu, \sigma^2)$, dove $\mu$ e $\sigma^2$ sono parametri ignoti della popolazione di $\mathbf{x}$.
+Sia $\mathbf{x} = (x_1, x_2, \dots, x_n)$ un campione empirico di $n$ osservazioni quantitative indipendenti tali che $x_i \sim \mathcal{N}(\mu, \sigma^2)$, dove $\mu$ e $\sigma^2$ sono parametri ignoti della popolazione di $\mathbf{x}$.
 
 Inoltre sia $\mu_0 \in \mathbb{R}$ il parametro della popolazione sotto $H_0$
 
 :::: {.columns}
 
 ::: {.column width=60%}
-$$t = \frac{\bar{x} - \mu_0}{\mathrm{sd}(x)/\sqrt{n}}$$
+$$t = \frac{\bar{x} - \mu_0}{\sigma_{\bar{x}}}, \quad \sigma_{\bar{x}} = \mathrm{sd}(x)/\sqrt{n}$$
 :::
 
 ::: {.column width=40%}
-$\bar{x}$: Media campionaria di $\mathbf{x}$
+**Stimatore** di $\mu$: $\bar{x}$, media campionaria di $\mathbf{x}$
 
 $\mathrm{sd}(x)$: D.s. campionaria $\mathbf{x}$
 :::
@@ -322,7 +320,7 @@ $H_0 : \mu = \mu_0 \qquad H_1 : \mu \ne \mu_0$
 :::{.callout-note}
 ## Una coda-destra (one-sided right)
 
-$H_0 : \mu \leq \mu_0 \qquad H_1 : \mu > \mu_0$
+$H_0 : \mu = \mu_0 \qquad H_1 : \mu > \mu_0$
 
 :::
 
@@ -330,7 +328,7 @@ $H_0 : \mu \leq \mu_0 \qquad H_1 : \mu > \mu_0$
 :::{.callout-note}
 ## Una coda sinistra (one-sided left)
 
-$H_0: \mu \ge \mu_0 \qquad H_1: \mu < \mu_0$  
+$H_0: \mu = \mu_0 \qquad H_1: \mu < \mu_0$  
 
 :::
 
@@ -370,7 +368,7 @@ annota_ttest <- function(chiamata) {
   out <- mark(out, "((not equal to|less than|greater than) -?[0-9.]+)", "h1")
   i <- grep("confidence interval", out) + 1
   out[i] <- sprintf(" \\tikzmarknode{ic}{%s}", trimws(out[i]))
-  j <- grep("^mean (in|of)", out) + 1
+  j <- grep("^mean (in|of|difference)", out) + 1
   out[j] <- sprintf(" \\tikzmarknode{medie}{%s}", trimws(out[j]))
   cat("```{=latex}\n",
       "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
@@ -435,7 +433,7 @@ myt = t.test(x, mu = mu0) # test a due code
   \item $p$-value
   \item Ipotesi alternativa $H_1$: bidirezionale
   \item Intervallo di confidenza al 95\% per $\mu$
-  \item Media campionaria $\bar{x}$
+  \item Stimatore di $\mu$: media campionaria $\bar{x}$
 \end{enumerate}
 \end{column}
 \end{columns}
@@ -692,12 +690,47 @@ pt(-0.72806, 10)
 
 \vspace{1mm}
 \raggedright
-\scriptsize
-$SE = \sqrt{\mathrm{var}(\mathbf{x})/N}$. Con $H_1: \mu > \mu_0$ ci interessa solo se $\mu$ è \textit{abbastanza grande}: basta un limite inferiore (e viceversa per $H_1: \mu < \mu_0$). L'IC per la media che useremo di solito è quello bidirezionale: lo vedremo nella parte sugli intervalli di confidenza.
 ```
 
 
 # Due campioni indipendenti
+
+### 
+
+**due campioni indipendenti** di $n$ e $m$ unità statistiche, con medie $\bar{x}$ e $\bar{y}$.
+
+```{=latex}
+\centering
+\begin{tikzpicture}[font = \small, scale = 0.8, yscale = 0.72]
+% popolazioni ipotizzate da H0
+\foreach \yy/\V in {2.55/X, 0/Y} {
+  \begin{scope}[yshift = \yy cm]
+  \fill[evid!15] (-2.2,0) -- plot[domain = -2.2:2.2, samples = 60, smooth] (\x, {1.45*exp(-\x*\x/1.1)}) -- (2.2,0) -- cycle;
+  \draw[evid, very thick] plot[domain = -2.2:2.2, samples = 60, smooth] (\x, {1.45*exp(-\x*\x/1.1)});
+  \draw[-latex, gray] (-2.4,0) -- (2.5,0) node[right] {\scriptsize $\V$};
+  \draw[dashed, evid] (0,0) -- (0,1.5) node[right] {\scriptsize $\mu_{\V}$};
+  \end{scope}
+}
+\node[below, align = center] at (0,0) {\scriptsize\textbf{Popolazioni ipotizzate da $H_0$:} $\mu_X = \mu_Y$};
+% campioni osservati
+\foreach \yy/\V/\lab/\pts in {
+  3.0/x/{$\mathbf{x} = (x_1, \ldots, x_n)$, \; $\bar{x}$}/{(5.9,0.25), (6.3,0.8), (6.7,0.35), (7.0,0.95), (7.4,0.2), (7.7,0.7), (8.1,0.4)},
+  0.45/y/{$\mathbf{y} = (y_1, \ldots, y_m)$, \; $\bar{y}$}/{(6.0,0.7), (6.4,0.25), (6.9,0.8), (7.3,0.35), (7.7,0.9), (8.1,0.3)}} {
+  \begin{scope}[yshift = \yy cm]
+  \node[draw = evidB, thick, rounded corners, fill = evidB!10, minimum width = 3.2cm, minimum height = 0.9cm] (c\V) at (7,0.5) {};
+  \foreach \p in \pts \fill[evidB] \p circle (2.2pt);
+  \node[below] at (c\V.south) {\scriptsize \lab};
+  \draw[-latex, very thick, gray, dashed] (2.6,0.5) -- node[above, text = black] {\Large ?} (c\V.west);
+  \end{scope}
+}
+\end{tikzpicture}
+```
+
+::: {.callout-note appearance="default"}
+## La domanda del test
+
+I due campioni possono provenire da popolazioni con la stessa media ($\mu_X = \mu_Y$)? Se $\bar{x} - \bar{y}$ è *troppo lontana* da 0 $\rightarrow$ rifiutiamo $H_0$.
+:::
 
 ### 
 ::: {.callout-note appearance="default"}
@@ -708,21 +741,23 @@ Permette di valutare se la media $\mu_X$ della popolazione di un campione di dat
 
 \small
 
-Sia $\mathbf{x} = (x_1, x_2, \ldots, x_N)$ un campione empirico di $N$ osservazioni quantitative indipendenti tali che $x_i \sim N(\mu_X, \sigma^2)$ e sia $\mathbf{y} = (y_1, y_2, \ldots, y_M)$ un campione empirico di $M$ osservazioni quantitative indipendenti tali che $y_j \sim N(\mu_Y, \sigma^2)$, dove $\sigma^2$ è la varianza comune ad entrambe le popolazioni.
+Sia $\mathbf{x} = (x_1, x_2, \ldots, x_n)$ un campione empirico di $N$ osservazioni quantitative indipendenti tali che $x_i \sim N(\mu_X, \sigma^2)$ e sia $\mathbf{y} = (y_1, y_2, \ldots, y_m)$ un campione empirico di $M$ osservazioni quantitative indipendenti tali che $y_j \sim N(\mu_Y, \sigma^2)$, dove $\sigma^2$ è la varianza comune ad entrambe le popolazioni.
 
 
 :::: {.columns}
 
 ::: {.column width=60%}
-$$t = \frac{(\overline{x} - \overline{y}) - (\mu_x - \mu_y)}{s \sqrt{\frac{1}{N} + \frac{1}{M}}}$$
+$$t = \frac{(\overline{x} - \overline{y}) - (\mu_X - \mu_Y)}{s_p \sqrt{\frac{1}{n} + \frac{1}{m}}}$$
 :::
 
 ::: {.column width=40%}
 \small
-$s = \sqrt{\frac{(N-1)\mathrm{var}(\mathbf{x}) + (M-1)\mathrm{var}(\mathbf{y})}{N + M - 2}}$
+$s_p = \sqrt{\frac{(N-1)\mathrm{var}(\mathbf{x}) + (M-1)\mathrm{var}(\mathbf{y})}{n + m - 2}}$
 :::
 
 ::::
+
+**Stimatore** di $\mu_X - \mu_Y$: $\bar{x} - \bar{y}$, differenza tra le medie campionarie
 
 ### 
 
@@ -730,90 +765,269 @@ $s = \sqrt{\frac{(N-1)\mathrm{var}(\mathbf{x}) + (M-1)\mathrm{var}(\mathbf{y})}{
 :::{.callout-note}
 ## Test a due code (two-sided)
 
-$H_0 : \mu_X = \mu_Y \qquad H_A : \mu_X \ne \mu_Y$
+$H_0 : \mu_X = \mu_Y \qquad H_1 : \mu_X \ne \mu_Y$
 
 \footnotesize
 
-$H_0 : \mu_X -\mu_Y = 0 \qquad H_A : \mu_X - \mu_Y \ne 0$
+$H_0 : \mu_X -\mu_Y = 0 \qquad H_1 : \mu_X - \mu_Y \ne 0$
 :::
 
 :::{.callout-note}
 ## Una coda-destra (one-sided right)
 
-$H_0 : \mu_X \leq \mu_Y \qquad H_A : \mu_X > \mu_Y$
+$H_0 : \mu_X = \mu_Y \qquad H_1 : \mu_X > \mu_Y$
 
 \footnotesize
 
-$H_0 : \mu_X - \mu_Y \leq 0 \qquad H_A : \mu_X -\mu_Y > 0$
+$H_0 : \mu_X - \mu_Y = 0 \qquad H_1 : \mu_X -\mu_Y > 0$
 :::
 
 
 :::{.callout-note}
 ## Una coda sinistra (one-sided left)
 
-$H_0: \mu_X \ge \mu_Y \qquad H_A: \mu_X < \mu_Y$  
+$H_0: \mu_X = \mu_Y \qquad H_1: \mu_X < \mu_Y$  
 
 \footnotesize
 
-$H_0: \mu_X - \mu_Y \ge 0 \qquad H_A: \mu_X - \mu_Y < 0$  
+$H_0: \mu_X - \mu_Y = 0 \qquad H_1: \mu_X - \mu_Y < 0$  
 :::
 
-## In R 
+## In R
+
+###
+
+`t.test(x, y, var.equal = TRUE, alternative = "two.sided")`
+
+Svolge il test su due campioni indipendenti di osservazioni $x$ e $y$, assumendo che le varianze delle due popolazioni siano uguali (`var.equal = TRUE`), con ipotesi alternativa bidirezionale come default (`alternative = "two.sided"`):
+
+| **Definizione ipotesi in R**                  | **Significato**                     |
+|:----------------------------------------------|:------------------------------------|
+| `alternative = "two.sided"`                   | $H_1$: $\mu_X \neq \mu_Y$            |
+| `alternative = "greater"`                     | $H_1$: $\mu_X > \mu_Y$               |
+| `alternative = "less"`                        | $H_1$: $\mu_X < \mu_Y$               |
+
+Il default di R è `var.equal = FALSE`: senza specificare `var.equal = TRUE`, R svolge il test di Welch, che non assume varianze uguali.
+
+## Gradi di libertà e `var.equal = TRUE`
 
 ### 
-| **Simbolo R** | **Significato** |
-|:--------------|:----------------|
-| `t.test(x, y, var.equal = TRUE)` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **a due code**. |
-| `t.test(x, y, var.equal = TRUE, alternative = "greater")` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (destra)**. |
-| `t.test(x, y, var.equal = TRUE, alternative = "less")` | T-test per 2 campioni indipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (sinistra)**. |
 
+```{=latex}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\centering
+\textbf{\texttt{var.equal = TRUE}}\\
+\footnotesize Varianza comune alle due popolazioni
+\small
+$$df = N + M - 2$$
+$$SE = s_p\sqrt{\frac{1}{n} + \frac{1}{m}}$$
+\footnotesize
+$$s_p = \sqrt{\frac{(n-1)\mathrm{var}(\mathbf{x}) + (m-1)\mathrm{var}(\mathbf{y})}{n + m - 2}}$$
+\end{column}
+\begin{column}{.5\textwidth}
+\centering
+\textbf{\texttt{var.equal = FALSE}} (Welch)\\
+\footnotesize Varianze non assunte uguali
+\small
+$$df = \frac{\left(\frac{\mathrm{var}(\mathbf{x})}{n} + \frac{\mathrm{var}(\mathbf{y})}{m}\right)^2}{\frac{\left(\mathrm{var}(\mathbf{x})/n\right)^2}{n-1} + \frac{\left(\mathrm{var}(\mathbf{y})/m\right)^2}{m-1}}$$
+$$SE = \sqrt{\frac{\mathrm{var}(\mathbf{x})}{n} + \frac{\mathrm{var}(\mathbf{y})}{m}}$$
+\end{column}
+\end{columns}
+\vspace{2mm}
+\footnotesize
+Nell'esempio ($n = 11$, $Mm = 8$): $df = 17$ con \texttt{var.equal = TRUE}, $df = 14.14$ con Welch.
+```
 
 ## Esempi
 
 ###
 
-```{r}
-#| results: hide
+\footnotesize
 
-x <- c(12.2,23.2,14,20.3,9.2,3.7,8,16.8,3.7,1.9,20.5)
-y <- c(8.5,3.2,4,10.5,7.7,3.1,2,3.9)
-t.test(x,y,var.equal=TRUE)
-t.test(x,y,var.equal=TRUE,alternative="greater")
-t.test(x,y,var.equal=TRUE,alternative="less")
-t.test(x,y)
+```{r}
+x = c(12.2, 23.2, 14, 20.3, 9.2, 3.7, 8, 16.8, 3.7, 1.9, 20.5)
+y = c(8.5, 3.2, 4, 10.5, 7.7, 3.1, 2, 3.9)
+t.test(x, y, var.equal = TRUE, alternative = "two.sided")
 ```
 
+### {.fragile}
 
-### Test a due code `var.equal=TRUE`
-
-\small
 ```{r}
-t.test(x,y,var.equal=TRUE)
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, var.equal = TRUE)')
 ```
 
-### `var.equal=FALSE`
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]  (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(df)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(pval)]  (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(h1)]    (b5) {}; \node[num] at (b5.north east) {5};}
+  {\node[box, fit=(ic)]    (b6) {}; \node[num] at (b6.north east) {6};}
+  {\node[box, fit=(medie)] (b7) {}; \node[num] at (b7.north east) {7};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Tipo di test
+  \item Statistica test $t_0$
+  \item Gradi di libertà: $df = n + m - 2$
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $p$-value
+  \item Ipotesi alternativa $H_1$: bidirezionale ($\mu_X - \mu_Y \neq 0$)
+  \item Intervallo di confidenza al 95\% per $\mu_X - \mu_Y$
+  \item Medie campionarie: stimatore $= \bar{x} - \bar{y}$
+\end{enumerate}
+\end{column}
+\end{columns}
+```
 
-\small
+### {.fragile}
 
 ```{r}
-t.test(x,y)
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, var.equal = TRUE, alternative = "greater")')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(h1)]        (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item $H_1$: $\mu_X > \mu_Y$ ($\mu_X - \mu_Y > 0$)
+  \item $t_0$ e gradi di libertà: \textbf{identici} al test a due code
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p = P(T \geq t_0)$, area a destra di $t_0$: qui $\bar{x} > \bar{y}$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item IC \textbf{unidirezionale}: solo il limite inferiore, l'altro estremo è \texttt{Inf}
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### `var.equal = FALSE` (test di Welch) {.fragile .plain}
+
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y)')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]      (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Test di Welch: le varianze delle due popolazioni \textbf{non} sono assunte uguali (default di R)
+  \item $t_0$ e gradi di libertà \textbf{diversi} dal test con \texttt{var.equal = TRUE}: i $df$ sono corretti e non sono interi
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p$-value
+  \item Intervallo di confidenza al 95\% per $\mu_X - \mu_Y$
+\end{enumerate}
+\end{column}
+\end{columns}
 ```
 
 # Due campioni appaiati 
+
+### 
+
+**un solo campione** di $N$ coppie di osservazioni: ogni coppia produce una differenza $d_i$.
+
+```{=latex}
+\centering
+\begin{tikzpicture}[font = \small, scale = 0.8, yscale = 0.8]
+% popolazione delle differenze ipotizzata da H0
+\fill[evid!15] (-2.2,0) -- plot[domain = -2.2:2.2, samples = 80, smooth] (\x, {1.7*exp(-\x*\x/1.1)}) -- (2.2,0) -- cycle;
+\draw[evid, very thick] plot[domain = -2.2:2.2, samples = 80, smooth] (\x, {1.7*exp(-\x*\x/1.1)});
+\draw[-latex, gray] (-2.4,0) -- (2.5,0) node[right] {\scriptsize $D$};
+\draw[dashed, evid] (0,0) -- (0,1.75) node[above] {$\mu_D = 0$};
+\node[align = center, below] at (0,-0.05) {\scriptsize\textbf{Popolazione ipotizzata da $H_0$}\\ \scriptsize $D \sim \mathcal{N}(0, \sigma^2)$};
+% differenze
+\node[draw = evidB, thick, rounded corners, fill = evidB!10, minimum width = 2.3cm, minimum height = 1.6cm] (diff) at (5.3,0.9) {};
+\foreach \p in {(4.7,0.55), (5.0,1.25), (5.3,0.7), (5.55,1.3), (5.85,0.55), (5.1,0.3), (5.65,0.95)}
+  \fill[evidB] \p circle (2.2pt);
+\node[above] at (diff.north) {\scriptsize\textbf{Le differenze}};
+\node[below, align = center] at (diff.south) {\scriptsize $d_i = x_i - y_i$\\ \scriptsize $\bar{d}$};
+% coppie osservate
+\node[draw = evidB, thick, rounded corners, minimum width = 2.3cm, minimum height = 1.6cm] (cop) at (9.2,0.9) {};
+\foreach \yy in {0.3, 0.6, 0.9, 1.2, 1.5} {
+  \fill[evidB] (8.65,\yy) circle (2.2pt);
+  \fill[evid] (9.75,\yy) circle (2.2pt);
+  \draw[gray] (8.65,\yy) -- (9.75,\yy);
+}
+\node[above] at (cop.north) {\scriptsize\textbf{Le coppie osservate}};
+\node[below, align = center] at (cop.south) {\scriptsize $(x_i, y_i)$, \; $i = 1, \ldots, N$\\ \scriptsize es. \emph{prima} e \emph{dopo}};
+\draw[-latex, very thick, gray] (cop.west) -- (diff.east);
+\draw[-latex, very thick, gray, dashed] (2.4,1.1) -- node[above, text = black] {\Large ?} (diff.west);
+\end{tikzpicture}
+```
+
+::: {.callout-note appearance="default"}
+## La domanda del test
+
+Le differenze possono provenire da una popolazione in cui $D \sim \mathcal{N}(0, \sigma^2)$? Se $\bar{d}$ è *troppo lontana* da 0 $\rightarrow$ rifiutiamo $H_0$.
+:::
 
 ###
 
 ::: {.callout-note appearance="default"}
 ## Scopo
 
-Permette di valutare se le medie $\mu_x$ e $\mu_y$ delle popolazioni di due campioni di dati appaiati $(x,y)$ siano significativamente differenti (risp. maggiore/minore).
+Permette di valutare se le medie $\mu_X$ e $\mu_Y$ delle popolazioni di due campioni di dati appaiati $(x,y)$ siano significativamente differenti (risp. maggiore/minore).
 :::
 
 Sia $\mathbf{(x, y)} = \big( (x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N) \big)$ un campione bivariato di $N$ osservazioni $(x_i, y_i)$ indipendenti. 
 Inoltre sia $d_i \sim N(d \mid \mu_D, \sigma^2)$ l’osservazione differenziale $d_i = x_i - y_i$ derivata da $\mathbf{(x, y)}$. 
 I parametri $\mu_D$ e $\sigma^2$ sono i termini ignoti della variabile differenziale $D$.
 
-$$t = \dfrac{\overline{d}}{\sqrt{\operatorname{var}(\mathbf{d})/N}}$$
+**Stimatore** di $\mu_D$: $\bar{d}$, media delle differenze (*prima* $-$ *dopo*)
+
+$$t = \dfrac{\overline{d}}{\sqrt{\operatorname{var}(\mathbf{d})/n}}$$
 
 ### 
 
@@ -821,14 +1035,14 @@ $$t = \dfrac{\overline{d}}{\sqrt{\operatorname{var}(\mathbf{d})/N}}$$
 :::{.callout-tip}
 ## Test a due code (two-sided)
 
-$H_0 : \mu_D = 0 \qquad H_A : \mu_D \ne 0$
+$H_0 : \mu_D = 0 \qquad H_1 : \mu_D \ne 0$
 
 :::
 
 :::{.callout-note}
 ## Una coda-destra (one-sided right)
 
-$H_0 : \mu_D \leq 0 \qquad H_A : \mu_D > 0$
+$H_0 : \mu_D = 0 \qquad H_1 : \mu_D > 0$
 
 :::
 
@@ -836,38 +1050,311 @@ $H_0 : \mu_D \leq 0 \qquad H_A : \mu_D > 0$
 :::{.callout-note}
 ## Una coda sinistra (one-sided left)
 
-$H_0: \mu_D \ge 0 \qquad H_A: \mu_D < 0$  
+$H_0: \mu_D = 0 \qquad H_1: \mu_D < 0$  
 
 :::
 
-## In R 
+### 
+
+```{=latex}
+Il test lavora su una sola variabile, le differenze $d_i = x_i - y_i$, quindi è un test t a un campione su $\mathbf{d}$:
+$$df = n - 1, \qquad n = \text{numero di coppie}$$
+\begin{itemize}
+\item Abbiamo $n$ differenze, non $2n$ osservazioni indipendenti
+\item Si stima un solo parametro, $\mu_D$, quindi si perde un solo grado di libertà
+\end{itemize}
+\vspace{2mm}
+Nell'esempio: 8 coppie, quindi $df = 8 - 1 = 7$.
+```
+
+## In R
 
 ###
 
-| **Simbolo R** | **Significato** |
-|:--------------|:----------------|
-| `t.test(x, y, paired = TRUE)` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **a due code**. |
-| `t.test(x, y, paired = "greater")` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (destra)**. |
-| `t.test(x, y, paired = "less")` | T-test per 2 campioni dipendenti (`x`, `y`). Calcola il test statistico inferenziale **ad una coda (sinistra)**. |
+`t.test(x, y, paired = TRUE, alternative = "two.sided")`
 
-## Esempi 
+Svolge il test su due campioni appaiati di osservazioni $x$ e $y$ (`paired = TRUE`), cioè un test t su un campione sulle differenze $d_i = x_i - y_i$ con $\mu_0 = 0$, con ipotesi alternativa bidirezionale come default (`alternative = "two.sided"`):
 
-### 
+| **Definizione ipotesi in R**                  | **Significato**                     |
+|:----------------------------------------------|:------------------------------------|
+| `alternative = "two.sided"`                   | $H_1$: $\mu_D \neq 0$                |
+| `alternative = "greater"`                     | $H_1$: $\mu_D > 0$                   |
+| `alternative = "less"`                        | $H_1$: $\mu_D < 0$                   |
+
+## Esempi
+
+###
+
+\footnotesize
 
 ```{r}
-#| results: hide
-x = c(5.2,3.5,3.4,7.1,6.2,3.0,1,4) 
-y = c(8.5,3.2,4,10.5,7.7,3.1,2,3.9)
+x = c(5.2, 3.5, 3.4, 7.1, 6.2, 3.0, 1, 4)
+y = c(8.5, 3.2, 4, 10.5, 7.7, 3.1, 2, 3.9)
+t.test(x, y, paired = TRUE, alternative = "two.sided")
+```
 
-t.test(x,y,paired=TRUE) 
-t.test(x,y,paired=TRUE,alternative="less") 
-t.test(x,y,paired=TRUE,alternative="greater")
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, paired = TRUE)')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(test)]  (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(df)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(pval)]  (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(h1)]    (b5) {}; \node[num] at (b5.north east) {5};}
+  {\node[box, fit=(ic)]    (b6) {}; \node[num] at (b6.north east) {6};}
+  {\node[box, fit=(medie)] (b7) {}; \node[num] at (b7.north east) {7};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Tipo di test
+  \item Statistica test $t_0$
+  \item Gradi di libertà: $df = N - 1$ ($N$ = numero di coppie)
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $p$-value
+  \item Ipotesi alternativa $H_1$: bidirezionale ($\mu_D \neq 0$)
+  \item Intervallo di confidenza al 95\% per $\mu_D$
+  \item Stimatore di $\mu_D$: media delle differenze $\bar{d}$
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_ttest('t.test(x, y, paired = TRUE, alternative = "less")')
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(h1)]        (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(stat)(df)]  (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(pval)]      (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(ic)]        (b4) {}; \node[num] at (b4.north east) {4};}
+\end{tikzpicture}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item $H_1$: $\mu_D < 0$
+  \item $t_0$ e gradi di libertà: \textbf{identici} al test a due code
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $p = P(T \leq t_0)$, area a sinistra di $t_0$: qui $\bar{d} < 0$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item IC \textbf{unidirezionale}: solo il limite superiore, l'altro estremo è \texttt{-Inf}
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+# Intervalli di confidenza 
+
+###
+
+```{=latex}
+\begin{columns}[T]
+\begin{column}{.5\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 0.82, yscale = 0.2,
+  ic/.style = {line width = 1.2pt, evid},
+  no/.style = {line width = 1.6pt, unipd}]
+\draw[evidB, very thick] (0, 0.2) -- (0, 21) node[above, text = evidB] {\footnotesize $\theta$ fisso};
+\foreach \y/\c/\m in {
+  20/0.35/1.05, 19/-0.40/0.90, 18/0.15/1.20, 17/-0.70/1.00, 16/0.55/0.95,
+  15/-0.20/1.10, 14/0.80/1.15, 13/-0.55/0.85, 12/0.10/1.00, 11/-0.90/1.25,
+  10/0.45/0.90, 9/-0.15/1.05, 8/0.70/1.00, 7/-0.35/0.95, 5/0.25/1.10,
+  4/-0.65/1.00, 3/0.50/1.20, 2/-0.10/0.85, 1/0.30/1.00}
+  {\draw[ic] (\c-\m, \y) -- (\c+\m, \y); \fill[evid] (\c, \y) circle (1.2pt);}
+\draw[no] (0.40, 6) -- (2.40, 6); \fill[unipd] (1.40, 6) circle (1.4pt);
+\end{tikzpicture}
+
+\vspace{1mm}
+{\scriptsize Un intervallo per ogni campione: 19 contengono $\theta$, \textcolor{unipd}{1 no}}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\textbf{Cosa significa il 95\%}
+
+Su infinite ripetizioni dell'esperimento, il 95\% degli intervalli contiene $\theta$. Il singolo intervallo lo contiene oppure no.
+
+\vspace{3mm}
+\textbf{Come si usa per decidere} ($\alpha = .05$)
+
+\vspace{2mm}
+\centering
+\begin{tikzpicture}[xscale = 0.8, font = \scriptsize]
+\draw[evid, line width = 2pt] (-1.2, 0) -- (1.2, 0);
+\draw[evid, thick] (-1.2, -0.12) -- (-1.2, 0.12) (1.2, -0.12) -- (1.2, 0.12);
+\draw[evidB, thick, dashed] (0.5, -0.3) -- (0.5, 0.3) node[above, text = evidB] {$\theta_0$};
+\node[below] at (0, -0.3) {$\theta_0$ \textbf{dentro}: non rifiuto $H_0$};
+\begin{scope}[yshift = -1.65cm]
+\draw[evid, line width = 2pt] (-1.2, 0) -- (1.2, 0);
+\draw[evid, thick] (-1.2, -0.12) -- (-1.2, 0.12) (1.2, -0.12) -- (1.2, 0.12);
+\draw[unipd, thick, dashed] (2, -0.3) -- (2, 0.3) node[above, text = unipd] {$\theta_0$};
+\node[below] at (0, -0.3) {$\theta_0$ \textbf{fuori}: rifiuto $H_0$};
+\end{scope}
+\end{tikzpicture}
+\end{column}
+\end{columns}
+```
+
+###
+
+L'intervallo di confidenza viene calcolato come: 
+
+$$IC_{1-\alpha} = \hat{\theta} \pm c_{1-\alpha/2} \cdot SE(\hat{\theta})$$
+\begin{itemize}
+\item $\hat{\theta}$: stimatore generico del parametro $\theta$, ad esempio $\bar{x}$ per $\mu$;
+\item $c_{1-\alpha/2}$: valore critico della distribuzione di riferimento, ad esempio $z$ o $t$;
+\item $SE(\hat{\theta})$: errore standard dello stimatore.
+\end{itemize}
+
+
+:::{.callout-note}
+## Significato
+
+
+Un $IC$ al x\% è costruito con un metodo che, su infinite ripetizioni dell'esperimento, produce intervalli che contengono il vero valore di $\theta$ nel x\% dei casi.
+
+$\theta$ è fisso, mentre i limiti dell'intervallo variano da campione a campione: il singolo intervallo calcolato contiene $\theta$ oppure no.
+:::
+
+##  L'oggetto di `t.test()`
+
+### {.fragile}
+
+```{r}
+#| echo: false
+#| results: asis
+set.seed(999)
+x = rnorm(11, mean = 12, sd = 7.5)
+res = t.test(x, mu = 10)
+
+out = capture.output(str(res, give.attr = FALSE))
+elementi = c(par = "parameter", est = "estimate", se = "stderr")
+for (nodo in names(elementi)) {
+  i = grep(paste0("^ \\$ ", elementi[nodo], " "), out)
+  out[i] = sprintf(" \\tikzmarknode{%s}{%s}", nodo, trimws(out[i]))
+}
+cat("```{=latex}\n",
+    "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
+    "> str(res, give.attr = FALSE)\n",
+    paste(out, collapse = "\n"),
+    "\n\\end{Verbatim}\n```\n", sep = "")
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(par)] (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(est)] (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(se)]  (b3) {}; \node[num] at (b3.north east) {3};}
+\end{tikzpicture}
+\vspace{-3mm}
+\footnotesize
+\begin{enumerate}
+  \item \texttt{parameter}: gradi di libertà, per ricavare il valore critico $c_{1-\alpha/2}$
+  \item \texttt{estimate}: stimatore $\hat{\theta}$, valore attorno a cui si vuole costruire l'intervallo. Con due campioni indipendenti contiene $\bar{x}$ e $\bar{y}$: $\hat{\theta} = \bar{x} - \bar{y}$
+  \item \texttt{stderr}: errore standard dello stimatore $SE(\hat{\theta})$
+\end{enumerate}
+```
+
+## Costruzione dell'intervallo 
+
+$$IC_{1-\alpha} = \hat{\theta} \pm c_{1-\alpha/2} \cdot SE(\hat{\theta})$$
+\footnotesize
+
+```{r}
+#| eval: true
+alpha = .05 # cambiando il valore di alpha cambia l'ampiezza dell'intervallo
+valoriCritici = c(qt(alpha/2, df = res$parameter), # valore negativo
+                  qt(1-alpha/2, df = res$parameter)) # valore positivo 
+valoriCritici
+res$estimate + res$stderr * valoriCritici
+res$conf.int # confronto con i valori calcolati da R
 ```
 
 
+
+## Un campione
+
 ### 
+\footnotesize
 
 ```{r}
-t.test(x,y,paired=TRUE,alternative="less") 
+set.seed(999)
+x=rnorm(11,mean =12,sd =7.5)
+mu0=10
+res1campione = t.test(x,mu =mu0,alternative ="two.sided")
+# calcolo valori critici per intervallo 95%
+(t_c = c(qt(c(.025, .975), 
+            df = res1campione$parameter)))
+res1campione$estimate + res1campione$stderr* t_c
+
+```
+
+
+## Due campioni indipendenti 
+
+### 
+
+\footnotesize
+
+```{r}
+set.seed(999)
+x = rnorm(11,mean =12,sd =7.5)
+y = rnorm(15,mean =8,sd =2.5)
+res2campioni = t.test(x, y)
+hat = res2campioni$estimate[1] - res2campioni$estimate[2] 
+(t_c = c(qt(c(.025, .975), 
+            df = res2campioni$parameter)))
+hat + res2campioni$stderr * t_c
+res2campioni$conf.int # confronto
+```
+
+## Due campioni dipendenti 
+
+### 
+
+\footnotesize
+```{r}
+set.seed(999)
+x = rnorm(11,mean =12,sd =7.5)
+y = rnorm(11,mean =8,sd =2.5)
+res2dipedenti = t.test(x, y, paired = TRUE)
+(t_c = c(qt(c(.025, .975), 
+            df = res2dipedenti$parameter)))
+res2dipedenti$estimate + res2dipedenti$stderr * t_c
+res2dipedenti$conf.int # confronto
 ```
 

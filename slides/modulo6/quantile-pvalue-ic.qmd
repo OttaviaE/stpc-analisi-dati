@@ -2,8 +2,9 @@
 title: "Calcolo p value, t critico e IC"
 author: "Ottavia Epifania"
 format: 
-   pdf: 
+   html: 
     toc: true
+    embed-resources: true
 lang: it
 editor_options: 
   chunk_output_type: console
@@ -36,7 +37,7 @@ Come prima cosa, salviamo i risultati di uno dei test per avere la statistica te
 :::{.callout-warning}
 ## ATTENZIONE!
 
-La statistica $t_o$ è sempre la stessa, indipendentemente dall'ipotesi, fintanto che $N$ (e quindi $gdl$) e $\mu_0$ sono invariati
+La statistica $t_o$ è sempre la stessa, indipendentemente dall'ipotesi, fintanto che $n$ (e quindi $gdl$) e $\mu_0$ sono invariati
 :::
 
 ```{r}
