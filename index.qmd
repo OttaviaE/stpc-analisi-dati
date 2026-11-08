@@ -215,3 +215,8 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 ## Modulo 6
 
 * [Slides Parte 1](slides/modulo6/modulo6-a.pdf)
+
+### Esercitazione
+
+* [Esercitazione Modulo 6 - Prima serie (Testo)](slides/modulo6/Laboratorio/Esercizi-Rmod6_esercizi.html)
+* [Esercitazione Modulo 6 - Prima serie (Soluzioni)](slides/modulo6/Laboratorio/Esercizi-Rmod6_soluzioni.html)

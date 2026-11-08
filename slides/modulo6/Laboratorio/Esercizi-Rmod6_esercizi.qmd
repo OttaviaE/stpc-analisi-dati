@@ -1,20 +1,21 @@
 ---
-title: "Modulo 5 - Prima serie"
+title: "Modulo 6 - Prima serie"
 subtitle: "Esercizi"
 author: "Ottavia Epifania"
 format: 
-  pdf: 
-   toc: true
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
+  html:
+    embed-resources: true
+    number-sections: true
+    output-file: "Esercizi-Rmod6_esercizi.html"
+editor_options: 
+  chunk_output_type: console
 ---
 
 
 ```{r include=FALSE}
-myvar = FALSE
-echovar = FALSE
-evalvar = FALSE
+myvar = F
+echovar = F
+evalvar = F
 knitr::opts_chunk$set(include = myvar, 
                       echo = echovar,
                       eval = evalvar)
@@ -24,9 +25,8 @@ knitr::opts_chunk$set(include = myvar,
 
 Il presente caso studio richiede di eseguire delle procedure di analisi dei dati su un insieme di variabili associate a 70 candidati di un corso di laurea del nord-est (nota: questi dati sono già stati analizzati da un punto di vista descrittivo in un precedente Laboratorio R del Modulo 2).
 
-## Esercizi 
+# Esercizi 
 
-### es 1
 
 Scaricare il file `datiTestCR2005.csv` e caricarlo in R assegnandolo alla variabile (data frame) DATITEST. Il file contiene un database con 70 osservazioni misurate su 7 variabili distinte:
 
@@ -53,7 +53,7 @@ summary(dati)
 
 
 
-### es 2 
+## 
 
 Correggere la variabile `VOTO` secondo la modalità descritta nel Laboratorio R che ha analizzato lo stesso set di dati (ovvero, i valori fuori dal range vanno sostituiti con la media di `VOTO` calcolata sui soli valori all'interno del range).
 
@@ -63,7 +63,7 @@ index = which(dati$VOTO < 60 | dati$VOTO > 100)
 dati$VOTO[index] = mean(dati$VOTO[-index])
 ```
 
-### es 3
+##
 
 Visualizzare le statistiche descrittive di base per le variabili di tipo numerico.
 Aggiungere anche il calcolo della deviazione standard per tutte le variabili di tipo numerico
@@ -74,7 +74,7 @@ apply(dati[,-3], 2, sd)
 ```
 
 
-###  es 4 
+##
 
 Verificare se il voto medio di diploma del gruppo dei *maschi* sia significativamente differente dal voto medio di diploma del gruppo delle *femmine* (si consideri come livello di riferimento $\alpha = .05$). Quali conclusioni puoi trarre? Presentare i risultati con le oppurtune rappresentazioni grafiche
 
@@ -94,7 +94,7 @@ t.test(dati$VOTO ~ dati$SESSO)
 ```
 
 
-### es. 5 
+##
 
 Derivare utilizzando le funzioni di riferimento di R il valore del p-value ed il valore critico della statistica target (considerato $\alpha = .05$).
 
@@ -113,9 +113,9 @@ qt(0.975,mytest$parameter)     # valore critico della statistica, test a due cod
 
 
 
-### Esercizio 6. 
+##
 
-Verificare se il voto medio di diploma degli studenti (indipendentemente dal genere sessuale) sia significativamente superiore a 70.
+Verificare se il voto medio di diploma degli studenti (indipendentemente dal genere) sia significativamente superiore a 70.
 Si richiede di testare l'ipotesi inferenziale utilizzando il confronto diretto tra il valore della statistica target osservata e il valore critico della statistica (assunto $\alpha = 0.05$).
 
 ```{r}
@@ -131,7 +131,7 @@ qt(0.95,69)    # calcolo del valore critico della
 ```
 
 
-### Esercizio 7 
+##
 
 Relativamente al gruppo delle *donne*, verificare la presenza di una differenza statisticamente significativa tra la variabile `ND1` e la variabile `ND2` (assunto $\alpha = 0.01$). 
 
@@ -158,7 +158,7 @@ t.test(dati$ND1[dati$SESSO==2],
 
 
 
-###Esercizio 8. 
+## 
 
 Ripetere la stessa analisi questa volta sul gruppo dei maschi.
 

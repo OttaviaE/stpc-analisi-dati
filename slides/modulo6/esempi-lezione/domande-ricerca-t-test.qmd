@@ -1,0 +1,47 @@
+---
+title: "Domande di ricerca: psicologia del lavoro"
+format: 
+  html:
+    embed-resources: true
+    number-sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Il dataset
+
+Il servizio HR di un'azienda vuole capire come stanno i propri dipendenti. Un campione di 80 dipendenti compila alcune scale con punteggi da 0 a 100. Una parte dei dipendenti (30) partecipa inoltre a un corso di formazione e compila la scala di autoefficacia sia prima sia dopo il corso.
+
+Il file `dipendenti.csv` contiene una riga per ogni dipendente e le seguenti variabili:
+
+| Variabile | Descrizione |
+|:----------|:------------|
+| `modalita` | Modalità di lavoro: `presenza` (35 dipendenti) o `ibrido` (45 dipendenti) |
+| `soddisfazione` | Soddisfazione lavorativa |
+| `stress` | Stress lavorativo percepito |
+| `partecipazione_corso` | Partecipazione al corso di formazione: `sì` o `no` |
+| `autoefficacia_prima` | Autoefficacia professionale prima del corso (solo per chi ha partecipato, `NA` per gli altri) |
+| `autoefficacia_dopo` | Autoefficacia professionale dopo il corso (solo per chi ha partecipato, `NA` per gli altri) |
+
+# Le domande di ricerca
+
+##
+
+Nel settore in cui opera l'azienda, la soddisfazione lavorativa media è 68 ($mu = 68$). Si può pensare che i dipendenti dell'azienda appartengano alla popolazione di dipendenti del settore dell'azienda per quello che riguarda la sodffisazione?
+
+
+## 
+
+Il valore di riferimento per lo stress lavorativo percepito è 50 ($\mu = 50$). I dipendenti dell'azienza appartengono  a una popolazione dove il livello di stress è superiore?
+
+##
+
+La soddisfazione lavorativa media è diversa tra chi lavora in presenza e chi lavora in modalità ibrida?
+
+##
+
+Chi lavora in presenza riporta uno stress medio più alto di chi lavora in modalità ibrida?
+
+##
+
+Tra i dipendenti che hanno partecipato al corso, l'autoefficacia media è diversa dopo il corso rispetto a prima del corso?
