@@ -78,7 +78,7 @@ execute:
 ]
 % --- colonna sinistra: dalla popolazione allo stimatore
 \node[box] (pop) {\textbf{Popolazione}\\[-1pt] {\scriptsize parametro ignoto: $\mu$}};
-\node[box, below = of pop] (camp) {\textbf{Estrazione del campione}\\[-1pt] {\scriptsize $\mathbf{x} = (x_1, \ldots, x_N)$}};
+\node[box, below = of pop] (camp) {\textbf{Estrazione del campione}\\[-1pt] {\scriptsize $\mathbf{x} = (x_1, \ldots, x_n)$}};
 \node[box, below = of camp] (stim) {\textbf{Stima nel campione}\\[-1pt] {\scriptsize statistica: $\bar{x}$}};
 \node[box, below = of stim, minimum height = 1.15cm] (dist) {\textbf{Distribuzione campionaria}\\[-1pt] {\scriptsize come varia $\bar{x}$ da campione a campione}};
 \draw[freccia] (pop) -- (camp);
@@ -146,7 +146,7 @@ execute:
 
 ### 
 
-**un solo campione** di $N$ unità statistiche, con media $\bar{x}$.
+**un solo campione** di $n$ unità statistiche, con media $\bar{x}$.
 
 ```{=latex}
 \centering
@@ -442,9 +442,9 @@ myt = t.test(x, mu = mu0) # test a due code
 ### 
 
 $$\begin{aligned}
-p\text{-value} &= \int_{-\infty}^{-|t_o|} f_T(t \mid \theta) \, dt 
-               + \int_{|t_o|}^{\infty} f_T(t \mid \theta) \, dt \\
-               &= 2 \int_{|t_o|}^{\infty} f_T(t \mid \theta) \, dt
+p\text{-value} &= \int_{-\infty}^{-|t_0|} f_T(t \mid \theta) \, dt 
+               + \int_{|t_0|}^{\infty} f_T(t \mid \theta) \, dt \\
+               &= 2 \int_{|t_0|}^{\infty} f_T(t \mid \theta) \, dt
 \end{aligned}$$
 
 :::: {.columns}
@@ -520,7 +520,7 @@ annota_ttest('t.test(x, mu = mu0, alternative = "greater")')
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{2}
-  \item $p = P(T \geq t_0)$, area a destra di $t_0$: qui $t_0 < 0$ va nella direzione \textbf{opposta} a $H_1$ $\rightarrow$ $p$ grande
+  \item $p = \Pr[T \geq t_0]$, area a destra di $t_0$: qui $t_0 < 0$ va nella direzione \textbf{opposta} a $H_1$ $\rightarrow$ $p$ grande
   \item IC \textbf{unidirezionale}: solo il limite inferiore, l'altro estremo è \texttt{Inf}
 \end{enumerate}
 \end{column}
@@ -529,7 +529,7 @@ annota_ttest('t.test(x, mu = mu0, alternative = "greater")')
 
 ###
 
-$$p\text{-value} = \int_{t_o}^{\infty} f_T(t \mid \theta) \, dt$$
+$$p\text{-value} = \int_{t_0}^{\infty} f_T(t \mid \theta) \, dt$$
 
 :::: {.columns}
 
@@ -545,8 +545,9 @@ plot(mx, dt(mx, df = 10), type = "l", ylab = "Density",
 myt = t.test(x, mu = mu0, 
        alternative = "greater") # test a una coda destra
 polygon(c((myt$statistic), 
-          mx[mx > (myt$statistic)]), 
-        c(0, dt(mx[mx > (myt$statistic)], 10)), 
+          mx[mx > (myt$statistic)],
+          3), 
+        c(0, dt(mx[mx > (myt$statistic)], 10), 0), 
         col = rgb(1, 0, 0, 0.25))
 ```
 
@@ -603,7 +604,7 @@ annota_ttest('t.test(x, mu = mu0, alternative = "less")')
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{2}
-  \item $p = P(T \leq t_0)$, area a sinistra di $t_0$: qui $t_0 < 0$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item $p = \Pr[T \leq t_0]$, area a sinistra di $t_0$: qui $t_0 < 0$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
   \item IC \textbf{unidirezionale}: solo il limite superiore, l'altro estremo è \texttt{-Inf}
 \end{enumerate}
 \end{column}
@@ -612,7 +613,7 @@ annota_ttest('t.test(x, mu = mu0, alternative = "less")')
 
 ###
 
-$$p\text{-value} = \int_{-\infty}^{t_o} f_T(t \mid \theta) \, dt$$
+$$p\text{-value} = \int_{-\infty}^{t_0} f_T(t \mid \theta) \, dt$$
 
 :::: {.columns}
 
@@ -741,7 +742,7 @@ Permette di valutare se la media $\mu_X$ della popolazione di un campione di dat
 
 \small
 
-Sia $\mathbf{x} = (x_1, x_2, \ldots, x_n)$ un campione empirico di $N$ osservazioni quantitative indipendenti tali che $x_i \sim N(\mu_X, \sigma^2)$ e sia $\mathbf{y} = (y_1, y_2, \ldots, y_m)$ un campione empirico di $M$ osservazioni quantitative indipendenti tali che $y_j \sim N(\mu_Y, \sigma^2)$, dove $\sigma^2$ è la varianza comune ad entrambe le popolazioni.
+Sia $\mathbf{x} = (x_1, x_2, \ldots, x_n)$ un campione empirico di $n$ osservazioni quantitative indipendenti tali che $x_i \sim \mathcal{N}(\mu_X, \sigma^2)$ e sia $\mathbf{y} = (y_1, y_2, \ldots, y_m)$ un campione empirico di $m$ osservazioni quantitative indipendenti tali che $y_j \sim \mathcal{N}(\mu_Y, \sigma^2)$, dove $\sigma^2$ è la varianza comune ad entrambe le popolazioni.
 
 
 :::: {.columns}
@@ -752,7 +753,7 @@ $$t = \frac{(\overline{x} - \overline{y}) - (\mu_X - \mu_Y)}{s_p \sqrt{\frac{1}{
 
 ::: {.column width=40%}
 \small
-$s_p = \sqrt{\frac{(N-1)\mathrm{var}(\mathbf{x}) + (M-1)\mathrm{var}(\mathbf{y})}{n + m - 2}}$
+$s_p = \sqrt{\frac{(n-1)\mathrm{var}(\mathbf{x}) + (m-1)\mathrm{var}(\mathbf{y})}{n + m - 2}}$
 :::
 
 ::::
@@ -820,7 +821,7 @@ Il default di R è `var.equal = FALSE`: senza specificare `var.equal = TRUE`, R 
 \textbf{\texttt{var.equal = TRUE}}\\
 \footnotesize Varianza comune alle due popolazioni
 \small
-$$df = N + M - 2$$
+$$df = n + m - 2$$
 $$SE = s_p\sqrt{\frac{1}{n} + \frac{1}{m}}$$
 \footnotesize
 $$s_p = \sqrt{\frac{(n-1)\mathrm{var}(\mathbf{x}) + (m-1)\mathrm{var}(\mathbf{y})}{n + m - 2}}$$
@@ -836,7 +837,7 @@ $$SE = \sqrt{\frac{\mathrm{var}(\mathbf{x})}{n} + \frac{\mathrm{var}(\mathbf{y})
 \end{columns}
 \vspace{2mm}
 \footnotesize
-Nell'esempio ($n = 11$, $Mm = 8$): $df = 17$ con \texttt{var.equal = TRUE}, $df = 14.14$ con Welch.
+Nell'esempio ($n = 11$, $m = 8$): $df = 17$ con \texttt{var.equal = TRUE}, $df = 14.14$ con Welch.
 ```
 
 ## Esempi
@@ -926,7 +927,7 @@ annota_ttest('t.test(x, y, var.equal = TRUE, alternative = "greater")')
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{2}
-  \item $p = P(T \geq t_0)$, area a destra di $t_0$: qui $\bar{x} > \bar{y}$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item $p = \Pr[T \geq t_0]$, area a destra di $t_0$: qui $\bar{x} > \bar{y}$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
   \item IC \textbf{unidirezionale}: solo il limite inferiore, l'altro estremo è \texttt{Inf}
 \end{enumerate}
 \end{column}
@@ -976,7 +977,7 @@ annota_ttest('t.test(x, y)')
 
 ### 
 
-**un solo campione** di $N$ coppie di osservazioni: ogni coppia produce una differenza $d_i$.
+**un solo campione** di $n$ coppie di osservazioni: ogni coppia produce una differenza $d_i$.
 
 ```{=latex}
 \centering
@@ -1001,7 +1002,7 @@ annota_ttest('t.test(x, y)')
   \draw[gray] (8.65,\yy) -- (9.75,\yy);
 }
 \node[above] at (cop.north) {\scriptsize\textbf{Le coppie osservate}};
-\node[below, align = center] at (cop.south) {\scriptsize $(x_i, y_i)$, \; $i = 1, \ldots, N$\\ \scriptsize es. \emph{prima} e \emph{dopo}};
+\node[below, align = center] at (cop.south) {\scriptsize $(x_i, y_i)$, \; $i = 1, \ldots, n$\\ \scriptsize es. \emph{prima} e \emph{dopo}};
 \draw[-latex, very thick, gray] (cop.west) -- (diff.east);
 \draw[-latex, very thick, gray, dashed] (2.4,1.1) -- node[above, text = black] {\Large ?} (diff.west);
 \end{tikzpicture}
@@ -1021,8 +1022,8 @@ Le differenze possono provenire da una popolazione in cui $D \sim \mathcal{N}(0,
 Permette di valutare se le medie $\mu_X$ e $\mu_Y$ delle popolazioni di due campioni di dati appaiati $(x,y)$ siano significativamente differenti (risp. maggiore/minore).
 :::
 
-Sia $\mathbf{(x, y)} = \big( (x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N) \big)$ un campione bivariato di $N$ osservazioni $(x_i, y_i)$ indipendenti. 
-Inoltre sia $d_i \sim N(d \mid \mu_D, \sigma^2)$ l’osservazione differenziale $d_i = x_i - y_i$ derivata da $\mathbf{(x, y)}$. 
+Sia $\mathbf{(x, y)} = \big( (x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n) \big)$ un campione bivariato di $n$ osservazioni $(x_i, y_i)$ indipendenti. 
+Inoltre sia $d_i \sim \mathcal{N}(\mu_D, \sigma^2)$ l’osservazione differenziale $d_i = x_i - y_i$ derivata da $\mathbf{(x, y)}$. 
 I parametri $\mu_D$ e $\sigma^2$ sono i termini ignoti della variabile differenziale $D$.
 
 **Stimatore** di $\mu_D$: $\bar{d}$, media delle differenze (*prima* $-$ *dopo*)
@@ -1121,7 +1122,7 @@ annota_ttest('t.test(x, y, paired = TRUE)')
 \begin{enumerate}
   \item Tipo di test
   \item Statistica test $t_0$
-  \item Gradi di libertà: $df = N - 1$ ($N$ = numero di coppie)
+  \item Gradi di libertà: $df = n - 1$ ($n$ = numero di coppie)
 \end{enumerate}
 \end{column}
 \begin{column}{.48\textwidth}
@@ -1168,7 +1169,7 @@ annota_ttest('t.test(x, y, paired = TRUE, alternative = "less")')
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{2}
-  \item $p = P(T \leq t_0)$, area a sinistra di $t_0$: qui $\bar{d} < 0$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
+  \item $p = \Pr[T \leq t_0]$, area a sinistra di $t_0$: qui $\bar{d} < 0$ va nella \textbf{stessa} direzione di $H_1$ $\rightarrow$ $p$ dimezzato rispetto al test a due code
   \item IC \textbf{unidirezionale}: solo il limite superiore, l'altro estremo è \texttt{-Inf}
 \end{enumerate}
 \end{column}

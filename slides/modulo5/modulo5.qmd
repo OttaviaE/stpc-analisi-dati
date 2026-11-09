@@ -565,7 +565,7 @@ Se la popolazione ha distribuzione normale, la distribuzione campionaria della m
 \vspace{2mm}
 
 Standardizzando la media campionaria si ottiene una variabile normale standard:
-$$z = \frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \sim N(0, 1)$$
+$$z = \frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \sim \mathcal{N}(0, 1)$$
 
 È questa la **curva** su cui si costruiscono le regioni di rifiuto e di non rifiuto del test di ipotesi
 
@@ -599,7 +599,7 @@ Procedura che si svolge per passi logici successivi:
 Le ipotesi di ricerca sono ipotesi statistiche:
 
 - consistono in affermazioni di tipo logico-matematico che definiscono i rapporti fra i parametri di una o più popolazioni
-- il test  delle ipotesi consiste in un **processo di decisione che termina nel non rifiuto delle affermazioni contenute nelle ipotesi stesse**
+- il test  delle ipotesi consiste in un **processo di decisione che termina con il rifiuto o il non rifiuto delle affermazioni contenute nell'ipotesi nulla**
 - Un'ipotesi statistica è un'asserzione o supposizione sulla distribuzione di una o più variabili casuali, o su uno o più parametri della stessa, e si indica con la lettera ***H***.
 
 :::{.callout-note}
@@ -851,7 +851,7 @@ Se il valore campionario cade nella **regione di rifiuto** c'è da ritenere che 
 :::{.callout-note}
 ## $p$-value 
 
-Il valore di $p$-value viene ricavato sulla base del valore della statistica test, del valore di $\alpha$ e del valore critico.
+Il $p$-value si ricava dal valore osservato della statistica test, dalla sua distribuzione sotto $H_0$ e dalla direzione di $H_1$. Viene poi confrontato con $\alpha$ per prendere la decisione.
 :::
 
 ### Valore critico e direzione di $H_1$
@@ -1110,9 +1110,9 @@ In generale, se indichiamo con $\psi_c$ e $\psi_o$ rispettivamente il **valore c
 
 \small
 \begin{tabular}{lll}
-Unilaterale destro: & $P(T \geq T_0 \mid H_0)$ \\
-Unilaterale sinistro: & $P(T \leq T_0 \mid H_0)$ \\
-Bidirezionale: & $P(|T| \geq |T_0| \mid H_0)$ \\
+Unilaterale destro: & $\Pr[T \geq T_0 \mid H_0]$ \\
+Unilaterale sinistro: & $\Pr[T \leq T_0 \mid H_0]$ \\
+Bidirezionale: & $\Pr[|T| \geq |T_0| \mid H_0]$ \\
 \end{tabular}
 \end{center}
 
@@ -1123,7 +1123,7 @@ Test bidirezionale, $T_0 = 2.70$, $p$-value = $.0073$ ($p < .01$)
 
 Se $H_0$ fosse vera e si replicasse l'esperimento moltissime volte, quante volte si otterrebbe un valore della statistica uguale o più estremo di $2.70$?
 
-$P(|T| \geq 2.70 \mid H_0) = .0073$: Se fosse vera $H_0$, il risultato osservato sarebbe un risultato estremamente poco probabile, per cui questo risultato si osserverebbe meno dell'1\% delle volte
+$\Pr[|T| \geq 2.70 \mid H_0] = .0073$: Se fosse vera $H_0$, il risultato osservato sarebbe un risultato estremamente poco probabile, per cui questo risultato si osserverebbe meno dell'1\% delle volte
 :::
 
 ### Dettagli sul $p$-value
@@ -1181,7 +1181,7 @@ Il $p$-value è l'area oltre la statistica osservata, nella direzione indicata d
 ::: {.column width=33%}
 \centering
 \footnotesize
-$p = 2 \cdot P(Z \geq |z_{oss}|)$
+$p = 2 \cdot \Pr[Z \geq |z_{oss}|]$
 
 `2 * (1 - pnorm(2.1))` $= .036$
 :::
@@ -1189,7 +1189,7 @@ $p = 2 \cdot P(Z \geq |z_{oss}|)$
 ::: {.column width=33%}
 \centering
 \footnotesize
-$p = P(Z \leq z_{oss})$
+$p = \Pr[Z \leq z_{oss}]$
 
 `pnorm(2.1)` $= .982$
 :::
@@ -1197,7 +1197,7 @@ $p = P(Z \leq z_{oss})$
 ::: {.column width=33%}
 \centering
 \footnotesize
-$p = P(Z \geq z_{oss})$
+$p = \Pr[Z \geq z_{oss}]$
 
 `1 - pnorm(2.1)` $= .018$
 :::
@@ -1212,7 +1212,7 @@ Stesso $z_{oss}$, tre $p$-value diversi: conta la direzione di $H_1$
 
 \small
 
-`pnorm(q)` restituisce $P(Z \leq q)$, cioè l'area a sinistra di $q$ sotto la densità, che corrisponde all'altezza della cumulata in $q$.
+`pnorm(q)` restituisce $\Pr[Z \leq q]$, cioè l'area a sinistra di $q$ sotto la densità, che corrisponde all'altezza della cumulata in $q$.
 
 ```{=latex}
 \begin{center}
@@ -1241,7 +1241,7 @@ Stesso $z_{oss}$, tre $p$-value diversi: conta la direzione di $H_1$
     \fill[unipd] (2.1,2.946) circle (2.5pt);
     \node[below, font=\scriptsize] at (2.1,0) {$2.1$};
     \node[font=\scriptsize, unipd] at (-1.9,2.6) {$\Phi(2.1) = .982$};
-    \node[font=\footnotesize\bfseries] at (0,3.9) {Cumulata $\Phi(z) = P(Z \leq z)$};
+    \node[font=\footnotesize\bfseries] at (0,3.9) {Cumulata $\Phi(z) = \Pr[Z \leq z]$};
   \end{scope}
 \end{tikzpicture}
 \end{center}
