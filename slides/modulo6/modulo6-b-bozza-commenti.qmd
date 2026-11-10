@@ -150,7 +150,7 @@ $$\chi^2 = 	\sum_{i} \sum_{j} \displaystyle \frac{(n_{ij} - n_{ij}^*)^2}{n_{ij}^
 
 :::: {.columns}
 :::{.column width=50%}
-$$n_{ij}^* = \dfrac{n_{i.} \times n_{.j}}{N}$$
+$$n_{ij}^* = \dfrac{n_{i.} \times n_{.j}}{n}$$
 :::
 
 
@@ -172,7 +172,7 @@ Se A e B sono indipendenti, la proporzione congiunta è il prodotto delle propor
 
 È la stessa logica delle frequenze attese calcolate sul campione:
 
-$$\dfrac{n_{ij}^*}{N} = \dfrac{n_{i.}}{N} \times \dfrac{n_{.j}}{N}$$
+$$\dfrac{n_{ij}^*}{N} = \dfrac{n_{i.}}{n} \times \dfrac{n_{.j}}{n}$$
 
 ### 
 
@@ -256,6 +256,8 @@ annota_test('chisq.test(mytable)')
 
 ### 
 
+\small
+
 $$p\text{-value} = 1- \int_{-\infty}^{\chi_0} f_x(x|\theta)dx$$
 
 ```{r}
@@ -268,7 +270,7 @@ plot(x, dchisq(x, df = 4), type = "l", lwd = 2,
      xlab = expression(chi^2), ylab = "Densità")
 polygon(c(12.458, x[x>=12.458]), 
         c(0,dchisq(x, df = 4)[x>=12.458]), 
-        col ="grey")
+        col ="firebrick")
 ```
 
 ```{r}
@@ -291,7 +293,7 @@ $$\chi^2 = 	\sum_{i} \displaystyle \frac{(n_{i} - n_{i}^*)^2}{n_{i}^*}$$
 :::{.column width=50%}
 Frequenze attese sotto il modello teorico di omogeneità
 
-$$n_{i}^* = \dfrac{1}{I}N$$
+$$n_{i}^* = \dfrac{1}{I}n$$
 :::
 
 
@@ -299,7 +301,7 @@ $$n_{i}^* = \dfrac{1}{I}N$$
 
 Frequenze osservate per le $I$ categorie
 
-$$N = \sum_{i=1}^I n_{i}$$
+$$n = \sum_{i=1}^I n_{i}$$
 :::
 
 ::::
@@ -313,7 +315,7 @@ Indichiamo con $\pi_i$ la proporzione di casi nella categoria $i$ di A nella pop
 
 $H_0$: le proporzioni nelle $I$ categorie sono uguali nella popolazione, cioè $\pi_i = 1/I$ per ogni $i$
 
-$H_1$: nella popolazione almeno una proporzione è diversa da $1/I$
+$H_1$: nella popolazione almeno una proporzione è diversa da $1/I$, cioè $\pi_i \neq 1/I$ per almeno un $i$
 
 :::
 
@@ -321,14 +323,17 @@ Se $H_0$ è vera, ci aspettiamo che le frequenze osservate si discostino da quel
 
 ## In R 
 
-### 
+### {.plain}
+
+\small
 
 | **Simbolo R**                                       | **Significato**                                                                                                                                         |
 |-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `chisq.test(mytab)` | Calcola il test statistico del chi quadro alla tabella di frequenze chiamata `mytab`|
 
+\footnotezize
+
 ```{r}
-#| results: hide
 #| warning: false
 mytable <- matrix(c(22,45,18),1,3)
 colnames(mytable) <- c("a1","a2","a3")
@@ -391,15 +396,55 @@ annota_test('chisq.test(mytable)')
 ## Test delle proporzioni 
 
 
+### Una proporzione
+
+::: {.callout-tip}
+## Scopo 
+
+Valutare se la proporzione $\pi$ di successi nella popolazione sia diversa (rispettivamente maggiore o minore) da un valore teorico $\pi_0$
+:::
+
+**Stimatore** di $\pi$: $x/n$, proporzione di successi su $n$ prove indipendenti. In `prop.test()`, $\pi_0$ è l'argomento `p`
+
+::: {.callout-note}
+## Sistema di ipotesi
+
+Due code: $H_0: \pi = \pi_0 \qquad H_1: \pi \neq \pi_0$
+
+Una coda destra: $H_0: \pi = \pi_0 \qquad H_1: \pi > \pi_0$
+
+Una coda sinistra: $H_0: \pi = \pi_0 \qquad H_1: \pi < \pi_0$
+:::
+
+### Due proporzioni
+
+::: {.callout-tip}
+## Scopo 
+
+Valutare se la proporzione di successi $\pi_1$ di una popolazione sia diversa (rispettivamente maggiore o minore) dalla proporzione di successi $\pi_2$ di un'altra popolazione
+:::
+
+**Stimatore** di $\pi_1 - \pi_2$: $x_1/n_1 - x_2/n_2$, differenza tra le proporzioni di successi nei due campioni
+
+::: {.callout-note}
+## Sistema di ipotesi
+
+Due code: $H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 \neq \pi_2$
+
+Una coda destra: $H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 > \pi_2$
+
+Una coda sinistra: $H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 < \pi_2$
+:::
+
 ### {.plain}
 
 \small
 
 | **Funzione R** |  **Significato** |
 |----------------|--------------------------|
-| `prop.test(x, n, p)` | Calcola se la proporzione $x/n$ (dove $x \le n$) sia significativamente differente dal valore di probabilità $p$. Il valore $x$ è il numero di esiti dicotomici positivi su $n$ distinte prove  ($x/n \neq \pi$ ) |
-| `prop.test(x, n, p, alternative = "less")` | *Test inferenziale a una coda sinistra* $x/n < \pi$  |
-| `prop.test(x, n, p, alternative = "greater")` | *Test inferenziale a una coda destra* $x/n > \pi$  |
+| `prop.test(x, n, p)` | Calcola se la proporzione $x/n$ (dove $x \le n$) sia significativamente differente dal valore di probabilità $p$. Il valore $x$ è il numero di esiti dicotomici positivi su $n$ distinte prove  ($\pi \neq \pi_0$) |
+| `prop.test(x, n, p, alternative = "less")` | *Test inferenziale a una coda sinistra* $\pi < \pi_0$  |
+| `prop.test(x, n, p, alternative = "greater")` | *Test inferenziale a una coda destra* $\pi > \pi_0$  |
 | `prop.test(c(x1,x2), c(n1,n2))` | *Test inferenziale a due code per due proporzioni* $\pi_1 \neq \pi_2$ |
 | `prop.test(c(x1,x2), c(n1,n2), alternative = "less")` | *Test inferenziale a una coda (sinistra) per due proporzioni* $\pi_1 < \pi_2$ |
 | `prop.test(c(x1,x2), c(n1,n2), alternative = "greater")` | *Test inferenziale a una coda (destra) per due proporzioni*  $\pi_1 > \pi_2$ |
@@ -411,6 +456,8 @@ annota_test('chisq.test(mytable)')
 \small
 
 Campione di bambini che supera (1) o non supera (0) un punteggio minimo alle matrici di Raven. Nella popolazione a cui appartengono, la maggioranza degli individui supera la soglia minima alle matrici di Raven?
+
+$H_0: \pi = .50 \qquad H_1: \pi > .50$
 
 \footnotesize
 
@@ -493,6 +540,8 @@ $x_2 = 21$, $n_2 = 30$
 
 
 Le proporzioni di successi nei due gruppi sono diverse? 
+
+$H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 \neq \pi_2$
 
 ```{r}
 #| results: hide

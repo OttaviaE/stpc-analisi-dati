@@ -1,0 +1,37 @@
+\frametitle{}
+\phantomsection\label{section-9}
+\small
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.2573}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7427}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Simbolo R}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Significato}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\texttt{chisq.test(mytab)} & Calcola il test statistico del chi quadro
+alla tabella di frequenze chiamata \texttt{mytab} \\
+\bottomrule\noalign{}
+\end{longtable}
+
+\footnotezize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mytable }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{22}\NormalTok{,}\DecValTok{45}\NormalTok{,}\DecValTok{18}\NormalTok{),}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\FunctionTok{colnames}\NormalTok{(mytable) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"a1"}\NormalTok{,}\StringTok{"a2"}\NormalTok{,}\StringTok{"a3"}\NormalTok{)}
+\FunctionTok{chisq.test}\NormalTok{(mytable)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+    Chi-squared test for given probabilities
+
+data:  mytable
+X-squared = 14.988, df = 2, p-value = 0.0005563
+\end{verbatim}
