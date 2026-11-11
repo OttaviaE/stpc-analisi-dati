@@ -1,21 +1,21 @@
 ---
 title: "Modulo 6 - Seconda serie"
-subtitle: "Soluzioni"
+subtitle: "Esercizi"
 author: "Ottavia Epifania"
 format: 
   html:
     embed-resources: true
     number-sections: true
-    output-file: "Esercizi-Rmod6_soluzioni-seconda-serie.html"
+    output-file: "Esercizi-Rmod6_esercizi-seconda-serie.html"
 editor_options: 
   chunk_output_type: console
 ---
 
 
 ```{r include=FALSE}
-myvar = T
-echovar = T
-evalvar = T
+myvar = F
+echovar = F
+evalvar = F
 knitr::opts_chunk$set(include = myvar, 
                       echo = echovar,
                       eval = evalvar)
@@ -126,8 +126,8 @@ Verificare se la proporzione di bambine che superano la soglia minima 10 nello s
 
 
 ```{r}
-nFa1 <- sum(RCa1[dati$S=="f"] > 10)
-nMa1 <- sum(RCa1[dati$S=="m"] > 10)
+nFa1 <- sum(RCa1[dati$S=="f"] >= 10)
+nMa1 <- sum(RCa1[dati$S=="m"] >= 10)
 
 nFa1
 nMa1

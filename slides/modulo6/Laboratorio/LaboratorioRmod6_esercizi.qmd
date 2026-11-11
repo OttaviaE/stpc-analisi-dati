@@ -1,19 +1,19 @@
 ---
 title: "Laboratorio Modulo 6"
-subtitle: "Soluzioni"
+subtitle: "Esercizi"
 author: "Ottavia Epifania"
 format: 
   html:
     embed-resources: true
     number-sections: true
-    output-file: "LaboratorioRmod6_soluzioni.html"
+    output-file: "LaboratorioRmod6_esercizi.html"
 editor_options: 
   chunk_output_type: console
 ---
 
 
 ```{r include=FALSE}
-thevalue = T
+thevalue = F
 myvar = thevalue
 echovar = thevalue
 evalvar = thevalue
@@ -162,7 +162,7 @@ t.test(D$TT2t1[D$Gender=="f"],D$TT2t2[D$Gender=="f"],paired=T,alternative="great
 
 ## 
 
-Verificare se vi sia una associazione statisticamente significativa tra età (espressa in due classi: $\leq 40$ e $> 40£) e l’ottenimento di un successo nel completamento del primo task alla fase t1. Ripetere l’analisi, questa volta relativamente alla fase t2. 
+Verificare se vi sia una associazione statisticamente significativa tra età (espressa in due classi: $\leq 40$ e $> 40$) e l’ottenimento di un successo nel completamento del primo task alla fase t1. Ripetere l’analisi, questa volta relativamente alla fase t2. 
 
 ```{r}
 # Eta categoriale

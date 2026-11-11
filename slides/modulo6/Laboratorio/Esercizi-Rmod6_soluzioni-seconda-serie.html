@@ -2535,16 +2535,16 @@ mean difference
 <h2 data-number="2.6" class="anchored" data-anchor-id="section-5"><span class="header-section-number">2.6</span> </h2>
 <p>Verificare se la proporzione di bambine che superano la soglia minima 10 nello scenario macchinine sia significativamente inferiore alla proporzione di bambini che superano la soglia minima 10 nello stesso scenario (con <span class="math inline">\(\alpha = 0.05\)</span>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>nFa1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(RCa1[dati<span class="sc">$</span>S<span class="sc">==</span><span class="st">&quot;f&quot;</span>] <span class="sc">&gt;</span> <span class="dv">10</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>nMa1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(RCa1[dati<span class="sc">$</span>S<span class="sc">==</span><span class="st">&quot;m&quot;</span>] <span class="sc">&gt;</span> <span class="dv">10</span>)</span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>nFa1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(RCa1[dati<span class="sc">$</span>S<span class="sc">==</span><span class="st">&quot;f&quot;</span>] <span class="sc">&gt;=</span> <span class="dv">10</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>nMa1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(RCa1[dati<span class="sc">$</span>S<span class="sc">==</span><span class="st">&quot;m&quot;</span>] <span class="sc">&gt;=</span> <span class="dv">10</span>)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>nFa1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 12</code></pre>
+<pre><code>[1] 17</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>nMa1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 15</code></pre>
+<pre><code>[1] 16</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="fu">c</span>(nFa1,nMa1),<span class="fu">c</span>(<span class="dv">30</span>,<span class="dv">30</span>),<span class="at">alternative=</span><span class="st">&quot;less&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2552,13 +2552,13 @@ mean difference
     2-sample test for equality of proportions with continuity correction
 
 data:  c(nFa1, nMa1) out of c(30, 30)
-X-squared = 0.26936, df = 1, p-value = 0.3019
+X-squared = 4.7079e-31, df = 1, p-value = 0.5
 alternative hypothesis: less
 95 percent confidence interval:
- -1.0000000  0.1435488
+ -1.0000000  0.2778333
 sample estimates:
-prop 1 prop 2 
-   0.4    0.5 </code></pre>
+   prop 1    prop 2 
+0.5666667 0.5333333 </code></pre>
 </div>
 </div>
 </section>
