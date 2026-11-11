@@ -1,18 +1,19 @@
 ---
-title: "Laboratorio Modulo 5"
-subtitle: "Esercizi"
+title: "Laboratorio Modulo 6"
+subtitle: "Soluzioni"
 author: "Ottavia Epifania"
 format: 
-  pdf: 
-   toc: true
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
+  html:
+    embed-resources: true
+    number-sections: true
+    output-file: "LaboratorioRmod6_soluzioni.html"
+editor_options: 
+  chunk_output_type: console
 ---
 
 
 ```{r include=FALSE}
-thevalue = F
+thevalue = T
 myvar = thevalue
 echovar = thevalue
 evalvar = thevalue
@@ -45,7 +46,7 @@ Le variabili nel file di dati `DATASW2.csv` sono le seguenti:
 
 Negli esercizi che seguono precedere le analisi statistico-inferenziali con opportuni metodi grafici. 
 
-## Esercizio 1: 
+## 
 Si assegni il dataset al data frame `D` (utilizzare la funzione `read.csv()` e non `read.csv2()` in quanto il file di dati è stato creato in un Excel che utilizzava il “.” come separatore decimale). 
 Visualizzare le statistiche descrittive di base delle variabili del data frame.
 
@@ -59,7 +60,7 @@ summary(D)
 ```
 
 
-## Esercizio 2: 
+##
 
 Verificare se l’età media delle donne sia significativamente differente da quella dei maschi.  
 
@@ -71,7 +72,7 @@ boxplot(D$Age[D$Gender=="f"],
 t.test(D$Age[D$Gender=="f"],D$Age[D$Gender=="m"])
 ```
 
-## Esercizio 3: 
+##
 
 Verificare se il tempo medio impiegato dal gruppo dei maschi nel primo task al tempo t1 sia significativamente differente da quello impiegato (per lo stesso task e allo stesso tempo) dal gruppo delle donne. Ripetere le analisi per il secondo task. 
 
@@ -84,7 +85,7 @@ t.test(D$TT2t1[D$Gender=="f"],D$TT2t1[D$Gender=="m"])
 ```
 
 
-## Esercizio 4: 
+##
 
 Valutare se il tempo complessivo nel primo task sia significativamente superiore nel gruppo delle persone con età superiore ai 40 anni (rispetto a $\leq 40$). Qui per tempo complessivo si intende la somma dei time-on-task nei due tempi t1 e t2. 
 
@@ -98,7 +99,7 @@ t.test(TCT1[D$Age <= 40],TCT1[D$Age > 40],alternative="less")
 ```
 
 
-## Esercizio 5: 
+## 
 
 Il tempo impiegato dalle persone che hanno successo nel secondo task al tempo t1 è significativamente inferiore rispetto a coloro che falliscono (nel secondo task al tempo t1)? 
 
@@ -112,7 +113,7 @@ abline(mean(D$TT2t1[D$SuccT2t1==0]),0,lty=3,col="blue") # posizione media campio
 
 ```
 
-## Esercizio 6: 
+## 
 
 Verificare se il tempo medio impiegato nel secondo task al tempo t1 sia significativamente superiore rispetto al valore della mediana campionaria calcolata sui tempi registrati al secondo task sempre al tempo t1.
 
@@ -123,7 +124,7 @@ t.test(D$TT2t1,mu=median(D$TT2t1),alternative="greater")
 ```
 
 
-## Esercizio 7: 
+##
 
 Vi è un miglioramento statisticamente significativo nella performance temporale (time-on-task) del primo compito (task) nel passare dalla fase t1 alla t2? Ripetere l’analisi anche per il secondo compito (task).
 
@@ -141,7 +142,7 @@ t.test(D$TT2t1,D$TT2t2,paired=T,alternative="greater")
 ```
 
 
-## Esercizio 8: 
+## 
 
 Ripetere l’esercizio 7, questa volta limitatamente al solo gruppo delle donne. 
 
@@ -159,7 +160,7 @@ t.test(D$TT2t1[D$Gender=="f"],D$TT2t2[D$Gender=="f"],paired=T,alternative="great
 ```
 
 
-## Esercizio 9: 
+## 
 
 Verificare se vi sia una associazione statisticamente significativa tra età (espressa in due classi: $\leq 40$ e $> 40£) e l’ottenimento di un successo nel completamento del primo task alla fase t1. Ripetere l’analisi, questa volta relativamente alla fase t2. 
 
@@ -176,7 +177,7 @@ chisq.test(TAB2)
 ```
 
 
-## Esercizio 10: 
+## 
 
 Vi è una qualche relazione tra successo al task 2 alla fase t2 rispetto al genere della persona? E rispetto al task 1 alla fase 1? 
 

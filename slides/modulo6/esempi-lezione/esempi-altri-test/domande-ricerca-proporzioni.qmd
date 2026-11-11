@@ -1,0 +1,54 @@
+---
+title: "Domande di ricerca: psicologia del lavoro"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+editor_options:
+  chunk_output_type: console
+---
+
+# Il dataset
+
+Il servizio HR dell'azienda vuole approfondire il benessere dei propri dipendenti. Un campione di 120 dipendenti risponde a un breve questionario con domande a risposta chiusa.
+
+Il file `dipendenti-categoriali.csv` contiene una riga per ogni dipendente e le seguenti variabili:
+
+| Variabile | Descrizione |
+|:----------|:------------|
+| `modalita` | Modalità di lavoro: `presenza` o `ibrido` |
+| `reparto` | Reparto di appartenenza: `amministrazione`, `produzione` o `commerciale` |
+| `rischio_burnout` | Punteggio oltre la soglia di rischio in una scala di burnout: `sì` o `no` |
+| `intenzione_lasciare` | Intenzione di cambiare lavoro nei prossimi 12 mesi: `sì` o `no` |
+| `canale_preferito` | Canale di comunicazione interna preferito: `email`, `chat`, `riunione` o `intranet` |
+| `benefit_preferito` | Benefit aziendale preferito: `buoni pasto`, `welfare` o `formazione` |
+
+# Le domande di ricerca
+
+##
+
+Il benefit preferito è associato al reparto di appartenenza?
+
+##
+
+Il rischio di burnout è associato al reparto di appartenenza?
+
+
+##
+
+I dipendenti preferiscono alcuni canali di comunicazione interna rispetto ad altri, oppure si distribuiscono in modo uniforme tra i quattro canali?
+
+##
+
+Nel settore in cui opera l'azienda, la proporzione di dipendenti a rischio di burnout è del 30% ($\pi = .30$). Si può pensare che i dipendenti dell'azienda appartengano alla popolazione di dipendenti del settore per quello che riguarda il rischio di burnout?
+
+##
+
+Un'azienda è considerata a rischio turnover se più di un quarto dei dipendenti ha intenzione di cambiare lavoro ($\pi = .25$). I dipendenti dell'azienda appartengono a una popolazione in cui la proporzione di chi intende cambiare lavoro è superiore a questa soglia?
+
+##
+
+La proporzione di dipendenti che intendono cambiare lavoro è diversa tra chi lavora in presenza e chi lavora in modalità ibrida?
+
+
+

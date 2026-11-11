@@ -1,20 +1,21 @@
 ---
-title: "Modulo 5 - Seconda serie"
-subtitle: "Esercizi"
+title: "Modulo 6 - Seconda serie"
+subtitle: "Soluzioni"
 author: "Ottavia Epifania"
 format: 
-  pdf: 
-   toc: true
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{eforms}
+  html:
+    embed-resources: true
+    number-sections: true
+    output-file: "Esercizi-Rmod6_soluzioni-seconda-serie.html"
+editor_options: 
+  chunk_output_type: console
 ---
 
 
 ```{r include=FALSE}
-myvar = F
-echovar = F
-evalvar = F
+myvar = T
+echovar = T
+evalvar = T
 knitr::opts_chunk$set(include = myvar, 
                       echo = echovar,
                       eval = evalvar)
@@ -27,13 +28,13 @@ In questa serie di esercizi si dovrà rianalizzare i dati presentati nel Laborat
 # Esercizi 
 Ripetere le analisi degli esercizi da 1 a 3 descritti nel LABM3 utilizzando le opportune tecniche inferenziali.
 
-## Es 1
+## 
 
 
 Studiare se vi sia una qualche associazione tra le due fasce di età ed il fatto che la persona (il bambino o la bambina) ottenga un numero di risposte corrette superiori o uguali alla soglia minima 10 per quanto riguarda gli stimoli nello scenario macchinine. 
 
 ```{r}
-dati <- read.csv2("C:/Users/Ottavia/Documents/GitHub/stpc-analisi-dati/slides/modulo3/laboratorio/DataAS.csv")
+dati <- read.csv2("DataAS.csv")
 
 head(dati)
 
@@ -53,7 +54,7 @@ chisq.test(myT)
 ```
 
 
-## Es 2
+## 
 
 Ripetere l’analisi questa volta utilizzando come riferimento gli stimoli associati allo scenario casa delle bambole (si consideri sempre la stessa soglia minima pari a 10).
 
@@ -72,7 +73,7 @@ chisq.test(myT1)
 ```
 
 
-## Es 3
+## 
 
 Ripetere le analisi precedenti questa volta considerando la variabile genere sessuale al posto della variabile fasce di età.
 
@@ -92,7 +93,7 @@ chisq.test(myT3)
 ```
 
 
-## ES 4 
+## 
 
 Verificare se vi sia una differenza statisticamente significativa tra il numero di risposte corrette ottenute dai partecipanti nello scenario macchinine ed il numero di risposte corrette ottenute dai partecipanti nello scenario casa delle bambole (con $\alpha = 0.05$).
 
@@ -105,7 +106,7 @@ boxplot(RCa1, RCa2, names = c("Macchinine", "Bambole"))
 ```
 
 
-## Es 5 
+## 
 
 Verificare se il numero di risposte corrette ottenute dai partecipanti nello scenario senza repliche sia significativamente superiore al numero di risposte corrette ottenute dai partecipanti nello scenario con repliche (nota: con $\alpha = 0.20$).
 
@@ -118,7 +119,7 @@ boxplot(RCb1, RCb2, names = c("Senza repliche", "Con repliche"))
 ```
 
 
-## Es 6 
+## 
 
 
 Verificare se la proporzione di bambine che superano la soglia minima 10 nello scenario macchinine sia significativamente inferiore alla proporzione di bambini che superano la soglia minima 10 nello stesso scenario (con $\alpha = 0.05$).
