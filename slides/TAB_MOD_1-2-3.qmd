@@ -2,8 +2,9 @@
 title: "Analisi dei dati con applicazioni informatiche"
 subtitle: "Tabella riassuntiva Moduli 1-2-3"
 format: 
-  html: 
+  pdf: 
    toc: true
+   toc-title: Indice
    number-sections: true
    embed-resources: true
 ---

@@ -4,7 +4,8 @@ subtitle: "Distribuzioni di Probabilità in R"
 format: 
   pdf: 
    toc: true
-lang: it
+   number-sections: true
+   toc-title: Indice
 ---
 
 \newpage
