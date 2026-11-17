@@ -78,7 +78,9 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 [Dispensa statistica descrittiva](dispensa-statistica-descrittiva.pdf)
 
-[Dispensa statistica inferenziale](dispensa-statistica-inferenziale.pdf)
+[Dispensa statistica inferenziale: basi di probabilità e di inferenza](dispensa-statistica-inferenziale-probabilità.pdf)
+
+<!-- [Dispensa statistica inferenziale](dispensa-statistica-inferenziale.pdf) -->
 
 #### Moduli 1, 2, 3
 

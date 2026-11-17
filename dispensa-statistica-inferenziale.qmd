@@ -22,6 +22,7 @@ header-includes:
   - \usepackage{multicol}
   - \usepackage{paracol}
   - \usepackage{fancyvrb}
+  - \usepackage{float}
   - \usepackage{array}
   - \usepackage{colortbl}
   - \newcommand{\cov}{\mathrm{Cov}}
@@ -61,12 +62,11 @@ mycol <- c("seagreen", "royalblue", "orange", "orchid")
 
 Nei moduli di statistica descrittiva abbiamo lavorato con **variabili statistiche**: insiemi di categorie osservate su un campione, ciascuna accompagnata dalla propria *frequenza* $n_k$. La statistica descrittiva si limita a descrivere quello che è stato osservato *sul campione specifico*. Quello che interessa è dire se il campione è composto maggiormente da bambini o da adulti, da maschi o da femmine, con che età media e se ci sono delle associazioni tra le variabili.
 
-La teoria della probabilità sposta lo sguardo dal campione alla popolazione. Invece di frequenze osservate, si lavora con **variabili casuali**, caratterizzate da *probabilità*: modelli teorici che descrivono come ci si aspetta che i valori si distribuiscano nella popolazione (Tabella \ref{tbl-freq-prob}). Quello che interessa è *stimare* la probabilità con cui determinate categorie si presentano nella popolazione.
+La teoria della probabilità sposta lo sguardo dal campione alla popolazione. Invece di frequenze osservate, si lavora con **variabili casuali**, caratterizzate da *probabilità*: modelli teorici che descrivono come ci si aspetta che i valori si distribuiscano nella popolazione (Tabella \ref{tbl-freq-prob}). Quello che interessa è *stimare* la probabilità con cui determinate categorie o fenomeni si presentano nella popolazione.
 
 ```{=latex}
-\begin{table}[h]
-\centering
-\caption{Dalla variabile statistica (frequenze osservate) alla variabile casuale (probabilità).}
+\begin{center}
+\captionof{table}{Dalla variabile statistica (frequenze osservate) alla variabile casuale (probabilità).}
 \label{tbl-freq-prob}
 \begin{tabular}{cc@{\hspace{2cm}}cc}
 \multicolumn{2}{c}{\textbf{Statistica descrittiva}} & \multicolumn{2}{c}{\textbf{Teoria della probabilità}} \\[1mm]
@@ -79,7 +79,7 @@ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
 $x_h$ & $n_h$ & $x_h$ & $\Pr[X = x_h]$ \\
 \hline
 \end{tabular}
-\end{table}
+\end{center}
 ```
 
 La struttura delle due tabelle è identica: cambia il significato della seconda colonna. Nel primo caso indica *quante volte* una modalità è stata osservata, nel secondo *quanto è probabile* che quel valore si presenti.
@@ -95,9 +95,9 @@ Si distinguono diversi tipi di eventi:
 
 2. **Eventi composti** $A_1, A_2, \ldots$: sono insiemi di eventi elementari. Ad esempio, per il dado a 6 facce, l'evento "esce un numero pari" è $A = \{2, 4, 6\}$.
 
-3. **Eventi particolari**: 
-   * l'**evento impossibile** $\emptyset$ (l'insieme vuoto, che non contiene alcun risultato). Questo evento non può verificarsi per la natura stessa dell'epserimento. Ad esempio, nel lancio di un dado a 6 facce, non può presentarsi la faccia 7, per cui $\omega_7 = \emptyset$
-  * l'**evento certo** $\Omega$ (lo spazio di tutti i possibili risultati, che si verifica sempre).
+3. **Eventi particolari**:
+    - l'**evento impossibile** $\emptyset$ (l'insieme vuoto, che non contiene alcun risultato). Questo evento non può verificarsi per la natura stessa dell'esperimento. Ad esempio, nel lancio di un dado a 6 facce, non può presentarsi la faccia 7, per cui $\omega_7 = \emptyset$;
+    - l'**evento certo** $\Omega$ (lo spazio di tutti i possibili risultati, che si verifica sempre).
 
 L'obiettivo è costruire modelli teorici che permettano di calcolare la probabilità di *tutti* gli eventi. Per farlo, abbiamo bisogno di alcune operazioni che permettano di combinare gli eventi tra loro.
 
@@ -364,7 +364,7 @@ La notazione indica che la funzione prende un valore $x$ e un valore dei paramet
 
 # Distribuzione binomiale {#sec-binomiale}
 
-### Esperimento bernoulliano
+## Esperimento bernoulliano
 
 Un **esperimento bernoulliano** è un esperimento dicotomico, con solo due possibili esiti, di cui si conosce la probabilità:
 
@@ -379,9 +379,9 @@ Se l'esperimento bernoulliano viene ripetuto $n$ volte, sotto le seguenti ipotes
 2. a ogni prova la probabilità di successo $\pi$ **rimane invariata**;
 3. le condizioni sperimentali sono sempre le medesime;
 
-allora la variabile casuale $X$ che conta il **numero di successi** nelle $n$ prove è detta **binomiale**, e si scrive $X \sim \text{Bin}(n, \pi)$.
+allora la variabile casuale $X$ che conta il **numero di successi** nelle $n$ prove è detta **binomiale**, e si scrive $X \sim \text{Bin}(n, \pi)$, dove $n$ e $\pi$ sono, rispettivamente, il numero di prove e la probabilità a priori di successo, ovvero sono i **parametri** che definiscono la distribuzione.
 
-### Probabilità di massa
+## Probabilità di massa
 
 La funzione di probabilità della binomiale è:
 
@@ -416,13 +416,13 @@ $$\Pr[X = 1] = \binom{2}{1} 0.50^1 (1 - 0.50)^{1} = 2 \cdot 0.50 \cdot 0.50 = 0.
 
 esattamente come avevamo trovato contando i casi favorevoli ($TC$ e $CT$, da cui il coefficiente binomiale pari a 2).
 
-### Media e varianza della binomiale
+## Media e varianza della binomiale
 
 La distribuzione binomiale è definita da due parametri: il numero di prove indipendenti $n$ e la probabilità di successo in una singola prova $\pi$. Media, varianza e deviazione standard dipendono solo da questi due parametri:
 
-$$\mu_X = n\pi, \qquad \sigma^2_X = n\pi(1-\pi), \qquad \sigma_X = \sqrt{n\pi(1-\pi)}$$
+$$\mu_X = E(X) = n\pi, \qquad \sigma^2_X = n\pi(1-\pi), \qquad \sigma_X = \sqrt{n\pi(1-\pi)}$$
 
-Ad esempio, lanciando 10 volte una moneta equilibrata ($n = 10$, $\pi = 0.50$) ci si aspetta in media $\mu_X = 10 \cdot 0.50 = 5$ teste.
+La media di una variabile casuale è detta **valore atteso** e si indica con $E(X)$: è il numero di successi che ci si aspetta *in media* ripetendo molte volte le $n$ prove. Nella binomiale il valore atteso è quindi $E(X) = \mu_X = n\pi$. Ad esempio, lanciando 10 volte una moneta equilibrata ($n = 10$, $\pi = 0.50$) il valore atteso è $E(X) = 10 \cdot 0.50 = 5$ teste. Il valore atteso non è necessariamente un valore osservabile: con $n = 5$ e $\pi = 0.50$, ad esempio, $E(X) = 2.5$, anche se in 5 lanci non si possono ottenere 2.5 teste.
 
 La forma di $f_X(x|\pi)$ varia al variare di $(n, \pi)$ (@fig-bin):
 
@@ -451,7 +451,7 @@ for (n_prove in c(6, 10, 20)) {
 }
 ```
 
-### Probabilità cumulata
+## Probabilità cumulata
 
 La **funzione di probabilità cumulata** di una variabile casuale discreta $X$ si indica con $F_X(x|\theta)$ ed è definita come:
 
@@ -741,15 +741,24 @@ Come per tutte le funzioni di densità, l'area totale sottesa alla curva normale
 
 $$\int_{-\infty}^{+\infty} f_X(x|\theta)\, dx = 1$$
 
-L'area sotto la curva compresa tra due valori rappresenta la **probabilità** di osservare un valore in quell'intervallo. Una proprietà fondamentale della normale è che la porzione di area compresa tra la media e un valore espresso in deviazioni standard è sempre la stessa, qualunque siano $\mu$ e $\sigma$ (@tbl-aree e @fig-aree).
+L'area sotto la curva compresa tra due valori rappresenta la **probabilità** di osservare un valore in quell'intervallo. Una proprietà fondamentale della normale è che la porzione di area compresa tra la media e un valore espresso in deviazioni standard è sempre la stessa, qualunque siano $\mu$ e $\sigma$ (Tabella \ref{tbl-aree} e @fig-aree).
 
-| Tra $\mu$ e... | Area | Intervallo | Area |
-|:---|:---:|:---|:---:|
-| $\mu + \sigma$ | 34.13% | $\mu \pm \sigma$ | 68.26% |
-| $\mu + 2\sigma$ | 47.73% | $\mu \pm 2\sigma$ | 95.45% |
-| $\mu + 3\sigma$ | 49.87% | $\mu \pm 3\sigma$ | 99.73% |
-
-: Aree sotto la curva normale in funzione della distanza dalla media espressa in deviazioni standard {#tbl-aree}
+```{=latex}
+\begin{table}[H]
+\centering
+\caption{Aree sotto la curva normale in funzione della distanza dalla media espressa in deviazioni standard}
+\label{tbl-aree}
+\begin{tabular}{lclc}
+\hline
+Tra $\mu$ e... & Area & Intervallo & Area \\
+\hline
+$\mu + \sigma$ & 34.13\% & $\mu \pm \sigma$ & 68.26\% \\
+$\mu + 2\sigma$ & 47.73\% & $\mu \pm 2\sigma$ & 95.45\% \\
+$\mu + 3\sigma$ & 49.87\% & $\mu \pm 3\sigma$ & 99.73\% \\
+\hline
+\end{tabular}
+\end{table}
+```
 
 ```{r}
 #| echo: false
@@ -777,6 +786,7 @@ Di conseguenza, conoscendo $\mu$ e $\sigma$ è possibile calcolare:
 
 - la densità $f_X(x|\theta)$ di ogni valore $x$;
 - l'area (e quindi la **probabilità**) compresa tra due qualsiasi valori di $x$.
+
 
 Poiché la curva è simmetrica, l'area tra $-\infty$ e $\mu$ è uguale a 0.50, come quella tra $\mu$ e $+\infty$: $F_X(\mu|\theta) = 0.50$.
 
@@ -1306,6 +1316,11 @@ Per determinare una distribuzione campionaria bisogna:
 
 La Figura \ref{fig-dist-camp} illustra il procedimento nel caso della media: da ciascun campione estratto dalla popolazione si calcola $\bar{x}$, e la media di tutte le $\bar{x}$ è la media della distribuzione campionaria.
 
+:::{.callout-caution}
+
+Non sono rappresentati tutti i possibibili campioni di ampiezza 2 estraibili dalla popolazione, ma solo alcuni a titolo esemplificativo.
+:::
+
 ```{=latex}
 \begin{figure}[h]
 \centering
@@ -1395,7 +1410,7 @@ $$\mu = \dfrac{6 + 8 + 10 + 3 + 8}{5} = 7$$
 
 : Punteggi della popolazione ($N = 5$) {#tbl-pop}
 
-Se il campione estratto è composto da Giorgio e Alessandra, la media campionaria è $\bar{x} = (6 + 8)/2 = 7$. Se invece il campione è composto da Alessandra e Francesco, $\bar{x} = (8 + 10)/2 = 9$. La media cambia da campione a campione. La Tabella \ref{tbl-campioni} riporta tutti i 25 campioni possibili, ottenuti con campionamento con reinserimento, e la Figura \ref{fig-freq-medie} la distribuzione delle loro medie.
+Se il campione estratto è composto da Giorgio e Alessandra, la media campionaria è $\bar{x} = (6 + 8)/2 = 7$. Se invece il campione è composto da Alessandra e Francesco, $\bar{x} = (8 + 10)/2 = 9$. La media cambia da campione a campione. La Tabella \ref{tbl-campioni} riporta tutti i 25 campioni possibili, ottenuti con campionamento con reinserimento.
 
 ```{=latex}
 \begin{table}[h]
@@ -1594,8 +1609,8 @@ Valore di una variabile casuale che può assumere i valori di una distribuzione 
 
 Ogni test statistico divide lo spazio campionario in due regioni: la **regione di non rifiuto** di $H_0$ e la **regione di rifiuto** di $H_0$. In base alla regione in cui cade il valore campionario, si prende una decisione sull'ipotesi $H_0$. Le due regioni corrispondono ad aree di probabilità sottese alla curva (@fig-regioni):
 
-- **regione di non rifiuto**: valori delle statistiche campionarie con probabilità maggiori di verificarsi *data $H_0$ vera*;
-- **regione di rifiuto**: valori delle statistiche campionarie con probabilità molto basse di verificarsi *data $H_0$ vera*.
+- **regione di non rifiuto**: valori delle statistiche campionarie con probabilità maggiori di verificarsi *data $H_0$ vera* (area verde in @fig-regioni);
+- **regione di rifiuto**: valori delle statistiche campionarie con probabilità molto basse di verificarsi *data $H_0$ vera* (aree rosse in @fig-regioni).
 
 ```{r}
 #| echo: false
@@ -1686,7 +1701,7 @@ La posizione della regione di rifiuto dipende da $H_1$ (Figura \ref{fig-critici}
 \end{figure}
 ```
 
-In `R` i valori critici si ottengono con `qnorm()`:
+In `R` i valori critici si ottengono con `qnorm()`, se la distribuzione campionaria è la distribuzione normale, altrimenti si ottengono con le funzioni designate per trovare i quantili per ogni distibuzione di probabilità studiata (e.g., $t$, $\chi^2$)$:
 
 ```{r}
 qnorm(.975) # bidirezionale, coda destra (-1.96 per simmetria)
@@ -1737,12 +1752,12 @@ Quello che si controlla è $\alpha$, la probabilità di commettere un errore di 
 \end{figure}
 ```
 
-| $\alpha$ | $\beta$ | $1 - \beta$ |
-|:---:|:---:|:---:|
-| .10 | .04 | .96 |
-| .05 | .09 | .91 |
-| .01 | .25 | .75 |
-| .001 | .54 | .46 |
+| $\alpha$ | $\beta$ | $1 - \beta$ | Significato |
+|:------:|:------:|:-------:|:--------------------------------------------------------|
+| .10 | .04 | .96 | Accettiamo di concludere che un effetto esiste quando in realtà non esiste (errore di I tipo) nel 10% dei casi e di concludere che un effetto non esiste quando in realtà esiste (errore di II tipo) nel 4% dei casi. La probabilità di concludere che un effetto esiste quando esiste davvero (potenza) è del 96%. |
+| .05 | .09 | .91 | Accettiamo di concludere che un effetto esiste quando in realtà non esiste (errore di I tipo) nel 5% dei casi e di concludere che un effetto non esiste quando in realtà esiste (errore di II tipo) nel 9% dei casi. La probabilità di concludere che un effetto esiste quando esiste davvero (potenza) è del 91%. |
+| .01 | .25 | .75 | Accettiamo di concludere che un effetto esiste quando in realtà non esiste (errore di I tipo) nell'1% dei casi e di concludere che un effetto non esiste quando in realtà esiste (errore di II tipo) nel 25% dei casi. La probabilità di concludere che un effetto esiste quando esiste davvero (potenza) è del 75%. |
+| .001 | .54 | .46 | Accettiamo di concludere che un effetto esiste quando in realtà non esiste (errore di I tipo) nello 0,1% dei casi e di concludere che un effetto non esiste quando in realtà esiste (errore di II tipo) nel 54% dei casi. La probabilità di concludere che un effetto esiste quando esiste davvero (potenza) è del 46%. |
 
 : Valori di $\beta$ e potenza al variare di $\alpha$ ($\mu_0 = 0$, $\mu_1 = 3$, test unilaterale destro) {#tbl-power}
 
@@ -1942,7 +1957,7 @@ La Figura \ref{fig-workflow} riassume il percorso visto finora: dalla popolazion
 ```
 
 
-La scelta del test dipende innanzitutto dal tipo di variabile misurata (Figura \ref{fig-scelta-test}). Questo modulo riguarda le variabili quantitative e, di conseguenza, i test sulle medie.
+La scelta del test dipende innanzitutto dal tipo di variabile misurata (Figura \ref{fig-scelta-test}). Per le variabili quantitative si usano i test sulle medie (@sec-test-medie), per le variabili categoriali i test sulle frequenze e sulle proporzioni (@sec-test-categoriali).
 
 ```{=latex}
 \begin{figure}[h]
@@ -1980,7 +1995,7 @@ La scelta del test dipende innanzitutto dal tipo di variabile misurata (Figura \
 % la parte trattata in questo modulo
 \node[draw = evidB, very thick, dashed, rounded corners, inner sep = 3pt, fit = (quant)(t1)(t3)] (box) {};
 \end{tikzpicture}
-\caption{Come scegliere il test statistico. Il riquadro tratteggiato indica la parte trattata in questo modulo}
+\caption{Come scegliere il test statistico. Il riquadro tratteggiato indica i test sulle medie}
 \label{fig-scelta-test}
 \end{figure}
 ```
@@ -2504,6 +2519,301 @@ annota_ttest('t.test(x, y, paired = TRUE, alternative = "less")', ridotti,
                "IC \\textbf{unidirezionale}: solo il limite superiore, l'altro estremo è \\texttt{-Inf}"))
 ```
 
+### Esempio: domande di ricerca in psicologia del lavoro {#sec-esempio-ttest}
+
+Il servizio HR di un'azienda vuole capire come stanno i propri dipendenti. Un campione di 80 dipendenti compila alcune scale con punteggi da 0 a 100. Una parte dei dipendenti (30) partecipa inoltre a un corso di formazione e compila la scala di autoefficacia sia prima sia dopo il corso.
+
+Il file `dipendenti.csv` contiene una riga per ogni dipendente e le variabili riportate nella @tbl-dipendenti.
+
+| Variabile | Descrizione |
+|:----------|:------------|
+| `modalita` | Modalità di lavoro: `presenza` (35 dipendenti) o `ibrido` (45 dipendenti) |
+| `soddisfazione` | Soddisfazione lavorativa |
+| `stress` | Stress lavorativo percepito |
+| `partecipazione_corso` | Partecipazione al corso di formazione: `sì` o `no` |
+| `autoefficacia_prima` | Autoefficacia professionale prima del corso (solo per chi ha partecipato, `NA` per gli altri) |
+| `autoefficacia_dopo` | Autoefficacia professionale dopo il corso (solo per chi ha partecipato, `NA` per gli altri) |
+
+: Variabili del dataset `dipendenti.csv` {#tbl-dipendenti}
+
+:::{.callout-tip}
+## Esercitarsi con i dati
+
+Chi vuole provare a esercitarsi trova i dati a questo link: [`dipendenti.csv`](https://ottaviae.github.io/stpc-analisi-dati/slides/modulo6/esempi-lezione/esempi-tendenza-centrale/dipendenti.csv).
+:::
+
+Il file usa il punto e virgola come separatore e la virgola come separatore decimale, quindi si importa con `read.csv2()`:
+
+```{r}
+#| lst-label: lst-es-import
+#| lst-cap: "Importazione del dataset"
+#| eval: false
+data = read.csv2("data/dipendenti.csv")
+```
+
+```{r}
+#| include: false
+data = read.csv2("slides/modulo6/esempi-lezione/esempi-tendenza-centrale/dipendenti.csv")
+```
+
+```{r}
+#| lst-label: lst-es-str
+#| lst-cap: "Struttura del dataset"
+str(data)
+```
+
+#### Un campione, ipotesi bidirezionale
+
+Nel settore in cui opera l'azienda, la soddisfazione lavorativa media è 68 ($\mu_0 = 68$). Si può pensare che, per quanto riguarda la soddisfazione, i dipendenti dell'azienda appartengano alla popolazione dei dipendenti del settore?
+
+La domanda non specifica una direzione, quindi l'ipotesi alternativa è bidirezionale:
+
+$$H_0: \mu = 68 \qquad H_1: \mu \neq 68$$
+
+```{r}
+#| lst-label: lst-es-sodd-test
+#| lst-cap: "Test $t$ a un campione sulla soddisfazione"
+mean(data$soddisfazione)
+t_sodd = t.test(data$soddisfazione, mu = 68, alternative = "two.sided")
+t_sodd
+```
+
+La media campionaria (`r round(mean(data$soddisfazione), 2)`) è più bassa di 68. Per capire se è *troppo* lontana da 68 confrontiamo la statistica test $t_0 =$ `r round(t_sodd$statistic, 3)` con i valori critici della distribuzione $t$ con $df = n - 1 =$ `r t_sodd$parameter`. Con un'ipotesi bidirezionale $\alpha$ si divide nelle due code, quindi i valori critici sono $\pm t_{1-\alpha/2}$. Nel grafico i cerchi pieni indicano i valori critici e il quadrato indica $t_0$:
+
+```{r}
+#| lst-label: lst-es-sodd-plot
+#| lst-cap: "Statistica test e valori critici ($\\alpha = .05$ e $\\alpha = .01$)"
+#| out-width: 60%
+#| fig-width: 9
+#| fig-height: 4
+x = seq(-3, 3, length.out = 1001)
+dens = dt(x, df = nrow(data) - 1)
+par(mfrow = c(1, 2))
+# alpha = .05
+plot(x, dens, type = "l", xlab = "t", ylab = "Densità", main = "alpha = .05")
+points(c(qt(.05/2, df = nrow(data) - 1), abs(qt(.05/2, df = nrow(data) - 1))),
+       y = c(.02, .02), pch = 19)
+points(t_sodd$statistic, y = .02, pch = 15, col = "darkorange")
+# alpha = .01
+plot(x, dens, type = "l", xlab = "t", ylab = "Densità", main = "alpha = .01")
+points(c(qt(.01/2, df = nrow(data) - 1), abs(qt(.01/2, df = nrow(data) - 1))),
+       y = c(.02, .02), pch = 19)
+points(t_sodd$statistic, y = .02, pch = 15, col = "darkorange")
+par(mfrow = c(1, 1))
+qt(.05/2, df = nrow(data) - 1)
+qt(.01/2, df = nrow(data) - 1)
+```
+
+In entrambi i casi $t_0$ cade oltre il valore critico negativo, cioè nella regione di rifiuto. Lo stesso risultato si ottiene con il $p$-value: nel test a due code è l'area nelle due code oltre $|t_0|$, cioè il doppio dell'area a sinistra di $-|t_0|$.
+
+```{r}
+#| lst-label: lst-es-sodd-p
+#| lst-cap: "Calcolo del $p$-value (test a due code)"
+2 * pt(-abs(t_sodd$statistic), df = t_sodd$parameter)
+t_sodd$p.value # confronto con il valore calcolato da R
+```
+
+Il $p$-value (`r round(t_sodd$p.value, 4)`) è minore sia di .05 sia di .01: rifiutiamo $H_0$. La soddisfazione media dei dipendenti dell'azienda è diversa (più bassa) da quella del settore.
+
+#### Un campione, ipotesi direzionale
+
+Il valore di riferimento per lo stress lavorativo percepito è 50 ($\mu_0 = 50$). I dipendenti dell'azienda appartengono a una popolazione in cui il livello di stress è superiore?
+
+La domanda specifica una direzione (*superiore*), quindi l'ipotesi alternativa è destra:
+
+$$H_0: \mu = 50 \qquad H_1: \mu > 50$$
+
+```{r}
+#| lst-label: lst-es-stress-test
+#| lst-cap: "Test $t$ a un campione sullo stress, ipotesi alternativa destra"
+t_stress = t.test(data$stress, mu = 50, alternative = "greater")
+t_stress
+```
+
+Con un'ipotesi direzionale tutta $\alpha$ si trova in una sola coda, quella indicata da $H_1$: il valore critico è $t_{1-\alpha}$. Nel grafico le croci indicano i valori critici per $\alpha = .05$ (rossa) e $\alpha = .01$ (blu), il cerchio arancione indica $t_0$:
+
+```{r}
+#| lst-label: lst-es-stress-plot
+#| lst-cap: "Statistica test e valori critici nel test a una coda destra"
+#| out-width: 60%
+plot(x, dens, type = "l", xlab = "t", ylab = "Densità")
+points(qt(.95, df = nrow(data) - 1), y = .02, pch = 4, col = "red", lwd = 2)
+points(qt(.99, df = nrow(data) - 1), y = .02, pch = 4, col = "blue", lwd = 2)
+points(t_stress$statistic, y = .02, pch = 19, col = "darkorange", lwd = 2)
+qt(.95, df = nrow(data) - 1)
+qt(.99, df = nrow(data) - 1)
+```
+
+$t_0 =$ `r round(t_stress$statistic, 3)` è positivo, quindi va nella direzione di $H_1$, ma è più piccolo di entrambi i valori critici. Il $p$-value è l'area a destra di $t_0$:
+
+```{r}
+#| lst-label: lst-es-stress-p
+#| lst-cap: "Calcolo del $p$-value (test a una coda destra)"
+1 - pt(t_stress$statistic, df = t_stress$parameter)
+t_stress$p.value # confronto con il valore calcolato da R
+```
+
+Il $p$-value (`r round(t_stress$p.value, 4)`) è maggiore di .05: non rifiutiamo $H_0$. Non ci sono evidenze che lo stress medio dei dipendenti sia superiore al valore di riferimento.
+
+#### Due campioni indipendenti, ipotesi bidirezionale
+
+La soddisfazione lavorativa media è diversa tra chi lavora in presenza e chi lavora in modalità ibrida?
+
+$$H_0: \mu_{\text{ibrido}} = \mu_{\text{presenza}} \qquad H_1: \mu_{\text{ibrido}} \neq \mu_{\text{presenza}}$$
+
+o, equivalentemente,
+
+$$H_0: \mu_{\text{ibrido}} - \mu_{\text{presenza}} = 0 \qquad H_1: \mu_{\text{ibrido}} - \mu_{\text{presenza}} \neq 0$$
+
+Prima del test conviene guardare quante osservazioni ci sono in ciascun gruppo e come si distribuisce la soddisfazione nei due gruppi:
+
+```{r}
+#| lst-label: lst-es-mod-descr
+#| lst-cap: "Numerosità dei gruppi e distribuzione della soddisfazione"
+#| out-width: 60%
+table(data$modalita)
+boxplot(data$soddisfazione ~ data$modalita,
+        xlab = "Modalità di lavoro", ylab = "Soddisfazione")
+```
+
+La statistica test si distribuisce come una $t$ con $df = n + m - 2 =$ `r nrow(data) - 2`. Con $\alpha = .05$ e ipotesi bidirezionale le regioni di rifiuto si trovano oltre le linee verticali:
+
+```{r}
+#| lst-label: lst-es-mod-regioni
+#| lst-cap: "Regioni di rifiuto del test a due code ($\\alpha = .05$)"
+#| out-width: 60%
+alpha = .05
+dens2 = dt(x, df = nrow(data) - 2)
+plot(x, dens2, type = "l", xlab = "t", ylab = "Densità")
+abline(v = c(qt(alpha/2, df = nrow(data) - 2),
+             qt(1 - alpha/2, df = nrow(data) - 2)))
+```
+
+Selezioniamo la soddisfazione di ciascun gruppo con l'indicizzazione logica e assumiamo che le varianze delle due popolazioni siano uguali (`var.equal = TRUE`):
+
+```{r}
+#| lst-label: lst-es-mod-test
+#| lst-cap: "Test $t$ a due campioni indipendenti con varianze assunte uguali"
+t_mod = t.test(data$soddisfazione[data$modalita == "ibrido"],
+               data$soddisfazione[data$modalita == "presenza"],
+               var.equal = TRUE)
+t_mod
+# la statistica test supera il valore critico?
+abs(t_mod$statistic) > abs(qt(alpha/2, df = nrow(data) - 2))
+```
+
+$t_0 =$ `r round(t_mod$statistic, 3)` cade nella regione di rifiuto e il $p$-value (`r round(t_mod$p.value, 4)`) è minore di .05: rifiutiamo $H_0$. Chi lavora in modalità ibrida riporta una soddisfazione media diversa (più alta) da chi lavora in presenza.
+
+La conclusione però dipende da $\alpha$. Con $\alpha = .01$ il valore critico si allontana da 0 e $t_0$ non lo supera più. Lo stesso si vede dall'intervallo di confidenza al 99% (argomento `conf.level`), che contiene lo 0:
+
+```{r}
+#| lst-label: lst-es-mod-99
+#| lst-cap: "Lo stesso test con $\\alpha = .01$"
+abs(qt(.01/2, df = nrow(data) - 2))
+t.test(data$soddisfazione[data$modalita == "ibrido"],
+       data$soddisfazione[data$modalita == "presenza"],
+       var.equal = TRUE,
+       conf.level = .99)
+```
+
+Il test di Welch (il default di `R`) non assume che le varianze delle due popolazioni siano uguali. Il test si può scrivere anche con la notazione a formula `variabile ~ gruppo`: in questo caso il primo gruppo è il primo livello di `modalita` in ordine alfabetico (`ibrido`), quindi la differenza è sempre $\bar{x}_{\text{ibrido}} - \bar{x}_{\text{presenza}}$.
+
+```{r}
+#| lst-label: lst-es-mod-welch
+#| lst-cap: "Test di Welch con la notazione a formula"
+t_welch = t.test(data$soddisfazione ~ data$modalita)
+t_welch
+# calcolo del p-value (test a due code)
+2 * (1 - pt(abs(t_welch$statistic), df = t_welch$parameter))
+```
+
+I gradi di libertà non sono interi e sono diversi da `r nrow(data) - 2`, ma la conclusione con $\alpha = .05$ non cambia.
+
+#### Due campioni indipendenti, ipotesi direzionale
+
+Chi lavora in presenza riporta uno stress medio più alto di chi lavora in modalità ibrida?
+
+Nel dataset la variabile `modalita` è codificata "al contrario" rispetto alla domanda di ricerca. Con la notazione a formula `R` ordina i gruppi in ordine alfabetico, quindi il gruppo `ibrido` è considerato come $x$ e il gruppo `presenza` come $y$: la differenza calcolata è $\bar{x}_{\text{ibrido}} - \bar{x}_{\text{presenza}}$. Per rendere il test coerente con l'ipotesi ci sono tre strade, che portano allo stesso risultato.
+
+**1. Scrivere l'ipotesi coerente con la codifica dei dati.** Se chi lavora in presenza ha uno stress più alto, la differenza ibrido $-$ presenza è negativa:
+
+$$H_0: \mu_{\text{ibrido}} - \mu_{\text{presenza}} = 0 \qquad H_1: \mu_{\text{ibrido}} - \mu_{\text{presenza}} < 0$$
+
+```{r}
+#| lst-label: lst-es-stress-less
+#| lst-cap: "Ipotesi scritta secondo la codifica dei dati: ipotesi alternativa sinistra"
+table(data$modalita)
+t.test(data$stress ~ data$modalita, alternative = "less",
+       var.equal = TRUE)
+```
+
+Le altre due strade partono invece dall'ipotesi scritta come nella domanda di ricerca:
+
+$$H_0: \mu_{\text{presenza}} = \mu_{\text{ibrido}} \qquad H_1: \mu_{\text{presenza}} > \mu_{\text{ibrido}}$$
+
+o, equivalentemente,
+
+$$H_0: \mu_{\text{presenza}} - \mu_{\text{ibrido}} = 0 \qquad H_1: \mu_{\text{presenza}} - \mu_{\text{ibrido}} > 0$$
+
+**2. Passare i due gruppi a `t.test()` nell'ordine dell'ipotesi**, selezionandoli con l'indicizzazione logica: il primo vettore è $x$ (presenza), il secondo è $y$ (ibrido).
+
+```{r}
+#| lst-label: lst-es-stress-vettori
+#| lst-cap: "Gruppi passati nell'ordine dell'ipotesi: ipotesi alternativa destra"
+t.test(data$stress[data$modalita == "presenza"],
+       data$stress[data$modalita == "ibrido"], var.equal = TRUE,
+       alternative = "greater")
+```
+
+**3. Cambiare l'ordine dei livelli con `factor()`**, così che il primo livello sia `presenza`. Il riordino si salva in una nuova variabile (`modalitaOrder`), lasciando invariata `modalita`:
+
+```{r}
+#| lst-label: lst-es-stress-mod
+#| lst-cap: "Riordino dei livelli e test $t$ con ipotesi alternativa destra"
+table(data$modalita)
+data$modalitaOrder = factor(data$modalita,
+                            levels = c("presenza", "ibrido"))
+table(data$modalitaOrder)
+t_stress_mod = t.test(data$stress ~ data$modalitaOrder, var.equal = TRUE,
+                      alternative = "greater")
+t_stress_mod
+```
+
+Nelle tre versioni la statistica test cambia solo di segno e il $p$-value è lo stesso. Nella seconda e nella terza la prima media riportata è quella di chi lavora in presenza, $t_0 =$ `r round(t_stress_mod$statistic, 3)` è positivo, cioè va nella direzione di $H_1$, e il $p$-value (`r round(t_stress_mod$p.value, 4)`) è minore di .05: rifiutiamo $H_0$. Chi lavora in presenza riporta in media più stress di chi lavora in modalità ibrida.
+
+#### Due campioni appaiati
+
+Tra i dipendenti che hanno partecipato al corso, l'autoefficacia media è aumentata dopo il corso rispetto a prima?
+
+Le due misure sono state raccolte sugli stessi dipendenti, quindi i campioni sono appaiati e il test lavora sulle differenze $d_i = \text{prima}_i - \text{dopo}_i$. Se l'autoefficacia è aumentata, il punteggio prima del corso è minore di quello dopo:
+
+$$\mu_{\text{prima}} < \mu_{\text{dopo}} \quad \rightarrow \quad \mu_D = \mu_{\text{prima}} - \mu_{\text{dopo}} < 0$$
+
+$$H_0: \mu_D = 0 \qquad H_1: \mu_D < 0$$
+
+Selezioniamo prima i dipendenti che hanno partecipato al corso (per gli altri le due variabili sono `NA`):
+
+```{r}
+#| lst-label: lst-es-corso
+#| lst-cap: "Test $t$ a due campioni appaiati con ipotesi alternativa sinistra"
+corso = data[data$partecipazione_corso %in% "sì", ]
+nrow(corso)
+t_corso = t.test(corso$autoefficacia_prima, corso$autoefficacia_dopo,
+                 paired = TRUE,
+                 alternative = "less")
+t_corso
+```
+
+L'ordine dei due vettori in `t.test()` definisce le differenze: il primo meno il secondo, quindi *prima* $-$ *dopo*, coerente con $H_1$. Lo stimatore riportato da `R` è la media delle differenze $\bar{d}$:
+
+```{r}
+#| lst-label: lst-es-corso-d
+#| lst-cap: "Media delle differenze"
+mean(corso$autoefficacia_prima - corso$autoefficacia_dopo)
+```
+
+$\bar{d} =$ `r round(t_corso$estimate, 2)` è negativa, cioè va nella direzione di $H_1$, con $df = n - 1 =$ `r t_corso$parameter` ($n$ = numero di coppie). Il $p$-value (`r round(t_corso$p.value, 4)`) è minore di .05: rifiutiamo $H_0$. Dopo il corso l'autoefficacia media è aumentata.
+
 ### Intervalli di confidenza
 
 Su infinite ripetizioni dell'esperimento, il 95% degli intervalli di confidenza al 95% contiene $\theta$. Il singolo intervallo lo contiene oppure no (Figura \ref{fig-ic}). L'intervallo si può usare anche per decidere ($\alpha = .05$): se $\theta_0$ cade **dentro** l'intervallo non si rifiuta $H_0$, se cade **fuori** si rifiuta $H_0$.
@@ -2632,6 +2942,406 @@ res2dipendenti$estimate + res2dipendenti$stderr * t_c
 res2dipendenti$conf.int # confronto
 ```
 
+### Esempio: intervalli di confidenza sui dati dei dipendenti {#sec-esempio-ic}
+
+Riprendiamo i dati dei dipendenti della @sec-esempio-ttest. L'intervallo si ricava dagli elementi dell'oggetto restituito da `t.test()`:
+
+$$IC_{1-\alpha} = \hat{\theta} \pm t_{1-\alpha/2} \cdot SE(\hat{\theta})$$
+
+#### Un campione
+
+L'argomento `conf.level` cambia il livello di confidenza dell'intervallo riportato da `t.test()`. Con un livello del 99% ($\alpha = .01$):
+
+```{r}
+#| lst-label: lst-ic-sodd-99
+#| lst-cap: "Intervallo di confidenza al 99% per la soddisfazione media"
+t.test(data$soddisfazione, mu = 68, conf.level = .99)
+```
+
+Per costruire l'intervallo "a mano" salviamo il risultato del test in un oggetto e ne guardiamo la struttura:
+
+```{r}
+#| lst-label: lst-ic-sodd-str
+#| lst-cap: "L'oggetto restituito da `t.test()` a un campione"
+singleSample = t.test(data$soddisfazione, mu = 68)
+str(singleSample, give.attr = FALSE)
+```
+
+Da `estimate`, `stderr` e `parameter` ricaviamo lo stimatore, l'errore standard e i gradi di libertà, con cui calcoliamo i valori critici:
+
+```{r}
+#| lst-label: lst-ic-sodd-95
+#| lst-cap: "Intervallo di confidenza al 95% calcolato a mano"
+thetaHat = singleSample$estimate
+stdErr = singleSample$stderr
+df = singleSample$parameter
+alpha = .05
+valCritici = c(qt(alpha/2, df), qt(1 - (alpha/2), df))
+# abs(qt(alpha/2, df)) è equivalente a qt(1 - (alpha/2), df)
+thetaHat + valCritici * stdErr
+singleSample$conf.int # confronto con l'intervallo calcolato da R
+```
+
+Per ottenere un intervallo con un altro livello di confidenza basta cambiare $\alpha$. Ad esempio, l'intervallo al 93% ha $\alpha = .07$:
+
+```{r}
+#| lst-label: lst-ic-sodd-93
+#| lst-cap: "Intervallo di confidenza al 93%"
+alpha = .07
+valCritici = c(qt(alpha/2, df), qt(1 - (alpha/2), df))
+thetaHat + valCritici * stdErr
+```
+
+#### Due campioni indipendenti
+
+Con due campioni indipendenti `estimate` contiene le due medie campionarie e lo stimatore è la loro differenza. Con la notazione a formula e la variabile `modalita` originale la differenza è ibrido $-$ presenza:
+
+```{r}
+#| lst-label: lst-ic-mod
+#| lst-cap: "Intervallo di confidenza per la differenza tra medie (test di Welch)"
+twoSample = t.test(data$soddisfazione ~ data$modalita,
+                   var.equal = FALSE)
+twoSample
+str(twoSample, give.attr = FALSE)
+df = twoSample$parameter
+stdErr = twoSample$stderr
+thetaHat = twoSample$estimate[1] - twoSample$estimate[2]
+alpha = .05
+valCritici = c(qt(alpha/2, df), qt(1 - (alpha/2), df))
+thetaHat + valCritici * stdErr
+twoSample$conf.int # confronto
+```
+
+#### Due campioni appaiati
+
+Con due campioni appaiati lo stimatore è la media delle differenze $\bar{d}$. Per ottenere un intervallo bidirezionale usiamo il test a due code (il default):
+
+```{r}
+#| lst-label: lst-ic-corso
+#| lst-cap: "Intervallo di confidenza per la media delle differenze"
+depSamples = t.test(corso$autoefficacia_prima, corso$autoefficacia_dopo,
+                    paired = TRUE)
+depSamples
+str(depSamples, give.attr = FALSE)
+thetaHat = depSamples$estimate
+stdErr = depSamples$stderr
+df = depSamples$parameter
+alpha = .05
+valCritici = c(qt(alpha/2, df), qt(1 - (alpha/2), df))
+thetaHat + valCritici * stdErr
+depSamples$conf.int # confronto
+```
+
+In tutti e tre i casi l'intervallo calcolato a mano coincide con quello riportato da `R`.
+
+## Test per variabili categoriali {#sec-test-categoriali}
+
+```{r}
+#| include: false
+# come annota_ttest(), per l'output di chisq.test() e prop.test()
+annota_test = function(chiamata, riquadri, legenda) {
+  out = suppressWarnings(capture.output(eval(parse(text = chiamata))))
+  out = trimws(gsub("\t", "", out), "right")
+  while (!nzchar(out[1])) out = out[-1]
+  while (!nzchar(out[length(out)])) out = out[-length(out)]
+  out = unlist(lapply(out, function(l)
+    if (nchar(l) > 72) strwrap(l, 72, exdent = 2) else l))
+  mark = function(x, pattern, name)
+    sub(pattern, sprintf("\\\\tikzmarknode{%s}{\\1}", name), x)
+  out[1] = sprintf("\\tikzmarknode{test}{%s}", trimws(out[1]))
+  out = mark(out, "(X-squared = [0-9.]+)", "stat")
+  out = mark(out, "(df = [0-9.]+)", "df")
+  out = mark(out, "(p-value [=<] [0-9.e-]+)", "pval")
+  out = mark(out, "(alternative hypothesis: .*)$", "h1")
+  i = grep("confidence interval", out) + 1
+  out[i] = sprintf(" \\tikzmarknode{ic}{%s}", trimws(out[i]))
+  j = grep("sample estimates", out) + 2
+  out[j] = sprintf(" \\tikzmarknode{stime}{%s}", trimws(out[j]))
+  nodi = paste0("\\node[box, fit=(", riquadri, ")] (b", seq_along(riquadri),
+                ") {}; \\node[num] at (b", seq_along(riquadri),
+                ".north east) {", seq_along(riquadri), "};")
+  cat("```{=latex}\n",
+      "\\par\\medskip\\noindent\\begin{minipage}{\\linewidth}\n",
+      "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm, xleftmargin=2.5mm, xrightmargin=2.5mm]\n",
+      "> ", chiamata, "\n",
+      paste(out, collapse = "\n"),
+      "\n\\end{Verbatim}\n",
+      "\\begin{tikzpicture}[remember picture, overlay,\n",
+      "  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},\n",
+      "  num/.style={circle, fill=unipd, text=white, font=\\tiny\\bfseries,\n",
+      "              inner sep=0pt, minimum size=9pt}]\n",
+      paste(nodi, collapse = "\n"),
+      "\n\\end{tikzpicture}\n",
+      "\\footnotesize\n\\begin{enumerate}\n",
+      paste0("\\item ", legenda, collapse = "\n"),
+      "\n\\end{enumerate}\n\\end{minipage}\\par\\medskip\n```\n", sep = "")
+}
+chi_riquadri = c("test", "stat", "df", "pval")
+prop_riquadri = c("test", "stat", "df", "pval", "h1", "ic", "stime")
+```
+
+Quando la variabile misurata è categoriale non ha senso calcolare medie: si lavora sulle frequenze e sulle proporzioni (Figura \ref{fig-scelta-test}). Si possono verificare tre tipi di ipotesi:
+
+- se due variabili categoriali sono **associate** (test $\chi^2$ di associazione);
+- se le osservazioni si **distribuiscono in modo uniforme** nelle categorie di una variabile (test $\chi^2$ di equidistribuzione);
+- se una **proporzione** è diversa da un valore teorico, o se due proporzioni sono diverse tra loro (test delle proporzioni).
+
+### Test $\chi^2$: associazione tra due variabili
+
+:::{.callout-tip}
+## Scopo
+
+Quantificare il grado di associazione tra due variabili nominali A con $I$ categorie e B con $J$ categorie.
+:::
+
+La statistica test confronta le frequenze osservate $n_{ij}$ con le frequenze attese $n_{ij}^*$, cioè quelle che ci aspetteremmo se A e B fossero indipendenti:
+
+$$\chi^2 = \sum_{i} \sum_{j} \frac{(n_{ij} - n_{ij}^*)^2}{n_{ij}^*}, \qquad n_{ij}^* = \frac{n_{i\cdot} \times n_{\cdot j}}{n}, \qquad n = \sum_{i=1}^I \sum_{j=1}^J n_{ij}$$
+
+dove $n_{i\cdot}$ e $n_{\cdot j}$ sono le frequenze marginali di riga e di colonna.
+
+Le ipotesi riguardano la popolazione, quindi si formulano sulle proporzioni nella popolazione:
+
+- $\pi_{ij}$: proporzione di casi che hanno sia la categoria $i$ di A sia la categoria $j$ di B;
+- $\pi_{i\cdot}$: proporzione di casi nella categoria $i$ di A;
+- $\pi_{\cdot j}$: proporzione di casi nella categoria $j$ di B.
+
+Se A e B sono indipendenti, la proporzione congiunta è il prodotto delle proporzioni marginali: $\pi_{ij} = \pi_{i\cdot}\,\pi_{\cdot j}$ (la stessa regola vista per l'indipendenza tra eventi).
+
+:::{.callout-note}
+## Sistema di ipotesi
+
+$H_0$: A e B sono indipendenti nella popolazione, cioè $\pi_{ij} = \pi_{i\cdot}\,\pi_{\cdot j}$ per ogni $i, j$
+
+$H_1$: A e B sono associate nella popolazione, cioè $\pi_{ij} \neq \pi_{i\cdot}\,\pi_{\cdot j}$ per almeno una coppia $i, j$
+:::
+
+Se $H_0$ è vera, ci aspettiamo che le frequenze osservate si discostino da quelle attese solo per effetto della variabilità campionaria. Il $\chi^2$ misura questo scostamento: più è grande, meno i dati sono compatibili con $H_0$. Per questo il $p$-value è sempre l'area **a destra** di $\chi^2_0$.
+
+#### In `R`
+
+| Funzione `R` | Significato |
+|:--|:----------|
+| `chisq.test(mytab)` | Calcola il test $\chi^2$ sulla tabella di frequenze `mytab` |
+
+```{r}
+#| lst-label: lst-chi-assoc
+#| lst-cap: "Test $\\chi^2$ di associazione su una tabella $3 \\times 3$"
+#| warning: false
+#| results: hide
+mytable = matrix(c(21, 9, 9, 33, 10, 28, 7, 12, 10), 3, 3)
+rownames(mytable) = c("a1", "a2", "a3")
+colnames(mytable) = c("b1", "b2", "b3")
+chisq.test(mytable)
+```
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+annota_test('chisq.test(mytable)', chi_riquadri,
+            c("Tipo di test",
+              "Statistica test $\\chi^2_0$",
+              "Gradi di libertà: $df = (I - 1)(J - 1)$",
+              "$p$-value: area a destra di $\\chi^2_0$"))
+```
+
+```{r}
+#| echo: false
+res_chi = suppressWarnings(chisq.test(mytable))
+```
+
+Il $p$-value è l'area sotto la distribuzione $\chi^2$ con $df = (3-1)(3-1) = 4$ a destra della statistica osservata $\chi^2_0 =$ `r round(res_chi$statistic, 3)` (@fig-chi-p):
+
+$$p\text{-value} = \int_{\chi^2_0}^{\infty} f_X(x \mid \theta) \, dx = 1 - \int_{0}^{\chi^2_0} f_X(x \mid \theta) \, dx$$
+
+```{r}
+#| echo: false
+#| label: fig-chi-p
+#| fig-cap: "$p$-value del test $\\chi^2$: area a destra di $\\chi^2_0$"
+#| out-width: 60%
+x = seq(0, 40, length.out = 200)
+plot(x, dchisq(x, df = 4), type = "l", lwd = 2,
+     xlab = expression(chi^2), ylab = "Densità")
+polygon(c(res_chi$statistic, x[x >= res_chi$statistic]),
+        c(0, dchisq(x, df = 4)[x >= res_chi$statistic]),
+        col = "firebrick")
+```
+
+```{r}
+#| lst-label: lst-chi-p
+#| lst-cap: "Calcolo del $p$-value del test $\\chi^2$"
+#| warning: false
+res_chi = chisq.test(mytable)
+1 - pchisq(res_chi$statistic, df = res_chi$parameter)
+res_chi$p.value # confronto con il valore calcolato da R
+```
+
+### Test $\chi^2$: equidistribuzione nelle categorie
+
+:::{.callout-tip}
+## Scopo
+
+Valutare se le proporzioni nelle $I$ categorie di una variabile categoriale A siano o meno conformi a un modello teorico, solitamente di omogeneità.
+:::
+
+La statistica test confronta le frequenze osservate $n_i$ delle $I$ categorie con le frequenze attese $n_i^*$ sotto il modello teorico di omogeneità, in cui tutte le categorie hanno la stessa frequenza:
+
+$$\chi^2 = \sum_{i} \frac{(n_{i} - n_{i}^*)^2}{n_{i}^*}, \qquad n_{i}^* = \frac{1}{I}\,n, \qquad n = \sum_{i=1}^I n_{i}$$
+
+Indichiamo con $\pi_i$ la proporzione di casi nella categoria $i$ di A nella popolazione.
+
+:::{.callout-note}
+## Sistema di ipotesi
+
+$H_0$: le proporzioni nelle $I$ categorie sono uguali nella popolazione, cioè $\pi_i = 1/I$ per ogni $i$
+
+$H_1$: nella popolazione almeno una proporzione è diversa da $1/I$, cioè $\pi_i \neq 1/I$ per almeno un $i$
+:::
+
+Come nel test di associazione, più il $\chi^2$ è grande, meno i dati sono compatibili con $H_0$.
+
+#### In `R`
+
+La funzione è la stessa, `chisq.test()`, applicata a una tabella con una sola riga (o a un vettore di frequenze):
+
+```{r}
+#| lst-label: lst-chi-equi
+#| lst-cap: "Test $\\chi^2$ di equidistribuzione su tre categorie"
+#| warning: false
+#| results: hide
+mytable = matrix(c(22, 45, 18), 1, 3)
+colnames(mytable) = c("a1", "a2", "a3")
+chisq.test(mytable)
+```
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+annota_test('chisq.test(mytable)', chi_riquadri,
+            c("Tipo di test",
+              "Statistica test $\\chi^2_0$",
+              "Gradi di libertà: $df = I - 1$",
+              "$p$-value: area a destra di $\\chi^2_0$"))
+```
+
+### Test delle proporzioni
+
+#### Una proporzione
+
+:::{.callout-tip}
+## Scopo
+
+Valutare se la proporzione $\pi$ di successi nella popolazione sia diversa (rispettivamente maggiore o minore) da un valore teorico $\pi_0$.
+:::
+
+Lo **stimatore** di $\pi$ è $x/n$, la proporzione di successi su $n$ prove indipendenti. In `prop.test()`, $\pi_0$ è l'argomento `p`.
+
+:::{.callout-note}
+## Sistema di ipotesi
+
+Due code: $H_0: \pi = \pi_0 \qquad H_1: \pi \neq \pi_0$
+
+Una coda destra: $H_0: \pi = \pi_0 \qquad H_1: \pi > \pi_0$
+
+Una coda sinistra: $H_0: \pi = \pi_0 \qquad H_1: \pi < \pi_0$
+:::
+
+#### Due proporzioni
+
+:::{.callout-tip}
+## Scopo
+
+Valutare se la proporzione di successi $\pi_1$ di una popolazione sia diversa (rispettivamente maggiore o minore) dalla proporzione di successi $\pi_2$ di un'altra popolazione.
+:::
+
+Lo **stimatore** di $\pi_1 - \pi_2$ è $x_1/n_1 - x_2/n_2$, la differenza tra le proporzioni di successi nei due campioni.
+
+:::{.callout-note}
+## Sistema di ipotesi
+
+Due code: $H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 \neq \pi_2$
+
+Una coda destra: $H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 > \pi_2$
+
+Una coda sinistra: $H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 < \pi_2$
+:::
+
+#### In `R`
+
+| Funzione `R` | Significato |
+|:--------------|:----------------|
+| `prop.test(x, n, p)` | Verifica se la proporzione $x/n$ (con $x \le n$) sia diversa dal valore di probabilità `p`. $x$ è il numero di successi su $n$ prove indipendenti ($H_1$: $\pi \neq \pi_0$) |
+| `prop.test(x, n, p, alternative = "less")` | Test a una coda sinistra, $H_1$: $\pi < \pi_0$ |
+| `prop.test(x, n, p, alternative = "greater")` | Test a una coda destra, $H_1$: $\pi > \pi_0$ |
+| `prop.test(c(x1, x2), c(n1, n2))` | Test a due code per due proporzioni, $H_1$: $\pi_1 \neq \pi_2$ |
+| `prop.test(c(x1, x2), c(n1, n2), alternative = "less")` | Test a una coda sinistra per due proporzioni, $H_1$: $\pi_1 < \pi_2$ |
+| `prop.test(c(x1, x2), c(n1, n2), alternative = "greater")` | Test a una coda destra per due proporzioni, $H_1$: $\pi_1 > \pi_2$ |
+
+: Funzioni `R` per il test delle proporzioni {#tbl-prop-test}
+
+#### Esempi
+
+**Un campione.** Un campione di bambini supera (1) o non supera (0) un punteggio minimo alle matrici di Raven. Nella popolazione a cui appartengono, la maggioranza degli individui supera la soglia minima?
+
+$$H_0: \pi = .50 \qquad H_1: \pi > .50$$
+
+```{r}
+#| lst-label: lst-prop-uno
+#| lst-cap: "Test delle proporzioni a un campione, ipotesi alternativa destra"
+#| warning: false
+#| results: hide
+pass_scores = c(1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0)
+table(pass_scores) # frequenze di insuccessi e successi
+x = sum(pass_scores) # x, numero di successi
+n = length(pass_scores) # n, numero totale di prove indipendenti
+prop.test(x, n = n, p = .50, alternative = "greater")
+```
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+annota_test('prop.test(x, n = n, p = .50, alternative = "greater")', prop_riquadri,
+            c("Tipo di test",
+              "Statistica test $\\chi^2_0$",
+              "Gradi di libertà: $df = 1$",
+              "$p$-value a una coda",
+              "Ipotesi alternativa $H_1$: $\\pi > \\pi_0$",
+              "IC \\textbf{unidirezionale} al 95\\% per $\\pi$",
+              "Stimatore di $\\pi$: proporzione campionaria $x/n$"))
+```
+
+**Due campioni.** In due gruppi si osservano $x_1 = 6$ successi su $n_1 = 16$ prove e $x_2 = 21$ successi su $n_2 = 30$ prove. Le proporzioni di successi nei due gruppi sono diverse?
+
+$$H_0: \pi_1 = \pi_2 \qquad H_1: \pi_1 \neq \pi_2$$
+
+```{r}
+#| lst-label: lst-prop-due
+#| lst-cap: "Test delle proporzioni a due campioni, ipotesi alternativa bidirezionale"
+#| warning: false
+#| results: hide
+x_1 = 6; n_1 = 16
+x_2 = 21; n_2 = 30
+prop.test(c(x_1, x_2), c(n_1, n_2),
+          alternative = "two.sided")
+```
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+annota_test('prop.test(c(x_1, x_2), c(n_1, n_2), alternative = "two.sided")', prop_riquadri,
+            c("Tipo di test",
+              "Statistica test $\\chi^2_0$",
+              "Gradi di libertà: $df = 1$",
+              "$p$-value",
+              "Ipotesi alternativa $H_1$: $\\pi_1 \\neq \\pi_2$",
+              "IC al 95\\% per $\\pi_1 - \\pi_2$",
+              "Proporzioni campionarie: stimatore $= x_1/n_1 - x_2/n_2$"))
+```
+
 # Funzioni riassuntive dei moduli
 
 ## Calcolo combinatorio
@@ -2670,3 +3380,13 @@ res2dipendenti$conf.int # confronto
 | `t.test(x, y, paired = TRUE)` | Test $t$ a due campioni appaiati |
 
 L'argomento `alternative` (`"two.sided"`, `"greater"`, `"less"`) definisce $H_1$. Se `res` è l'oggetto restituito da `t.test()`, `res$statistic`, `res$parameter`, `res$p.value`, `res$conf.int`, `res$estimate` e `res$stderr` contengono rispettivamente statistica test, gradi di libertà, $p$-value, intervallo di confidenza, stima ed errore standard.
+
+## Test per variabili categoriali
+
+| Funzione | Descrizione |
+|:--|:----------|
+| `chisq.test(tab)` | Test $\chi^2$ di associazione (tabella a due vie) o di equidistribuzione (una sola riga) |
+| `prop.test(x, n, p = p0)` | Test su una proporzione |
+| `prop.test(c(x1, x2), c(n1, n2))` | Test sulla differenza tra due proporzioni |
+
+Anche qui l'argomento `alternative` (`"two.sided"`, `"greater"`, `"less"`) definisce $H_1$ nei test delle proporzioni. Nel test $\chi^2$ il $p$-value è sempre l'area a destra di $\chi^2_0$.

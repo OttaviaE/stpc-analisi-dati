@@ -1,0 +1,218 @@
+---
+title: "Domande di ricerca: psicologia del lavoro"
+format: 
+  html:
+    embed-resources: true
+    number-sections: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Il dataset
+
+Il servizio HR di un'azienda vuole capire come stanno i propri dipendenti. Un campione di 80 dipendenti compila alcune scale con punteggi da 0 a 100. Una parte dei dipendenti (30) partecipa inoltre a un corso di formazione e compila la scala di autoefficacia sia prima sia dopo il corso.
+
+Il file `dipendenti.csv` contiene una riga per ogni dipendente e le seguenti variabili:
+
+| Variabile | Descrizione |
+|:----------|:------------|
+| `modalita` | Modalità di lavoro: `presenza` (35 dipendenti) o `ibrido` (45 dipendenti) |
+| `soddisfazione` | Soddisfazione lavorativa |
+| `stress` | Stress lavorativo percepito |
+| `partecipazione_corso` | Partecipazione al corso di formazione: `sì` o `no` |
+| `autoefficacia_prima` | Autoefficacia professionale prima del corso (solo per chi ha partecipato, `NA` per gli altri) |
+| `autoefficacia_dopo` | Autoefficacia professionale dopo il corso (solo per chi ha partecipato, `NA` per gli altri) |
+
+# Le domande di ricerca
+
+##
+
+Nel settore in cui opera l'azienda, la soddisfazione lavorativa media è 68 ($\mu = 68$). Si può pensare che i dipendenti dell'azienda appartengano alla popolazione di dipendenti del settore dell'azienda per quello che riguarda la sodffisazione?
+
+$H_0$: $\mu = 68$
+
+$H_1$: $\mu \neq 68$
+
+
+```{r}
+data = read.csv2("dipendenti.csv")
+str(data)
+```
+
+```{r}
+t.test(data$soddisfazione, alternative = "two.sided", mu=68)
+```
+
+```{r}
+mean(data$soddisfazione)
+x = seq(-3,3, length.out = 1001)
+dt = dt(x, nrow(data)-1)
+plot(x, dt, type = "l")
+points(-2.795, y = .02, pch = 15)
+qt(.05/2, nrow(data)-1)
+points(c(qt(.05/2, nrow(data)-1), 
+         abs(qt(.05/2, nrow(data)-1))), y = c(.02, .02), 
+       pch = 19)
+
+plot(x, dt, type = "l")
+points(-2.795, y = .02, pch = 15)
+qt(.01/2, nrow(data)-1)
+points(c(qt(.01/2, nrow(data)-1), 
+         abs(qt(.01/2, nrow(data)-1))), y = c(.02, .02), 
+       pch = 19)
+```
+
+Calcolo p value 
+
+```{r}
+pt(-2.795, nrow(data)-1)*2
+```
+
+
+## 
+
+Il valore di riferimento per lo stress lavorativo percepito è 50 ($\mu = 50$). I dipendenti dell'azienza appartengono  a una popolazione dove il livello di stress è superiore?
+
+```{r}
+data$stress
+```
+
+
+$H_0$: $\mu = 50$
+
+$H_1$: $\mu > 50$
+
+```{r}
+plot(x, dt, type = "l")
+qt(.95, nrow(data)-1)
+points(qt(.95, nrow(data)-1), 
+       y = .02, pch = 4, col = "red", lwd = 2)
+points(qt(.99, nrow(data)-1), 
+       y = .02, pch = 4, col = "blue", lwd = 2)
+t.test(data$stress, alternative = "greater", mu = 50)
+points(t.test(data$stress, alternative = "greater", mu = 50)$statistic, 
+       y = .02, pch = 19, col = "darkorange", lwd = 2)
+
+1-pt(0.63557, nrow(data)-1)
+```
+
+
+##
+
+La soddisfazione lavorativa media è diversa tra chi lavora in presenza e chi lavora in modalità ibrida?
+
+$H_0$: $\mu_{\text{ibrido}} = \mu_{\text{presenza}}$
+
+$H_0$: $\mu_{\text{ibrido}} - \mu_{\text{presenza}} = 0$
+
+$H_1$: $\mu_{\text{ibrido}} \neq \mu_{\text{presenza}}$
+
+$H_1$: $\mu_{\text{ibrido}} - \mu_{\text{presenza}} \neq 0$
+
+
+```{r}
+table(data$modalita)
+```
+
+```{r}
+boxplot(data$soddisfazione ~ data$modalita)
+```
+
+
+```{r}
+#| fig-cap: Regioni di rifiuto
+
+x = seq(-3,3, length.out = 1001)
+dx = dt(x, df = nrow(data)-2)
+alpha = .05
+plot(x, dx, type = "l")
+abline(v = c(qt(alpha/2, df = nrow(data) - 2),
+qt(1-(alpha/2), df = nrow(data) - 2)))
+
+
+```
+
+```{r}
+data$soddisfazione
+data$modalita
+t.test(data$soddisfazione[data$modalita == "ibrido"], 
+       data$soddisfazione[data$modalita == "presenza"], 
+       var.equal = TRUE)
+t.test(data$soddisfazione[data$modalita == "ibrido"], 
+       data$soddisfazione[data$modalita == "presenza"], 
+       var.equal = TRUE)$statistic > abs(qt(alpha/2, df = nrow(data) - 2))
+
+abs(qt(.01/2, df = nrow(data) - 2))
+
+t.test(data$soddisfazione[data$modalita == "ibrido"], 
+       data$soddisfazione[data$modalita == "presenza"], 
+       var.equal = TRUE, 
+       conf.level = .99)
+
+```
+Non assume l'omogeneità delle varianze
+
+```{r}
+t.test(data$soddisfazione ~ data$modalita)
+
+```
+
+```{r}
+(1-pt(t.test(data$soddisfazione ~ data$modalita)$statistic, 
+     df = t.test(data$soddisfazione ~ data$modalita)$parameter))*2
+```
+
+
+
+##
+
+Chi lavora in presenza riporta uno stress medio più alto di chi lavora in modalità ibrida?
+
+$H_0$: $\mu_{\text{presenza}} = \mu_{\text{ibrido}}$
+
+$H_0$: $\mu_{\text{presenza}} - \mu_{\text{ibrido}} = 0$
+
+$H_1$: $\mu_{\text{presenza}} > \mu_{\text{ibrido}}$
+
+$H_1$: $\mu_{\text{presenza}} - \mu_{\text{ibrido}} > 0$
+
+```{r}
+table(data$modalita)
+data$modalita = factor(data$modalita, 
+                       levels = c("presenza", "ibrido"))
+data$modalita
+table(data$modalita)
+t.test(data$stress ~ data$modalita, var.equal = T, 
+       alternative = "greater")
+```
+
+
+##
+
+Tra i dipendenti che hanno partecipato al corso, l'autoefficacia media è aumentata dopo il corso rispetto a prima del corso?
+
+Punteggio prima del corso: Minore di dopo 
+
+$\mu_D = \mu_{Prima} - \mu_{dopo}$
+
+$\mu_{Prima} < \mu_{dopo}$ $\rightarrow$ $\mu_{Prima} - \mu_{dopo} < 0$ 
+
+$H_0$: $\mu_D = 0$
+
+$H_1$: $\mu_D < 0$
+
+
+```{r}
+corso = data[data$partecipazione_corso %in% "sì", ]
+t.test(corso$autoefficacia_prima, corso$autoefficacia_dopo, 
+       paired = T, 
+       alternative = "less")
+
+```
+```{r}
+mean(corso$autoefficacia_prima - corso$autoefficacia_dopo) 
+```
+
+
+
+

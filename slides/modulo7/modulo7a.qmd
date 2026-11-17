@@ -22,27 +22,107 @@ header-includes:
    - \usepackage{tikz}
    - \usepackage{multirow}
    - \newcommand{\cov}{\mathrm{Cov}}
-   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,fit,tikzmark}
+   - \usepackage{fancyvrb}
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+   - \definecolor{evid}{RGB}{70,130,180}
+   - \definecolor{evidB}{RGB}{230,140,60}
+   - \definecolor{giallo}{RGB}{204,204,204}
    - \AtBeginSubsection{}
    - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
-   - \AtBeginDocument{\institute[]{A.A. 2025/2026} }
-   - \AtBeginSection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection, hideallsubsections]
-              \end{frame}
-          }
-   - \AtBeginSubsection[]
-          {
-             \begin{frame}[plain]
-             \tableofcontents[currentsection,currentsubsection,hideothersubsections]
-             \end{frame}
-          }
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
+   - |
+    \AtBeginSection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,hideallsubsections]
+      \end{frame}
+    }
+    \AtBeginSubsection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,currentsubsection,hideothersubsections,subsectionstyle=show/shaded/hide]
+      \end{frame}
+    }
+    \newcolumntype{a}{>{\columncolor{evid!30}}c}
+    \tikzset{type1/.style={circle, fill=blue},
+      type2/.style={circle, fill=red},
+      type3/.style={circle, fill=olive},
+      type4/.style={circle, fill=cyan},
+      type5/.style={circle, fill=giallo},
+      type6/.style={circle, fill=blu},
+      info/.style = {rectangle, rounded corners, minimum width=3.5cm, minimum height=0.1cm, text centered, draw=black, text width=3.5cm},
+      stat/.style = {rectangle, rounded corners, minimum width=2.5cm, minimum height=0.1cm, text centered, draw=white, text width=2.5cm}}
 editor_options: 
   chunk_output_type: console
 execute: 
   echo: true
 ---
+
+```{r}
+#| include: false
+# stampa l'output di summary(lm()) con i segnaposto tikzmark per le annotazioni
+
+# racchiude in un tikzmarknode la prima occorrenza (letterale) di testo
+segna = function(riga, testo, nome) {
+  pos = regexpr(testo, riga, fixed = TRUE)
+  if (pos < 0) return(riga)
+  fine = pos + nchar(testo)
+  paste0(substr(riga, 1, pos - 1),
+         "\\tikzmarknode{", nome, "}{", testo, "}",
+         substr(riga, fine, nchar(riga)))
+}
+
+# racchiude in un tikzmarknode il k-esimo "pezzo" (separato da spazi) di una riga
+segna_pezzo = function(riga, k, nome) {
+  m = gregexpr("\\S+", riga)[[1]]
+  pos = m[k]
+  fine = pos + attr(m, "match.length")[k]
+  paste0(substr(riga, 1, pos - 1),
+         "\\tikzmarknode{", nome, "}{", substr(riga, pos, fine - 1), "}",
+         substr(riga, fine, nchar(riga)))
+}
+
+annota_lm = function(chiamata, parte) {
+  out = capture.output(eval(parse(text = chiamata)))
+  out = trimws(gsub("\t", "  ", out), "right")
+  while (!nzchar(out[1])) out = out[-1]
+  while (!nzchar(out[length(out)])) out = out[-length(out)]
+  # toglie "Call:", la formula e la riga vuota (già nella slide precedente)
+  out = out[-(1:3)]
+  if (parte == 1) {
+    i = grep("^Residuals:", out)
+    out[i] = segna(out[i], "Residuals:", "res0")
+    out[i + 2] = sprintf("\\tikzmarknode{res1}{%s}", out[i + 2])
+    i = grep("Estimate", out)
+    out[i] = segna(out[i], "Estimate", "est0")
+    out[i] = segna(out[i], "Std. Error", "se0")
+    out[i] = segna(out[i], "t value", "t0")
+    out[i] = segna(out[i], "Pr(>|t|)", "p0")
+    for (r in 1:2) {   # righe di intercetta e coefficiente angolare
+      j = i + r
+      # dall'ultimo pezzo al primo, così le posizioni non cambiano
+      out[j] = segna_pezzo(out[j], 5, paste0("p", r))
+      out[j] = segna_pezzo(out[j], 4, paste0("t", r))
+      out[j] = segna_pezzo(out[j], 3, paste0("se", r))
+      out[j] = segna_pezzo(out[j], 2, paste0("est", r))
+    }
+  } else {
+    i = grep("^Residual standard error", out)
+    out[i] = sub("^(Residual standard error: [0-9.]+)", "\\\\tikzmarknode{rse}{\\1}", out[i])
+    out[i] = sub("([0-9]+ degrees of freedom)", "\\\\tikzmarknode{gdl}{\\1}", out[i])
+    i = grep("R-squared", out)
+    out[i] = sub("(Multiple R-squared: +[0-9.]+)", "\\\\tikzmarknode{r2}{\\1}", out[i])
+    out[i] = sub("(Adjusted R-squared: +[0-9.]+)", "\\\\tikzmarknode{r2a}{\\1}", out[i])
+    i = grep("^F-statistic", out)
+    out[i] = sprintf("\\tikzmarknode{f}{%s}", out[i])
+  }
+  cat("```{=latex}\n",
+      "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
+      "> ", chiamata, "\n",
+      paste(out, collapse = "\n"),
+      "\n\\end{Verbatim}\n```\n", sep = "")
+}
+```
 
 # Modello di regressione lineare semplice 
 
@@ -137,21 +217,84 @@ abline(LM, lwd = 2, col = "darkorange")
 summary(LM)
 ```
 
-
-### 
+### {.fragile .plain}
 
 ```{r}
 #| echo: false
-knitr::include_graphics("img/outputlm.png")
+#| results: asis
+annota_lm("summary(LM)", parte = 1)
 ```
 
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(res0)(res1)]      (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(est0)(est1)(est2)] (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(se0)(se1)(se2)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(t0)(t1)(t2)]       (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(p0)(p1)(p2)]       (b5) {}; \node[num] at (b5.north east) {5};}
+\end{tikzpicture}
+\vspace{-3mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
+  \item Stime dei parametri: $\hat{\beta}_0$ (intercetta) e $\hat{\beta}$ (coefficiente angolare)
+  \item Errori standard $\widehat{SE}(\beta_0)$ e $\widehat{SE}(\beta)$
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $t$ osservati: $t^o = \hat{\beta} / \widehat{SE}(\beta)$, con $H_0$: parametro $= 0$
+  \item $p$-value bidirezionale, $t$ di Student con $n - 2$ gradi di libertà
+\end{enumerate}
+\end{column}
+\end{columns}
+```
 
-
-### 
+### {.fragile .plain}
 
 ```{r}
 #| echo: false
-knitr::include_graphics("img/outputlm1.png")
+#| results: asis
+annota_lm("summary(LM)", parte = 2)
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(rse)] (b1) {}; \node[num, anchor=west] at ([xshift=1pt]b1.east) {1};}
+  {\node[box, fit=(gdl)] (b2) {}; \node[num, anchor=west] at ([xshift=1pt]b2.east) {2};}
+  {\node[box, fit=(r2)] (b3) {}; \node[num, anchor=west] at ([xshift=1pt]b3.east) {3};}
+  {\node[box, fit=(r2a)] (b4) {}; \node[num, anchor=west] at ([xshift=1pt]b4.east) {4};}
+  {\node[box, fit=(f)] (b5) {}; \node[num, anchor=west] at ([xshift=1pt]b5.east) {5};}
+\end{tikzpicture}
+\vspace{-3mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Errore standard dei residui: $\hat{\sigma} = \sqrt{SQE / (n - 2)}$
+  \item Gradi di libertà: $n - 2$
+  \item $R^2$ del modello
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $R^2$ aggiustato
+  \item Test $F$ sul modello: con un solo predittore $F = (t^o_{\beta})^2$ e il $p$-value è lo stesso del test su $\beta$
+\end{enumerate}
+\end{column}
+\end{columns}
 ```
 
 
