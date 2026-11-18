@@ -151,6 +151,27 @@ $$(i = 1, \ldots, n)$$
 
 Dove $\beta_0$, $\beta$ e $\varepsilon$ sono, rispettivamente, l'intercetta, il coefficiente angolare e la componente d'errore del modello di regressione lineare
 
+# Stima dei parametri 
+
+### 
+
+\small
+
+$$SQE = \displaystyle \sum_{i=1}^{N} (y_i - y_i^*)^2 \quad y_i^* = \beta_0 + \beta x_i$$
+
+$$\displaystyle \sum_{i=1}^{N} (y_i - (\beta_0 + \beta x_i))^2 = \sum_{i=1}^{N}e_i^2 \quad e_i = y_i - y_i^*$$
+
+Per il principio dei minimi quadrati: 
+
+$$\hat{\beta} = \dfrac{Cov(X,Y)}{Var(X)} = \dfrac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
+
+e:
+
+$$\hat{\beta_0} = \bar{Y} - \hat{\beta} \bar{X}$$
+
+
+## Inferenza sui parametri della retta
+
 ### 
 
 :::{.callout-note}
@@ -298,23 +319,6 @@ annota_lm("summary(LM)", parte = 2)
 ```
 
 
-# Stima dei parametri 
-
-### 
-
-\small
-
-$$SQE = \displaystyle \sum_{i=1}^{N} (y_i - y_i^*)^2 \quad y_i^* = \beta_0 + \beta x_i$$
-
-$$\displaystyle \sum_{i=1}^{N} (y_i - (\beta_0 + \beta x_i))^2 = \sum_{i=1}^{N}e_i^2 \quad e_i = y_i - y_i^*$$
-
-Per il principio dei minimi quadrati: 
-
-$$\hat{\beta} = \dfrac{Cov(X,Y)}{Var(X)} = \dfrac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
-
-e:
-
-$$\hat{\beta_0} = \bar{Y} - \hat{\beta} \bar{X}$$
 
 # Inferenza statistica sui parametri 
 
