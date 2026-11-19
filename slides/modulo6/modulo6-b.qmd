@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 5: Statistica inferenziale - Altri tipi di test"
+title: "Modulo Didattico 6b: Statistica inferenziale - Altri tipi di test"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
