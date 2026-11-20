@@ -1,0 +1,160 @@
+---
+title: "Laboratorio Modulo 7"
+subtitle: "Template"
+author: "Nome Cognome"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+execute:
+  echo: true
+  eval: true
+---
+
+
+# Introduzione
+
+```{r}
+#| include: false
+#| eval: true
+dati = read.csv2("DATIBASE.csv")
+```
+
+Il dataset `DATIBASE.csv` è composto da `r nrow(dati)` osservazioni relative alle seguenti variabili:
+
+* `TEST`: misura quantitativa che esprime il punteggio dell'individuo a un test di personalità
+* `ANNOcat`: variabile di classificazione 0/1 che indica se l'individuo appartiene alla classe di ingresso 2016 (codice 0) oppure 2018 (codice 1)
+* `MC`: misura quantitativa che esprime il livello di compatibilità atteso dell'individuo con una specifica mansione lavorativa
+
+# Esercizi
+
+Negli esercizi che seguono precedere le analisi statistico-inferenziali con opportuni metodi grafici.
+
+##
+
+Importare il dataset e assegnarlo alla variabile `dati`.
+
+```{r}
+
+```
+
+##
+
+Studiare la relazione tra la variabile dipendente `MC` e la variabile indipendente `TEST`, senza considerare la classe di ingresso. Nello specifico:
+
+###
+
+Produrre un'adeguata rappresentazione grafica della relazione tra le due variabili.
+
+```{r}
+
+```
+
+###
+
+Stimare il modello di regressione lineare semplice, scrivere il sistema di ipotesi sul coefficiente angolare e commentare i risultati.
+
+```{r}
+
+```
+
+###
+
+Calcolare gli intervalli di confidenza al 95% per i parametri del modello e confrontarli con i risultati dei test sui coefficienti.
+
+```{r}
+
+```
+
+###
+
+Valutare i residui del modello con almeno due rappresentazioni grafiche.
+
+```{r}
+
+```
+
+##
+
+Studiare la relazione tra `MC` e `TEST` tenendo conto della classe di ingresso (`ANNOcat`). Nello specifico:
+
+###
+
+Produrre un'adeguata rappresentazione grafica della relazione tra le variabili in gioco.
+
+```{r}
+
+```
+
+###
+
+Identificare i diversi modelli di regressione applicabili ai dati e specificarne l'interpretazione.
+
+###
+
+Stimare il modello parallelo e commentare i risultati.
+
+```{r}
+
+```
+
+* Ricostruire le equazioni delle due rette di regressione.
+
+```{r}
+
+```
+
+* Rappresentare graficamente le rette di regressione.
+
+```{r}
+
+```
+
+* Calcolare la correlazione tra la variabile dipendente osservata e quella stimata dal modello. Che relazione c'è con l'$R^2$ del modello?
+
+```{r}
+
+```
+
+###
+
+Ripetere l'analisi del punto precedente con il modello con interazione.
+
+```{r}
+
+```
+
+* Ricostruire le equazioni delle due rette di regressione.
+
+```{r}
+
+```
+
+* Rappresentare graficamente le rette di regressione.
+
+```{r}
+
+```
+
+* Calcolare la correlazione tra la variabile dipendente osservata e quella stimata dal modello.
+
+```{r}
+
+```
+
+###
+
+Utilizzando i risultati del modello con interazione, verificare se il coefficiente angolare associato alla classe 2016 risulti significativamente diverso da 0.5 ($\alpha = .05$).
+
+```{r}
+
+```
+
+###
+
+Calcolare gli intervalli di confidenza al 95% per i parametri del modello con interazione e commentarli.
+
+```{r}
+
+```
+

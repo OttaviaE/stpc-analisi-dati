@@ -33,24 +33,24 @@ Tutte le analisi inferenziali devono essere precedute da opportune rappresentazi
 
 ##
 
-Importare il file `DataAS.csv` e assegnarlo alla variabile `DAS`.
+Importare il file `DataAS.csv` e assegnarlo alla variabile `dati`.
 
 ```{r}
-DAS = read.csv2("DataAS.csv")
-head(DAS)
-str(DAS)
+dati = read.csv2("DataAS.csv")
+head(dati)
+str(dati)
 ```
 
 ##
 
-A partire dal data frame `DAS`, creare due nuove variabili:
+A partire dal data frame `dati`, creare due nuove variabili:
 
 * `a1`: per ogni bambino/a, la somma dei valori sulle variabili `a1b1` e `a1b2` (scenario macchinine)
 * `a2`: per ogni bambino/a, la somma dei valori sulle variabili `a2b1` e `a2b2` (scenario casa delle bambole)
 
 ```{r}
-DAS$a1 = DAS$a1b1 + DAS$a1b2
-DAS$a2 = DAS$a2b1 + DAS$a2b2
+dati$a1 = dati$a1b1 + dati$a1b2
+dati$a2 = dati$a2b1 + dati$a2b2
 ```
 
 ##
@@ -63,7 +63,7 @@ Studiare, con due modelli di regressione separati:
 Per ciascun modello, rappresentare graficamente la relazione tra le variabili, riportare i risultati statisticamente significativi e indicare il tipo di relazione lineare che lega la variabile indipendente alla variabile dipendente.
 
 ```{r}
-plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E",
+plot(dati$E, dati$a1, pch = 19, main = "Relazione a1 - E",
      xlab = "E", ylab = "a1", ylim = c(0, 20))
 ```
 
@@ -73,7 +73,7 @@ cat("Il grafico suggerisce una relazione positiva tra E e a1")
 ```
 
 ```{r}
-ma1 = lm(a1 ~ E, data = DAS)
+ma1 = lm(a1 ~ E, data = dati)
 summary(ma1)
 ```
 
@@ -84,7 +84,7 @@ Il coefficiente angolare è positivo: all'aumentare dell'età aumenta in media i
 ```
 
 ```{r}
-plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E",
+plot(dati$E, dati$a2, pch = 19, main = "Relazione a2 - E",
      xlab = "E", ylab = "a2", ylim = c(0, 20))
 ```
 
@@ -94,7 +94,7 @@ cat("Il grafico suggerisce una relazione positiva tra E e a2")
 ```
 
 ```{r}
-ma2 = lm(a2 ~ E, data = DAS)
+ma2 = lm(a2 ~ E, data = dati)
 summary(ma2)
 ```
 
@@ -148,14 +148,14 @@ Valutare i residui dei due modelli con almeno due rappresentazioni grafiche cias
 ```{r}
 qqnorm(ma1$residuals, main = "Modello a1")
 qqline(ma1$residuals, col = "red")
-plot(DAS$E, ma1$residuals, xlab = "E", ylab = "Residui", main = "Modello a1")
+plot(dati$E, ma1$residuals, xlab = "E", ylab = "Residui", main = "Modello a1")
 abline(h = 0, col = "red")
 ```
 
 ```{r}
 qqnorm(ma2$residuals, main = "Modello a2")
 qqline(ma2$residuals, col = "red")
-plot(DAS$E, ma2$residuals, xlab = "E", ylab = "Residui", main = "Modello a2")
+plot(dati$E, ma2$residuals, xlab = "E", ylab = "Residui", main = "Modello a2")
 abline(h = 0, col = "red")
 ```
 
@@ -166,9 +166,9 @@ Ripetere le analisi dell'esercizio 3 includendo nei modelli anche la variabile d
 ### Variabile dipendente `a1`
 
 ```{r}
-plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E",
+plot(dati$E, dati$a1, pch = 19, main = "Relazione a1 - E",
      xlab = "E", ylab = "a1", ylim = c(0, 20),
-     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+     col = ifelse(dati$S == "f", "darkred", "darkgreen"))
 legend("topleft", pch = 19, col = c("darkred", "darkgreen"),
        legend = c("f", "m"))
 ```
@@ -179,7 +179,7 @@ cat("Dal grafico non sembra che i due gruppi si distinguano")
 ```
 
 ```{r}
-ma1S = lm(a1 ~ E + S, data = DAS)
+ma1S = lm(a1 ~ E + S, data = dati)
 summary(ma1S)
 ```
 
@@ -191,15 +191,15 @@ a parità di età non ci sono differenze tra i due gruppi nel punteggio a1")
 
 ```{r}
 coefa1 = coef(ma1S)
-plot(DAS$E, DAS$a1, pch = 19, main = "Modello parallelo a1",
+plot(dati$E, dati$a1, pch = 19, main = "Modello parallelo a1",
      xlab = "E", ylab = "a1", ylim = c(0, 20),
-     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+     col = ifelse(dati$S == "f", "darkred", "darkgreen"))
 abline(coefa1[1], coefa1[2], col = "darkred", lwd = 2) # gruppo f
 abline(coefa1[1] + coefa1[3], coefa1[2], col = "darkgreen", lwd = 2) # gruppo m
 ```
 
 ```{r}
-ma1Sinter = lm(a1 ~ E * S, data = DAS)
+ma1Sinter = lm(a1 ~ E * S, data = dati)
 summary(ma1Sinter)
 ```
 
@@ -211,9 +211,9 @@ quindi non ci sono evidenze che la relazione tra età e a1 sia diversa nei due g
 
 ```{r}
 coefa1inter = coef(ma1Sinter)
-plot(DAS$E, DAS$a1, pch = 19, main = "Modello con interazione a1",
+plot(dati$E, dati$a1, pch = 19, main = "Modello con interazione a1",
      xlab = "E", ylab = "a1", ylim = c(0, 20),
-     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+     col = ifelse(dati$S == "f", "darkred", "darkgreen"))
 abline(coefa1inter[1], coefa1inter[2], col = "darkred", lwd = 2) # gruppo f
 abline(coefa1inter[1] + coefa1inter[3], coefa1inter[2] + coefa1inter[4],
        col = "darkgreen", lwd = 2) # gruppo m
@@ -228,15 +228,15 @@ la differenza tra i coefficienti angolari non è significativa")
 ### Variabile dipendente `a2`
 
 ```{r}
-plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E",
+plot(dati$E, dati$a2, pch = 19, main = "Relazione a2 - E",
      xlab = "E", ylab = "a2", ylim = c(0, 20),
-     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+     col = ifelse(dati$S == "f", "darkred", "darkgreen"))
 legend("topleft", pch = 19, col = c("darkred", "darkgreen"),
        legend = c("f", "m"))
 ```
 
 ```{r}
-ma2S = lm(a2 ~ E + S, data = DAS)
+ma2S = lm(a2 ~ E + S, data = dati)
 summary(ma2S)
 ```
 
@@ -248,15 +248,15 @@ A parità di età, il gruppo m ha in media un punteggio a2 più basso del gruppo
 
 ```{r}
 coefa2 = coef(ma2S)
-plot(DAS$E, DAS$a2, pch = 19, main = "Modello parallelo a2",
+plot(dati$E, dati$a2, pch = 19, main = "Modello parallelo a2",
      xlab = "E", ylab = "a2", ylim = c(0, 20),
-     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+     col = ifelse(dati$S == "f", "darkred", "darkgreen"))
 abline(coefa2[1], coefa2[2], col = "darkred", lwd = 2) # gruppo f
 abline(coefa2[1] + coefa2[3], coefa2[2], col = "darkgreen", lwd = 2) # gruppo m
 ```
 
 ```{r}
-ma2Sinter = lm(a2 ~ E * S, data = DAS)
+ma2Sinter = lm(a2 ~ E * S, data = dati)
 summary(ma2Sinter)
 ```
 
@@ -270,9 +270,9 @@ rappresenta la differenza tra i gruppi quando E = 0")
 
 ```{r}
 coefa2inter = coef(ma2Sinter)
-plot(DAS$E, DAS$a2, pch = 19, main = "Modello con interazione a2",
+plot(dati$E, dati$a2, pch = 19, main = "Modello con interazione a2",
      xlab = "E", ylab = "a2", ylim = c(0, 20),
-     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+     col = ifelse(dati$S == "f", "darkred", "darkgreen"))
 abline(coefa2inter[1], coefa2inter[2], col = "darkred", lwd = 2) # gruppo f
 abline(coefa2inter[1] + coefa2inter[3], coefa2inter[2] + coefa2inter[4],
        col = "darkgreen", lwd = 2) # gruppo m

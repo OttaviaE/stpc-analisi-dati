@@ -1,0 +1,44 @@
+---
+title: "Domande di ricerca: psicologia del lavoro (regressione)"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+editor_options:
+  chunk_output_type: console
+---
+
+# Il dataset
+
+Il servizio HR di un'azienda vuole capire come stanno i propri dipendenti. Un campione di 80 dipendenti compila alcune scale con punteggi da 0 a 100. Una parte dei dipendenti (30) partecipa inoltre a un corso di formazione e compila la scala di autoefficacia sia prima sia dopo il corso. Per ogni dipendente si registra anche il reparto in cui lavora.
+
+Il file `dipendenti.csv` contiene una riga per ogni dipendente e le seguenti variabili:
+
+| Variabile | Descrizione |
+|:----------|:------------|
+| `modalita` | Modalità di lavoro: `presenza` (35 dipendenti) o `ibrido` (45 dipendenti) |
+| `soddisfazione` | Soddisfazione lavorativa |
+| `stress` | Stress lavorativo percepito |
+| `partecipazione_corso` | Partecipazione al corso di formazione: `sì` o `no` |
+| `autoefficacia_prima` | Autoefficacia professionale prima del corso (solo per chi ha partecipato, `NA` per gli altri) |
+| `autoefficacia_dopo` | Autoefficacia professionale dopo il corso (solo per chi ha partecipato, `NA` per gli altri) |
+| `carico_lavoro` | Carico di lavoro percepito |
+| `reparto` | Reparto: `amministrazione`, `commerciale` o `produzione` |
+
+# Le domande di ricerca
+
+##
+
+La soddisfazione lavorativa permette di prevedere lo stress lavorativo percepito?
+
+##
+
+Il carico di lavoro percepito permette di prevedere lo stress lavorativo percepito? Di quanto cambia in media lo stress per ogni punto in più di carico di lavoro?
+
+##
+
+La relazione tra carico di lavoro percepito e stress lavorativo è la stessa per chi lavora in presenza e per chi lavora in modalità ibrida?
+
+##
+
+Lo stress lavorativo percepito medio è diverso nei tre reparti dell'azienda?
