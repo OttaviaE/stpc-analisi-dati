@@ -1,0 +1,94 @@
+---
+title: "Modulo 7 - Prima serie"
+subtitle: "Template"
+author: "Nome Cognome"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+execute:
+  echo: true
+  eval: true
+---
+
+
+# Introduzione
+
+In questa serie di esercizi si rianalizzano i dati del Laboratorio del Modulo didattico 3 (Abilità spazio-simboliche in età infantile: 3-4 anni), contenuti nel file `DataAS.csv`, con i modelli di regressione visti nel Modulo 7. Fare riferimento al testo del laboratorio del Modulo 3 per la descrizione delle variabili.
+
+# Esercizi
+
+Tutte le analisi inferenziali devono essere precedute da opportune rappresentazioni grafiche.
+
+##
+
+Importare il file `DataAS.csv` e assegnarlo alla variabile `DAS`.
+
+```{r}
+
+```
+
+##
+
+A partire dal data frame `DAS`, creare due nuove variabili:
+
+* `a1`: per ogni bambino/a, la somma dei valori sulle variabili `a1b1` e `a1b2` (scenario macchinine)
+* `a2`: per ogni bambino/a, la somma dei valori sulle variabili `a2b1` e `a2b2` (scenario casa delle bambole)
+
+```{r}
+
+```
+
+##
+
+Studiare, con due modelli di regressione separati:
+
+1. la relazione tra la variabile dipendente `a1` e la variabile indipendente `E`;
+2. la relazione tra la variabile dipendente `a2` e la variabile indipendente `E`.
+
+Per ciascun modello, rappresentare graficamente la relazione tra le variabili, riportare i risultati statisticamente significativi e indicare il tipo di relazione lineare che lega la variabile indipendente alla variabile dipendente.
+
+```{r}
+
+```
+
+##
+
+Calcolare gli intervalli di confidenza al 95% per i parametri dei due modelli. Confrontare le conclusioni basate sugli intervalli di confidenza con quelle basate sul confronto tra $p$-value e $\alpha = .05$.
+
+```{r}
+
+```
+
+##
+
+Valutare i residui dei due modelli con almeno due rappresentazioni grafiche ciascuno.
+
+```{r}
+
+```
+
+##
+
+Ripetere le analisi dell'esercizio 3 includendo nei modelli anche la variabile di classificazione `S`. Partire da un modello parallelo e proseguire con un modello con interazione. Per ogni modello, rappresentare le rette di regressione dei due gruppi.
+
+### Variabile dipendente `a1`
+
+```{r}
+
+```
+
+### Variabile dipendente `a2`
+
+```{r}
+
+```
+
+##
+
+Per il modello parallelo con variabile dipendente `a2`, calcolare gli intervalli di confidenza al 95% per i parametri.
+
+```{r}
+
+```
+

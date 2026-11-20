@@ -1,0 +1,131 @@
+---
+title: "Modulo 7 - Seconda serie"
+subtitle: "Template"
+author: "Nome Cognome"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+execute:
+  echo: true
+  eval: true
+---
+
+
+```{r}
+#| include: false
+#| eval: true
+data = read.csv("regressione-completa.csv")
+```
+
+# Il dataset
+
+Il dataset si chiama `regressione-completa.csv` e contiene i dati di `r nrow(data)` persone. Lo studio indaga l'ansia e alcune variabili che possono essere collegate a essa: la flessibilità cognitiva, la pratica quotidiana di mindfulness e l'attività sportiva praticata.
+
+Il file usa la virgola come separatore e il punto come separatore decimale, quindi va importato con `read.csv()`.
+
+Sono presenti le seguenti variabili:
+
+- `ansia`: punteggio di ansia, più è alto il punteggio maggiore è l'ansia
+- `flessibilita`: punteggio di flessibilità cognitiva, più è alto il punteggio maggiore è la flessibilità
+- `mindfulness`: pratica quotidiana di mindfulness, `no` o `sì`
+- `attivita`: tipo di attività sportiva praticata, `altro`, `pilates` o `yoga`
+
+# Esercizi
+
+Tutte le analisi devono essere precedute dalle opportune rappresentazioni grafiche.
+
+Lo scopo dell'indagine è studiare la relazione tra flessibilità cognitiva e ansia, considerando anche l'effetto di altre variabili categoriali (la pratica di mindfulness e il tipo di attività).
+
+##
+
+Importare il dataset e assegnarlo alla variabile `data`.
+
+```{r}
+
+```
+
+##
+
+###
+
+Studiare la relazione tra ansia (variabile dipendente) e flessibilità cognitiva (variabile indipendente).
+
+```{r}
+
+```
+
+###
+
+Calcolare gli intervalli di confidenza al 90% per i parametri del modello.
+
+```{r}
+
+```
+
+###
+
+Valutare i residui del modello con almeno due rappresentazioni grafiche.
+
+```{r}
+
+```
+
+##
+
+Studiare la relazione tra ansia e flessibilità cognitiva considerando anche la pratica di mindfulness.
+
+###
+
+Stimare il modello parallelo, ricavare le equazioni delle due rette e rappresentarle nel grafico.
+
+```{r}
+
+```
+
+###
+
+Stimare il modello con interazione, ricavare le equazioni delle due rette e rappresentarle nel grafico.
+
+```{r}
+
+```
+
+##
+
+###
+
+Selezionare solo i dati delle persone che praticano yoga e assegnare il nuovo dataset alla variabile `d1`.
+
+```{r}
+
+```
+
+###
+
+Studiare la relazione tra ansia e flessibilità cognitiva su questo sottocampione.
+
+```{r}
+
+```
+
+##
+
+Le analisi seguenti vanno effettuate sull'intero campione.
+
+###
+
+Il livello medio di ansia è diverso a seconda del tipo di attività sportiva praticata? Rappresentare graficamente i dati, stimare il modello di regressione con `attivita` come unico predittore e commentare sia i test sui singoli coefficienti sia il test sul fattore nel suo complesso.
+
+```{r}
+
+```
+
+###
+
+L'ansia media di chi pratica pilates è diversa da quella di chi pratica yoga? Cambiare il gruppo di riferimento per rispondere alla domanda.
+
+```{r}
+
+```
+

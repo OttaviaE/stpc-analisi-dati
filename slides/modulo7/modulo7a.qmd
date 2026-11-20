@@ -1,5 +1,5 @@
 ---
-title: "Modulo Didattico 6: Modelli di regressione"
+title: "Modulo Didattico 7: Inferenza sui modelli di regressione"
 subtitle: "Corso Analisi dei dati con applicazioni informatiche"
 author: Ottavia M. Epifania
 date: ""
@@ -124,288 +124,433 @@ annota_lm = function(chiamata, parte) {
 }
 ```
 
-# Modello di regressione lineare semplice 
+```{r}
+#| include: false
+# dati di esempio usati in tutto il modulo
+X = c(9, 8, 12, 9, 10, 14, 5, 4, 13, 7, 5, 3.4, 15.3, 6.8)
+Y = c(9, 6, 8, 9, 7, 10, 8, 4, 11, 5, 4, 2, 12.6, 8.6)
+LM = lm(Y ~ X)
+b0 = unname(coef(LM)[1])
+b = unname(coef(LM)[2])
+```
+
+# La retta di regressione
+
+## Il modello
 
 ### 
+
+Nel modulo di statistica descrittiva la retta di regressione è stata usata per *descrivere* la relazione lineare tra due variabili osservate su un campione: **quanto** varia $y$ in funzione di ogni cambiamento in $x$
+
+La relazione è *asimmetrica*: si vuole spiegare $Y$ (variabile dipendente, criterio) in funzione di $X$ (variabile indipendente, predittore). Questo non vuol dire che la relazione sia causale
+
+\vspace{2mm}
+
 ::: {.callout-note appearance="default"}
-## Scopo
+## Scopo di questo modulo
 
-Stimare la dipendenza lineare tra una variabile indipendente ($X$) e una variabile dipendente ($Y$)
-
+Capire se la relazione lineare osservata nel campione si può generalizzare alla **popolazione** da cui il campione è stato estratto
 :::
 
-Siano $\mathbf{x} = (x_1, x_2, \dots, x_N)$ e $\mathbf{y} = (y_1, y_2, \dots, y_N)$ i due campioni empirici associati, rispettivamente, alla variabile indipendente $X$ e alla variabile dipendente $Y$
+###
 
+Siano $\mathbf{x} = (x_1, x_2, \dots, x_n)$ e $\mathbf{y} = (y_1, y_2, \dots, y_n)$ i due campioni empirici associati, rispettivamente, alla variabile indipendente $X$ e alla variabile dipendente $Y$
+
+$$y_i = \beta_0 + \beta x_i + \varepsilon_i \qquad \varepsilon_i \sim \mathcal{N}(0, \sigma^2) \qquad (i = 1, \ldots, n)$$
+
+\small
+
+$y_i$: valore di $y$ osservato per l'$i$-esima osservazione
+
+$y_i^* = \hat{\beta}_0 + \hat{\beta} x_i$: valore di $y$ atteso (stimato) per l'$i$-esima osservazione
+
+$\beta_0$: intercetta
+
+$\beta$: coefficiente angolare
+
+$\varepsilon_i$: componente d'errore, cioè la parte di $y_i$ che la retta non spiega
+
+## L'intercetta
+
+### 
 
 :::: {.columns}
 
-::: {.column width=60%}
-$y_i = \beta_0 + \beta x_i + \varepsilon_i \quad$ $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$
+::: {.column width=55%}
+
+```{r}
+#| echo: false
+#| fig-align: center
+plot(X, Y, pch = 19, cex = 2, xlim = c(0, max(X)),
+     ylim = c(0, max(Y)), cex.axis = 1.5, cex.lab = 2)
+abline(LM, lwd = 3, col = "darkorange")
+abline(v = 0, lty = 2, col = "gray50")
+points(0, b0, pch = 15, cex = 3, col = "firebrick")
+text(0, b0, expression(hat(beta)[0]), pos = 4, cex = 2.5,
+     col = "firebrick")
+```
+
 :::
 
-::: {.column width=40%}
-$$(i = 1, \ldots, n)$$
+::: {.column width=45%}
+
+\small
+
+L'intercetta è il **valore atteso di $Y$ quando $X = 0$**:
+
+$$y^* = \beta_0 + \beta \cdot 0 = \beta_0$$
+
+Graficamente, è il punto in cui la retta incrocia l'asse verticale ($x = 0$)
+
+\vspace{2mm}
+
+Nell'esempio: $\hat{\beta}_0 = `r round(b0, 2)`$, quando $x = 0$ ci si aspetta in media $y^* = `r round(b0, 2)`$
+
 :::
 
 ::::
 
-Dove $\beta_0$, $\beta$ e $\varepsilon$ sono, rispettivamente, l'intercetta, il coefficiente angolare e la componente d'errore del modello di regressione lineare
-
-# Stima dei parametri 
-
 ### 
+
+L'intercetta si interpreta solo se $X = 0$ è un valore **sensato** e **vicino ai dati osservati**
+
 
 \small
 
-$$SQE = \displaystyle \sum_{i=1}^{N} (y_i - y_i^*)^2 \quad y_i^* = \beta_0 + \beta x_i$$
+- Ore di studio ($X$) e voto all'esame ($Y$): $\beta_0$ è il voto atteso per chi non ha studiato per niente $\rightarrow$ ha senso
 
-$$\displaystyle \sum_{i=1}^{N} (y_i - (\beta_0 + \beta x_i))^2 = \sum_{i=1}^{N}e_i^2 \quad e_i = y_i - y_i^*$$
+- Età in mesi ($X$) e peso in kg ($Y$) dei bambini: $\beta_0$ è il peso atteso alla nascita $\rightarrow$ ha senso
 
-Per il principio dei minimi quadrati: 
+- Altezza in cm ($X$) e peso in kg ($Y$) degli adulti: $\beta_0$ è il peso atteso di un adulto alto 0 cm $\rightarrow$ **non ha senso**: è solo il valore che serve per "posizionare" la retta
 
-$$\hat{\beta} = \dfrac{Cov(X,Y)}{Var(X)} = \dfrac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
-
-e:
-
-$$\hat{\beta_0} = \bar{Y} - \hat{\beta} \bar{X}$$
+\normalsize
 
 
-## Inferenza sui parametri della retta
+Se $X = 0$ è lontano dai valori osservati, si sta *estrapolando*: si usa la retta dove non ci sono dati
+
+## Il coefficiente angolare
 
 ### 
 
-:::{.callout-note}
-## Sistema di ipotesi sull'intercetta
+:::: {.columns}
 
-$H_0 : \beta_0 = 0$: L'intercetta interseca l'origine $(0,0)$ 
-
-$H_A^1 : \beta_0 \ne 0$: L'intercetta NON interseca l'origine $(0,0)$ 
-:::
-
-::: {.callout-note}
-## Sistema di ipotesi sul coefficiente angolare
-
-$H_0 : \beta = 0$: Modello di indipendenza lineare
-
-$H_A^1 : \beta \ne 0$: Modello di associazione lineare
-:::
-
-## In R 
-
-### 
-
-| **Simbolo R**                                       | **Significato**                                                                                                                                         |
-|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `lm(y ~ x)`                              | Fitta un modello lineare dove si spiega la `y` in funzione della `x`                       |
-| `summary(lm(y ~ x))`                              | Restituisce l'output inferenziale del modello lineare                    |
-
-## Esempi 
-
-###
-
-\small 
+::: {.column width=55%}
 
 ```{r}
-#| results: hide
-#| eval: false
-X <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
-Y <- c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
-LM <- lm(Y~X)
-plot(X,Y, pch = 8)
-abline(LM, lwd = 2, col = "darkorange")
-summary(LM)
-
+#| echo: false
+#| fig-align: center
+x1 = 8
+x2 = 11
+plot(X, Y, pch = 19, cex = 2, col = "gray60",
+     cex.axis = 1.5, cex.lab = 2)
+abline(LM, lwd = 3, col = "darkorange")
+segments(x1, b0 + b * x1, x2, b0 + b * x1, lwd = 3, lty = 2)
+segments(x2, b0 + b * x1, x2, b0 + b * x2, lwd = 3,
+         col = "firebrick")
+text((x1 + x2) / 2, b0 + b * x1, "+1 in x", pos = 1, cex = 1.8)
+text(x2, (b0 + b * x1 + b0 + b * x2) / 2,
+     expression("+" * hat(beta) * " in y*"), pos = 4, cex = 1.8,
+     col = "firebrick")
 ```
 
+:::
+
+::: {.column width=45%}
+
+\small
+
+Il coefficiente angolare è il **cambiamento medio atteso in $Y$ per ogni aumento unitario di $X$**
+
+$$y^*_{(x+1)} - y^*_{(x)} = \beta$$
+
+\vspace{2mm}
+
+Nell'esempio: $\hat{\beta} = `r round(b, 2)`$, per ogni unità in più di $x$ ci si aspetta in media un aumento di `r round(b, 2)` unità in $y$
+
+:::
+
+::::
 
 ### 
 
 ```{r}
 #| echo: false
-X <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
-Y <- c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
-LM <- lm(Y~X)
-plot(X,Y, pch = 8)
-abline(LM, lwd = 2, col = "darkorange")
+#| fig-align: center
+#| out-width: 80%
+par(mfrow = c(1, 3), mar = c(4, 4, 4, 1))
+xx = seq(0, 10, length.out = 100)
+plot(xx, 2 + 0.8 * xx, type = "l", lwd = 3, col = "darkorange",
+     ylim = c(0, 12), xlab = "X", ylab = "Y*",
+     main = expression(beta > 0), cex.main = 3, cex.lab = 2)
+plot(xx, 10 - 0.8 * xx, type = "l", lwd = 3, col = "darkorange",
+     ylim = c(0, 12), xlab = "X", ylab = "Y*",
+     main = expression(beta < 0), cex.main = 3, cex.lab = 2)
+plot(xx, rep(6, 100), type = "l", lwd = 3, col = "darkorange",
+     ylim = c(0, 12), xlab = "X", ylab = "Y*",
+     main = expression(beta == 0), cex.main = 3, cex.lab = 2)
+par(mfrow = c(1, 1))
 ```
+
+\small
+
+Il segno di $\beta$ è lo stesso della correlazione $r$: $\hat{\beta} = r \dfrac{sd(Y)}{sd(X)}$
+
+Se $\beta = 0$ la retta è orizzontale: il valore atteso di $Y$ è lo stesso per qualsiasi valore di $X$
+
+# Stima dei parametri
+
+## Principio dei minimi quadrati
+
+###
+
+\small
+
+$\beta_0$ e $\beta$ sono i parametri della **popolazione** e non sono noti: si stimano dai dati del campione con $\hat{\beta}_0$ e $\hat{\beta}$
+
+Si cercano i valori che rendono minima la **S**omma dei **Q**uadrati degli **E**rrori:
+
+$$SQE = \sum_{i=1}^{n} (y_i - y_i^*)^2 = \sum_{i=1}^{n} \bigl(y_i - (\beta_0 + \beta x_i)\bigr)^2 = \sum_{i=1}^{n}e_i^2 \qquad e_i = y_i - y_i^*$$
+
+Per il principio dei minimi quadrati, lo stimatore del coefficiente angolare è:
+
+$$\hat{\beta} = \dfrac{\cov(X,Y)}{\mathrm{Var}(X)} = \dfrac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
+
+e lo stimatore dell'intercetta è:
+
+$$\hat{\beta}_0 = \bar{y} - \hat{\beta} \, \bar{x}$$
+
+\footnotesize
+
+La retta passa sempre per il punto delle medie $(\bar{x}, \bar{y})$
+
+## I residui
+
+### 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 75%
+plot(X, Y, pch = 19, cex = 2, cex.axis = 1.5, cex.lab = 2)
+abline(LM, lwd = 3, col = "darkorange")
+segments(X, Y, X, fitted(LM), col = "firebrick", lty = 2, lwd = 2)
+points(mean(X), mean(Y), pch = 15, cex = 3, col = "steelblue")
+```
+
+\small
+
+Linee tratteggiate: residui $e_i = y_i - y_i^*$. Quadrato blu: punto delle medie $(\bar{x}, \bar{y})$
+
+## In R
 
 
 ### {.plain}
 
+::::{.columns}
+
+:::{.column width=80%}
+\footnotesize
+
+*Y predetto da X, modello lineare stimato con minimi quadrati*
+
+```{r}
+lm(Y ~ X) 
+```
+
+*Estrazione dei coefficienti con la funzione `coef()`*
+
+```{r}
+coef(lm(Y ~ X)) 
+```
+
+:::
+
+:::{.column width=20%}
+
 \small
 
-```{r}
-summary(LM)
-```
+Retta stimata: 
 
-### {.fragile .plain}
+$y^* = `r round(b0, 2)` + `r round(b, 2)` x$
+:::
+
+::::
+
+\small
+
+:::{.callout-note}
+## La funzione `coef()`
+
+Resituisce i parametri stimati dal modello di regressione in un vettore di lunghezza uguale al numero di parametri. 
+:::
+
+### Dal campione alla popolazione
+
+Con un altro campione estratto dalla stessa popolazione si otterrebbero stime $\hat{\beta}_0$ e $\hat{\beta}$ diverse: sono **variabili casuali** e hanno una loro distribuzione campionaria
+
+\vspace{2mm}
+
+::: {.callout-note appearance="default"}
+## Domande inferenziali
+
+- Nella popolazione, la retta passa per l'origine? ($\beta_0 = 0$?)
+
+- Nella popolazione, $Y$ dipende linearmente da $X$? ($\beta = 0$?)
+
+:::
+
+Per rispondere servono un sistema di ipotesi per ciascun parametro e l'errore standard delle stime
+
+# Inferenza sui parametri della retta
+
+## Sistemi di ipotesi
+
+### 
+
+::: {.callout-note appearance="default"}
+## Sistema di ipotesi sull'intercetta
+
+$H_0 : \beta_0 = 0$ \small la retta passa per l'origine $(0, 0)$, cioè il valore atteso di $Y$ quando $X = 0$ è 0 \normalsize
+
+$H_1 : \beta_0 \ne 0$ \small  la retta **non** passa per l'origine, cioè il valore atteso di $Y$ quando $X = 0$ è diverso da 0
+:::
+
+Se il test è significativo si rifiuta $H_0$: la media attesa di $Y$ quando $X = 0$ è significativamente diversa da 0
+
+
+\footnotesize
+
+:::{.callout-caution}
+
+## Nota
+
+Il test sull'intercetta è interessante solo se $X = 0$ è un valore sensato. Spesso non è il test di interesse: la domanda di ricerca riguarda di solito il coefficiente angolare
+
+:::
+
+### 
+
+::: {.callout-note appearance="default"}
+## Sistema di ipotesi sul coefficiente angolare
+
+$H_0 : \beta = 0$ $\quad$ Modello di indipendenza lineare \small la retta è orizzontale, il valore atteso di $Y$ non cambia al variare di $X$. Conoscere $X$ non aiuta a prevedere $Y$ \normalsize
+
+$H_1 : \beta \ne 0$ $\quad$ Modello di associazione lineare \small il valore atteso di $Y$ cambia al variare di $X$
+:::
+
+
+
+Se il test è significativo si rifiuta $H_0$: nella popolazione $Y$ dipende linearmente da $X$. Il **segno** di $\hat{\beta}$ indica la direzione della relazione (positiva o negativa), il **valore** di $\hat{\beta}$ indica di quanto cambia in media $Y$ per ogni aumento unitario di $X$
+
+### 
 
 ```{r}
 #| echo: false
-#| results: asis
-annota_lm("summary(LM)", parte = 1)
+#| fig-align: center
+#| out-width: 90%
+set.seed(42)
+par(mfrow = c(1, 2), mar = c(4, 4, 4, 1))
+xs = runif(40, 0, 10)
+y0 = 6 + rnorm(40, 0, 1.5)
+y1 = 2 + 0.8 * xs + rnorm(40, 0, 1.5)
+plot(xs, y0, pch = 19, xlab = "X", ylab = "Y", ylim = c(0, 13),
+     main = expression(H[0] * ": " * beta == 0), cex.main = 2.5,
+     cex.lab = 1.8, cex = 1.5)
+abline(h = 6, lwd = 3, col = "darkorange")
+plot(xs, y1, pch = 19, xlab = "X", ylab = "Y", ylim = c(0, 13),
+     main = expression(H[1] * ": " * beta != 0), cex.main = 2.5,
+     cex.lab = 1.8, cex = 1.5)
+abline(2, 0.8, lwd = 3, col = "darkorange")
+par(mfrow = c(1, 1))
 ```
 
-```{=latex}
-\begin{tikzpicture}[remember picture, overlay,
-  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
-  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
-              inner sep=0pt, minimum size=9pt}]
-  {\node[box, fit=(res0)(res1)]      (b1) {}; \node[num] at (b1.north east) {1};}
-  {\node[box, fit=(est0)(est1)(est2)] (b2) {}; \node[num] at (b2.north east) {2};}
-  {\node[box, fit=(se0)(se1)(se2)]    (b3) {}; \node[num] at (b3.north east) {3};}
-  {\node[box, fit=(t0)(t1)(t2)]       (b4) {}; \node[num] at (b4.north east) {4};}
-  {\node[box, fit=(p0)(p1)(p2)]       (b5) {}; \node[num] at (b5.north east) {5};}
-\end{tikzpicture}
-\vspace{-3mm}
-\begin{columns}[T]
-\begin{column}{.48\textwidth}
-\footnotesize
-\begin{enumerate}
-  \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
-  \item Stime dei parametri: $\hat{\beta}_0$ (intercetta) e $\hat{\beta}$ (coefficiente angolare)
-  \item Errori standard $\widehat{SE}(\beta_0)$ e $\widehat{SE}(\beta)$
-\end{enumerate}
-\end{column}
-\begin{column}{.48\textwidth}
-\footnotesize
-\begin{enumerate}
-  \setcounter{enumi}{3}
-  \item $t$ osservati: $t^o = \hat{\beta} / \widehat{SE}(\beta)$, con $H_0$: parametro $= 0$
-  \item $p$-value bidirezionale, $t$ di Student con $n - 2$ gradi di libertà
-\end{enumerate}
-\end{column}
-\end{columns}
-```
+\small
 
-### {.fragile .plain}
-
-```{r}
-#| echo: false
-#| results: asis
-annota_lm("summary(LM)", parte = 2)
-```
-
-```{=latex}
-\begin{tikzpicture}[remember picture, overlay,
-  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
-  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
-              inner sep=0pt, minimum size=9pt}]
-  {\node[box, fit=(rse)] (b1) {}; \node[num, anchor=west] at ([xshift=1pt]b1.east) {1};}
-  {\node[box, fit=(gdl)] (b2) {}; \node[num, anchor=west] at ([xshift=1pt]b2.east) {2};}
-  {\node[box, fit=(r2)] (b3) {}; \node[num, anchor=west] at ([xshift=1pt]b3.east) {3};}
-  {\node[box, fit=(r2a)] (b4) {}; \node[num, anchor=west] at ([xshift=1pt]b4.east) {4};}
-  {\node[box, fit=(f)] (b5) {}; \node[num, anchor=west] at ([xshift=1pt]b5.east) {5};}
-\end{tikzpicture}
-\vspace{-3mm}
-\begin{columns}[T]
-\begin{column}{.48\textwidth}
-\footnotesize
-\begin{enumerate}
-  \item Errore standard dei residui: $\hat{\sigma} = \sqrt{SQE / (n - 2)}$
-  \item Gradi di libertà: $n - 2$
-  \item $R^2$ del modello
-\end{enumerate}
-\end{column}
-\begin{column}{.48\textwidth}
-\footnotesize
-\begin{enumerate}
-  \setcounter{enumi}{3}
-  \item $R^2$ aggiustato
-  \item Test $F$ sul modello: con un solo predittore $F = (t^o_{\beta})^2$ e il $p$-value è lo stesso del test su $\beta$
-\end{enumerate}
-\end{column}
-\end{columns}
-```
+Sotto $H_0$ la retta è orizzontale e, per qualsiasi valore di $X$, il valore atteso di $Y$ è sempre lo stesso ($\beta_0 = \mu_Y$)
 
 
 
-# Inferenza statistica sui parametri 
+## Gli step dell'inferenza
+
+### In sintesi
+
+\small
+
+1. Si stima la varianza dell'errore $\varepsilon_i$ a partire dai residui: $\hat{\sigma}^2 = \dfrac{SQE}{n - k}$
+
+2. Si stimano le varianze delle stime dei parametri: $\hat{\sigma}^2_{\beta_0}$ e $\hat{\sigma}^2_{\beta}$
+
+3. Si calcolano gli errori standard: $\widehat{SE}(\beta_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}$ e $\widehat{SE}(\beta) = \sqrt{\hat{\sigma}^2_{\beta}}$
+
+4. Si calcolano i $t$ osservati: $t^o_{\beta_0} = \dfrac{\hat{\beta}_0}{\widehat{SE}(\beta_0)}$ e $t^o_{\beta} = \dfrac{\hat{\beta}}{\widehat{SE}(\beta)}$
+
+5. Si confrontano i $t$ osservati con la distribuzione $t$ di Student con $n - k$ gradi di libertà e si calcolano i $p$-value
+
+\vspace{2mm}
+
+$k$ è il numero di parametri della retta: nella regressione lineare semplice $k = 2$ ($\beta_0$ e $\beta$)
+
 
 ## Step 1
 
 ### 
 
-Si stima la varianza della componente di errore $\varepsilon_i$ usando la varianza campionaria corretta per i residui $e_i^2$ del modello di regressione
+Si stima la varianza della componente di errore $\varepsilon_i$ usando la varianza campionaria corretta per i residui $e_i^2$ del modello di regressione, dove $k$ è il numero di parametri della retta ($k = 2$)
 
 $$
 \begin{aligned}
 \hat{\sigma}^2 
-&= \frac{\sum_{i=1}^{n} (y_i - y_i^{*})^2}{n - 2} \\
-&= \frac{\sum_{i=1}^{n} e_i^2}{n - 2} \\
-&= \frac{SQE}{n - 2}
+&= \frac{\sum_{i=1}^{n} (y_i - y_i^{*})^2}{n - k} \\
+&= \frac{\sum_{i=1}^{n} e_i^2}{n - k} \\
+&= \frac{SQE}{n - k}
 \end{aligned}
 $$
 
-## Step 2
+## Step 2, 3 e 4
 
 ### 
 
-Si stima la varianza del parametro dell’intercetta $\beta_0$ come
-
-$$
-\begin{aligned}
-\hat{\sigma}^2_{\beta_0} 
-&= \hat{\sigma}^2 \left( \frac{1}{n} + 
-\frac{\bar{x}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2} \right)
-\end{aligned}
-$$
-
-Si stima la varianza del parametro del coefficiente angolare $\beta$ come
-
-$$
-\begin{aligned}
-\hat{\sigma}^2_{\beta} 
-&= \frac{\hat{\sigma}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
-\end{aligned}
-$$
-
-## Step 3 & 4 
-
-### 
+\small
 
 :::: {.columns}
 
 :::{.column width=50%}
-\small
+**Intercetta** $\beta_0$
 
-Stima della varianza del parametro dell’intercetta $\beta_0$ 
+\vspace{1mm}
 
+Step 2: varianza della stima
 
-$$
-\begin{aligned}
-\hat{\sigma}^2_{\beta_0} 
-&= \hat{\sigma}^2 \left( \frac{1}{n} 
-+ \frac{\bar{x}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2} \right)
-\end{aligned}
-$$
+$$\hat{\sigma}^2_{\beta_0} = \hat{\sigma}^2 \left( \frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2} \right)$$
+
+Step 3: errore standard
+
+$$\widehat{SE}(\beta_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}$$
+
+Step 4: $t$ osservato
+
+$$t^{o}_{\beta_0} = \frac{\hat{\beta}_0}{\widehat{SE}(\beta_0)}$$
 :::
 
 :::{.column width=50%}
-Stima della varianza del parametro del coefficiente angolare $\beta$:
+**Coefficiente angolare** $\beta$
 
+\vspace{1mm}
 
+Step 2: varianza della stima
 
-$$
-\begin{aligned}
-\hat{\sigma}^2_{\beta} 
-&= \frac{\hat{\sigma}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
-\end{aligned}
-$$
+$$\hat{\sigma}^2_{\beta} = \frac{\hat{\sigma}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}$$
+
+Step 3: errore standard
+
+$$\widehat{SE}(\beta) = \sqrt{\hat{\sigma}^2_{\beta}}$$
+
+Step 4: $t$ osservato
+
+$$t^{o}_{\beta} = \frac{\hat{\beta}}{\widehat{SE}(\beta)}$$
 :::
 
 ::::
-
-
-**Step 4**
-
-Le stime degli errori standard dei parametri sono:
-
-$$
-\operatorname{SE}(\hat{\beta}_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}
-\qquad\qquad
-\operatorname{SE}(\hat{\beta}) = \sqrt{\hat{\sigma}^2_{\beta}}
-$$
 
 ## Step 5 
 
@@ -429,7 +574,7 @@ $H_0$: $\beta = 0$
 
 ::::
 
-Sotto le rispettive ipotesi nulle, i $t$ osservati seguono una distribuzione $f_T$ di Student con $\theta = n - 2$ gradi di libertà.
+Sotto le rispettive ipotesi nulle, i $t$ osservati seguono una distribuzione $f_T$ di Student con $\theta = n - k$ gradi di libertà.
 
 Gli associati $p$-value saranno dunque:
 
@@ -438,13 +583,13 @@ Gli associati $p$-value saranno dunque:
 :::{.column width=50%}
 $\beta_0$:  
 
-$$ p\text{-value} = 2 \int_{|t^{o}_{\beta_0}|}^{\infty} f_T(t \mid n-2)\, dt $$
+$$ p\text{-value} = 2 \int_{|t^{o}_{\beta_0}|}^{\infty} f_T(t \mid n-k)\, dt $$
 :::
 
 :::{.column width=50%}
  $\beta$:  
  
-$$ p\text{-value} = 2 \int_{|t^{o}_{\beta}|}^{\infty} f_T(t \mid n-2)\, dt $$
+$$ p\text{-value} = 2 \int_{|t^{o}_{\beta}|}^{\infty} f_T(t \mid n-k)\, dt $$
 :::
 
 ::::
@@ -507,15 +652,171 @@ dove
 
 $$
 \delta_{\beta_0}
-= \widehat{SE}(\beta_0) \times q_T(0.975 \mid n-2),
+= \widehat{SE}(\beta_0) \times q_T(0.975 \mid n-k),
 \qquad
 \delta_{\beta}
-= \widehat{SE}(\beta) \times q_T(0.975 \mid n-2)
+= \widehat{SE}(\beta) \times q_T(0.975 \mid n-k)
 $$
 
-dove $q_T(0.975 \mid n-2)$ è il quantile 0.975 della distribuzione $t$ di Student con $n-2$ gradi di libertà.
+dove $q_T(0.975 \mid n-k)$ è il quantile 0.975 della distribuzione $t$ di Student con $n-k$ gradi di libertà.
 
-## In R 
+# Il modello di regressione in R
+
+## Funzioni
+
+### 
+
+| **Simbolo R**                                       | **Significato**                                                                                                                                         |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lm(y ~ x)`                              | Fitta un modello lineare dove si spiega la `y` in funzione della `x`                       |
+| `summary(lm(y ~ x))`                              | Restituisce l'output inferenziale del modello lineare                    |
+
+## Esempio
+
+###
+
+\small 
+
+```{r}
+#| results: hide
+#| eval: false
+X = c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+Y = c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
+LM = lm(Y~X)
+plot(X,Y, pch = 8)
+abline(LM, lwd = 2, col = "darkorange")
+summary(LM)
+
+```
+
+
+### 
+
+```{r}
+#| echo: false
+X = c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
+Y = c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
+LM = lm(Y~X)
+plot(X,Y, pch = 8)
+abline(LM, lwd = 2, col = "darkorange")
+```
+
+
+### {.plain}
+
+\small
+
+```{r}
+summary(LM)
+```
+
+### {.fragile .plain}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_lm("summary(LM)", parte = 1)
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(res0)(res1)]      (b1) {}; \node[num] at (b1.north east) {1};}
+  {\node[box, fit=(est0)(est1)(est2)] (b2) {}; \node[num] at (b2.north east) {2};}
+  {\node[box, fit=(se0)(se1)(se2)]    (b3) {}; \node[num] at (b3.north east) {3};}
+  {\node[box, fit=(t0)(t1)(t2)]       (b4) {}; \node[num] at (b4.north east) {4};}
+  {\node[box, fit=(p0)(p1)(p2)]       (b5) {}; \node[num] at (b5.north east) {5};}
+\end{tikzpicture}
+\vspace{-3mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
+  \item Stime dei parametri: $\hat{\beta}_0$ (intercetta) e $\hat{\beta}$ (coefficiente angolare)
+  \item Errori standard $\widehat{SE}(\beta_0)$ e $\widehat{SE}(\beta)$
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $t$ osservati: $t^o = \hat{\beta} / \widehat{SE}(\beta)$, con $H_0$: parametro $= 0$
+  \item $p$-value bidirezionale, $t$ di Student con $n - k$ gradi di libertà
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### {.fragile .plain}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_lm("summary(LM)", parte = 2)
+```
+
+```{=latex}
+\begin{tikzpicture}[remember picture, overlay,
+  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},
+  num/.style={circle, fill=unipd, text=white, font=\tiny\bfseries,
+              inner sep=0pt, minimum size=9pt}]
+  {\node[box, fit=(rse)] (b1) {}; \node[num, anchor=west] at ([xshift=1pt]b1.east) {1};}
+  {\node[box, fit=(gdl)] (b2) {}; \node[num, anchor=west] at ([xshift=1pt]b2.east) {2};}
+  {\node[box, fit=(r2)] (b3) {}; \node[num, anchor=west] at ([xshift=1pt]b3.east) {3};}
+  {\node[box, fit=(r2a)] (b4) {}; \node[num, anchor=west] at ([xshift=1pt]b4.east) {4};}
+  {\node[box, fit=(f)] (b5) {}; \node[num, anchor=west] at ([xshift=1pt]b5.east) {5};}
+\end{tikzpicture}
+\vspace{-3mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Errore standard dei residui: $\hat{\sigma} = \sqrt{SQE / (n - k)}$
+  \item Gradi di libertà: $n - k$
+  \item $R^2$ del modello
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $R^2$ aggiustato
+  \item Test $F$ sul modello: con un solo predittore $F = (t^o_{\beta})^2$ e il $p$-value è lo stesso del test su $\beta$
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### Lettura dei risultati
+
+```{r}
+#| include: false
+cf = summary(LM)$coefficients
+p_fmt = function(p) ifelse(p < .001, "< .001", paste("=", round(p, 3)))
+fs = summary(LM)$fstatistic
+pF = pf(fs[1], fs[2], fs[3], lower.tail = FALSE)
+```
+
+\small
+
+**Intercetta**: $\hat{\beta}_0 = `r round(cf[1, 1], 2)`$, $t^o_{\beta_0} = `r round(cf[1, 3], 2)`$, $p$ `r p_fmt(cf[1, 4])`
+
+`r ifelse(cf[1, 4] < .05, "Si rifiuta", "Non si rifiuta")` $H_0: \beta_0 = 0$ (con $\alpha = .05$): `r ifelse(cf[1, 4] < .05, "la retta non passa per l'origine, il valore atteso di $Y$ quando $X = 0$ è significativamente diverso da 0", "non ci sono evidenze che la retta non passi per l'origine, il valore atteso di $Y$ quando $X = 0$ non è significativamente diverso da 0")`
+
+**Coefficiente angolare**: $\hat{\beta} = `r round(cf[2, 1], 2)`$, $t^o_{\beta} = `r round(cf[2, 3], 2)`$, $p$ `r p_fmt(cf[2, 4])`
+
+`r ifelse(cf[2, 4] < .05, "Si rifiuta", "Non si rifiuta")` $H_0: \beta = 0$ (con $\alpha = .05$): `r ifelse(cf[2, 4] < .05, paste0("$Y$ dipende linearmente da $X$. Per ogni aumento unitario di $X$, $Y$ ", ifelse(cf[2, 1] > 0, "aumenta", "diminuisce"), " in media di ", abs(round(cf[2, 1], 2)), " unità"), "non ci sono evidenze di una relazione lineare tra $X$ e $Y$")`
+
+$R^2 = `r round(summary(LM)$r.squared, 2)`$: il modello spiega il `r round(summary(LM)$r.squared * 100)`% della varianza di $Y$
+
+**Statistica $F$**: $F(`r fs[2]`, `r fs[3]`) = `r round(fs[1], 2)`$, $p$ `r p_fmt(pF)`
+
+`r ifelse(pF < .05, "Il modello nel suo complesso spiega una quota significativa della varianza di $Y$", "Il modello nel suo complesso non spiega una quota significativa della varianza di $Y$")` ($H_0$: tutti i coefficienti angolari sono uguali a 0). Con un solo predittore $F = (t^o_{\beta})^2$ e il $p$-value coincide con quello del test su $\beta$
+
+## Intervalli di confidenza in R
 
 ### 
 

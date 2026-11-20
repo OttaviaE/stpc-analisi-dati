@@ -1,0 +1,287 @@
+---
+title: "Modulo 7 - Seconda serie"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+    output-file: "Esercizi-Rmod7_esercizi-seconda-serie.html"
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+# myvar/echovar/evalvar = F: testo (output-file "Esercizi-Rmod7_esercizi-seconda-serie.html")
+# myvar/echovar/evalvar = T: soluzioni (output-file "Esercizi-Rmod7_soluzioni-seconda-serie.html", subtitle "Soluzioni")
+myvar = F
+echovar = F
+evalvar = F
+knitr::opts_chunk$set(include = myvar,
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+```{r}
+#| include: false
+#| eval: true
+data = read.csv("regressione-completa.csv")
+```
+
+# Il dataset
+
+Il dataset si chiama `regressione-completa.csv` e contiene i dati di `r nrow(data)` persone. Lo studio indaga l'ansia e alcune variabili che possono essere collegate a essa: la flessibilità cognitiva, la pratica quotidiana di mindfulness e l'attività sportiva praticata.
+
+Il file usa la virgola come separatore e il punto come separatore decimale, quindi va importato con `read.csv()`.
+
+Sono presenti le seguenti variabili:
+
+- `ansia`: punteggio di ansia, più è alto il punteggio maggiore è l'ansia
+- `flessibilita`: punteggio di flessibilità cognitiva, più è alto il punteggio maggiore è la flessibilità
+- `mindfulness`: pratica quotidiana di mindfulness, `no` o `sì`
+- `attivita`: tipo di attività sportiva praticata, `altro`, `pilates` o `yoga`
+
+# Esercizi
+
+Tutte le analisi devono essere precedute dalle opportune rappresentazioni grafiche.
+
+Lo scopo dell'indagine è studiare la relazione tra flessibilità cognitiva e ansia, considerando anche l'effetto di altre variabili categoriali (la pratica di mindfulness e il tipo di attività).
+
+##
+
+Importare il dataset e assegnarlo alla variabile `data`.
+
+```{r}
+data = read.csv("regressione-completa.csv")
+head(data)
+str(data)
+```
+
+##
+
+###
+
+Studiare la relazione tra ansia (variabile dipendente) e flessibilità cognitiva (variabile indipendente).
+
+```{r}
+plot(data$ansia ~ data$flessibilita, pch = 19,
+     xlab = "Flessibilità", ylab = "Ansia")
+```
+
+```{r}
+#| echo: false
+cat("Dal grafico si intuisce una relazione negativa")
+```
+
+```{r}
+m = lm(ansia ~ flessibilita, data = data)
+summary(m)
+```
+
+```{r}
+#| echo: false
+cat("Entrambi i parametri del modello sono significativi. Il coefficiente
+angolare negativo conferma la relazione negativa tra le variabili: all'aumentare
+della flessibilità l'ansia diminuisce in media. Il modello spiega circa
+il 20% della variabilità dell'ansia")
+```
+
+```{r}
+plot(data$ansia ~ data$flessibilita, pch = 19,
+     xlab = "Flessibilità", ylab = "Ansia")
+abline(m, col = "darkred", lwd = 2)
+```
+
+###
+
+Calcolare gli intervalli di confidenza al 90% per i parametri del modello.
+
+```{r}
+modelcoef = data.frame(summary(m)$coefficients)
+qquantile90 = qt(.95, m$df.residual)
+delta = qquantile90 * modelcoef$Std..Error
+data.frame(limInf = modelcoef$Estimate - delta,
+           limSup = modelcoef$Estimate + delta,
+           row.names = rownames(modelcoef))
+# confronto con la funzione confint()
+confint(m, level = .90)
+```
+
+###
+
+Valutare i residui del modello con almeno due rappresentazioni grafiche.
+
+```{r}
+hist(m$residuals, main = "Residui", xlab = "Residui")
+plot(m$fitted.values, m$residuals,
+     xlab = "Valori stimati", ylab = "Residui")
+abline(h = 0, col = "red")
+```
+
+```{r}
+#| echo: false
+cat("I residui sono centrati sullo 0 e distribuiti in modo abbastanza simmetrico. 
+Nel grafico residui-valori stimati non c'è un andamento lineare, ma la dispersione 
+è ampia: nel modello mancano variabili importanti (es. la pratica di mindfulness), 
+che vengono inserite nell'esercizio successivo")
+```
+
+##
+
+Studiare la relazione tra ansia e flessibilità cognitiva considerando anche la pratica di mindfulness.
+
+###
+
+Stimare il modello parallelo, ricavare le equazioni delle due rette e rappresentarle nel grafico.
+
+```{r}
+plot(data$ansia ~ data$flessibilita,
+     pch = ifelse(data$mindfulness == "no", 5, 14),
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"),
+     xlab = "Flessibilità", ylab = "Ansia")
+legend("topright", pch = c(5, 14), col = c("salmon", "orchid"),
+       legend = c("mindfulness: no", "mindfulness: sì"))
+```
+
+```{r}
+mparall = lm(ansia ~ flessibilita + mindfulness, data = data)
+summary(mparall)
+```
+
+```{r}
+#| echo: false
+cat("Il modello è significativo, insieme a tutti i parametri stimati.
+A parità di flessibilità, chi pratica mindfulness ha in media un livello di ansia più basso.
+Il modello spiega più del 60% della variabilità dell'ansia")
+```
+
+```{r}
+parallCoef = coef(mparall)
+# mindfulness = no: ansia* = b0 + b1 * flessibilita
+c(intercetta = parallCoef[1], pendenza = parallCoef[2])
+# mindfulness = sì: ansia* = (b0 + b2) + b1 * flessibilita
+c(intercetta = parallCoef[1] + parallCoef[3], pendenza = parallCoef[2])
+
+plot(data$ansia ~ data$flessibilita,
+     pch = ifelse(data$mindfulness == "no", 5, 14),
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"),
+     xlab = "Flessibilità", ylab = "Ansia")
+abline(parallCoef[1], parallCoef[2], col = "salmon", lwd = 2)
+abline(parallCoef[1] + parallCoef[3], parallCoef[2], col = "orchid", lwd = 2)
+```
+
+###
+
+Stimare il modello con interazione, ricavare le equazioni delle due rette e rappresentarle nel grafico.
+
+```{r}
+minter = lm(ansia ~ flessibilita * mindfulness, data = data)
+summary(minter)
+```
+
+```{r}
+#| echo: false
+cat("Il modello è significativo. Sono significativi tutti i parametri tranne
+l'effetto principale della mindfulness, che rappresenta la differenza tra i gruppi
+quando la flessibilità è 0. L'interazione è significativa e negativa: tra chi pratica
+mindfulness la relazione negativa tra flessibilità e ansia è più forte.
+Il modello spiega circa il 67% della variabilità dell'ansia")
+```
+
+```{r}
+interCoef = coef(minter)
+# mindfulness = no: ansia* = b0 + b1 * flessibilita
+c(intercetta = interCoef[1], pendenza = interCoef[2])
+# mindfulness = sì: ansia* = (b0 + b2) + (b1 + b3) * flessibilita
+c(intercetta = interCoef[1] + interCoef[3],
+  pendenza = interCoef[2] + interCoef[4])
+
+plot(data$ansia ~ data$flessibilita,
+     pch = ifelse(data$mindfulness == "no", 5, 14),
+     col = ifelse(data$mindfulness == "no", "salmon", "orchid"),
+     xlab = "Flessibilità", ylab = "Ansia")
+abline(interCoef[1], interCoef[2], col = "salmon", lwd = 2)
+abline(interCoef[1] + interCoef[3], interCoef[2] + interCoef[4],
+       col = "orchid", lwd = 2)
+```
+
+##
+
+###
+
+Selezionare solo i dati delle persone che praticano yoga e assegnare il nuovo dataset alla variabile `d1`.
+
+```{r}
+d1 = data[data$attivita == "yoga", ]
+nrow(d1)
+```
+
+###
+
+Studiare la relazione tra ansia e flessibilità cognitiva su questo sottocampione.
+
+```{r}
+plot(ansia ~ flessibilita, data = d1, pch = 19,
+     xlab = "Flessibilità", ylab = "Ansia")
+```
+
+```{r}
+myoga = lm(ansia ~ flessibilita, data = d1)
+summary(myoga)
+```
+
+```{r}
+#| echo: false
+cat("Anche tra chi pratica yoga la relazione tra flessibilità e ansia è negativa
+e significativa")
+```
+
+##
+
+Le analisi seguenti vanno effettuate sull'intero campione.
+
+###
+
+Il livello medio di ansia è diverso a seconda del tipo di attività sportiva praticata? Rappresentare graficamente i dati, stimare il modello di regressione con `attivita` come unico predittore e commentare sia i test sui singoli coefficienti sia il test sul fattore nel suo complesso.
+
+```{r}
+boxplot(ansia ~ attivita, data = data,
+        xlab = "Attività", ylab = "Ansia")
+tapply(data$ansia, data$attivita, mean)
+```
+
+```{r}
+matt = lm(ansia ~ attivita, data = data)
+summary(matt)
+anova(matt)
+```
+
+```{r}
+#| echo: false
+cat("Il gruppo di riferimento è 'altro' (primo livello in ordine alfabetico).
+L'intercetta è la media dell'ansia nel gruppo 'altro'.
+I coefficienti di pilates e yoga sono le differenze tra le medie di questi gruppi
+e la media del gruppo 'altro': entrambi sono negativi e significativi.
+Il test F (anche nella tabella dell'ANOVA) è significativo:
+almeno una media è diversa dalle altre.
+Il modello spiega però solo il 7% circa della variabilità dell'ansia")
+```
+
+###
+
+L'ansia media di chi pratica pilates è diversa da quella di chi pratica yoga? Cambiare il gruppo di riferimento per rispondere alla domanda.
+
+```{r}
+data$attivitaPilates = factor(data$attivita,
+                              levels = c("pilates", "altro", "yoga"))
+mattPilates = lm(ansia ~ attivitaPilates, data = data)
+summary(mattPilates)
+```
+
+```{r}
+#| echo: false
+cat("Ora il gruppo di riferimento è 'pilates': il coefficiente di yoga è la differenza
+tra la media di yoga e quella di pilates. Il test t su questo coefficiente risponde
+alla domanda. Il test F sul modello non cambia, perché il modello è lo stesso")
+```

@@ -1,0 +1,350 @@
+---
+title: "Laboratorio Modulo 7"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+    output-file: "LaboratorioRmod7_esercizi.html"
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+# thevalue = F: testo (output-file "LaboratorioRmod7_esercizi.html")
+# thevalue = T: soluzioni (output-file "LaboratorioRmod7_soluzioni.html", subtitle "Soluzioni")
+thevalue = F
+myvar = thevalue
+echovar = thevalue
+evalvar = thevalue
+knitr::opts_chunk$set(include = myvar,
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+
+# Introduzione
+
+```{r}
+#| include: false
+#| eval: true
+dati = read.csv2("DATIBASE.csv")
+```
+
+Il dataset `DATIBASE.csv` è composto da `r nrow(dati)` osservazioni relative alle seguenti variabili:
+
+* `TEST`: misura quantitativa che esprime il punteggio dell'individuo a un test di personalità
+* `ANNOcat`: variabile di classificazione 0/1 che indica se l'individuo appartiene alla classe di ingresso 2016 (codice 0) oppure 2018 (codice 1)
+* `MC`: misura quantitativa che esprime il livello di compatibilità atteso dell'individuo con una specifica mansione lavorativa
+
+
+# Esercizi
+
+Negli esercizi che seguono precedere le analisi statistico-inferenziali con opportuni metodi grafici.
+
+##
+
+Importare il dataset e assegnarlo alla variabile `dati`.
+
+```{r}
+dati = read.csv2("DATIBASE.csv")
+head(dati)
+str(dati)
+```
+
+##
+
+Studiare la relazione tra la variabile dipendente `MC` e la variabile indipendente `TEST`, senza considerare la classe di ingresso. Nello specifico:
+
+###
+
+Produrre un'adeguata rappresentazione grafica della relazione tra le due variabili.
+
+```{r}
+plot(dati$MC ~ dati$TEST, pch = 19,
+     xlab = "TEST", ylab = "MC")
+```
+
+```{r}
+#| echo: false
+cat("Il grafico suggerisce una relazione positiva tra TEST e MC,
+con una grande dispersione dei punti attorno all'andamento lineare")
+```
+
+###
+
+Stimare il modello di regressione lineare semplice, scrivere il sistema di ipotesi sul coefficiente angolare e commentare i risultati.
+
+```{r}
+#| echo: false
+cat("H0: beta1 = 0 (TEST non permette di prevedere MC)
+H1: beta1 != 0 (TEST permette di prevedere MC)")
+```
+
+```{r}
+m0 = lm(MC ~ TEST, data = dati)
+summary(m0)
+```
+
+```{r}
+#| echo: false
+cat("Entrambi i parametri sono statisticamente significativi (alpha = .05).
+Il coefficiente angolare è positivo: all'aumentare di TEST aumenta in media MC.
+Il modello spiega però solo l'11% circa della variabilità di MC (R^2)")
+```
+
+```{r}
+plot(dati$MC ~ dati$TEST, pch = 19,
+     xlab = "TEST", ylab = "MC")
+abline(m0, col = "darkred", lwd = 2)
+```
+
+###
+
+Calcolare gli intervalli di confidenza al 95% per i parametri del modello e confrontarli con i risultati dei test sui coefficienti.
+
+```{r}
+coefs = data.frame(summary(m0)$coefficients)
+qt95 = qt(.975, m0$df.residual)
+deltaB0 = coefs$Std..Error[1] * qt95
+deltaB1 = coefs$Std..Error[2] * qt95
+CIB0 = c(coefs$Estimate[1] - deltaB0, coefs$Estimate[1] + deltaB0)
+CIB1 = c(coefs$Estimate[2] - deltaB1, coefs$Estimate[2] + deltaB1)
+CIB0
+CIB1
+# confronto con la funzione confint()
+confint(m0)
+```
+
+```{r}
+#| echo: false
+cat("Nessuno dei due intervalli contiene lo 0: coerentemente con i test,
+entrambi i parametri sono significativamente diversi da 0")
+```
+
+###
+
+Valutare i residui del modello con almeno due rappresentazioni grafiche.
+
+```{r}
+hist(m0$residuals, main = "Residui", xlab = "Residui")
+qqnorm(m0$residuals)
+qqline(m0$residuals, col = "red")
+plot(m0$fitted.values, m0$residuals,
+     xlab = "Valori stimati", ylab = "Residui")
+abline(h = 0, col = "red")
+```
+
+```{r}
+#| echo: false
+cat("Nel grafico residui vs valori stimati si vedono due 'nuvole' di punti:
+i residui sono sistematicamente positivi per un gruppo di osservazioni e negativi per l'altro.
+È un segnale che manca nel modello una variabile importante (la classe di ingresso)")
+```
+
+```{r}
+plot(m0$fitted.values, m0$residuals,
+     xlab = "Valori stimati", ylab = "Residui",
+     pch = 19, col = ifelse(dati$ANNOcat == 0, "darkred", "darkblue"))
+abline(h = 0, col = "red")
+legend("topleft", pch = 19, col = c("darkred", "darkblue"),
+       legend = c("ANNOcat = 0", "ANNOcat = 1"))
+```
+
+##
+
+Studiare la relazione tra `MC` e `TEST` tenendo conto della classe di ingresso (`ANNOcat`). Nello specifico:
+
+###
+
+Produrre un'adeguata rappresentazione grafica della relazione tra le variabili in gioco.
+
+```{r}
+plot(dati$MC ~ dati$TEST,
+     pch = ifelse(dati$ANNOcat == 0, 17, 19),
+     col = ifelse(dati$ANNOcat == 0, "darkred", "darkblue"),
+     xlab = "TEST", ylab = "MC")
+legend("topleft", pch = c(17, 19),
+       col = c("darkred", "darkblue"),
+       legend = c("ANNOcat = 0", "ANNOcat = 1"))
+```
+
+###
+
+Identificare i diversi modelli di regressione applicabili ai dati e specificarne l'interpretazione.
+
+```{r}
+#| echo: false
+cat("
+1) Modello di regressione semplice: MC in funzione di TEST
+
+2) Modello parallelo: MC in funzione di TEST e ANNOcat
+
+3) Modello con interazione: MC in funzione di TEST, ANNOcat
+   e interazione TEST x ANNOcat
+
+Il primo modello non distingue tra i due gruppi (0 e 1).
+Il secondo modello stima una retta per ciascun gruppo,
+con intercette diverse ma lo stesso coefficiente angolare (rette parallele).
+Il terzo modello stima una retta per ciascun gruppo
+senza vincoli: intercette e coefficienti angolari possono essere diversi.
+")
+```
+
+###
+
+Stimare il modello parallelo e commentare i risultati.
+
+```{r}
+mParallel = lm(MC ~ TEST + ANNOcat, data = dati)
+summary(mParallel)
+```
+
+```{r}
+#| echo: false
+cat("Tutti i parametri sono significativi (alpha = .05).
+A parità di TEST, chi appartiene alla classe 2018 (ANNOcat = 1) ha in media
+una MC più alta di chi appartiene alla classe 2016.
+Il modello spiega circa l'85% della variabilità di MC, molto più del modello semplice")
+```
+
+* Ricostruire le equazioni delle due rette di regressione.
+
+```{r}
+parallelCoef = coef(mParallel)
+parallelCoef
+# ANNOcat = 0: MC* = b0 + b1 * TEST
+c(intercetta = parallelCoef[1], pendenza = parallelCoef[2])
+# ANNOcat = 1: MC* = (b0 + b2) + b1 * TEST
+c(intercetta = parallelCoef[1] + parallelCoef[3], pendenza = parallelCoef[2])
+```
+
+* Rappresentare graficamente le rette di regressione.
+
+```{r}
+plot(dati$MC ~ dati$TEST,
+     pch = ifelse(dati$ANNOcat == 0, 17, 19),
+     col = ifelse(dati$ANNOcat == 0, "darkred", "darkblue"),
+     xlab = "TEST", ylab = "MC")
+legend("topleft", pch = c(17, 19),
+       col = c("darkred", "darkblue"),
+       legend = c("ANNOcat = 0", "ANNOcat = 1"))
+abline(parallelCoef[1], parallelCoef[2], col = "darkred", lwd = 2)
+abline(parallelCoef[1] + parallelCoef[3], parallelCoef[2],
+       col = "darkblue", lwd = 2)
+```
+
+* Calcolare la correlazione tra la variabile dipendente osservata e quella stimata dal modello. Che relazione c'è con l'$R^2$ del modello?
+
+```{r}
+cor(dati$MC, mParallel$fitted.values)
+cor(dati$MC, mParallel$fitted.values)^2
+summary(mParallel)$r.squared
+```
+
+```{r}
+#| echo: false
+cat("Il quadrato della correlazione tra valori osservati e valori stimati
+è uguale all'R^2 del modello")
+```
+
+###
+
+Ripetere l'analisi del punto precedente con il modello con interazione.
+
+```{r}
+mInter = lm(MC ~ TEST * ANNOcat, data = dati)
+summary(mInter)
+```
+
+```{r}
+#| echo: false
+cat("Solo l'intercetta e il coefficiente di TEST sono significativi (alpha = .05).
+L'interazione non è significativa: non ci sono evidenze che la relazione tra TEST e MC
+sia diversa nei due gruppi. Anche il coefficiente di ANNOcat non è significativo:
+in questo modello rappresenta la differenza tra i gruppi quando TEST = 0.
+L'R^2 aumenta di pochissimo rispetto al modello parallelo")
+```
+
+* Ricostruire le equazioni delle due rette di regressione.
+
+```{r}
+interCoef = coef(mInter)
+interCoef
+# ANNOcat = 0: MC* = b0 + b1 * TEST
+c(intercetta = interCoef[1], pendenza = interCoef[2])
+# ANNOcat = 1: MC* = (b0 + b2) + (b1 + b3) * TEST
+c(intercetta = interCoef[1] + interCoef[3],
+  pendenza = interCoef[2] + interCoef[4])
+```
+
+* Rappresentare graficamente le rette di regressione.
+
+```{r}
+plot(dati$MC ~ dati$TEST,
+     pch = ifelse(dati$ANNOcat == 0, 17, 19),
+     col = ifelse(dati$ANNOcat == 0, "darkred", "darkblue"),
+     xlab = "TEST", ylab = "MC")
+legend("topleft", pch = c(17, 19),
+       col = c("darkred", "darkblue"),
+       legend = c("ANNOcat = 0", "ANNOcat = 1"))
+abline(interCoef[1], interCoef[2], col = "darkred", lwd = 2)
+abline(interCoef[1] + interCoef[3], interCoef[2] + interCoef[4],
+       col = "darkblue", lwd = 2)
+```
+
+* Calcolare la correlazione tra la variabile dipendente osservata e quella stimata dal modello.
+
+```{r}
+cor(dati$MC, mInter$fitted.values)
+```
+
+###
+
+Utilizzando i risultati del modello con interazione, verificare se il coefficiente angolare associato alla classe 2016 risulti significativamente diverso da 0.5 ($\alpha = .05$).
+
+```{r}
+#| echo: false
+cat("Per ANNOcat = 0 il coefficiente angolare è b1.
+H0: beta1 = 0.5
+H1: beta1 != 0.5")
+```
+
+```{r}
+coefsInter = data.frame(summary(mInter)$coefficients)
+t_oss = (coefsInter$Estimate[2] - 0.5) / coefsInter$Std..Error[2]
+t_oss
+# p-value (test a due code)
+2 * pt(-abs(t_oss), mInter$df.residual)
+# valore critico
+qt(.975, mInter$df.residual)
+```
+
+```{r}
+#| echo: false
+cat("Il p-value è minore di .05 (e |t_oss| supera il valore critico):
+si rifiuta H0, il coefficiente angolare della classe 2016 è diverso da 0.5")
+```
+
+###
+
+Calcolare gli intervalli di confidenza al 95% per i parametri del modello con interazione e commentarli.
+
+```{r}
+qt95 = qt(.975, mInter$df.residual)
+delta = coefsInter$Std..Error * qt95
+ic = data.frame(limInf = coefsInter$Estimate - delta,
+                limSup = coefsInter$Estimate + delta)
+rownames(ic) = rownames(coefsInter)
+ic
+# confronto con la funzione confint()
+confint(mInter)
+```
+
+```{r}
+#| echo: false
+cat("Solo gli intervalli dell'intercetta e di TEST non contengono lo 0:
+coerentemente con i test, sono gli unici parametri significativi")
+```

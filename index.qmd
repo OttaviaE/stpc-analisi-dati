@@ -242,3 +242,28 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Laboratorio Modulo 6 (Testo)](slides/modulo6/Laboratorio/LaboratorioRmod6_esercizi.html)
 * [Laboratorio Modulo 6 (Template e dati)](slides/modulo6/Laboratorio/laboratorio-modulo6.zip)
 * [Laboratorio Modulo 6 (Soluzioni)](slides/modulo6/Laboratorio/LaboratorioRmod6_soluzioni.html) 
+
+## Modulo 7
+
+* [Slides Parte A](slides/modulo7/modulo7a.pdf)
+* [Slides Parte B](slides/modulo7/modulo7b.pdf)
+
+### Esercitazioni
+
+#### Esercitazione 1
+
+* [Esercitazione Modulo 7 - Prima serie (Testo)](slides/modulo7/Laboratorio/Esercizi-Rmod7_esercizi.html)
+* [Esercitazione Modulo 7 - Prima serie (Template e dati)](slides/modulo7/Laboratorio/esercitazione-modulo7-a.zip)
+* [Esercitazione Modulo 7 - Prima serie (Soluzioni)](slides/modulo7/Laboratorio/Esercizi-Rmod7_soluzioni.html)
+
+#### Esercitazione 2
+
+* [Esercitazione Modulo 7 - Seconda serie (Testo)](slides/modulo7/Laboratorio/Esercizi-Rmod7_esercizi-seconda-serie.html)
+* [Esercitazione Modulo 7 - Seconda serie (Template e dati)](slides/modulo7/Laboratorio/esercitazione-modulo7-seconda-serie.zip)
+* [Esercitazione Modulo 7 - Seconda serie (Soluzioni)](slides/modulo7/Laboratorio/Esercizi-Rmod7_soluzioni-seconda-serie.html)
+
+### Laboratorio
+
+* [Laboratorio Modulo 7 (Testo)](slides/modulo7/Laboratorio/LaboratorioRmod7_esercizi.html)
+* [Laboratorio Modulo 7 (Template e dati)](slides/modulo7/Laboratorio/laboratorio-modulo7.zip)
+* [Laboratorio Modulo 7 (Soluzioni)](slides/modulo7/Laboratorio/LaboratorioRmod7_soluzioni.html)

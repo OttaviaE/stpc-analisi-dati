@@ -1,0 +1,293 @@
+---
+title: "Modulo 7 - Prima serie"
+subtitle: "Esercizi"
+author: "Ottavia Epifania"
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+    output-file: "Esercizi-Rmod7_esercizi.html"
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+# myvar/echovar/evalvar = F: testo (output-file "Esercizi-Rmod7_esercizi.html")
+# myvar/echovar/evalvar = T: soluzioni (output-file "Esercizi-Rmod7_soluzioni.html", subtitle "Soluzioni")
+myvar = F
+echovar = F
+evalvar = F
+knitr::opts_chunk$set(include = myvar,
+                      echo = echovar,
+                      eval = evalvar)
+```
+
+# Introduzione
+
+In questa serie di esercizi si rianalizzano i dati del Laboratorio del Modulo didattico 3 (Abilità spazio-simboliche in età infantile: 3-4 anni), contenuti nel file `DataAS.csv`, con i modelli di regressione visti nel Modulo 7. Fare riferimento al testo del laboratorio del Modulo 3 per la descrizione delle variabili.
+
+# Esercizi
+
+Tutte le analisi inferenziali devono essere precedute da opportune rappresentazioni grafiche.
+
+##
+
+Importare il file `DataAS.csv` e assegnarlo alla variabile `DAS`.
+
+```{r}
+DAS = read.csv2("DataAS.csv")
+head(DAS)
+str(DAS)
+```
+
+##
+
+A partire dal data frame `DAS`, creare due nuove variabili:
+
+* `a1`: per ogni bambino/a, la somma dei valori sulle variabili `a1b1` e `a1b2` (scenario macchinine)
+* `a2`: per ogni bambino/a, la somma dei valori sulle variabili `a2b1` e `a2b2` (scenario casa delle bambole)
+
+```{r}
+DAS$a1 = DAS$a1b1 + DAS$a1b2
+DAS$a2 = DAS$a2b1 + DAS$a2b2
+```
+
+##
+
+Studiare, con due modelli di regressione separati:
+
+1. la relazione tra la variabile dipendente `a1` e la variabile indipendente `E`;
+2. la relazione tra la variabile dipendente `a2` e la variabile indipendente `E`.
+
+Per ciascun modello, rappresentare graficamente la relazione tra le variabili, riportare i risultati statisticamente significativi e indicare il tipo di relazione lineare che lega la variabile indipendente alla variabile dipendente.
+
+```{r}
+plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E",
+     xlab = "E", ylab = "a1", ylim = c(0, 20))
+```
+
+```{r}
+#| echo: false
+cat("Il grafico suggerisce una relazione positiva tra E e a1")
+```
+
+```{r}
+ma1 = lm(a1 ~ E, data = DAS)
+summary(ma1)
+```
+
+```{r}
+#| echo: false
+cat("Entrambi i parametri sono statisticamente significativi (alpha = .05).
+Il coefficiente angolare è positivo: all'aumentare dell'età aumenta in media il punteggio a1")
+```
+
+```{r}
+plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E",
+     xlab = "E", ylab = "a2", ylim = c(0, 20))
+```
+
+```{r}
+#| echo: false
+cat("Il grafico suggerisce una relazione positiva tra E e a2")
+```
+
+```{r}
+ma2 = lm(a2 ~ E, data = DAS)
+summary(ma2)
+```
+
+```{r}
+#| echo: false
+cat("Solo il coefficiente angolare è statisticamente significativo (alpha = .05):
+la relazione tra E e a2 è positiva. L'intercetta non è diversa da 0")
+```
+
+##
+
+Calcolare gli intervalli di confidenza al 95% per i parametri dei due modelli. Confrontare le conclusioni basate sugli intervalli di confidenza con quelle basate sul confronto tra $p$-value e $\alpha = .05$.
+
+```{r}
+# modello con a1 come variabile dipendente
+coefsA1 = data.frame(summary(ma1)$coefficients)
+qt95 = qt(.975, ma1$df.residual)
+deltaA1 = coefsA1$Std..Error * qt95
+data.frame(limInf = coefsA1$Estimate - deltaA1,
+           limSup = coefsA1$Estimate + deltaA1,
+           row.names = rownames(coefsA1))
+```
+
+```{r}
+# modello con a2 come variabile dipendente
+coefsA2 = data.frame(summary(ma2)$coefficients)
+deltaA2 = coefsA2$Std..Error * qt95
+data.frame(limInf = coefsA2$Estimate - deltaA2,
+           limSup = coefsA2$Estimate + deltaA2,
+           row.names = rownames(coefsA2))
+```
+
+```{r}
+# confronto con la funzione confint()
+confint(ma1)
+confint(ma2)
+```
+
+```{r}
+#| echo: false
+cat("Modello a1: nessun intervallo contiene lo 0, entrambi i parametri sono significativi.
+Modello a2: l'intervallo dell'intercetta contiene lo 0 (non significativa),
+quello del coefficiente angolare no (significativo).
+Le conclusioni sono le stesse dei test sui coefficienti")
+```
+
+##
+
+Valutare i residui dei due modelli con almeno due rappresentazioni grafiche ciascuno.
+
+```{r}
+qqnorm(ma1$residuals, main = "Modello a1")
+qqline(ma1$residuals, col = "red")
+plot(DAS$E, ma1$residuals, xlab = "E", ylab = "Residui", main = "Modello a1")
+abline(h = 0, col = "red")
+```
+
+```{r}
+qqnorm(ma2$residuals, main = "Modello a2")
+qqline(ma2$residuals, col = "red")
+plot(DAS$E, ma2$residuals, xlab = "E", ylab = "Residui", main = "Modello a2")
+abline(h = 0, col = "red")
+```
+
+##
+
+Ripetere le analisi dell'esercizio 3 includendo nei modelli anche la variabile di classificazione `S`. Partire da un modello parallelo e proseguire con un modello con interazione. Per ogni modello, rappresentare le rette di regressione dei due gruppi.
+
+### Variabile dipendente `a1`
+
+```{r}
+plot(DAS$E, DAS$a1, pch = 19, main = "Relazione a1 - E",
+     xlab = "E", ylab = "a1", ylim = c(0, 20),
+     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+legend("topleft", pch = 19, col = c("darkred", "darkgreen"),
+       legend = c("f", "m"))
+```
+
+```{r}
+#| echo: false
+cat("Dal grafico non sembra che i due gruppi si distinguano")
+```
+
+```{r}
+ma1S = lm(a1 ~ E + S, data = DAS)
+summary(ma1S)
+```
+
+```{r}
+#| echo: false
+cat("Intercetta e coefficiente di E sono significativi, il coefficiente di S no:
+a parità di età non ci sono differenze tra i due gruppi nel punteggio a1")
+```
+
+```{r}
+coefa1 = coef(ma1S)
+plot(DAS$E, DAS$a1, pch = 19, main = "Modello parallelo a1",
+     xlab = "E", ylab = "a1", ylim = c(0, 20),
+     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+abline(coefa1[1], coefa1[2], col = "darkred", lwd = 2) # gruppo f
+abline(coefa1[1] + coefa1[3], coefa1[2], col = "darkgreen", lwd = 2) # gruppo m
+```
+
+```{r}
+ma1Sinter = lm(a1 ~ E * S, data = DAS)
+summary(ma1Sinter)
+```
+
+```{r}
+#| echo: false
+cat("Solo il coefficiente di E è significativo: l'interazione non lo è,
+quindi non ci sono evidenze che la relazione tra età e a1 sia diversa nei due gruppi")
+```
+
+```{r}
+coefa1inter = coef(ma1Sinter)
+plot(DAS$E, DAS$a1, pch = 19, main = "Modello con interazione a1",
+     xlab = "E", ylab = "a1", ylim = c(0, 20),
+     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+abline(coefa1inter[1], coefa1inter[2], col = "darkred", lwd = 2) # gruppo f
+abline(coefa1inter[1] + coefa1inter[3], coefa1inter[2] + coefa1inter[4],
+       col = "darkgreen", lwd = 2) # gruppo m
+```
+
+```{r}
+#| echo: false
+cat("Anche se nel grafico le rette non sono parallele,
+la differenza tra i coefficienti angolari non è significativa")
+```
+
+### Variabile dipendente `a2`
+
+```{r}
+plot(DAS$E, DAS$a2, pch = 19, main = "Relazione a2 - E",
+     xlab = "E", ylab = "a2", ylim = c(0, 20),
+     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+legend("topleft", pch = 19, col = c("darkred", "darkgreen"),
+       legend = c("f", "m"))
+```
+
+```{r}
+ma2S = lm(a2 ~ E + S, data = DAS)
+summary(ma2S)
+```
+
+```{r}
+#| echo: false
+cat("Il coefficiente di E e quello di S sono significativi.
+A parità di età, il gruppo m ha in media un punteggio a2 più basso del gruppo f")
+```
+
+```{r}
+coefa2 = coef(ma2S)
+plot(DAS$E, DAS$a2, pch = 19, main = "Modello parallelo a2",
+     xlab = "E", ylab = "a2", ylim = c(0, 20),
+     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+abline(coefa2[1], coefa2[2], col = "darkred", lwd = 2) # gruppo f
+abline(coefa2[1] + coefa2[3], coefa2[2], col = "darkgreen", lwd = 2) # gruppo m
+```
+
+```{r}
+ma2Sinter = lm(a2 ~ E * S, data = DAS)
+summary(ma2Sinter)
+```
+
+```{r}
+#| echo: false
+cat("Solo il coefficiente di E è significativo. L'interazione non è significativa:
+la relazione tra età e a2 non è diversa nei due gruppi, quindi il modello parallelo è sufficiente.
+Nel modello con interazione il coefficiente di S non è più significativo perché
+rappresenta la differenza tra i gruppi quando E = 0")
+```
+
+```{r}
+coefa2inter = coef(ma2Sinter)
+plot(DAS$E, DAS$a2, pch = 19, main = "Modello con interazione a2",
+     xlab = "E", ylab = "a2", ylim = c(0, 20),
+     col = ifelse(DAS$S == "f", "darkred", "darkgreen"))
+abline(coefa2inter[1], coefa2inter[2], col = "darkred", lwd = 2) # gruppo f
+abline(coefa2inter[1] + coefa2inter[3], coefa2inter[2] + coefa2inter[4],
+       col = "darkgreen", lwd = 2) # gruppo m
+```
+
+##
+
+Per il modello parallelo con variabile dipendente `a2`, calcolare gli intervalli di confidenza al 95% per i parametri.
+
+```{r}
+confint(ma2S)
+```
+
+```{r}
+#| echo: false
+cat("Gli intervalli dei coefficienti di E e di S non contengono lo 0,
+quello dell'intercetta sì")
+```
