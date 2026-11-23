@@ -339,7 +339,7 @@ $H_1 : \beta_j \ne 0$: a parità dell'altro predittore, il valore atteso di $Y$ 
 
 Se il test su $\beta_j$ è significativo, $X_j$ spiega una parte di $Y$ che l'altro predittore non spiega già
 
-### Il test sul modello nel suo complesso
+### 
 
 ::: {.callout-note}
 ## Sistema di ipotesi sul modello
@@ -351,11 +351,36 @@ $H_1$: almeno un $\beta_j \ne 0$
 
 \small
 
-Si verifica con la statistica $F$, che confronta la varianza di $Y$ spiegata dal modello con quella dei residui
+Si verifica con la statistica $F$, che confronta la varianza di $Y$ spiegata dal modello con quella dei residui:
 
-\vspace{2mm}
+$$F = \frac{(SQT - SQE) / (k - 1)}{SQE / (n - k)}$$
+
+Gradi di libertà, con $k = 3$ parametri ($\beta_0$, $\beta_1$, $\beta_2$) e 2 predittori ($X_1$, $X_2$):
+
+\footnotesize
 
 Con un solo predittore il test $F$ e il test $t$ su $\beta$ danno lo stesso risultato ($F = t^2$). Con più predittori **no**: il modello può essere significativo nel suo complesso anche se nessun $\beta_j$ preso singolarmente lo è (per esempio quando i predittori sono molto correlati tra loro)
+
+### 
+
+\small
+
+$k$ = numero di parametri stimati dal modello, **intercetta compresa**. Con due predittori $k = 3$ ($\beta_0$, $\beta_1$ e $\beta_2$)
+
+
+| **Test** | **$H_0$** | **Gradi di libertà** | **Esempio ($n = `r length(Y)`$)** |
+|:---|:---:|:---:|:---:|
+| $t$ su ciascun parametro | $\beta_j = 0$ | $n - k = n - 3$ | `r length(Y) - 3` |
+| $F$ sul modello | $\beta_1 = \beta_2 = 0$ | $k - 1 = 2$ e $n - k = n - 3$ | $F(2, `r length(Y) - 3`)$ |
+
+
+- $n - k$: le osservazioni che restano "libere" dopo aver stimato i $k$ parametri, usate per stimare $\hat{\sigma}^2 = SQE / (n - k)$. Sono gli stessi per tutti i test $t$ e per il denominatore di $F$
+
+- $k - 1$: il numero di **predittori**, cioè di coefficienti angolari che $H_0$ del modello pone uguali a 0 (l'intercetta non si conta). **Non** è il numero di parametri
+
+\footnotesize
+
+Ogni dummy e ogni interazione è un parametro in più: con un fattore a tre livelli $k = 3$, nel modello con interazione $k = 4$
 
 ## Gli step dell'inferenza
 
@@ -371,9 +396,9 @@ Gli step sono gli stessi della regressione semplice, con $k$ = numero di paramet
 
 **Step 2**: si stimano le varianze delle stime dei parametri, $\hat{\sigma}^2_{\beta_j}$
 
-**Step 3**: si calcolano gli errori standard, $\widehat{SE}(\beta_j) = \sqrt{\hat{\sigma}^2_{\beta_j}}$
+**Step 3**: si calcolano gli errori standard, $\widehat{SE}(\hat{\beta}_j) = \sqrt{\hat{\sigma}^2_{\beta_j}}$
 
-**Step 4**: si calcolano i $t$ osservati, $t^o_{\beta_j} = \dfrac{\hat{\beta}_j}{\widehat{SE}(\beta_j)}$
+**Step 4**: si calcolano i $t$ osservati, $t^o_{\beta_j} = \dfrac{\hat{\beta}_j}{\widehat{SE}(\hat{\beta}_j)}$
 
 **Step 5**: si confrontano i $t$ osservati con la distribuzione $t$ di Student con $n - k$ gradi di libertà e si calcolano i $p$-value
 
@@ -388,7 +413,7 @@ $$IC_{1-\alpha} = \hat{\theta} \pm c_{1-\alpha/2} \cdot SE(\hat{\theta})$$
 
 Per ciascun parametro $\beta_j$ ($j = 0, 1, 2$):
 
-$$IC_{95\%}(\beta_j) = \hat{\beta}_j \pm q_T(0.975 \mid n-k) \cdot \widehat{SE}(\beta_j)$$
+$$IC_{95\%}(\beta_j) = \hat{\beta}_j \pm q_T(0.975 \mid n-k) \cdot \widehat{SE}(\hat{\beta}_j)$$
 
 dove $q_T(0.975 \mid n-k)$ è il quantile 0.975 della distribuzione $t$ di Student con $n-k$ gradi di libertà
 
@@ -446,14 +471,14 @@ annota_lm(LM, parte = 1)
 \begin{enumerate}
   \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
   \item Stime dei parametri: una riga per ogni $\hat{\beta}_j$
-  \item Errori standard $\widehat{SE}(\beta_j)$
+  \item Errori standard $\widehat{SE}(\hat{\beta}_j)$
 \end{enumerate}
 \end{column}
 \begin{column}{.48\textwidth}
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\beta_j)$, con $H_0$: $\beta_j = 0$
+  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\hat{\beta}_j)$, con $H_0$: $\beta_j = 0$
   \item $p$-value bidirezionale, $t$ di Student con $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
@@ -483,14 +508,14 @@ annota_lm(LM, parte = 2)
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $R^2$ aggiustato: tiene conto del numero di predittori (con più predittori l'$R^2$ aumenta sempre)
-  \item Test $F$ sul modello, $H_0$: tutti i coefficienti angolari $= 0$, con $k - 1$ e $n - k$ gradi di libertà
+  \item $R^2$ aggiustato: tiene conto del numero di predittori (aggiungendo predittori l'$R^2$ non diminuisce mai)
+  \item Test $F$ sul modello, $H_0$: tutti i coefficienti angolari $= 0$, con $k - 1$ (numero di predittori) e $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
 \end{columns}
 ```
 
-### Lettura dei risultati
+###
 
 \footnotesize
 
@@ -551,7 +576,7 @@ $H_0 : \beta_2 = 0$: le medie di $Y$ nei due gruppi sono uguali ($\mu_{a_2} - \m
 $H_1 : \beta_2 \ne 0$: le medie di $Y$ nei due gruppi sono diverse
 :::
 
-È lo stesso test del $t$-test per campioni indipendenti con varianze uguali
+È lo stesso test del $t$-test per campioni indipendenti con varianze omogenee
 
 ## Modello parallelo
 
@@ -648,14 +673,14 @@ annota_lm(LM, parte = 1)
 \begin{enumerate}
   \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
   \item Stime dei parametri: una riga per ogni $\hat{\beta}_j$
-  \item Errori standard $\widehat{SE}(\beta_j)$
+  \item Errori standard $\widehat{SE}(\hat{\beta}_j)$
 \end{enumerate}
 \end{column}
 \begin{column}{.48\textwidth}
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\beta_j)$, con $H_0$: $\beta_j = 0$
+  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\hat{\beta}_j)$, con $H_0$: $\beta_j = 0$
   \item $p$-value bidirezionale, $t$ di Student con $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
@@ -685,14 +710,14 @@ annota_lm(LM, parte = 2)
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $R^2$ aggiustato: tiene conto del numero di predittori (con più predittori l'$R^2$ aumenta sempre)
-  \item Test $F$ sul modello, $H_0$: tutti i coefficienti angolari $= 0$, con $k - 1$ e $n - k$ gradi di libertà
+  \item $R^2$ aggiustato: tiene conto del numero di predittori (aggiungendo predittori l'$R^2$ non diminuisce mai)
+  \item Test $F$ sul modello, $H_0$: tutti i coefficienti angolari $= 0$, con $k - 1$ (numero di predittori) e $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
 \end{columns}
 ```
 
-### Lettura dei risultati
+### 
 
 \footnotesize
 
@@ -818,14 +843,14 @@ annota_lm(LM, parte = 1)
 \begin{enumerate}
   \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
   \item Stime dei parametri: una riga per ogni $\hat{\beta}_j$
-  \item Errori standard $\widehat{SE}(\beta_j)$
+  \item Errori standard $\widehat{SE}(\hat{\beta}_j)$
 \end{enumerate}
 \end{column}
 \begin{column}{.48\textwidth}
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\beta_j)$, con $H_0$: $\beta_j = 0$
+  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\hat{\beta}_j)$, con $H_0$: $\beta_j = 0$
   \item $p$-value bidirezionale, $t$ di Student con $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
@@ -855,8 +880,8 @@ annota_lm(LM, parte = 2)
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $R^2$ aggiustato: tiene conto del numero di predittori (con più predittori l'$R^2$ aumenta sempre)
-  \item Test $F$ sul modello, $H_0$: tutti i coefficienti angolari $= 0$, con $k - 1$ e $n - k$ gradi di libertà
+  \item $R^2$ aggiustato: tiene conto del numero di predittori (aggiungendo predittori l'$R^2$ non diminuisce mai)
+  \item Test $F$ sul modello, $H_0$: tutti i coefficienti angolari $= 0$, con $k - 1$ (numero di predittori) e $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
 \end{columns}

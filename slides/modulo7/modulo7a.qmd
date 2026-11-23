@@ -147,7 +147,7 @@ La relazione è *asimmetrica*: si vuole spiegare $Y$ (variabile dipendente, crit
 \vspace{2mm}
 
 ::: {.callout-note appearance="default"}
-## Scopo di questo modulo
+## Scopo 
 
 Capire se la relazione lineare osservata nel campione si può generalizzare alla **popolazione** da cui il campione è stato estratto
 :::
@@ -468,6 +468,44 @@ par(mfrow = c(1, 1))
 
 Sotto $H_0$ la retta è orizzontale e, per qualsiasi valore di $X$, il valore atteso di $Y$ è sempre lo stesso ($\beta_0 = \mu_Y$)
 
+###
+
+::: {.callout-note appearance="default"}
+## Sistema di ipotesi sul modello
+
+$H_0 : \beta = 0$ \small il modello con $X$ non spiega $Y$ meglio della sola media: $y^* = \beta_0 = \mu_Y$ per tutte le osservazioni \normalsize
+
+$H_1 : \beta \ne 0$ \small il modello con $X$ spiega una quota della varianza di $Y$
+:::
+
+\small
+
+Si verifica con la statistica $F$, che confronta la varianza di $Y$ spiegata dal modello con la varianza dei residui:
+
+$$F = \frac{(SQT - SQE) / (k - 1)}{SQE / (n - k)} \qquad SQT = \sum_{i=1}^{n} (y_i - \bar{y})^2$$
+
+Gradi di libertà, con $k = 2$ parametri ($\beta_0$, $\beta$) e 1 predittore ($X$)
+
+\footnotesize
+
+Con un solo predittore l'ipotesi nulla del test $F$ è la stessa del test $t$ su $\beta$: $F = (t^o_{\beta})^2$ e il $p$-value è identico. Con più predittori (modulo 7b) non è più così
+
+###
+
+\small
+
+$k$ = numero di parametri stimati dal modello, **intercetta compresa**. Nella regressione semplice $k = 2$ ($\beta_0$ e $\beta$)
+
+
+| **Test** | **$H_0$** | **Gradi di libertà** | **Esempio ($n = `r length(X)`$)** |
+|:---|:---:|:---:|:---:|
+| $t$ su ciascun parametro | $\beta_0 = 0$, $\beta = 0$ | $n - k = n - 2$ | `r length(X) - 2` |
+| $F$ sul modello | $\beta = 0$ | $k - 1 = 1$ e $n - k = n - 2$ | $F(1, `r length(X) - 2`)$ |
+
+- $n - k$: le osservazioni che restano "libere" dopo aver stimato i $k$ parametri. Servono per stimare la varianza dell'errore $\hat{\sigma}^2 = SQE / (n - k)$, per questo sono gli stessi per i test $t$ e per il denominatore di $F$
+
+- $k - 1$: il numero di coefficienti angolari, cioè di parametri che $H_0$ del modello pone uguali a 0 (l'intercetta non si conta: c'è anche nel modello "vuoto" $y^* = \beta_0$). Corrisponde al numero di predittori
+
 
 
 ## Gli step dell'inferenza
@@ -480,9 +518,9 @@ Sotto $H_0$ la retta è orizzontale e, per qualsiasi valore di $X$, il valore at
 
 2. Si stimano le varianze delle stime dei parametri: $\hat{\sigma}^2_{\beta_0}$ e $\hat{\sigma}^2_{\beta}$
 
-3. Si calcolano gli errori standard: $\widehat{SE}(\beta_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}$ e $\widehat{SE}(\beta) = \sqrt{\hat{\sigma}^2_{\beta}}$
+3. Si calcolano gli errori standard: $\widehat{SE}(\hat{\beta}_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}$ e $\widehat{SE}(\hat{\beta}) = \sqrt{\hat{\sigma}^2_{\beta}}$
 
-4. Si calcolano i $t$ osservati: $t^o_{\beta_0} = \dfrac{\hat{\beta}_0}{\widehat{SE}(\beta_0)}$ e $t^o_{\beta} = \dfrac{\hat{\beta}}{\widehat{SE}(\beta)}$
+4. Si calcolano i $t$ osservati: $t^o_{\beta_0} = \dfrac{\hat{\beta}_0}{\widehat{SE}(\hat{\beta}_0)}$ e $t^o_{\beta} = \dfrac{\hat{\beta}}{\widehat{SE}(\hat{\beta})}$
 
 5. Si confrontano i $t$ osservati con la distribuzione $t$ di Student con $n - k$ gradi di libertà e si calcolano i $p$-value
 
@@ -525,11 +563,11 @@ $$\hat{\sigma}^2_{\beta_0} = \hat{\sigma}^2 \left( \frac{1}{n} + \frac{\bar{x}^2
 
 Step 3: errore standard
 
-$$\widehat{SE}(\beta_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}$$
+$$\widehat{SE}(\hat{\beta}_0) = \sqrt{\hat{\sigma}^2_{\beta_0}}$$
 
 Step 4: $t$ osservato
 
-$$t^{o}_{\beta_0} = \frac{\hat{\beta}_0}{\widehat{SE}(\beta_0)}$$
+$$t^{o}_{\beta_0} = \frac{\hat{\beta}_0}{\widehat{SE}(\hat{\beta}_0)}$$
 :::
 
 :::{.column width=50%}
@@ -543,11 +581,11 @@ $$\hat{\sigma}^2_{\beta} = \frac{\hat{\sigma}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^
 
 Step 3: errore standard
 
-$$\widehat{SE}(\beta) = \sqrt{\hat{\sigma}^2_{\beta}}$$
+$$\widehat{SE}(\hat{\beta}) = \sqrt{\hat{\sigma}^2_{\beta}}$$
 
 Step 4: $t$ osservato
 
-$$t^{o}_{\beta} = \frac{\hat{\beta}}{\widehat{SE}(\beta)}$$
+$$t^{o}_{\beta} = \frac{\hat{\beta}}{\widehat{SE}(\hat{\beta})}$$
 :::
 
 ::::
@@ -561,14 +599,14 @@ $$t^{o}_{\beta} = \frac{\hat{\beta}}{\widehat{SE}(\beta)}$$
 :::{.column width=50%}
 Valore $t$ osservato calcolato per il parametro di intercetta $\beta_0$:
 
-$$ t^{o}_{\beta_0} = \frac{\hat{\beta}_0}{\widehat{SE}(\beta_0)} $$
+$$ t^{o}_{\beta_0} = \frac{\hat{\beta}_0}{\widehat{SE}(\hat{\beta}_0)} $$
 $H_0$: $\beta_0 = 0$
 :::
 
 :::{.column width=50%}
 Valore $t$ osservato calcolato per il parametro di coefficiente angolare $\beta$: 
 
-$$ t^{o}_{\beta} = \frac{\hat{\beta}}{\widehat{SE}(\beta)} $$
+$$ t^{o}_{\beta} = \frac{\hat{\beta}}{\widehat{SE}(\hat{\beta})} $$
 $H_0$: $\beta = 0$
 :::
 
@@ -600,17 +638,17 @@ $\beta_0 = 0$ e $\beta = 0$
 
 $$
 t^{o}_{\beta_0}
-= \frac{\hat{\beta}_0 - \beta_0}{\widehat{SE}(\beta_0)}
-= \frac{\hat{\beta}_0 - 0}{\widehat{SE}(\beta_0)}
-= \frac{\hat{\beta}_0}{\widehat{SE}(\beta_0)},
+= \frac{\hat{\beta}_0 - \beta_0}{\widehat{SE}(\hat{\beta}_0)}
+= \frac{\hat{\beta}_0 - 0}{\widehat{SE}(\hat{\beta}_0)}
+= \frac{\hat{\beta}_0}{\widehat{SE}(\hat{\beta}_0)},
 \quad \text{con } H_0 : \beta_0 = 0
 $$
 
 $$
 t^{o}_{\beta}
-= \frac{\hat{\beta} - \beta}{\widehat{SE}(\beta)}
-= \frac{\hat{\beta} - 0}{\widehat{SE}(\beta)}
-= \frac{\hat{\beta}}{\widehat{SE}(\beta)},
+= \frac{\hat{\beta} - \beta}{\widehat{SE}(\hat{\beta})}
+= \frac{\hat{\beta} - 0}{\widehat{SE}(\hat{\beta})}
+= \frac{\hat{\beta}}{\widehat{SE}(\hat{\beta})},
 \quad \text{con } H_0 : \beta = 0
 $$
 
@@ -621,15 +659,15 @@ $\beta_0 = a$ e $\beta = b$
 
 $$
 t^{o}_{\beta_0}
-= \frac{\hat{\beta}_0 - \beta_0}{\widehat{SE}(\beta_0)}
-= \frac{\hat{\beta}_0 - a}{\widehat{SE}(\beta_0)},
+= \frac{\hat{\beta}_0 - \beta_0}{\widehat{SE}(\hat{\beta}_0)}
+= \frac{\hat{\beta}_0 - a}{\widehat{SE}(\hat{\beta}_0)},
 \quad \text{con } H_0 : \beta_0 = a \text{ dove } a \in \mathbb{R}
 $$
 
 $$
 t^{o}_{\beta}
-= \frac{\hat{\beta} - \beta}{\widehat{SE}(\beta)}
-= \frac{\hat{\beta} - b}{\widehat{SE}(\beta)},
+= \frac{\hat{\beta} - \beta}{\widehat{SE}(\hat{\beta})}
+= \frac{\hat{\beta} - b}{\widehat{SE}(\hat{\beta})},
 \quad \text{con } H_0 : \beta = b \text{ dove } b \in \mathbb{R}
 $$
 
@@ -652,10 +690,10 @@ dove
 
 $$
 \delta_{\beta_0}
-= \widehat{SE}(\beta_0) \times q_T(0.975 \mid n-k),
+= \widehat{SE}(\hat{\beta}_0) \times q_T(0.975 \mid n-k),
 \qquad
 \delta_{\beta}
-= \widehat{SE}(\beta) \times q_T(0.975 \mid n-k)
+= \widehat{SE}(\hat{\beta}) \times q_T(0.975 \mid n-k)
 $$
 
 dove $q_T(0.975 \mid n-k)$ è il quantile 0.975 della distribuzione $t$ di Student con $n-k$ gradi di libertà.
@@ -736,14 +774,14 @@ annota_lm("summary(LM)", parte = 1)
 \begin{enumerate}
   \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
   \item Stime dei parametri: $\hat{\beta}_0$ (intercetta) e $\hat{\beta}$ (coefficiente angolare)
-  \item Errori standard $\widehat{SE}(\beta_0)$ e $\widehat{SE}(\beta)$
+  \item Errori standard $\widehat{SE}(\hat{\beta}_0)$ e $\widehat{SE}(\hat{\beta})$
 \end{enumerate}
 \end{column}
 \begin{column}{.48\textwidth}
 \footnotesize
 \begin{enumerate}
   \setcounter{enumi}{3}
-  \item $t$ osservati: $t^o = \hat{\beta} / \widehat{SE}(\beta)$, con $H_0$: parametro $= 0$
+  \item $t$ osservati: $t^o = \hat{\beta} / \widehat{SE}(\hat{\beta})$, con $H_0$: parametro $= 0$
   \item $p$-value bidirezionale, $t$ di Student con $n - k$ gradi di libertà
 \end{enumerate}
 \end{column}
@@ -784,13 +822,13 @@ annota_lm("summary(LM)", parte = 2)
 \begin{enumerate}
   \setcounter{enumi}{3}
   \item $R^2$ aggiustato
-  \item Test $F$ sul modello: con un solo predittore $F = (t^o_{\beta})^2$ e il $p$-value è lo stesso del test su $\beta$
+  \item Test $F$ sul modello, con $k - 1 = 1$ e $n - k$ gradi di libertà: con un solo predittore $F = (t^o_{\beta})^2$ e il $p$-value è lo stesso del test su $\beta$
 \end{enumerate}
 \end{column}
 \end{columns}
 ```
 
-### Lettura dei risultati
+### 
 
 ```{r}
 #| include: false
