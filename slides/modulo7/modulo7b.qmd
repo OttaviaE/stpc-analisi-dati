@@ -380,7 +380,7 @@ $k$ = numero di parametri stimati dal modello, **intercetta compresa**. Con due 
 
 \footnotesize
 
-Ogni dummy e ogni interazione è un parametro in più: con un fattore a tre livelli $k = 3$, nel modello con interazione $k = 4$
+Ogni dummy e ogni interazione è un parametro in più: nel modello con interazione $k = 4$
 
 ## Gli step dell'inferenza
 
@@ -920,61 +920,3 @@ cat("Pendenza nel gruppo $a_2$: $\\hat{\\beta}_1 + \\hat{\\beta}_3 = ",
     round(cf[2], 2), " + (", round(cf[4], 2), ") = ", round(cf[2] + cf[4], 2), "$\n\n", sep = "")
 leggi_F(LM)
 ```
-
-## Predittore a tre livelli
-
-###
-
-Un fattore $A$ con tre livelli ($a_1$, $a_2$, $a_3$) viene tradotto in **due** variabili dummy (numero di livelli $- 1$):
-
-| $A$ | $D_2$ | $D_3$ |
-|:---:|:---:|:---:|
-| $a_1$ (riferimento) | 0 | 0 |
-| $a_2$ | 1 | 0 |
-| $a_3$ | 0 | 1 |
-
-$$y_i = \beta_0 + \beta_2 d_{2i} + \beta_3 d_{3i} + \varepsilon_i$$
-
-\small
-
-- $\beta_0$: media attesa di $Y$ nel gruppo di riferimento $a_1$
-
-- $\beta_2$: differenza tra la media di $a_2$ e la media di $a_1$
-
-- $\beta_3$: differenza tra la media di $a_3$ e la media di $a_1$
-
-### Sistemi di ipotesi
-
-\small
-
-::: {.callout-note}
-## Ogni dummy ($j = 2, 3$): test $t$
-
-$H_0 : \beta_j = 0$: la media del gruppo $a_j$ è uguale a quella del gruppo di riferimento $a_1$
-
-$H_1 : \beta_j \ne 0$: la media del gruppo $a_j$ è diversa da quella di $a_1$
-:::
-
-::: {.callout-note}
-## Il fattore nel suo complesso: test $F$
-
-$H_0 : \beta_2 = \beta_3 = 0$, cioè $\mu_{a_1} = \mu_{a_2} = \mu_{a_3}$
-
-$H_1$: almeno una media è diversa dalle altre
-:::
-
-Il test $F$ sul fattore è l'**ANOVA a una via**: la regressione con un predittore categoriale e l'ANOVA sono lo stesso modello
-
-### In R
-
-| **Simbolo R** | **Significato** |
-|---------------|-----------------|
-| `lm(y ~ A)` | Stima il modello con il fattore `A`: R crea le dummy in automatico |
-| `summary(lm(y ~ A))` | Test $t$ sulle dummy (confronti con il gruppo di riferimento) e test $F$ sul modello |
-| `anova(lm(y ~ A))` | Tabella dell'ANOVA: test $F$ sul fattore |
-
-\vspace{2mm}
-
-\small
-
-I test $t$ confrontano ogni gruppo **solo** con il gruppo di riferimento: per confrontare $a_2$ con $a_3$ bisogna cambiare il riferimento (per esempio con `factor(A, levels = c("a2", "a1", "a3"))`)
