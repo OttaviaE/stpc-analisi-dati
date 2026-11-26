@@ -99,6 +99,10 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 [Dispense delle funzioni](slides/tab-6.pdf)
 
+#### Modulo 7
+
+[Dispense delle funzioni](slides/tab-7.pdf)
+
 # Il corso 
 
 ## Modulo 1 

@@ -1,9 +1,10 @@
 ---
 title: "Analisi dei dati con applicazioni informatiche"
-subtitle: "Regressione Lineare"
-format: 
-  pdf: 
+subtitle: "Modelli di regressione e ANOVA"
+format:
+  pdf:
    toc: true
+   toc-title: Indice
 lang: it
 code-annotations: below
 ---
@@ -12,58 +13,153 @@ code-annotations: below
 
 ```{r}
 #| echo: false
-X <- c(9,8,12,9,10,14,5,4,13,7,5,3.4,15.3,6.8)
-Y <- c(9,6,8,9,7,10,8,4,11,5,4,2,12.6,8.6)
-LM <- lm(Y~X)
+X = c(9, 8, 12, 9, 10, 14, 5, 4, 13, 7, 5, 3.4, 15.3, 6.8)
+Y = c(9, 6, 8, 9, 7, 10, 8, 4, 11, 5, 4, 2, 12.6, 8.6)
+LM = lm(Y ~ X)
 ```
-
 
 # Regressione
 
-In generale, i gradi di libertà ($gdl$) sono dati dall'ampiezza campionaria $n$ a cui va sottratto il numero di parametri $k$ inclusi nel modello ($gdl = n-k$). Ad esempio, in un modello di regressione semplcice con un predittore, si hanno $k = 2$ parametri ($\beta_0$ e $\beta$)
+In generale, i gradi di libertà ($gdl$) dei test $t$ sui parametri sono dati dall'ampiezza campionaria $n$ a cui va sottratto il numero di parametri $k$ inclusi nel modello, intercetta compresa ($gdl = n - k$). Ad esempio, in un modello di regressione semplice con un predittore si hanno $k = 2$ parametri ($\beta_0$ e $\beta$). Il test $F$ sul modello ha $k - 1$ (numero di predittori) e $n - k$ gradi di libertà.
 
-La funzione `coef()` estrae i coefficienti di un modello di regressione e li salva in un vettore di lunghezza pari al numero di parametri del modello. Ad esempio, in un modello lineare semplice $y_i = \beta_0 + \beta_1X_1 + \varepsilon_i$ si avranno due parametri, $\beta_0$ e $\beta_1$. 
+La funzione `coef()` estrae i coefficienti di un modello di regressione e li salva in un vettore di lunghezza pari al numero di parametri del modello. Ad esempio, in un modello lineare semplice $y_i = \beta_0 + \beta X_i + \varepsilon_i$ si avranno due parametri, $\beta_0$ e $\beta$.
 
 ```{r}
-LM <- lm(Y~X)
-coef(LM) # <1> 
+LM = lm(Y ~ X)
+coef(LM) # <1>
 ```
 
-1. Il primo valore estratto dalla funzione `coef()` è sempre relativo all'intercetta. I restanti valori sono relativi ai coefficienti associati agli altri predittori. L'ordine seguito è: (i) effetti principali, (ii) effetti di interezione.
+1. Il primo valore estratto dalla funzione `coef()` è sempre relativo all'intercetta. I restanti valori sono relativi ai coefficienti associati agli altri predittori. L'ordine seguito è: (i) effetti principali, (ii) effetti di interazione.
+
+Il valore atteso (stimato) dal modello per l'osservazione $i$ si indica con $y_i^*$.
 
 ## Lineare semplice
 
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `lm(y ~ x)` | Variabile y spiegata in funzione di x, $gdl = n - 2$ | $y_i = \beta_0 + \beta X_i + \varepsilon_i$ |
+| | Retta stimata | $y_i^* = \hat{\beta}_0 + \hat{\beta} X_i$ |
+| `summary(LM)` | Output inferenziale del modello lineare stimato con `lm()` i cui risultati sono salvati nell'oggetto `LM` | `LM = lm(y ~ x)` |
+| `coef(LM)` | Stime dei parametri | $\hat{\beta}_0$, $\hat{\beta}$ |
+| `plot(x, y)` | Diagramma di dispersione di (x, y) | |
+| `abline(LM)` | Aggiunge la retta di regressione stimata con `lm()` al grafico | |
+| `coef(LM)[1] + coef(LM)[2] * 25` | Valore atteso di y per x = 25 | $y^* = \hat{\beta}_0 + \hat{\beta} \cdot 25$ |
+| | Stima del coefficiente angolare | $\hat{\beta} = \dfrac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(X)} = r \dfrac{sd(Y)}{sd(X)}$ |
+| | Stima dell'intercetta | $\hat{\beta}_0 = \bar{y} - \hat{\beta}\bar{x}$ |
+
+## Predittore standardizzato
 
 | **Funzione R** | **Descrizione** | **Dettagli** |
 |------------------------|----------------|------------------------------------|
-|  `lm(y ~ x)`  | Variabile y spiegata in funzione di x, $gdl = n -2$ | $y = \beta_0 + \beta_1 X_{1i} + \varepsilon_i$ |
-| `summary(LM)` | Output inferenziale del modello lineare fittato con `lm()` i cui risultati sono salvati nell'oggetto `LM` | `LM = lm(y ~ x)` |
-| `plot(x, y)` | scatterplot di (x, y)| |
-| `abline(LM)` | Aggiunge la retta di regressione stimata con `lm()` al grafico| |
-
+| `z = (x - mean(x)) / sd(x)` | Punti $z$ del predittore (media 0, deviazione standard 1) | $z_i = \dfrac{x_i - \bar{x}}{sd(X)}$ |
+| `lm(y ~ z)` | Regressione sul predittore standardizzato | $\hat{\beta}_0 = \bar{y}$, $\hat{\beta}$ = cambiamento atteso in $y$ per una deviazione standard in più di $x$ |
 
 ## Due predittori quantitativi
 
 | **Funzione R** | **Descrizione** | **Dettagli** |
 |------------------------|----------------|------------------------------------|
-|  `lm(y ~ x1 + x2)`  | Variabile y spiegata in funzione della combinazione lineare di due predittori quantitativi `x1` e `x2`, $gdl = n -3$ | $y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i}  + \varepsilon_i$ |
+| `lm(y ~ x1 + x2)` | Variabile y spiegata in funzione della combinazione lineare di due predittori quantitativi `x1` e `x2`, $gdl = n - 3$ | $y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \varepsilon_i$ |
+| `plot(data[, c("y", "x1", "x2")])` | Diagrammi di dispersione di tutte le coppie di variabili | |
+| `cor(data[, c("y", "x1", "x2")])` | Matrice di correlazione | |
+| | $\beta_1$: cambiamento atteso in $y$ per ogni aumento unitario di $x_1$, a parità di $x_2$ | Test $F$: $H_0: \beta_1 = \beta_2 = 0$, $gdl = 2$ e $n - 3$ |
 
+## Predittore categoriale a due livelli
 
-## Modello misto (parallelo)
-
+Il fattore $A$ (livelli $a_1$ e $a_2$) diventa la variabile dummy $X_2$: vale 0 per il livello di riferimento ($a_1$, il primo livello del fattore) e 1 per $a_2$.
 
 | **Funzione R** | **Descrizione** | **Dettagli** |
 |------------------------|----------------|------------------------------------|
-|  `lm(y ~ x1 + A)`  | Variabile y spiegata in funzione della combinazione lineare del predittore quantitativo `x1` e di quello fattoriale $A$, $gdl = n -3$ | $y_i = \beta_0 + \beta_1 X_{1i}  + \varepsilon_i$ se $X_2 = 0$ |
-|| $y_i = (\beta_0 + \beta_2) + \beta_1 X_{1i}  + \varepsilon_i$ se $X_2 =1$|
+| `factor(A, levels = c("a1", "a2"))` | Stabilisce l'ordine dei livelli: il primo è il riferimento | Senza `levels` l'ordine è alfabetico |
+| `lm(y ~ A)` | Variabile y spiegata in funzione del fattore `A`, $gdl = n - 2$ | $y_i = \beta_0 + \beta_2 X_{2i} + \varepsilon_i$ |
+| | $\beta_0$: media attesa di y nel gruppo di riferimento | $y^* = \beta_0$ se $X_2 = 0$ |
+| | $\beta_2$: differenza tra le medie attese dei due gruppi | $y^* = \beta_0 + \beta_2$ se $X_2 = 1$ |
+
+## Modello misto (parallelo)
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `lm(y ~ x1 + A)` | Variabile y spiegata in funzione della combinazione lineare del predittore quantitativo `x1` e di quello fattoriale `A`, $gdl = n - 3$ | $y_i = \beta_0 + \beta_1 X_{1i} + \varepsilon_i$ se $X_2 = 0$ |
+| | Due rette parallele (stessa pendenza $\beta_1$) | $y_i = (\beta_0 + \beta_2) + \beta_1 X_{1i} + \varepsilon_i$ se $X_2 = 1$ |
+| | $\beta_2$: differenza attesa tra $a_2$ e $a_1$ a parità di $x_1$ | |
 
 ## Modello misto (interazione)
 
-
-| **Test / Funzione R** | **Descrizione** | **Dettagli** |
+| **Funzione R** | **Descrizione** | **Dettagli** |
 |------------------------|----------------|------------------------------------|
-|  `lm(y ~ x1 + A + x1*A)`  | Variabile y spiegata in funzione della combinazione lineare del predittore quantitativo `x1`, di quello fattoriale $A$ e della loro interazione, $gdl = n -4$ | $y_i = \beta_0 + \beta_1 X_{1i}  + \varepsilon_i$ se $X_2 = 0$ |
-|| $y_i = \beta_0 + \beta_2) + (\beta_1 + \beta_3) X_{1i} + \varepsilon_i$ se $X_2 =1$|
+| `lm(y ~ x1 + A + x1:A)` | Variabile y spiegata in funzione della combinazione lineare del predittore quantitativo `x1`, di quello fattoriale `A` e della loro interazione, $gdl = n - 4$ | $y_i = \beta_0 + \beta_1 X_{1i} + \varepsilon_i$ se $X_2 = 0$ |
+| `lm(y ~ x1 * A)` | Forma abbreviata, equivale a `x1 + A + x1:A` | $y_i = (\beta_0 + \beta_2) + (\beta_1 + \beta_3) X_{1i} + \varepsilon_i$ se $X_2 = 1$ |
+| | $\beta_3$: differenza tra le pendenze dei due gruppi | $H_0: \beta_3 = 0$ (rette parallele) |
 
+## Predittore categoriale a $l$ livelli
 
+Il fattore $A$ con $l$ livelli diventa $l - 1$ variabili dummy. Con tre livelli ($a_1$ riferimento, $a_2$, $a_3$) le dummy sono $D_1$ (vale 1 per $a_2$) e $D_2$ (vale 1 per $a_3$).
 
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `factor(A, levels = c("a1", "a2", "a3"))` | Stabilisce l'ordine dei livelli: il primo è il riferimento | |
+| `lm(y ~ A)` | Variabile y spiegata in funzione del fattore `A` a tre livelli, $k = 3$, $gdl = n - 3$ | $y_i = \beta_0 + \beta_1 d_{1i} + \beta_2 d_{2i} + \varepsilon_i$ |
+| | $\beta_0$: media attesa del gruppo di riferimento | $y^* = \beta_0$ per $a_1$ |
+| | $\beta_1$, $\beta_2$: differenze tra la media attesa di $a_2$ (o $a_3$) e quella di $a_1$ | $y^* = \beta_0 + \beta_1$ per $a_2$, $y^* = \beta_0 + \beta_2$ per $a_3$ |
+| `summary(lm(y ~ A))` | Test $t$ sulle dummy (confronti con il riferimento) e test $F$ sul modello | $F$: $H_0: \beta_1 = \beta_2 = 0$, $gdl = k - 1$ e $n - k$ |
+| `mean(data$y[data$A == "a2"])` | Media di y nel gruppo $a_2$ | Coincide con $\hat{\beta}_0 + \hat{\beta}_1$ |
+
+# Analisi della varianza (ANOVA) a una via
+
+$k$ = numero di gruppi, $n$ = numerosità totale, $n_j$ e $\bar{y}_j$ = numerosità e media del gruppo $j$.
+
+$H_0: \mu_1 = \mu_2 = \dots = \mu_k$, $H_1$: almeno una media è diversa dalle altre.
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `anova(lm(y ~ A))` | Tabella dell'ANOVA a una via: colonne `Df` (gdl), `Sum Sq` (SQ), `Mean Sq` (MQ), `F value` e `Pr(>F)` | $F = \dfrac{SQ_{Tra} / (k - 1)}{SQ_{In} / (n - k)} = \dfrac{MQ_{Tra}}{MQ_{In}}$ |
+| | Scomposizione della variabilità | $SQ_{Tot} = SQ_{Tra} + SQ_{In}$ |
+| | Somma dei quadrati totale, $gdl = n - 1$ | $SQ_{Tot} = \sum_{j=1}^{k} \sum_{i=1}^{n_j} (y_{ij} - \bar{y})^2$ |
+| | Somma dei quadrati tra i gruppi, $gdl = k - 1$ | $SQ_{Tra} = \sum_{j=1}^{k} n_j (\bar{y}_j - \bar{y})^2$ |
+| | Somma dei quadrati nei gruppi, $gdl = n - k$ | $SQ_{In} = \sum_{j=1}^{k} \sum_{i=1}^{n_j} (y_{ij} - \bar{y}_j)^2$ |
+| `qf(1 - alpha, k - 1, n - k)` | $F$ critico | |
+| `1 - pf(F, k - 1, n - k)` | $p$-value del test $F$ | |
+
+Regressione e ANOVA con lo stesso fattore danno lo stesso test $F$: $SQ_{In} = SQE$ (somma dei quadrati dei residui) e $SQ_{Tra} = SQT - SQE$.
+
+# Estrarre i risultati del modello
+
+`mod` è l'oggetto restituito da `lm()`, ad esempio `mod = lm(y ~ x)`.
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `summary(mod)$coefficients` | Tabella dei coefficienti: stime, errori standard, $t$ osservati e $p$-value | Una riga per parametro (`nrow()` dà $k$) |
+| `summary(mod)$coefficients[, 1:2]` | Solo stime ed errori standard | |
+| `summary(mod)$coefficients[2, "t value"]` | $t$ osservato del coefficiente angolare | $t^o = \hat{\beta} / \widehat{SE}(\hat{\beta})$ |
+| `summary(mod)$r.squared` | $R^2$ | $R^2 = (SQT - SQE) / SQT$ |
+| `summary(mod)$adj.r.squared` | $R^2$ aggiustato | Tiene conto del numero di predittori |
+| `summary(mod)$fstatistic` | Statistica $F$ con i suoi gradi di libertà | $F = \dfrac{(SQT - SQE)/(k - 1)}{SQE/(n - k)}$ |
+| `df.residual(mod)` | Gradi di libertà dei residui | $n - k$ |
+| `residuals(mod)` | Residui | $e_i = y_i - y_i^*$ |
+| `fitted(mod)` | Valori stimati dal modello | $y_i^*$ |
+| `sum(residuals(mod)^2)` | Somma dei quadrati degli errori | $SQE = \sum_{i=1}^{n} e_i^2$, $\hat{\sigma}^2 = SQE / (n - k)$ |
+| `confint(mod)` | Intervalli di confidenza dei parametri (`level = 0.95` di default) | $\hat{\beta}_j \pm q_T(1 - \alpha/2 \mid n - k) \cdot \widehat{SE}(\hat{\beta}_j)$ |
+
+## p-value e valori critici
+
+*Calcolo manuale di p-value, valori critici e intervalli di confidenza*
+
+`(1 - pt(abs(to), n - k)) * 2` $\rightarrow$ $p$-value bidirezionale del test $t$ su un parametro
+
+`1 - pf(to^2, 1, n - k)` $\rightarrow$ $p$-value del test $F$ con un solo predittore ($F = t^2$)
+
+`qt(1 - (alpha / 2), n - k)` $\rightarrow$ $t$ critico a due code (anche per gli intervalli di confidenza)
+
+`stima - tcritico * se; stima + tcritico * se` $\rightarrow$ estremi dell'intervallo di confidenza
+
+# Controllo dei residui
+
+Si assume che gli errori siano distribuiti normalmente e indipendenti dal predittore, con la stessa varianza per tutti i valori di $x$.
+
+| **Funzione R** | **Descrizione** | **Dettagli** |
+|------------------------|----------------|------------------------------------|
+| `summary(residuals(mod))`, `hist(residuals(mod))` | Distribuzione dei residui | |
+| `qqnorm(residuals(mod))` e `qqline(residuals(mod))` | Grafico quantile-quantile | Normalità: i punti stanno lungo la retta |
+| `plot(x, residuals(mod))` | Residui rispetto al predittore | Indipendenza: punti casuali attorno allo 0 |
+| `plot(fitted(mod), residuals(mod))` | Residui rispetto ai valori stimati | |
+| `plot(residuals(mod))` | Residui rispetto all'ordine delle osservazioni | |
+| `abline(h = 0)` | Linea orizzontale in 0 da aggiungere ai grafici dei residui | |
