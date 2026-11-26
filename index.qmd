@@ -82,6 +82,8 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 
 [Dispensa statistica inferenziale: test statistici](dispensa-statistica-inferenziale-test.pdf)
+
+[Dispensa statistica inferenziale: modelli di regressione con predittori quantitativi](dispensa-statistica-inferenziale-regressione.pdf)
 <!-- [Dispensa statistica inferenziale](dispensa-statistica-inferenziale.pdf) -->
 
 #### Moduli 1, 2, 3
