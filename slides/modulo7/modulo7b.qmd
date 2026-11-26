@@ -378,9 +378,6 @@ $k$ = numero di parametri stimati dal modello, **intercetta compresa**. Con due 
 
 - $k - 1$: il numero di **predittori**, cioè di coefficienti angolari che $H_0$ del modello pone uguali a 0 (l'intercetta non si conta). **Non** è il numero di parametri
 
-\footnotesize
-
-Ogni dummy e ogni interazione è un parametro in più: nel modello con interazione $k = 4$
 
 ## Gli step dell'inferenza
 

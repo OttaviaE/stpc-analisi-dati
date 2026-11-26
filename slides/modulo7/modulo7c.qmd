@@ -1,0 +1,862 @@
+---
+title: "Modulo Didattico 7c: Predittori categoriali e analisi della varianza a una via"
+subtitle: "Corso Analisi dei dati con applicazioni informatiche"
+author: Ottavia M. Epifania
+date: ""
+format:
+  beamer:
+    slide-level: 3
+    theme: Montpellier
+    colortheme: dove
+    navigation: horizontal
+    highlight-style: breeze
+    classoption: compress, aspectratio=149
+    innertheme: rounded
+    outertheme: miniframes
+callout-icon: false
+code-annotations: below
+header-includes: 
+   - \usepackage{graphicx} 
+   - \usepackage{xcolor}
+   - \usepackage{tikz}
+   - \usepackage{multirow}
+   - \newcommand{\cov}{\mathrm{Cov}}
+   - \usetikzlibrary{positioning,shapes,calc,arrows,decorations.pathreplacing,fit,tikzmark}
+   - \usepackage{fancyvrb}
+   - \definecolor{unipd}{RGB}{155,0,20}
+   - \definecolor{blu}{rgb}{0.0,0.33,0.71}
+   - \definecolor{evid}{RGB}{70,130,180}
+   - \definecolor{evidB}{RGB}{230,140,60}
+   - \definecolor{giallo}{RGB}{204,204,204}
+   - \AtBeginSubsection{}
+   - \AtBeginDocument{\author[Ottavia M. Epifania]{Ottavia M. Epifania \\ University of Trento \\\texttt{ottavia.epifania@unitn.it}}}
+   - \AtBeginDocument{\institute[]{A.A. 2026/2027} }
+   - |
+    \AtBeginSection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,hideallsubsections]
+      \end{frame}
+    }
+    \AtBeginSubsection[]{
+      \begin{frame}[plain]
+        \tableofcontents[currentsection,currentsubsection,hideothersubsections,subsectionstyle=show/shaded/hide]
+      \end{frame}
+    }
+    \newcolumntype{a}{>{\columncolor{evid!30}}c}
+    \tikzset{type1/.style={circle, fill=blue},
+      type2/.style={circle, fill=red},
+      type3/.style={circle, fill=olive},
+      type4/.style={circle, fill=cyan},
+      type5/.style={circle, fill=giallo},
+      type6/.style={circle, fill=blu},
+      info/.style = {rectangle, rounded corners, minimum width=3.5cm, minimum height=0.1cm, text centered, draw=black, text width=3.5cm},
+      stat/.style = {rectangle, rounded corners, minimum width=2.5cm, minimum height=0.1cm, text centered, draw=white, text width=2.5cm}}
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: true
+---
+
+
+```{r}
+#| include: false
+# funzioni per stampare l'output di summary(lm()) con le annotazioni
+
+# racchiude in un tikzmarknode la prima occorrenza (letterale) di testo
+segna = function(riga, testo, nome) {
+  pos = regexpr(testo, riga, fixed = TRUE)
+  if (pos < 0) return(riga)
+  fine = pos + nchar(testo)
+  paste0(substr(riga, 1, pos - 1),
+         "\\tikzmarknode{", nome, "}{", testo, "}",
+         substr(riga, fine, nchar(riga)))
+}
+
+# racchiude in un tikzmarknode i "pezzi" (separati da spazi) da k1 a k2 di una riga
+segna_pezzi = function(riga, k1, k2, nome) {
+  m = gregexpr("\\S+", riga)[[1]]
+  inizio = m[k1]
+  fine = m[k2] + attr(m, "match.length")[k2]
+  paste0(substr(riga, 1, inizio - 1),
+         "\\tikzmarknode{", nome, "}{", substr(riga, inizio, fine - 1), "}",
+         substr(riga, fine, nchar(riga)))
+}
+
+# parte = 1: tabella dei coefficienti; parte = 2: R^2 e test F
+annota_lm = function(modello, parte) {
+  nome = deparse(substitute(modello))
+  out = capture.output(summary(modello))
+  out = trimws(gsub("\t", "  ", out), "right")
+  while (!nzchar(out[1])) out = out[-1]
+  while (!nzchar(out[length(out)])) out = out[-length(out)]
+  # toglie "Call:", la formula e la riga vuota
+  out = out[-(1:3)]
+  ncoef = length(coef(modello))
+  if (parte == 1) {
+    i = grep("^Residuals:", out)
+    out[i] = segna(out[i], "Residuals:", "res0")
+    out[i + 2] = sprintf("\\tikzmarknode{res1}{%s}", out[i + 2])
+    i = grep("Estimate", out)
+    out[i] = segna(out[i], "Estimate", "est0")
+    out[i] = segna(out[i], "Std. Error", "se0")
+    out[i] = segna(out[i], "t value", "t0")
+    out[i] = segna(out[i], "Pr(>|t|)", "p0")
+    for (r in 1:ncoef) {
+      j = i + r
+      pezzi = strsplit(trimws(out[j]), "\\s+")[[1]]
+      # il p-value può essere scritto come "< 2e-16" (due pezzi)
+      fine_p = if (pezzi[5] == "<") 6 else 5
+      # dall'ultimo pezzo al primo, così le posizioni non cambiano
+      out[j] = segna_pezzi(out[j], 5, fine_p, paste0("p", r))
+      out[j] = segna_pezzi(out[j], 4, 4, paste0("t", r))
+      out[j] = segna_pezzi(out[j], 3, 3, paste0("se", r))
+      out[j] = segna_pezzi(out[j], 2, 2, paste0("est", r))
+    }
+    nodi = function(x) paste0("(", x, 0:ncoef, ")", collapse = "")
+    riquadri = paste0(
+      "  {\\node[box, fit=(res0)(res1)] (b1) {}; \\node[num] at (b1.north east) {1};}\n",
+      "  {\\node[box, fit=", nodi("est"), "] (b2) {}; \\node[num] at (b2.north east) {2};}\n",
+      "  {\\node[box, fit=", nodi("se"), "] (b3) {}; \\node[num] at (b3.north east) {3};}\n",
+      "  {\\node[box, fit=", nodi("t"), "] (b4) {}; \\node[num] at (b4.north east) {4};}\n",
+      "  {\\node[box, fit=", nodi("p"), "] (b5) {}; \\node[num] at (b5.north east) {5};}\n")
+  } else {
+    i = grep("^Residual standard error", out)
+    out[i] = sub("^(Residual standard error: [0-9.]+)", "\\\\tikzmarknode{rse}{\\1}", out[i])
+    out[i] = sub("([0-9]+ degrees of freedom)", "\\\\tikzmarknode{gdl}{\\1}", out[i])
+    i = grep("R-squared", out)
+    out[i] = sub("(Multiple R-squared: +[0-9.]+)", "\\\\tikzmarknode{r2}{\\1}", out[i])
+    out[i] = sub("(Adjusted R-squared: +[0-9.]+)", "\\\\tikzmarknode{r2a}{\\1}", out[i])
+    i = grep("^F-statistic", out)
+    out[i] = sprintf("\\tikzmarknode{f}{%s}", out[i])
+    riquadri = paste0(
+      "  {\\node[box, fit=(rse)] (b1) {}; \\node[num, anchor=west] at ([xshift=1pt]b1.east) {1};}\n",
+      "  {\\node[box, fit=(gdl)] (b2) {}; \\node[num, anchor=west] at ([xshift=1pt]b2.east) {2};}\n",
+      "  {\\node[box, fit=(r2)] (b3) {}; \\node[num, anchor=west] at ([xshift=1pt]b3.east) {3};}\n",
+      "  {\\node[box, fit=(r2a)] (b4) {}; \\node[num, anchor=west] at ([xshift=1pt]b4.east) {4};}\n",
+      "  {\\node[box, fit=(f)] (b5) {}; \\node[num, anchor=west] at ([xshift=1pt]b5.east) {5};}\n")
+  }
+  cat("```{=latex}\n",
+      "\\begin{Verbatim}[commandchars=\\\\\\{\\}, fontsize=\\scriptsize, frame=single, framesep=2mm]\n",
+      "> summary(", nome, ")\n",
+      paste(out, collapse = "\n"),
+      "\n\\end{Verbatim}\n",
+      "\\begin{tikzpicture}[remember picture, overlay,\n",
+      "  box/.style={draw=unipd, very thick, rounded corners=3pt, inner sep=1.5pt},\n",
+      "  num/.style={circle, fill=unipd, text=white, font=\\tiny\\bfseries,\n",
+      "              inner sep=0pt, minimum size=9pt}]\n",
+      riquadri,
+      "\\end{tikzpicture}\n```\n", sep = "")
+}
+
+# lettura dei risultati, scritta in base all'output
+p_fmt = function(p) ifelse(p < .001, "< .001", paste("=", round(p, 3)))
+
+# nei testi: {b} = valore assoluto della stima, {dir} = aumenta/diminuisce,
+# {piu} = più alto/più basso, {piua} = più alta/più bassa
+leggi = function(modello, j, etichetta, simbolo, sig, nonsig) {
+  cf = summary(modello)$coefficients
+  b = cf[j, 1]
+  testo = if (cf[j, 4] < .05) sig else nonsig
+  testo = gsub("{b}", format(round(abs(b), 2), nsmall = 2), testo, fixed = TRUE)
+  testo = gsub("{dir}", ifelse(b > 0, "aumenta", "diminuisce"), testo, fixed = TRUE)
+  testo = gsub("{piu}", ifelse(b > 0, "più alto", "più basso"), testo, fixed = TRUE)
+  testo = gsub("{piua}", ifelse(b > 0, "più alta", "più bassa"), testo, fixed = TRUE)
+  cat("**", etichetta, "**: $", simbolo, " = ", round(b, 2),
+      "$, $t^o = ", round(cf[j, 3], 2), "$, $p$ ", p_fmt(cf[j, 4]), ". ",
+      ifelse(cf[j, 4] < .05, "Si rifiuta", "Non si rifiuta"),
+      " $H_0$: ", testo, "\n\n", sep = "")
+}
+
+
+# h0: ipotesi nulla in LaTeX; sig e nonsig: lettura in caso di rifiuto o non rifiuto
+leggi_F = function(modello, h0, sig, nonsig) {
+  s = summary(modello)
+  fs = s$fstatistic
+  pF = pf(fs[1], fs[2], fs[3], lower.tail = FALSE)
+  cat("**$R^2$**: il modello spiega il ", round(s$r.squared * 100),
+      "\\% della varianza di $Y$\n\n", sep = "")
+  cat("**Statistica $F$**: $F(", fs[2], ", ", fs[3], ") = ", round(fs[1], 2),
+      "$, $p$ ", p_fmt(pF), ". ",
+      ifelse(pF < .05, "Si rifiuta", "Non si rifiuta"),
+      " $H_0: ", h0, "$: ",
+      ifelse(pF < .05, sig, nonsig),
+      "\n\n", sep = "")
+}
+
+# grafico dei punteggi di k gruppi, con la media di ogni gruppo (segmento)
+# e la media totale (linea tratteggiata)
+grafico_gruppi = function(gruppi) {
+  k = length(gruppi)
+  colori = c("darkorange", "darkgreen", "steelblue")[1:k]
+  stripchart(gruppi, vertical = TRUE, pch = 19, cex = 1.8,
+             method = "jitter", jitter = 0.05, col = colori,
+             ylab = "Y", group.names = paste("Gruppo", 1:k),
+             xlim = c(0.5, k + 0.5))
+  medie = sapply(gruppi, mean)
+  segments(1:k - 0.25, medie, 1:k + 0.25, medie, lwd = 4, col = colori)
+  abline(h = mean(unlist(gruppi)), lty = 2, lwd = 2, col = "gray40")
+}
+```
+
+```{r}
+#| include: false
+# dati simulati: livello in azienda e stress lavorativo percepito (0-100)
+set.seed(2611)
+n_gr = 20
+livello = rep(c("junior", "intermedio", "senior"), each = n_gr)
+stress = c(rnorm(n_gr, 62, 9), rnorm(n_gr, 55, 9), rnorm(n_gr, 47, 9))
+stress = round(pmin(pmax(stress, 0), 100), 1)
+azienda = data.frame(livello, stress)
+
+# esempi per la scomposizione della variabilità
+es1 = list(c(15, 18, 17, 16), c(25, 28, 30, 26), c(10, 8, 6, 5))
+es2 = list(c(7, 12, 4), c(8, 9, 8), c(10, 5, 7))
+```
+
+# Un esempio
+
+## Livello in azienda e stress
+
+###
+
+Il servizio HR di un'azienda raccoglie lo **stress lavorativo percepito** (punteggi da 0 a 100) di `r nrow(azienda)` dipendenti, `r n_gr` per ciascun **livello in azienda**: junior, intermedio e senior
+
+\vspace{3mm}
+
+Due domande di ricerca:
+
+\vspace{2mm}
+
+::: {.callout-note}
+## Regressione
+
+Il livello in azienda permette di **prevedere** lo stress lavorativo?
+:::
+
+::: {.callout-note}
+## Analisi della varianza (ANOVA)
+
+Lo stress lavorativo medio è **diverso** a seconda del livello in azienda?
+:::
+
+
+### {.plain}
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 5
+boxplot(stress ~ factor(livello, levels = c("junior", "intermedio", "senior")),
+        data = azienda, col = c("darkorange", "darkgreen", "steelblue"),
+        xlab = "Livello in azienda", ylab = "Stress")
+points(1:3, tapply(azienda$stress,
+                   factor(azienda$livello, levels = c("junior", "intermedio", "senior")),
+                   mean),
+       pch = 4, cex = 3, lwd = 4, col = "blue")
+livelloF = factor(livello, levels = c("junior", "intermedio", "senior"))
+m0 = lm(stress ~ livelloF)
+coefmo = coef(m0)
+```
+
+
+# Regressione con un predittore categoriale a $l$ livelli 
+
+## Variabili dummy
+
+###
+
+
+Un fattore con **tre** livelli si traduce in **due** variabili dummy (numero di livelli $- 1$):
+
+| **Livello** | $D_1$ (intermedio) | $D_2$ (senior) |
+|:---|:---:|:---:|
+| junior (riferimento) | 0 | 0 |
+| intermedio | 1 | 0 |
+| senior | 0 | 1 |
+
+\small
+
+Il **gruppo di riferimento** è quello che vale 0 in tutte le dummy. Una terza dummy per i junior sarebbe ridondante: se $D_1 = 0$ e $D_2 = 0$ il dipendente è junior
+
+R crea le dummy in automatico e usa come riferimento il **primo livello** del fattore
+
+## Il modello
+
+###
+
+$$y_i = \beta_0 + \beta_1 d_{1i} + \beta_2 d_{2i} + \varepsilon_i \qquad \varepsilon_i \sim \mathcal{N}(0, \sigma^2)$$
+
+$$
+y^* =
+\begin{cases}
+\beta_0, & \text{junior } (D_1 = 0, D_2 = 0) \\
+\beta_0 + \beta_1, & \text{intermedio } (D_1 = 1, D_2 = 0) \\
+\beta_0 + \beta_2, & \text{senior } (D_1 = 0, D_2 = 1)
+\end{cases}
+$$
+
+\small
+
+- $\beta_0$: **media attesa** di $Y$ nel gruppo di riferimento (junior)
+
+- $\beta_1$: **differenza** tra la media attesa degli intermedi e quella dei junior
+
+- $\beta_2$: **differenza** tra la media attesa dei senior e quella dei junior
+
+\vspace{2mm}
+
+Il modello non stima una retta: il valore atteso $y^*$ di ogni dipendente è la **media del suo gruppo**
+
+## Sistemi di ipotesi
+
+###
+
+\small
+
+::: {.callout-note}
+## Ogni dummy ($j = 1, 2$): test $t$
+
+$H_0 : \beta_j = 0$: la media del gruppo $j$ è uguale a quella del gruppo di riferimento
+
+$H_1 : \beta_j \ne 0$: la media del gruppo $j$ è diversa da quella del gruppo di riferimento
+:::
+
+::: {.callout-note}
+## Il modello nel suo complesso: test $F$
+
+$H_0 : \beta_1 = \beta_2 = 0$: il livello non permette di prevedere lo stress, $\mu_{junior} = \mu_{intermedio} = \mu_{senior}$
+
+$H_1$: almeno un $\beta_j \ne 0$, almeno una media è diversa dalle altre
+:::
+
+###
+
+\small
+
+$k = 3$ parametri ($\beta_0$, $\beta_1$, $\beta_2$): un parametro per ogni **gruppo**, anche se il fattore è uno solo
+
+| **Test** | **$H_0$** | **Gradi di libertà** | **Esempio ($n = `r nrow(azienda)`$)** |
+|:---|:---:|:---:|:---:|
+| $t$ su ciascun parametro | $\beta_j = 0$ | $n - k = n - 3$ | `r nrow(azienda) - 3` |
+| $F$ sul modello | $\beta_1 = \beta_2 = 0$ | $k - 1 = 2$ e $n - k = n - 3$ | $F(2, `r nrow(azienda) - 3`)$ |
+
+\vspace{2mm}
+
+$$F = \frac{(SQT - SQE) / (k - 1)}{SQE / (n - k)}$$
+
+## In R
+
+###
+
+| **Simbolo R** | **Significato** |
+|---------------|-----------------|
+| `factor(A, levels = c(...))` | Stabilisce l'ordine dei livelli: il primo è il riferimento |
+| `lm(y ~ A)` | Stima il modello con il fattore `A`: R crea le dummy in automatico |
+| `summary(lm(y ~ A))` | Test $t$ sulle dummy (confronti con il gruppo di riferimento) e test $F$ sul modello |
+
+## Esempio
+
+###
+
+\small
+
+```{r}
+#| results: hide
+mod_liv = lm(stress ~ livello, data = azienda)
+summary(mod_liv)
+```
+
+\vspace{2mm}
+
+Il predittore `livello` è un fattore con livelli junior, intermedio e senior: R crea le dummy `livellointermedio` e `livellosenior` e usa junior come riferimento
+
+### {.fragile .plain}
+\scriptsize
+```{r}
+#| echo: false
+#| results: asis
+annota_lm(mod_liv, parte = 1)
+```
+
+```{=latex}
+\vspace{-5mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Statistiche descrittive dei residui $e_i = y_i - y_i^*$
+  \item Stime: media dei junior ($\hat{\beta}_0$) e differenze dalla media dei junior ($\hat{\beta}_1$, $\hat{\beta}_2$)
+  \item Errori standard $\widehat{SE}(\hat{\beta}_j)$
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $t$ osservati: $t^o_{\beta_j} = \hat{\beta}_j / \widehat{SE}(\hat{\beta}_j)$, con $H_0$: $\beta_j = 0$
+  \item $p$-value bidirezionale, $t$ di Student con $n - k$ gradi di libertà
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### {.fragile .plain}
+
+```{r}
+#| echo: false
+#| results: asis
+annota_lm(mod_liv, parte = 2)
+```
+
+```{=latex}
+\vspace{-3mm}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \item Errore standard dei residui: $\hat{\sigma} = \sqrt{SQE / (n - k)}$
+  \item Gradi di libertà: $n - k$
+  \item $R^2$: quota di varianza di $Y$ spiegata dal modello
+\end{enumerate}
+\end{column}
+\begin{column}{.48\textwidth}
+\footnotesize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $R^2$ aggiustato
+  \item Test $F$ sul modello, $H_0$: $\beta_1 = \beta_2 = 0$, con $k - 1 = 2$ e $n - k$ gradi di libertà
+\end{enumerate}
+\end{column}
+\end{columns}
+```
+
+### 
+
+\small
+
+```{r}
+tapply(azienda$stress, azienda$livello, mean)
+coef(mod_liv)
+# media degli intermedi
+coef(mod_liv)[1] + coef(mod_liv)[2]
+# media dei senior
+coef(mod_liv)[1] + coef(mod_liv)[3]
+```
+
+### 
+
+\footnotesize
+
+```{r}
+#| echo: false
+#| results: asis
+leggi(mod_liv, 1, "Intercetta", "\\hat{\\beta}_0",
+      "lo stress medio atteso dei dipendenti junior è significativamente diverso da 0",
+      "lo stress medio atteso dei dipendenti junior non è significativamente diverso da 0")
+leggi(mod_liv, 2, "Dummy intermedio", "\\hat{\\beta}_1",
+      "i dipendenti di livello intermedio hanno uno stress medio {piu} di {b} punti rispetto ai junior",
+      "lo stress medio dei dipendenti di livello intermedio non è significativamente diverso da quello dei junior")
+leggi(mod_liv, 3, "Dummy senior", "\\hat{\\beta}_2",
+      "i dipendenti senior hanno uno stress medio {piu} di {b} punti rispetto ai junior",
+      "lo stress medio dei dipendenti senior non è significativamente diverso da quello dei junior")
+leggi_F(mod_liv, h0 = "\\beta_1 = \\beta_2 = 0",
+        sig = "il livello in azienda permette di prevedere lo stress, almeno una media è diversa dalle altre",
+        nonsig = "non ci sono evidenze che il livello in azienda permetta di prevedere lo stress")
+```
+
+###
+
+\small
+
+I test $t$ confrontano ogni gruppo **solo** con il gruppo di riferimento. Per confrontare intermedi e senior si cambia il riferimento:
+
+\footnotesize
+
+```{r}
+azienda$livello2 = factor(azienda$livello,
+                          levels = c("intermedio", "junior", "senior"))
+mod_liv2 = lm(stress ~ livello2, data = azienda)
+round(summary(mod_liv2)$coefficients, 3)
+```
+
+Cambiano le stime e i test $t$ (ora le differenze sono rispetto agli intermedi), **non** cambiano $R^2$ e test $F$: il modello è lo stesso
+
+# Analisi della varianza a una via
+
+## Quando si usa
+
+###
+
+**1** variabile dipendente **metrica**
+
+\vspace{2mm}
+
+**1** fattore **qualitativo** con almeno $l \geq 3$ (gruppi indipendenti, disegno *between*)
+
+\vspace{3mm}
+
+::: {.callout-note}
+## Domanda
+
+Le medie della variabile dipendente nei gruppi sono **uguali** oppure **almeno una** è diversa?
+:::
+
+È l'analogo del test $t$ per campioni indipendenti quando i gruppi sono più di due
+
+
+La statistica test è la $F$ di Fisher (o di Snedecor): **AN**alysis **O**f **VA**riance
+
+### 
+
+
+Con 3 gruppi servirebbero 3 test $t$ (junior-intermedio, junior-senior, intermedio-senior)
+
+\vspace{2mm}
+
+Ogni test ha una probabilità $\alpha = .05$ di commettere un errore di I tipo. Se i 3 test fossero indipendenti, la probabilità di commetterne **almeno uno** sarebbe
+
+$$1 - (1 - .05)^3 = `r round(1 - .95^3, 3)`$$
+
+\vspace{2mm}
+
+L'ANOVA verifica l'ipotesi su tutte le medie con **un solo** test, con probabilità di errore di I tipo $\alpha$
+
+## Scomposizione della variabilità
+
+###
+
+L'analisi della varianza si basa sulla scomposizione della **variabilità totale** dei dati in:
+
+- una parte dovuta alla **variabile indipendente** (il fattore)
+
+- una parte dovuta a **tutte le variabili non controllate**
+
+\vspace{3mm}
+
+::: {.callout-note}
+## La domanda
+
+La variabilità **tra i gruppi** (*between*) è abbastanza grande rispetto alla variabilità **all'interno dei gruppi** (*within*) da poter considerare diverse le medie dei gruppi?
+:::
+
+### {.plain}
+
+\small
+
+Con i dati suddivisi in $l$ gruppi, la varianza totale è la somma di due quantità:
+
+$$Var_{Tot} = Var_{Tra} + Var_{In}$$
+
+
+$Var_{Tra}$: varianza **tra** i gruppi (*between*), è la **varianza delle medie** dei gruppi. Misura quanto le **medie** dei gruppi sono diverse tra loro
+
+$$Var_{Tra} = \frac{\sum_{j=1}^{k} n_j (\bar{y}_j - \bar{y})^2}{n}$$
+
+$Var_{In}$: varianza **nei** gruppi (*within*), è la **media delle varianze** dei gruppi. Misura quanto le osservazioni sono diverse dalla media **del proprio gruppo**
+
+$$Var_{In} = \frac{\sum_{j=1}^{k} n_j s_j^2}{n}$$
+
+\footnotesize
+
+$n_j$, $\bar{y}_j$ e $s_j^2$: numerosità, media e varianza del gruppo $j$; $\bar{y}$: media totale; $n$: numerosità totale
+
+### Esempio 1
+
+\small
+
+Gruppo 1: 15, 18, 17, 16 \quad Gruppo 2: 25, 28, 30, 26 \quad Gruppo 3: 10, 8, 6, 5
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| out-width: 75%
+grafico_gruppi(es1)
+```
+
+Prevale $Var_{Tra}$ o $Var_{In}$? Perché?
+
+### Esempio 2
+
+\small
+
+Gruppo 1: 7, 12, 4 \quad Gruppo 2: 8, 9, 8 \quad Gruppo 3: 10, 5, 7
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| out-width: 75%
+grafico_gruppi(es2)
+```
+
+Prevale $Var_{Tra}$ o $Var_{In}$? Perché?
+
+### Il legame con le ipotesi
+
+\small
+
+Quando $H_0$ è **vera**, le medie dei gruppi non sono diverse: il fattore **non** influenza la variabile dipendente
+
+$\rightarrow$ prevale la varianza **nei** gruppi (Esempio 2)
+
+\vspace{3mm}
+
+Quando $H_0$ è **falsa**, le medie dei gruppi sono diverse: il fattore influenza la variabile dipendente
+
+$\rightarrow$ prevale la varianza **tra** i gruppi (Esempio 1)
+
+## Dalla varianza alla devianza
+
+###
+
+\small
+
+La scomposizione si fa sulla **devianza** (somma dei quadrati, $SQ$), cioè la varianza moltiplicata per la numerosità $n$:
+
+$$SQ = Var \cdot n$$
+
+\vspace{2mm}
+
+$$SQ_{Tot} = SQ_{Tra} + SQ_{In}$$
+
+$$SQ_{Tot} = \sum_{j=1}^{k} \sum_{i=1}^{n_j} (y_{ij} - \bar{y})^2 \qquad
+SQ_{Tra} = \sum_{j=1}^{k} n_j (\bar{y}_j - \bar{y})^2 \qquad
+SQ_{In} = \sum_{j=1}^{k} \sum_{i=1}^{n_j} (y_{ij} - \bar{y}_j)^2$$
+
+\footnotesize
+
+$y_{ij}$: punteggio dell'osservazione $i$ nel gruppo $j$
+
+## Sistema di ipotesi e test $F$
+
+###
+
+::: {.callout-note}
+## Sistema di ipotesi
+
+Dati $k$ gruppi con medie $\mu_1, \mu_2, \ldots, \mu_k$ (e numerosità anche diverse):
+
+$H_0 : \mu_1 = \mu_2 = \ldots = \mu_k$
+
+$H_1$: almeno una media è diversa dalle altre
+:::
+
+\vspace{2mm}
+
+\small
+
+$H_1$ non dice **quale** media è diversa, né in che direzione: il test è sempre bidirezionale
+
+###
+
+\small
+
+::: {.callout-note}
+## Statistica test
+
+$$F = \frac{SQ_{Tra} / (k - 1)}{SQ_{In} / (n - k)} = \frac{MQ_{Tra}}{MQ_{In}}$$
+:::
+
+$MQ$: **m**edia dei **q**uadrati, la devianza divisa per i suoi gradi di libertà
+
+- $gdl_{Tra} = k - 1$ ($k$ = numero di gruppi)
+
+- $gdl_{In} = n - k$ ($n$ = numerosità totale)
+
+\vspace{2mm}
+
+Sotto $H_0$, $F$ segue una distribuzione $F$ di Fisher con $k - 1$ e $n - k$ gradi di libertà
+
+- se $H_0$ è vera, $MQ_{Tra}$ e $MQ_{In}$ sono simili e $F \approx 1$
+
+- più le medie sono diverse, più $F$ è grande: il $p$-value è l'area a **destra** di $F$ osservata
+
+### Regola di decisione
+
+\small
+
+::: {.callout-note}
+## Regola di decisione
+
+$p$-value $< \alpha$ (di solito .05) $\rightarrow$ si rifiuta $H_0$
+
+$p$-value $\geq \alpha$ $\rightarrow$ non si rifiuta $H_0$
+:::
+
+In modo equivalente, si rifiuta $H_0$ se $F$ osservata è maggiore del valore critico $F_{critico}$, il quantile $1 - \alpha$ della distribuzione $F$ con $k - 1$ e $n - k$ gradi di libertà (in R: `qf(.95, k - 1, n - k)`)
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 3.2
+#| out-width: 70%
+f_crit = qf(.95, 2, 9)
+curve(df(x, 2, 9), from = 0, to = 8, lwd = 2, ylab = "Densità", xlab = "F(2, 9)")
+xx = seq(f_crit, 8, length.out = 100)
+polygon(c(f_crit, xx, 8), c(0, df(xx, 2, 9), 0), col = "firebrick", border = NA)
+abline(v = f_crit, lty = 2)
+text(f_crit, 0.6, paste("F critico =", round(f_crit, 2)), pos = 4)
+```
+
+## La tabella dell'ANOVA
+
+###
+
+\small
+
+| **Fonte** | **gdl** | **SQ** | **MQ** | **F** |
+|:---|:---:|:---:|:---:|:---:|
+| Tra i gruppi (fattore) | $k - 1$ | $SQ_{Tra}$ | $SQ_{Tra} / (k - 1)$ | $MQ_{Tra} / MQ_{In}$ |
+| Nei gruppi (residui) | $n - k$ | $SQ_{In}$ | $SQ_{In} / (n - k)$ | |
+| Totale | $n - 1$ | $SQ_{Tot}$ | | |
+
+\vspace{2mm}
+
+## In `R`
+ 
+\small
+
+`anova(lm(y ~ A))`. Le colonne dell'output sono `Df` (gdl), `Sum Sq` (SQ), `Mean Sq` (MQ), `F value` ($F$) e `Pr(>F)` ($p$-value)
+
+```{r}
+#| eval: false
+anova(lm(y ~ gruppo))
+```
+
+## Esempio
+
+###
+
+\small
+
+Lo stress medio è diverso a seconda del livello in azienda?
+
+$$H_0: \mu_{junior} = \mu_{intermedio} = \mu_{senior} \qquad H_1: \text{almeno una media è diversa}$$
+
+```{r}
+anova(lm(stress ~ livello, data = azienda))
+```
+
+```{r}
+#| include: false
+tab_liv = anova(lm(stress ~ livello, data = azienda))
+F_liv = tab_liv[1, "F value"]
+p_liv = tab_liv[1, "Pr(>F)"]
+```
+
+$F(`r tab_liv[1, "Df"]`, `r tab_liv[2, "Df"]`) = `r round(F_liv, 2)`$, $p$ `r p_fmt(p_liv)`. `r ifelse(p_liv < .05, "Si rifiuta $H_0$: lo stress medio è diverso in almeno uno dei tre livelli", "Non si rifiuta $H_0$: non ci sono evidenze che lo stress medio sia diverso nei tre livelli")`
+
+\vspace{2mm}
+
+L'ANOVA dice **se** le medie sono diverse, non **quali**
+
+# Regressione e ANOVA
+
+## Lo stesso modello
+
+###
+
+\small
+
+Il test $F$ della regressione e il test $F$ dell'ANOVA sono lo **stesso test**:
+
+```{r}
+summary(mod_liv)$fstatistic
+anova(mod_liv)
+```
+
+Stessa $F$, stessi gradi di libertà, stesso $p$-value
+
+###
+
+\small
+
+Nella regressione con un predittore categoriale il valore atteso $y_i^*$ è la **media del gruppo** dell'osservazione $i$, quindi i residui sono le distanze dalla media del proprio gruppo:
+
+$$SQE = \sum_{i=1}^{n} (y_i - y_i^*)^2 = SQ_{In} \qquad SQT - SQE = SQ_{Tra}$$
+
+```{r}
+SQE = sum(residuals(mod_liv)^2)
+SQT = sum((azienda$stress - mean(azienda$stress))^2)
+c(SQ_tra = SQT - SQE, SQ_in = SQE)
+anova(mod_liv)[, "Sum Sq"]
+```
+
+\footnotesize
+
+$R^2 = (SQT - SQE) / SQT = SQ_{Tra} / SQ_{Tot}$: la quota di variabilità dello stress spiegata dal livello (`r round(summary(mod_liv)$r.squared, 3)`)
+
+###
+
+\small
+
+| | **Regressione** | **ANOVA** |
+|:---|:---|:---|
+| Domanda | Il livello **predice** lo stress? | Lo stress medio è **diverso** nei livelli? |
+| $H_0$ | $\beta_1 = \beta_2 = 0$ | $\mu_{junior} = \mu_{intermedio} = \mu_{senior}$ |
+| $k$ | parametri ($\beta_0$ e 2 dummy) $= 3$ | gruppi $= 3$ |
+| Variabilità spiegata | $SQT - SQE$ | $SQ_{Tra}$ |
+| Variabilità residua | $SQE$ | $SQ_{In}$ |
+| Gradi di libertà di $F$ | $k - 1$ e $n - k$ | $k - 1$ e $n - k$ |
+| In R | `summary(lm(y ~ A))` | `anova(lm(y ~ A))` |
+
+\vspace{2mm}
+
+Il numero di parametri della regressione è uguale al numero di gruppi dell'ANOVA: per questo i gradi di libertà coincidono
+
+### Che cosa aggiunge ciascuno
+
+\small
+
+**ANOVA**: una risposta globale. Almeno una media è diversa, ma non si sa quale
+
+\vspace{2mm}
+
+**Regressione**: lo stesso test $F$, più
+
+- le stime delle medie e delle differenze tra medie ($\hat{\beta}_j$), con gli intervalli di confidenza (`confint()`)
+
+- i test $t$ di ciascun gruppo contro il gruppo di riferimento
+
+\vspace{3mm}
+
+Con **due** gruppi, regressione con una dummy, ANOVA e test $t$ per campioni indipendenti con varianze omogenee (`var.equal = TRUE`) danno lo stesso risultato: $F = t^2$
+
+### Assunzioni
+
+\small
+
+Le assunzioni sono le stesse del modello di regressione:
+
+- osservazioni **indipendenti**
+
+- errori **normali** in ciascun gruppo
+
+- stessa varianza $\sigma^2$ in tutti i gruppi (**omogeneità delle varianze**)
+
+\vspace{2mm}
+
+Si controllano sui residui del modello, per esempio con il grafico quantile-quantile e con i residui nei gruppi:
+
+```{r}
+#| eval: false
+qqnorm(residuals(mod_liv))
+qqline(residuals(mod_liv), col = "red")
+boxplot(residuals(mod_liv) ~ azienda$livello)
+abline(h = 0, col = "red")
+```
+
+## In R
+
+###
+
+| **Simbolo R** | **Significato** |
+|---------------|-----------------|
+| `factor(A, levels = c(...))` | Ordine dei livelli del fattore: il primo è il riferimento |
+| `tapply(y, A, mean)` | Medie di `y` nei gruppi definiti da `A` |
+| `lm(y ~ A)` | Modello con il fattore `A` (dummy create in automatico) |
+| `summary(lm(y ~ A))` | Stime, test $t$ sulle dummy, $R^2$ e test $F$ |
+| `anova(lm(y ~ A))` | Tabella dell'ANOVA a una via |
+| `qf(.95, k - 1, n - k)` | Valore critico di $F$ con $\alpha = .05$ |
+| `1 - pf(F, k - 1, n - k)` | $p$-value del test $F$ |

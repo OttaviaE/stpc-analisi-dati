@@ -1,0 +1,241 @@
+"id";"ruolo";"anni_servizio";"reparto";"contratto";"modalita";"supporto_sociale";"carico_lavoro";"burnout";"benessere_pre";"benessere_post";"stress_pre";"stress_post"
+1;"senior";26;"commerciale";"indeterminato";"remoto";38;25;12;43;46;34;34
+2;"junior";2;"risorse umane";"indeterminato";"presenza";37;25;37;31;26;28;27
+3;"intermedio";11;"amministrazione";"determinato";"remoto";28;27;31;22;23;29;30
+4;"senior";15;"produzione";"indeterminato";"presenza";26;38;42;30;31;29;30
+5;"senior";19;"produzione";"indeterminato";"remoto";20;45;45;25;21;37;34
+6;"intermedio";12;"commerciale";"determinato";"remoto";22;33;37;27;26;29;29
+7;"junior";5;"produzione";"indeterminato";"presenza";16;37;41;26;27;30;32
+8;"intermedio";9;"commerciale";"determinato";"remoto";44;32;15;35;42;34;32
+9;"senior";22;"amministrazione";"determinato";"remoto";28;45;34;21;19;30;34
+10;"junior";10;"amministrazione";"determinato";"presenza";26;27;42;33;28;32;34
+11;"junior";7;"amministrazione";"determinato";"remoto";38;30;36;26;34;37;36
+12;"intermedio";12;"produzione";"determinato";"presenza";19;43;49;31;26;32;33
+13;"senior";21;"risorse umane";"indeterminato";"presenza";38;28;26;28;26;41;43
+14;"intermedio";14;"amministrazione";"indeterminato";"remoto";28;29;29;39;40;31;30
+15;"intermedio";10;"produzione";"indeterminato";"presenza";28;26;35;36;36;34;38
+16;"junior";3;"risorse umane";"determinato";"remoto";32;34;36;37;31;37;34
+17;"junior";6;"commerciale";"determinato";"presenza";22;24;30;31;37;27;31
+18;"intermedio";10;"amministrazione";"determinato";"presenza";48;32;29;26;28;31;23
+19;"intermedio";14;"risorse umane";"indeterminato";"presenza";37;36;29;35;43;17;15
+20;"senior";27;"risorse umane";"indeterminato";"remoto";42;33;14;32;39;36;34
+21;"senior";21;"produzione";"determinato";"presenza";22;23;26;41;50;32;31
+22;"intermedio";9;"risorse umane";"indeterminato";"remoto";30;32;24;25;23;38;35
+23;"intermedio";11;"commerciale";"determinato";"presenza";25;26;37;19;24;37;45
+24;"intermedio";14;"risorse umane";"determinato";"remoto";29;40;36;31;35;31;27
+25;"junior";2;"amministrazione";"indeterminato";"remoto";32;25;37;36;32;16;11
+26;"intermedio";13;"amministrazione";"indeterminato";"remoto";31;21;19;34;37;25;27
+27;"senior";26;"produzione";"indeterminato";"presenza";33;37;31;32;31;34;34
+28;"junior";4;"amministrazione";"determinato";"remoto";50;25;22;29;28;30;24
+29;"intermedio";12;"produzione";"indeterminato";"presenza";37;30;35;26;30;36;36
+30;"senior";20;"amministrazione";"determinato";"remoto";29;37;33;27;29;38;29
+31;"senior";26;"commerciale";"indeterminato";"presenza";50;29;16;32;35;28;26
+32;"junior";3;"amministrazione";"indeterminato";"remoto";35;20;32;26;25;36;34
+33;"junior";6;"risorse umane";"indeterminato";"remoto";34;22;25;25;34;32;29
+34;"senior";20;"produzione";"determinato";"presenza";23;16;29;27;30;38;42
+35;"senior";21;"produzione";"determinato";"remoto";40;37;21;28;28;38;38
+36;"junior";6;"produzione";"determinato";"presenza";42;25;33;25;30;28;26
+37;"senior";18;"commerciale";"indeterminato";"presenza";38;30;29;31;38;24;12
+38;"junior";5;"produzione";"indeterminato";"remoto";30;32;24;28;26;31;25
+39;"junior";6;"commerciale";"determinato";"remoto";34;34;29;29;28;35;33
+40;"senior";17;"risorse umane";"indeterminato";"presenza";29;37;35;33;35;33;37
+41;"intermedio";11;"amministrazione";"indeterminato";"remoto";49;25;16;37;40;31;26
+42;"senior";23;"risorse umane";"indeterminato";"remoto";37;33;19;19;23;40;44
+43;"intermedio";11;"amministrazione";"indeterminato";"presenza";41;19;23;31;28;43;39
+44;"senior";20;"risorse umane";"indeterminato";"remoto";30;30;18;27;35;22;23
+45;"junior";5;"commerciale";"indeterminato";"presenza";33;20;25;32;43;45;42
+46;"senior";20;"risorse umane";"indeterminato";"remoto";41;30;18;34;32;36;43
+47;"intermedio";9;"risorse umane";"determinato";"presenza";34;32;33;28;32;41;41
+48;"senior";21;"risorse umane";"indeterminato";"remoto";39;36;24;23;25;32;29
+49;"junior";7;"risorse umane";"indeterminato";"remoto";30;31;33;31;28;40;35
+50;"junior";5;"commerciale";"indeterminato";"presenza";50;28;19;28;34;34;28
+51;"junior";8;"risorse umane";"indeterminato";"presenza";34;39;40;32;34;23;18
+52;"junior";5;"risorse umane";"indeterminato";"remoto";50;38;24;39;36;29;30
+53;"junior";9;"produzione";"indeterminato";"remoto";23;28;30;43;50;23;23
+54;"senior";22;"risorse umane";"indeterminato";"remoto";34;27;23;25;19;19;16
+55;"intermedio";10;"produzione";"determinato";"remoto";33;22;21;22;22;19;21
+56;"intermedio";3;"amministrazione";"indeterminato";"presenza";33;29;37;32;29;38;35
+57;"intermedio";11;"amministrazione";"indeterminato";"remoto";45;30;12;29;29;27;23
+58;"intermedio";12;"commerciale";"indeterminato";"remoto";29;27;26;34;32;31;26
+59;"intermedio";10;"produzione";"indeterminato";"presenza";13;35;48;30;35;36;34
+60;"senior";23;"commerciale";"determinato";"remoto";38;25;17;25;22;27;28
+61;"intermedio";12;"produzione";"indeterminato";"presenza";26;39;38;34;36;36;35
+62;"junior";3;"amministrazione";"indeterminato";"presenza";36;27;27;34;30;28;25
+63;"senior";19;"amministrazione";"determinato";"remoto";33;28;16;26;29;29;22
+64;"junior";7;"risorse umane";"indeterminato";"presenza";50;31;34;37;47;30;32
+65;"senior";19;"commerciale";"indeterminato";"presenza";29;27;29;33;37;31;31
+66;"junior";8;"amministrazione";"determinato";"presenza";40;26;36;33;41;29;32
+67;"junior";4;"amministrazione";"determinato";"presenza";23;27;38;30;33;40;35
+68;"senior";19;"produzione";"indeterminato";"presenza";30;36;31;33;38;27;34
+69;"junior";4;"risorse umane";"indeterminato";"remoto";32;35;31;26;25;26;28
+70;"junior";9;"commerciale";"indeterminato";"remoto";42;37;16;30;27;12;10
+71;"junior";7;"amministrazione";"determinato";"remoto";45;31;28;36;40;24;19
+72;"intermedio";11;"risorse umane";"determinato";"presenza";41;33;34;28;29;26;18
+73;"senior";19;"produzione";"determinato";"presenza";20;36;35;31;24;32;30
+74;"intermedio";10;"commerciale";"indeterminato";"presenza";39;36;37;21;22;32;23
+75;"senior";24;"risorse umane";"indeterminato";"remoto";25;42;29;26;21;34;33
+76;"intermedio";14;"produzione";"indeterminato";"presenza";22;29;32;33;36;33;32
+77;"junior";4;"amministrazione";"indeterminato";"remoto";47;34;19;28;30;45;47
+78;"intermedio";16;"risorse umane";"indeterminato";"presenza";30;36;39;30;40;40;35
+79;"junior";5;"risorse umane";"indeterminato";"presenza";25;30;26;32;36;26;29
+80;"junior";8;"amministrazione";"indeterminato";"remoto";34;27;25;19;19;24;19
+81;"junior";5;"produzione";"determinato";"presenza";32;28;33;30;37;31;37
+82;"junior";5;"produzione";"indeterminato";"presenza";29;38;30;32;32;30;29
+83;"senior";20;"risorse umane";"determinato";"remoto";38;14;18;36;28;31;27
+84;"senior";21;"risorse umane";"indeterminato";"presenza";38;21;19;24;21;33;25
+85;"junior";8;"amministrazione";"indeterminato";"remoto";30;14;14;24;31;30;30
+86;"intermedio";11;"commerciale";"indeterminato";"remoto";24;30;27;29;25;17;20
+87;"senior";20;"produzione";"determinato";"presenza";32;33;28;34;37;34;33
+88;"intermedio";11;"amministrazione";"determinato";"remoto";23;27;35;31;29;34;31
+89;"senior";20;"produzione";"indeterminato";"presenza";18;50;34;22;17;32;35
+90;"intermedio";12;"commerciale";"indeterminato";"remoto";29;34;21;32;32;32;34
+91;"senior";23;"produzione";"determinato";"presenza";32;40;34;32;32;35;38
+92;"intermedio";10;"risorse umane";"determinato";"remoto";36;17;20;30;35;38;36
+93;"senior";23;"produzione";"indeterminato";"presenza";45;16;19;31;39;28;27
+94;"intermedio";14;"produzione";"determinato";"presenza";30;38;47;30;33;26;32
+95;"intermedio";11;"amministrazione";"indeterminato";"remoto";35;27;17;28;38;30;26
+96;"junior";4;"commerciale";"determinato";"presenza";42;26;39;36;42;35;30
+97;"senior";21;"commerciale";"determinato";"remoto";39;36;27;34;33;32;39
+98;"junior";7;"produzione";"determinato";"remoto";35;35;40;29;31;39;38
+99;"junior";6;"commerciale";"indeterminato";"presenza";34;31;27;25;24;31;38
+100;"intermedio";10;"commerciale";"determinato";"remoto";30;30;29;31;33;44;44
+101;"senior";19;"commerciale";"indeterminato";"remoto";37;32;13;31;35;35;31
+102;"intermedio";11;"commerciale";"indeterminato";"remoto";26;32;25;40;44;22;19
+103;"senior";22;"commerciale";"indeterminato";"remoto";20;23;39;29;35;39;33
+104;"senior";22;"risorse umane";"indeterminato";"remoto";28;36;28;40;43;33;30
+105;"intermedio";9;"produzione";"indeterminato";"presenza";26;30;24;24;27;36;35
+106;"senior";21;"risorse umane";"indeterminato";"remoto";37;21;18;34;30;36;36
+107;"intermedio";16;"produzione";"indeterminato";"presenza";28;34;33;36;31;30;32
+108;"junior";5;"risorse umane";"indeterminato";"presenza";45;27;27;30;28;29;25
+109;"junior";6;"risorse umane";"determinato";"remoto";30;23;38;28;33;37;38
+110;"intermedio";11;"produzione";"determinato";"presenza";23;24;40;25;19;41;40
+111;"junior";8;"amministrazione";"determinato";"remoto";35;28;27;18;18;35;35
+112;"junior";4;"produzione";"indeterminato";"presenza";26;31;29;31;27;18;22
+113;"junior";9;"commerciale";"indeterminato";"remoto";35;31;29;27;32;28;29
+114;"junior";4;"risorse umane";"indeterminato";"remoto";36;45;28;35;34;30;29
+115;"junior";3;"commerciale";"indeterminato";"remoto";20;37;38;40;42;24;19
+116;"intermedio";9;"produzione";"indeterminato";"remoto";26;32;30;24;28;41;44
+117;"junior";7;"amministrazione";"indeterminato";"remoto";25;28;35;26;27;32;29
+118;"junior";3;"commerciale";"determinato";"remoto";28;30;40;39;41;35;36
+119;"senior";17;"amministrazione";"determinato";"presenza";35;26;24;31;34;39;41
+120;"senior";16;"commerciale";"indeterminato";"remoto";28;31;31;35;33;33;32
+121;"junior";5;"amministrazione";"indeterminato";"presenza";36;32;29;36;34;29;28
+122;"junior";3;"risorse umane";"indeterminato";"remoto";35;28;23;38;33;28;32
+123;"senior";20;"commerciale";"indeterminato";"remoto";29;28;14;28;32;31;29
+124;"intermedio";7;"amministrazione";"indeterminato";"remoto";27;26;31;34;31;30;27
+125;"senior";23;"amministrazione";"determinato";"remoto";42;27;19;34;30;23;19
+126;"intermedio";16;"produzione";"determinato";"presenza";23;27;29;46;48;33;34
+127;"junior";5;"commerciale";"determinato";"presenza";15;37;39;30;28;36;38
+128;"intermedio";8;"amministrazione";"indeterminato";"presenza";40;22;25;25;27;27;29
+129;"junior";1;"amministrazione";"indeterminato";"presenza";42;24;19;37;30;30;28
+130;"junior";8;"produzione";"indeterminato";"presenza";24;25;38;28;32;27;26
+131;"intermedio";17;"commerciale";"indeterminato";"remoto";27;31;24;33;33;42;38
+132;"junior";6;"risorse umane";"determinato";"presenza";49;35;36;27;30;26;29
+133;"senior";19;"commerciale";"indeterminato";"presenza";35;43;39;26;31;30;35
+134;"intermedio";12;"amministrazione";"indeterminato";"presenza";40;32;33;29;26;39;37
+135;"intermedio";11;"commerciale";"determinato";"remoto";43;33;19;20;21;25;23
+136;"senior";17;"commerciale";"indeterminato";"presenza";23;33;30;25;22;34;28
+137;"junior";8;"risorse umane";"determinato";"presenza";45;27;25;35;39;32;33
+138;"intermedio";9;"risorse umane";"determinato";"remoto";34;22;27;33;34;28;22
+139;"senior";21;"amministrazione";"determinato";"presenza";29;27;34;25;29;41;41
+140;"senior";23;"risorse umane";"indeterminato";"remoto";35;34;20;32;32;32;27
+141;"junior";8;"produzione";"indeterminato";"presenza";27;28;24;26;26;36;36
+142;"intermedio";12;"amministrazione";"determinato";"remoto";38;36;33;30;27;31;37
+143;"intermedio";13;"commerciale";"indeterminato";"presenza";35;26;26;35;41;32;30
+144;"senior";21;"commerciale";"determinato";"presenza";43;42;38;32;35;39;39
+145;"senior";19;"produzione";"determinato";"presenza";38;28;24;33;32;32;30
+146;"intermedio";7;"commerciale";"indeterminato";"presenza";20;37;28;29;30;31;29
+147;"junior";5;"risorse umane";"indeterminato";"remoto";32;26;33;36;40;30;28
+148;"intermedio";14;"commerciale";"indeterminato";"presenza";26;25;30;32;38;47;42
+149;"intermedio";13;"commerciale";"determinato";"remoto";28;25;28;33;39;42;49
+150;"senior";19;"amministrazione";"indeterminato";"presenza";38;33;26;35;39;39;35
+151;"senior";21;"amministrazione";"determinato";"remoto";41;33;27;25;27;17;17
+152;"intermedio";12;"produzione";"determinato";"remoto";35;20;25;41;44;25;20
+153;"intermedio";10;"amministrazione";"indeterminato";"remoto";31;22;23;27;29;38;31
+154;"junior";5;"produzione";"indeterminato";"presenza";21;36;42;36;36;37;37
+155;"junior";1;"risorse umane";"indeterminato";"presenza";46;29;30;21;26;34;35
+156;"senior";20;"amministrazione";"determinato";"presenza";26;16;30;37;39;32;26
+157;"intermedio";16;"risorse umane";"indeterminato";"presenza";32;35;36;29;25;32;32
+158;"intermedio";11;"amministrazione";"determinato";"presenza";37;27;36;38;36;30;27
+159;"intermedio";10;"commerciale";"determinato";"remoto";33;25;14;31;29;30;31
+160;"senior";23;"risorse umane";"determinato";"remoto";37;39;30;28;26;39;33
+161;"intermedio";9;"commerciale";"indeterminato";"remoto";35;24;21;32;32;46;50
+162;"intermedio";8;"commerciale";"indeterminato";"presenza";24;29;36;30;29;35;36
+163;"senior";23;"produzione";"determinato";"presenza";25;34;38;24;22;35;28
+164;"senior";20;"commerciale";"determinato";"presenza";32;33;26;34;33;32;34
+165;"intermedio";8;"amministrazione";"indeterminato";"remoto";33;30;24;36;41;31;32
+166;"intermedio";15;"risorse umane";"indeterminato";"presenza";26;33;31;32;33;29;34
+167;"junior";1;"risorse umane";"determinato";"presenza";45;28;34;30;34;32;39
+168;"senior";25;"commerciale";"determinato";"remoto";36;17;24;23;28;29;28
+169;"senior";20;"amministrazione";"determinato";"remoto";24;30;28;34;36;34;37
+170;"senior";20;"risorse umane";"indeterminato";"presenza";27;37;28;40;44;23;29
+171;"junior";7;"amministrazione";"indeterminato";"presenza";36;25;29;45;42;36;28
+172;"junior";5;"commerciale";"indeterminato";"presenza";21;31;32;37;32;26;26
+173;"junior";9;"amministrazione";"indeterminato";"presenza";39;29;26;34;41;29;24
+174;"intermedio";10;"risorse umane";"indeterminato";"presenza";28;28;37;32;33;37;38
+175;"intermedio";13;"produzione";"determinato";"presenza";17;42;37;31;39;26;24
+176;"junior";2;"produzione";"indeterminato";"presenza";24;33;47;28;29;26;29
+177;"junior";6;"commerciale";"indeterminato";"remoto";33;36;28;21;25;34;32
+178;"senior";24;"risorse umane";"determinato";"remoto";43;24;10;25;25;42;41
+179;"intermedio";15;"produzione";"determinato";"presenza";24;36;37;40;36;22;31
+180;"intermedio";12;"commerciale";"determinato";"remoto";36;20;22;23;27;28;27
+181;"intermedio";9;"amministrazione";"determinato";"presenza";46;37;35;32;34;19;21
+182;"senior";21;"produzione";"indeterminato";"presenza";33;23;19;29;32;31;21
+183;"intermedio";12;"amministrazione";"indeterminato";"remoto";26;38;33;20;19;36;41
+184;"junior";6;"produzione";"determinato";"remoto";22;31;40;35;45;30;32
+185;"junior";6;"produzione";"indeterminato";"presenza";33;41;36;27;31;25;25
+186;"intermedio";12;"risorse umane";"determinato";"presenza";31;32;30;23;26;39;39
+187;"junior";6;"commerciale";"determinato";"presenza";22;31;47;38;44;22;17
+188;"intermedio";15;"amministrazione";"determinato";"presenza";27;25;35;32;40;37;38
+189;"intermedio";16;"amministrazione";"determinato";"presenza";31;38;32;32;35;34;25
+190;"junior";1;"amministrazione";"indeterminato";"remoto";32;28;22;24;29;32;32
+191;"intermedio";11;"amministrazione";"determinato";"remoto";24;34;31;20;20;44;36
+192;"intermedio";10;"commerciale";"indeterminato";"presenza";41;24;28;17;25;29;27
+193;"intermedio";10;"commerciale";"indeterminato";"remoto";32;25;27;32;35;27;25
+194;"intermedio";13;"produzione";"indeterminato";"presenza";23;44;32;17;16;36;36
+195;"junior";1;"amministrazione";"determinato";"remoto";44;30;22;28;32;27;19
+196;"junior";1;"produzione";"determinato";"presenza";27;37;42;18;17;33;31
+197;"junior";7;"commerciale";"indeterminato";"remoto";42;28;15;23;26;27;22
+198;"junior";3;"risorse umane";"determinato";"remoto";37;22;28;29;29;38;30
+199;"intermedio";12;"amministrazione";"determinato";"presenza";33;34;36;23;28;30;30
+200;"intermedio";12;"commerciale";"determinato";"presenza";34;30;33;44;47;31;29
+201;"senior";22;"risorse umane";"determinato";"presenza";30;28;37;36;39;29;35
+202;"senior";26;"produzione";"determinato";"presenza";40;27;34;24;24;37;36
+203;"junior";8;"commerciale";"determinato";"remoto";41;35;29;22;22;26;19
+204;"junior";3;"risorse umane";"indeterminato";"presenza";37;39;38;21;19;35;36
+205;"junior";5;"produzione";"determinato";"presenza";29;30;47;23;29;34;32
+206;"senior";18;"amministrazione";"indeterminato";"presenza";29;37;26;34;36;35;41
+207;"intermedio";16;"risorse umane";"determinato";"presenza";39;19;31;28;26;32;29
+208;"senior";22;"amministrazione";"indeterminato";"presenza";23;37;28;27;30;37;32
+209;"senior";21;"amministrazione";"determinato";"presenza";27;26;34;34;32;24;23
+210;"junior";2;"commerciale";"indeterminato";"remoto";31;29;25;33;41;33;28
+211;"junior";2;"commerciale";"determinato";"presenza";36;37;43;31;35;31;26
+212;"junior";3;"produzione";"indeterminato";"presenza";30;28;36;32;35;36;31
+213;"intermedio";12;"commerciale";"indeterminato";"remoto";31;39;31;39;48;38;38
+214;"senior";23;"commerciale";"indeterminato";"remoto";34;32;17;27;32;23;21
+215;"senior";26;"produzione";"determinato";"presenza";35;37;30;29;37;36;34
+216;"intermedio";11;"commerciale";"indeterminato";"presenza";29;34;28;21;22;28;25
+217;"intermedio";12;"produzione";"indeterminato";"presenza";29;40;29;18;17;26;25
+218;"senior";22;"produzione";"indeterminato";"presenza";19;30;21;35;43;25;27
+219;"junior";3;"produzione";"indeterminato";"presenza";40;35;35;31;33;33;33
+220;"intermedio";11;"amministrazione";"indeterminato";"remoto";28;32;40;28;31;38;31
+221;"intermedio";13;"amministrazione";"determinato";"presenza";26;34;41;36;34;26;27
+222;"intermedio";14;"produzione";"indeterminato";"remoto";21;37;33;33;39;40;42
+223;"intermedio";10;"risorse umane";"determinato";"remoto";43;29;11;36;39;23;26
+224;"intermedio";14;"commerciale";"indeterminato";"presenza";32;29;28;32;23;31;23
+225;"junior";1;"amministrazione";"indeterminato";"remoto";34;32;28;24;25;25;28
+226;"intermedio";12;"amministrazione";"indeterminato";"remoto";23;34;33;24;27;32;26
+227;"senior";21;"commerciale";"indeterminato";"remoto";33;36;27;27;24;29;29
+228;"junior";7;"commerciale";"determinato";"presenza";14;36;50;32;34;27;23
+229;"intermedio";10;"risorse umane";"indeterminato";"presenza";38;25;26;27;29;38;33
+230;"junior";1;"risorse umane";"determinato";"remoto";40;30;29;24;22;25;22
+231;"intermedio";7;"produzione";"determinato";"presenza";31;33;40;29;22;23;25
+232;"senior";21;"amministrazione";"indeterminato";"remoto";42;21;13;41;44;26;25
+233;"senior";22;"risorse umane";"indeterminato";"remoto";38;31;10;33;35;36;31
+234;"junior";7;"amministrazione";"determinato";"presenza";28;27;29;36;39;25;25
+235;"senior";18;"produzione";"determinato";"presenza";33;30;30;32;32;25;26
+236;"intermedio";11;"commerciale";"determinato";"presenza";34;26;31;43;42;34;34
+237;"intermedio";12;"amministrazione";"indeterminato";"remoto";35;28;23;32;34;33;24
+238;"intermedio";14;"amministrazione";"indeterminato";"presenza";26;27;35;23;31;31;32
+239;"intermedio";12;"produzione";"indeterminato";"presenza";29;28;34;25;31;39;34
+240;"senior";23;"risorse umane";"determinato";"presenza";32;24;33;30;34;34;29
