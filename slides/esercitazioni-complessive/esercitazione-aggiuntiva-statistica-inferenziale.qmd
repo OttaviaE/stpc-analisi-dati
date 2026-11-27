@@ -1,0 +1,122 @@
+---
+title: "Esercitazione di statistica inferenziale"
+subtitle: "Testo degli esercizi"
+format:
+  html:
+    toc: true
+    toc-depth: 1
+    embed-resources: true
+---
+
+::: {.callout-important}
+## Prima di iniziare: creare il progetto R
+
+Per l'esercitazione va creato un **nuovo progetto R**, chiamato `esercitazione-inferenziale`:
+
+- **chi lavora con RStudio sul proprio PC** deve creare il progetto sul **Desktop** (*File → New Project → New Directory → New Project*, scegliendo il Desktop come cartella di destinazione);
+
+- **chi lavora con Posit Cloud** deve creare un nuovo progetto (*New Project → New RStudio Project*) e rinominarlo `esercitazione-inferenziale`.
+
+Il dataset `dati-esercitazione.csv` e il file `esercitazione-inferenziale-nomecognome.qmd` vanno salvati direttamente nella cartella del progetto, senza creare sottocartelle. Il file `.qmd` va rinominato sostituendo `nomecognome` con il proprio nome e cognome (tutto minuscolo, senza spazi e senza accenti, es. `esercitazione-inferenziale-mariarossi.qmd`).
+
+La struttura finale deve essere questa:
+
+```
+esercitazione-inferenziale/
+├── esercitazione-inferenziale.Rproj
+├── esercitazione-inferenziale-nomecognome.qmd
+└── dati-esercitazione.csv
+```
+
+Il nome del progetto va scritto esattamente così: tutto minuscolo, senza spazi e senza accenti.
+:::
+
+::: {.callout-note}
+## Indicazioni generali
+
+- Per ogni esercizio vanno calcolate le statistiche descrittive di base appropriate al livello di misurazione delle variabili coinvolte (es. frequenze e moda per le variabili categoriali, indici di tendenza centrale e di variabilità per le variabili quantitative).
+- Ogni analisi inferenziale deve essere preceduta dalle opportune rappresentazioni grafiche delle variabili coinvolte e della loro relazione.
+- Per ogni domanda di ricerca vanno formulate le rispettive ipotesi statistiche.
+- Per tutte le analisi si considera un livello di significatività $\alpha = 0.05$.
+:::
+
+# Il dataset
+
+Il dataset si chiama `dati-esercitazione.csv`.
+In un'indagine sul benessere organizzativo sono stati raccolti i dati di 240 dipendenti di aziende di uno stesso settore. Tutti i dipendenti hanno partecipato a un percorso di formazione sulla gestione dello stress: il benessere e lo stress sono stati misurati prima e dopo il percorso.
+
+Le variabili descritte sono:
+
+- `id`: codice identificativo del dipendente
+
+- `ruolo`: ruolo ricoperto in azienda, `junior`, `intermedio`, `senior`
+
+- `anni_servizio`: anni di servizio in azienda
+
+- `reparto`: reparto in cui si lavora, `amministrazione`, `produzione`, `commerciale`, `risorse umane`
+
+- `contratto`: tipo di contratto, `determinato` vs. `indeterminato`
+
+- `modalita`: modalità di lavoro prevalente, `presenza` vs. `remoto`
+
+- `supporto_sociale`: punteggio di supporto sociale percepito (da 10 a 50), maggiore è il punteggio maggiore è il supporto percepito
+
+- `carico_lavoro`: punteggio di carico di lavoro percepito (da 10 a 50), maggiore è il punteggio maggiore è il carico percepito
+
+- `burnout`: punteggio di burnout (da 10 a 50), maggiore è il punteggio maggiore è il burnout
+
+- `benessere_pre`, `benessere_post`: punteggio di benessere (da 10 a 50) prima e dopo il percorso di formazione, maggiore è il punteggio maggiore è il benessere
+
+- `stress_pre`, `stress_post`: punteggio di stress (da 10 a 50) prima e dopo il percorso di formazione, maggiore è il punteggio maggiore è lo stress
+
+# Esercizio 1
+
+Il tipo di modalità di lavoro (in presenza o da remoto) è associato al reparto in cui si lavora? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.
+
+# Esercizio 2
+
+I dipendenti del campione sono distribuiti in modo uniforme tra i quattro reparti? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.
+
+# Esercizio 3
+
+Nelle aziende del settore, la media degli anni di servizio dei dipendenti è pari a 12 anni. Gli anni di servizio dei dipendenti del campione sono diversi da quelli delle aziende del settore? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano il p-value e confrontarlo con quello restituito da R.
+
+# Esercizio 4
+
+Nelle aziende del settore, il punteggio medio di supporto sociale percepito è pari a 30. I dipendenti del campione percepiscono un supporto sociale maggiore rispetto alle aziende del settore? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano il valore critico e confrontarlo con la statistica test.
+
+# Esercizio 5
+
+Considerando solo i dipendenti junior e senior (escludendo quindi il ruolo intermedio), il livello di burnout è diverso tra i due ruoli? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano l'intervallo di confidenza all'89% per la differenza tra le medie.
+
+# Esercizio 6
+
+Chi lavora da remoto ha un livello di burnout inferiore rispetto a chi lavora in presenza? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano il p-value e confrontarlo con quello restituito da R.
+
+# Esercizio 7
+
+Il percorso di formazione ha migliorato il benessere dei dipendenti? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.
+
+# Esercizio 8
+
+Il percorso di formazione ha migliorato il livello di stress dei dipendenti? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.
+
+# Esercizio 9
+
+Il supporto sociale percepito permette di predire il livello di burnout? Formulare le ipotesi sui coefficienti del modello, condurre l'analisi appropriata e commentare il risultato. Rappresentare i dati con la retta di regressione stimata, verificare con due grafici la normalità dei residui e l'indipendenza tra predittore e residui, e calcolare a mano l'intervallo di confidenza al 95% per il coefficiente angolare.
+
+# Esercizio 10
+
+Il supporto sociale percepito e il carico di lavoro percepito permettono di predire il livello di burnout? Formulare le ipotesi sui coefficienti del modello, condurre l'analisi e commentare il risultato.
+
+# Esercizio 11
+
+Il supporto sociale percepito e il tipo di contratto permettono di predire il livello di burnout? Considerare un modello in cui l'effetto del supporto sociale sia lo stesso per i due tipi di contratto. Formulare le ipotesi sui coefficienti del modello, condurre l'analisi e commentare il risultato. Scrivere le equazioni delle rette per i due tipi di contratto sulla base dei parametri stimati e rappresentarle nel grafico di dispersione.
+
+# Esercizio 12
+
+L'effetto del supporto sociale percepito sul livello di burnout cambia in base alla modalità di lavoro? Formulare le ipotesi sui coefficienti del modello, condurre l'analisi e commentare il risultato. Scrivere le equazioni delle rette per le due modalità di lavoro sulla base dei parametri stimati e rappresentarle nel grafico di dispersione.
+
+# Esercizio 13
+
+Il ruolo permette di predire il livello di burnout? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.

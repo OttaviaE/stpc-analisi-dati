@@ -273,3 +273,9 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 * [Laboratorio Modulo 7 (Testo)](slides/modulo7/Laboratorio/LaboratorioRmod7_esercizi.html)
 * [Laboratorio Modulo 7 (Template e dati)](slides/modulo7/Laboratorio/laboratorio-modulo7.zip)
 * [Laboratorio Modulo 7 (Soluzioni)](slides/modulo7/Laboratorio/LaboratorioRmod7_soluzioni.html)
+
+## Esercitazione completa statistica inferenziale
+
+* [Esercitazione completa statistica inferenziale (Testo)](slides/esercitazioni-complessive/esercitazione-aggiuntiva-statistica-inferenziale.html)
+* [Esercitazione completa statistica inferenziale (Template e dati)](slides/esercitazioni-complessive/es-statistica-inferenziale.zip)
+* [Esercitazione completa statistica inferenziale (Soluzioni)](slides/esercitazioni-complessive/esercitazione-aggiuntiva-statistica-inferenziale-soluzioni.html)
