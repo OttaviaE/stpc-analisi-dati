@@ -276,6 +276,5 @@ Le esercitazioni vanno consegnate almeno una settimana prima dell'appello d'esam
 
 ## Esercitazione completa statistica inferenziale
 
-* [Esercitazione completa statistica inferenziale (Testo)](slides/esercitazioni-complessive/esercitazione-aggiuntiva-statistica-inferenziale.html)
-* [Esercitazione completa statistica inferenziale (Template e dati)](slides/esercitazioni-complessive/es-statistica-inferenziale.zip)
-* [Esercitazione completa statistica inferenziale (Soluzioni)](slides/esercitazioni-complessive/esercitazione-aggiuntiva-statistica-inferenziale-soluzioni.html)
+* [Esercitazione completa statistica inferenziale (Testo)](slides/esercitazioni-complessive/esercitazione-inferenziale-testo.html)
+* [Esercitazione completa statistica inferenziale (Soluzioni)](slides/esercitazioni-complessive/esercitazione-inferenziale-soluzioni.html)

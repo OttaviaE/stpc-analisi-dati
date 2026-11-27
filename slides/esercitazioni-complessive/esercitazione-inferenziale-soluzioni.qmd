@@ -1,0 +1,849 @@
+---
+title: "Esercitazione di statistica inferenziale"
+subtitle: "Soluzioni"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| include: false
+# solo per scrivere i p-value nel testo delle risposte
+scrivi_p = function(p) ifelse(p < .001, "< .001", paste("=", round(p, 3)))
+```
+
+# Il dataset
+
+Il dataset si chiama `dati-esercitazione.csv`.
+In un'indagine sul benessere organizzativo sono stati raccolti i dati di 240 dipendenti di aziende di uno stesso settore. Tutti i dipendenti hanno partecipato a un percorso di formazione sulla gestione dello stress: il benessere e lo stress sono stati misurati prima e dopo il percorso.
+
+Le variabili descritte sono:
+
+- `id`: codice identificativo del dipendente
+
+- `ruolo`: ruolo ricoperto in azienda, `junior`, `intermedio`, `senior`
+
+- `anni_servizio`: anni di servizio in azienda
+
+- `reparto`: reparto in cui si lavora, `amministrazione`, `produzione`, `commerciale`, `risorse umane`
+
+- `contratto`: tipo di contratto, `determinato` vs. `indeterminato`
+
+- `modalita`: modalità di lavoro prevalente, `presenza` vs. `remoto`
+
+- `supporto_sociale`: punteggio di supporto sociale percepito (da 10 a 50), maggiore è il punteggio maggiore è il supporto percepito
+
+- `carico_lavoro`: punteggio di carico di lavoro percepito (da 10 a 50), maggiore è il punteggio maggiore è il carico percepito
+
+- `burnout`: punteggio di burnout (da 10 a 50), maggiore è il punteggio maggiore è il burnout
+
+- `benessere_pre`, `benessere_post`: punteggio di benessere (da 10 a 50) prima e dopo il percorso di formazione, maggiore è il punteggio maggiore è il benessere
+
+- `stress_pre`, `stress_post`: punteggio di stress (da 10 a 50) prima e dopo il percorso di formazione, maggiore è il punteggio maggiore è lo stress
+
+Per tutte le analisi si considera $\alpha = 0.05$. Per ogni esercizio si calcolano le statistiche descrittive appropriate al livello di misurazione delle variabili e si rappresentano graficamente i dati prima dell'analisi inferenziale.
+
+Si importa il dataset con `read.csv2()`, perché le colonne sono separate da punto e virgola e i decimali sono indicati con la virgola:
+
+```{r}
+data = read.csv2("dati-esercitazione.csv")
+str(data)
+```
+
+# Esercizio 1
+
+*Il tipo di modalità di lavoro (in presenza o da remoto) è associato al reparto in cui si lavora? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.*
+
+## Soluzione
+
+`modalita` e `reparto` sono due variabili categoriali su scala nominale: si descrivono con le distribuzioni di frequenza e la moda, e la loro relazione con la tabella di contingenza e il grafico a barre affiancate.
+
+### Statistiche descrittive e grafici
+
+```{r}
+freq_reparto = table(data$reparto)
+freq_reparto
+names(freq_reparto)[freq_reparto == max(freq_reparto)]
+
+freq_modalita = table(data$modalita)
+freq_modalita
+names(freq_modalita)[freq_modalita == max(freq_modalita)]
+```
+
+Tabella di contingenza e percentuali di riga (per ogni reparto, la percentuale di chi lavora in presenza e da remoto):
+
+```{r}
+tab = table(data$reparto, data$modalita)
+tab
+perc_tab = prop.table(tab, 1) * 100
+round(perc_tab, 2)
+```
+
+```{r}
+barplot(t(perc_tab),
+        beside = TRUE,
+        legend.text = TRUE,
+        xlab = "Reparto",
+        ylab = "Percentuale",
+        main = "Modalità di lavoro per reparto")
+```
+
+Se modalità di lavoro e reparto fossero indipendenti, la percentuale di chi lavora da remoto dovrebbe essere simile in tutti i reparti. Dal grafico si vede che in `produzione` la maggior parte dei dipendenti lavora in presenza, mentre negli altri reparti le due modalità sono più equilibrate.
+
+### Analisi inferenziale
+
+Per verificare se le due variabili sono associate si usa il test $\chi^2$ di indipendenza sulla tabella di contingenza.
+
+**Ipotesi:**
+
+- $H_0$: reparto e modalità di lavoro sono indipendenti nella popolazione, cioè $\pi_{ij} = \pi_{i\cdot}\,\pi_{\cdot j}$ per ogni $i, j$
+- $H_1$: reparto e modalità di lavoro sono associati nella popolazione, cioè $\pi_{ij} \neq \pi_{i\cdot}\,\pi_{\cdot j}$ per almeno una coppia $i, j$
+
+dove $i$ indica il reparto ($i = 1, \dots, 4$) e $j$ la modalità di lavoro ($j = 1, 2$).
+
+```{r}
+chi1 = chisq.test(tab)
+chi1
+```
+
+**Risposta:** $\chi^2(`r chi1$parameter`) =`r round(chi1$statistic, 2)`$, con $p$ `r scrivi_p(chi1$p.value)`. Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: la modalità di lavoro è associata al reparto in cui si lavora. Come si vede dalla tabella e dal grafico, la proporzione di chi lavora da remoto cambia tra i reparti ed è molto più bassa in `produzione`.
+
+# Esercizio 2
+
+*I dipendenti del campione sono distribuiti in modo uniforme tra i quattro reparti? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.*
+
+## Soluzione
+
+`reparto` è una variabile categoriale su scala nominale: si descrive con la distribuzione di frequenze assolute e relative, il grafico a barre e la moda.
+
+### Statistiche descrittive e grafici
+
+```{r}
+freq_reparto
+round(prop.table(freq_reparto) * 100, 2)
+names(freq_reparto)[freq_reparto == max(freq_reparto)]
+```
+
+```{r}
+barplot(freq_reparto,
+        xlab = "Reparto",
+        ylab = "Frequenza assoluta",
+        main = "Distribuzione dei dipendenti nei reparti")
+abline(h = nrow(data) / 4, lty = 2, col = "red")
+```
+
+La linea tratteggiata indica la frequenza attesa in ciascun reparto se i dipendenti fossero distribuiti in modo uniforme (`r nrow(data)` / 4 = `r nrow(data) / 4`). Le frequenze osservate si discostano da questo valore (ci sono più dipendenti in `produzione` e `commerciale` e meno in `risorse umane`): il test serve a capire se queste differenze vanno oltre quelle dovute alla variabilità campionaria.
+
+### Analisi inferenziale
+
+Si usa il test $\chi^2$ che confronta le frequenze osservate con quelle attese sotto l'ipotesi di equidistribuzione (di default `chisq.test()` su una sola variabile assume che tutte le categorie abbiano la stessa probabilità).
+
+**Ipotesi:**
+
+- $H_0$: le proporzioni nei $I = 4$ reparti sono uguali nella popolazione, cioè $\pi_i = 1/4$ per ogni $i$
+- $H_1$: nella popolazione almeno una proporzione è diversa da $1/4$, cioè $\pi_i \neq 1/4$ per almeno un $i$
+
+```{r}
+chi2 = chisq.test(freq_reparto)
+chi2
+chi2$expected
+```
+
+**Risposta:** $\chi^2(`r chi2$parameter`) = `r round(chi2$statistic, 2)`$, con $p$ `r scrivi_p(chi2$p.value)`. Poiché $p > \alpha = 0.05$, non si rifiuta $H_0$: le differenze tra le frequenze osservate e quelle attese sono compatibili con una distribuzione uniforme dei dipendenti tra i quattro reparti.
+
+# Esercizio 3
+
+*Nelle aziende del settore, la media degli anni di servizio dei dipendenti è pari a 12 anni. Gli anni di servizio dei dipendenti del campione sono diversi da quelli delle aziende del settore? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano il p-value e confrontarlo con quello restituito da R.*
+
+## Soluzione
+
+`anni_servizio` è una variabile quantitativa (scala a rapporti): si descrive con indici di tendenza centrale e di variabilità e si rappresenta con istogramma e boxplot.
+
+### Statistiche descrittive e grafici
+
+```{r}
+summary(data$anni_servizio)
+sd(data$anni_servizio)
+```
+
+```{r}
+hist(data$anni_servizio,
+     xlab = "Anni di servizio",
+     main = "Anni di servizio")
+abline(v = 12, lty = 2, col = "red")
+boxplot(data$anni_servizio, ylab = "Anni di servizio", main = "Anni di servizio")
+```
+
+Gli anni di servizio medi nel campione sono `r round(mean(data$anni_servizio), 2)` (mediana `r median(data$anni_servizio)`, deviazione standard `r round(sd(data$anni_servizio), 2)`), un valore vicino a quello di riferimento del settore (linea tratteggiata).
+
+### Analisi inferenziale
+
+Si confronta la media del campione con un valore di riferimento della popolazione ($\mu_0 = 12$), di cui non si conosce la deviazione standard: si usa il test *t* per un campione.
+
+**Ipotesi** (bidirezionali, perché la domanda chiede solo se gli anni di servizio sono *diversi*):
+
+- $H_0: \mu_{\text{anni servizio}} = 12$
+- $H_1: \mu_{\text{anni servizio}} \neq 12$
+
+```{r}
+t3 = t.test(data$anni_servizio, mu = 12)
+t3
+```
+
+Calcolo a mano del $p$-value: la statistica test è positiva, quindi cade a destra dello 0, e si calcola l'area a destra con `1 - pt()`. Con un'ipotesi bidirezionale si considerano entrambe le code della distribuzione $t$ con $n - 1$ gradi di libertà, quindi l'area si moltiplica per 2:
+
+```{r}
+(1 - pt(t3$statistic, nrow(data) - 1)) * 2
+t3$p.value
+```
+
+**Risposta:** $t(`r t3$parameter`) = `r round(t3$statistic, 2)`$, con $p$ `r scrivi_p(t3$p.value)` (lo stesso valore ottenuto a mano). Poiché $p > \alpha = 0.05$, non si rifiuta $H_0$: gli anni di servizio dei dipendenti del campione non sono significativamente diversi da quelli delle aziende del settore. Anche l'intervallo di confidenza al 95% (`r round(t3$conf.int[1], 2)`; `r round(t3$conf.int[2], 2)`) contiene il valore 12.
+
+# Esercizio 4
+
+*Nelle aziende del settore, il punteggio medio di supporto sociale percepito è pari a 30. I dipendenti del campione percepiscono un supporto sociale maggiore rispetto alle aziende del settore? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano il valore critico e confrontarlo con la statistica test.*
+
+## Soluzione
+
+`supporto_sociale` è una variabile quantitativa (punteggio a una scala, trattato come a intervalli): si descrive con indici di tendenza centrale e di variabilità e si rappresenta con istogramma e boxplot.
+
+### Statistiche descrittive e grafici
+
+```{r}
+summary(data$supporto_sociale)
+sd(data$supporto_sociale)
+```
+
+```{r}
+hist(data$supporto_sociale,
+     xlab = "Supporto sociale",
+     main = "Supporto sociale percepito")
+abline(v = 30, lty = 2, col = "red")
+boxplot(data$supporto_sociale, ylab = "Supporto sociale", main = "Supporto sociale percepito")
+```
+
+Il punteggio medio di supporto sociale nel campione è `r round(mean(data$supporto_sociale), 2)` (mediana `r median(data$supporto_sociale)`, deviazione standard `r round(sd(data$supporto_sociale), 2)`), più alto del valore di riferimento del settore.
+
+### Analisi inferenziale
+
+Si usa il test *t* per un campione con ipotesi unidirezionale destra, perché la domanda chiede se il supporto percepito è *maggiore*.
+
+**Ipotesi:**
+
+- $H_0: \mu_{\text{supporto}} = 30$
+- $H_1: \mu_{\text{supporto}} > 30$
+
+```{r}
+t4 = t.test(data$supporto_sociale, alternative = "greater", mu = 30)
+t4
+```
+
+Valore critico: con un'ipotesi unidirezionale destra e $\alpha = 0.05$ è il quantile 0.95 della distribuzione $t$ con $n - 1$ gradi di libertà:
+
+```{r}
+t_critico = qt(.95, nrow(data) - 1)
+t_critico
+t4$statistic > t_critico
+```
+
+**Risposta:** $t(`r t4$parameter`) = `r round(t4$statistic, 2)`$, con $p$ `r scrivi_p(t4$p.value)`. La statistica test è maggiore del valore critico ($t_{\text{critico}} =$ `r round(t_critico, 2)`), quindi cade nella regione di rifiuto: si rifiuta $H_0$. I dipendenti del campione percepiscono un supporto sociale significativamente maggiore rispetto alle aziende del settore.
+
+# Esercizio 5
+
+*Considerando solo i dipendenti junior e senior (escludendo quindi il ruolo intermedio), il livello di burnout è diverso tra i due ruoli? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano l'intervallo di confidenza all'89% per la differenza tra le medie.*
+
+## Soluzione
+
+Si seleziona il sottoinsieme dei dipendenti junior e senior e si trasforma `ruolo` in factor con i soli due livelli rimasti:
+
+```{r}
+js = data[data$ruolo != "intermedio", ]
+js$ruolo = factor(js$ruolo, levels = c("junior", "senior"))
+table(js$ruolo)
+```
+
+`ruolo` è una variabile categoriale, `burnout` è quantitativa: si descrive il burnout separatamente nei due gruppi e si confrontano le distribuzioni con un boxplot.
+
+### Statistiche descrittive e grafici
+
+```{r}
+mean(js$burnout[js$ruolo == "junior"])
+mean(js$burnout[js$ruolo == "senior"])
+sd(js$burnout[js$ruolo == "junior"])
+sd(js$burnout[js$ruolo == "senior"])
+```
+
+```{r}
+boxplot(js$burnout ~ js$ruolo,
+        xlab = "Ruolo",
+        ylab = "Burnout",
+        main = "Burnout per ruolo (junior e senior)")
+```
+
+Il burnout medio è più alto per i dipendenti junior che per i senior, e la scatola dei senior è spostata verso il basso rispetto a quella degli junior.
+
+### Analisi inferenziale
+
+Si confrontano le medie di due gruppi indipendenti: si usa il test *t* per campioni indipendenti. Poiché la domanda non dice nulla sulle varianze, non si assume che siano omogenee (test di Welch, il default di `t.test()`).
+
+**Ipotesi** (bidirezionali, perché la domanda chiede solo se il burnout è *diverso*):
+
+- $H_0: \mu_{\text{junior}} = \mu_{\text{senior}}$ $\quad \rightarrow \quad \mu_{\text{junior}} - \mu_{\text{senior}} = 0$
+- $H_1: \mu_{\text{junior}} \neq \mu_{\text{senior}}$ $\quad \rightarrow \quad \mu_{\text{junior}} - \mu_{\text{senior}} \neq 0$
+
+```{r}
+t5 = t.test(js$burnout ~ js$ruolo)
+t5
+```
+
+Intervallo di confidenza all'89% per la differenza tra le medie: $(\bar{x}_{\text{junior}} - \bar{x}_{\text{senior}}) \pm t_{1 - \alpha/2} \cdot SE$, con $\alpha = 0.11$. Poiché non si assume l'omogeneità delle varianze, i gradi di libertà non sono $n_1 + n_2 - 2$ ma quelli calcolati da `t.test()` (in `parameter`). Anche l'errore standard della differenza è restituito da `t.test()`, in `stderr`:
+
+```{r}
+diff_medie = mean(js$burnout[js$ruolo == "junior"]) - mean(js$burnout[js$ruolo == "senior"])
+q89 = qt(1 - .11/2, t5$parameter)
+delta = t5$stderr * q89
+c(diff_medie - delta, diff_medie + delta)
+```
+
+Si confronta con l'intervallo calcolato da R:
+
+```{r}
+t.test(js$burnout ~ js$ruolo, conf.level = .89)$conf.int
+```
+
+**Risposta:** $t($`r round(t5$parameter, 2)`$) =$ `r round(t5$statistic, 2)`, con $p$ `r scrivi_p(t5$p.value)`. Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: il livello di burnout è diverso tra dipendenti junior e senior, e in particolare è più alto per gli junior (differenza tra le medie: `r round(diff_medie, 2)` punti). L'intervallo di confidenza all'89% per la differenza tra le medie va da `r round(diff_medie - delta, 2)` a `r round(diff_medie + delta, 2)` e non contiene lo 0.
+
+# Esercizio 6
+
+*Chi lavora da remoto ha un livello di burnout inferiore rispetto a chi lavora in presenza? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato. Calcolare a mano il p-value e confrontarlo con quello restituito da R.*
+
+## Soluzione
+
+### Statistiche descrittive e grafici
+
+```{r}
+mean(data$burnout[data$modalita == "presenza"])
+mean(data$burnout[data$modalita == "remoto"])
+sd(data$burnout[data$modalita == "presenza"])
+sd(data$burnout[data$modalita == "remoto"])
+```
+
+```{r}
+boxplot(data$burnout ~ data$modalita,
+        xlab = "Modalità di lavoro",
+        ylab = "Burnout",
+        main = "Burnout per modalità di lavoro")
+```
+
+Chi lavora da remoto ha in media un burnout più basso di chi lavora in presenza.
+
+### Analisi inferenziale
+
+Si confrontano le medie di due gruppi indipendenti con un'ipotesi unidirezionale: si usa il test *t* per campioni indipendenti, senza assumere l'omogeneità delle varianze (la domanda non dice nulla in proposito).
+
+**Ipotesi:**
+
+- $H_0: \mu_{\text{remoto}} = \mu_{\text{presenza}}$ $\quad \rightarrow \quad \mu_{\text{remoto}} - \mu_{\text{presenza}} = 0$
+- $H_1: \mu_{\text{remoto}} < \mu_{\text{presenza}}$ $\quad \rightarrow \quad \mu_{\text{remoto}} - \mu_{\text{presenza}} < 0$
+
+`t.test()` con la formula calcola la differenza tra il primo e il secondo livello del factor. Di default i livelli sono in ordine alfabetico (`presenza`, `remoto`), quindi si riordinano in modo che la differenza sia remoto − presenza, coerente con $H_1$:
+
+```{r}
+data$modalita = factor(data$modalita, levels = c("remoto", "presenza"))
+levels(data$modalita)
+t6 = t.test(data$burnout ~ data$modalita, alternative = "less")
+t6
+```
+
+Calcolo a mano del $p$-value: con un'ipotesi unidirezionale sinistra è l'area a sinistra della statistica test nella distribuzione $t$ con i gradi di libertà calcolati da `t.test()` (test di Welch, quindi non $n - 2$):
+
+```{r}
+pt(t6$statistic, t6$parameter)
+t6$p.value
+```
+
+**Risposta:** $t($`r round(t6$parameter, 2)`$) =$ `r round(t6$statistic, 2)`, con $p$ `r scrivi_p(t6$p.value)` (lo stesso valore ottenuto a mano). Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: chi lavora da remoto ha un livello di burnout significativamente inferiore rispetto a chi lavora in presenza.
+
+# Esercizio 7
+
+*Il percorso di formazione ha migliorato il benessere dei dipendenti? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.*
+
+## Soluzione
+
+`benessere_pre` e `benessere_post` sono due misure quantitative raccolte sugli stessi dipendenti: si descrivono entrambe e si descrive la differenza tra le due misure.
+
+### Statistiche descrittive e grafici
+
+```{r}
+summary(data$benessere_pre)
+summary(data$benessere_post)
+sd(data$benessere_pre)
+sd(data$benessere_post)
+
+diff_benessere = data$benessere_pre - data$benessere_post
+mean(diff_benessere)
+sd(diff_benessere)
+```
+
+```{r}
+boxplot(data$benessere_pre, data$benessere_post,
+        names = c("Prima", "Dopo"),
+        ylab = "Benessere",
+        main = "Benessere prima e dopo il percorso")
+hist(diff_benessere,
+     xlab = "Benessere prima - benessere dopo",
+     main = "Differenze prima - dopo")
+abline(v = 0, lty = 2, col = "red")
+```
+
+Il benessere medio è più alto dopo il percorso: la differenza media prima − dopo è negativa (`r round(mean(diff_benessere), 2)`) e la maggior parte delle differenze cade a sinistra dello 0.
+
+### Analisi inferenziale
+
+Le due misure sono raccolte sugli stessi soggetti (campioni dipendenti): si usa il test *t* per campioni appaiati sulla differenza $D = \text{prima} - \text{dopo}$. Se il percorso ha migliorato il benessere, il benessere prima è minore di quello dopo, quindi $\mu_D < 0$.
+
+**Ipotesi:**
+
+- $H_0: \mu_D = 0$
+- $H_1: \mu_D < 0$ $\quad (\mu_{\text{prima}} < \mu_{\text{dopo}})$
+
+```{r}
+t7 = t.test(data$benessere_pre, data$benessere_post,
+            paired = TRUE, alternative = "less")
+t7
+```
+
+**Risposta:** $t($`r t7$parameter`$) =$ `r round(t7$statistic, 2)`, con $p$ `r scrivi_p(t7$p.value)`. Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: dopo il percorso di formazione il benessere dei dipendenti è significativamente più alto rispetto a prima (in media di `r round(abs(mean(diff_benessere)), 2)` punti).
+
+# Esercizio 8
+
+*Il percorso di formazione ha migliorato il livello di stress dei dipendenti? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.*
+
+## Soluzione
+
+Per lo stress un miglioramento corrisponde a una *diminuzione* del punteggio.
+
+### Statistiche descrittive e grafici
+
+```{r}
+summary(data$stress_pre)
+summary(data$stress_post)
+sd(data$stress_pre)
+sd(data$stress_post)
+
+diff_stress = data$stress_pre - data$stress_post
+mean(diff_stress)
+sd(diff_stress)
+```
+
+```{r}
+boxplot(data$stress_pre, data$stress_post,
+        names = c("Prima", "Dopo"),
+        ylab = "Stress",
+        main = "Stress prima e dopo il percorso")
+hist(diff_stress,
+     xlab = "Stress prima - stress dopo",
+     main = "Differenze prima - dopo")
+abline(v = 0, lty = 2, col = "red")
+```
+
+Lo stress medio è più basso dopo il percorso: la differenza media prima − dopo è positiva (`r round(mean(diff_stress), 2)`).
+
+### Analisi inferenziale
+
+Si usa il test *t* per campioni appaiati sulla differenza $D = \text{prima} - \text{dopo}$. Se il percorso ha migliorato lo stress, lo stress prima è maggiore di quello dopo, quindi $\mu_D > 0$.
+
+**Ipotesi:**
+
+- $H_0: \mu_D = 0$
+- $H_1: \mu_D > 0$ $\quad (\mu_{\text{prima}} > \mu_{\text{dopo}})$
+
+```{r}
+t8 = t.test(data$stress_pre, data$stress_post,
+            paired = TRUE, alternative = "greater")
+t8
+```
+
+**Risposta:** $t($`r t8$parameter`$) =$ `r round(t8$statistic, 2)`, con $p$ `r scrivi_p(t8$p.value)`. Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: dopo il percorso di formazione lo stress dei dipendenti è significativamente più basso rispetto a prima (in media di `r round(mean(diff_stress), 2)` punti).
+
+# Esercizio 9
+
+*Il supporto sociale percepito permette di predire il livello di burnout? Formulare le ipotesi sui coefficienti del modello, condurre l'analisi appropriata e commentare il risultato. Rappresentare i dati con la retta di regressione stimata, verificare con due grafici la normalità dei residui e l'indipendenza tra predittore e residui, e calcolare a mano l'intervallo di confidenza al 95% per il coefficiente angolare.*
+
+## Soluzione
+
+`supporto_sociale` (variabile indipendente) e `burnout` (variabile dipendente) sono due variabili quantitative: si descrivono singolarmente e la loro relazione si rappresenta con il diagramma di dispersione.
+
+### Statistiche descrittive e grafici
+
+```{r}
+summary(data$supporto_sociale)
+sd(data$supporto_sociale)
+summary(data$burnout)
+sd(data$burnout)
+cor(data$supporto_sociale, data$burnout)
+```
+
+```{r}
+hist(data$burnout, xlab = "Burnout", main = "Burnout")
+plot(data$burnout ~ data$supporto_sociale,
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout",
+     main = "Relazione tra supporto sociale e burnout")
+```
+
+La nuvola di punti ha un andamento lineare decrescente: all'aumentare del supporto sociale il burnout tende a diminuire ($r =$ `r round(cor(data$supporto_sociale, data$burnout), 2)`).
+
+### Analisi inferenziale
+
+Si stima il modello di regressione lineare semplice $y^* = b_0 + b_1 x$ e si fa inferenza sui suoi coefficienti.
+
+**Ipotesi** sull'intercetta:
+
+- $H_0: \beta_0 = 0$ (il burnout atteso quando il supporto sociale vale 0 è 0)
+- $H_1: \beta_0 \neq 0$
+
+**Ipotesi** sul coefficiente angolare (quello che risponde alla domanda di ricerca):
+
+- $H_0: \beta_1 = 0$ (il supporto sociale non permette di predire il burnout)
+- $H_1: \beta_1 \neq 0$
+
+```{r}
+mod9 = lm(burnout ~ supporto_sociale, data = data)
+summary(mod9)
+```
+
+Retta di regressione stimata:
+
+```{r}
+plot(data$burnout ~ data$supporto_sociale,
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout")
+abline(mod9$coefficients[1], mod9$coefficients[2],
+       lwd = 3, col = "darkorange")
+```
+
+Analisi dei residui: normalità (Q-Q plot) e indipendenza tra predittore e residui (residui vs variabile indipendente):
+
+```{r}
+qqnorm(residuals(mod9))
+qqline(residuals(mod9), col = "red")
+
+plot(data$supporto_sociale, residuals(mod9),
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Residui")
+abline(h = 0, col = "red")
+```
+
+I punti del Q-Q plot seguono la retta, quindi i residui sono approssimativamente normali. Nel grafico dei residui contro il supporto sociale i punti si distribuiscono in modo casuale attorno allo 0, senza andamenti particolari: i residui sono indipendenti dal predittore.
+
+Intervallo di confidenza al 95% per il coefficiente angolare: $b_1 \pm t_{0.975} \cdot SE(b_1)$, con $n - 2$ gradi di libertà:
+
+```{r}
+coefs = data.frame(summary(mod9)$coefficients)
+q95 = qt(.975, nrow(data) - 2)
+deltaB1 = coefs$Std..Error[2] * q95
+CIB1 = c(coefs$Estimate[2] - deltaB1,
+         coefs$Estimate[2] + deltaB1)
+CIB1
+confint(mod9)
+```
+
+**Risposta:** il coefficiente angolare è $b_1 =$ `r round(coefs$Estimate[2], 2)`, con $t(`r mod9$df.residual`) = `r round(coefs$t.value[2], 2)`$ e $p$ `r scrivi_p(coefs$Pr...t..[2])`. Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: il supporto sociale percepito permette di predire il livello di burnout. La relazione è negativa: a ogni punto in più di supporto sociale corrisponde una diminuzione attesa del burnout di `r round(abs(coefs$Estimate[2]), 2)` punti. L'intervallo di confidenza al 95% per il coefficiente angolare (`r round(CIB1[1], 2)`; `r round(CIB1[2], 2)`) non contiene lo 0. Anche l'intercetta è significativa ($b_0 =$ `r round(coefs$Estimate[1], 2)`), ma non è interpretabile, perché il supporto sociale non può valere 0 (il punteggio va da 10 a 50). Il modello spiega il `r round(summary(mod9)$r.squared * 100)`% della variabilità del burnout ($R^2 =$ `r round(summary(mod9)$r.squared, 2)`).
+
+# Esercizio 10
+
+*Il supporto sociale percepito e il carico di lavoro percepito permettono di predire il livello di burnout? Formulare le ipotesi sui coefficienti del modello, condurre l'analisi e commentare il risultato.*
+
+## Soluzione
+
+Le tre variabili sono quantitative. Il supporto sociale e il burnout sono già stati descritti nell'esercizio 9, si descrive il carico di lavoro e si rappresentano le relazioni tra le tre variabili.
+
+### Statistiche descrittive e grafici
+
+```{r}
+summary(data$carico_lavoro)
+sd(data$carico_lavoro)
+hist(data$carico_lavoro, xlab = "Carico di lavoro", main = "Carico di lavoro percepito")
+```
+
+```{r}
+plot(data[, c("supporto_sociale", "carico_lavoro", "burnout")])
+cor(data[, c("supporto_sociale", "carico_lavoro", "burnout")])
+```
+
+Il burnout tende a diminuire all'aumentare del supporto sociale e ad aumentare all'aumentare del carico di lavoro. I due predittori sono debolmente correlati tra loro.
+
+### Analisi inferenziale
+
+Si stima il modello di regressione multipla $y^* = b_0 + b_1 x_1 + b_2 x_2$, con $x_1$ = supporto sociale e $x_2$ = carico di lavoro.
+
+**Ipotesi** sui coefficienti:
+
+- $H_0: \beta_0 = 0$, $\quad H_1: \beta_0 \neq 0$ (burnout atteso quando supporto sociale e carico di lavoro valgono 0)
+- $H_0: \beta_1 = 0$, $\quad H_1: \beta_1 \neq 0$ (a parità di carico di lavoro, il supporto sociale non permette / permette di predire il burnout)
+- $H_0: \beta_2 = 0$, $\quad H_1: \beta_2 \neq 0$ (a parità di supporto sociale, il carico di lavoro non permette / permette di predire il burnout)
+
+**Ipotesi** sul modello:
+
+- $H_0: \beta_1 = \beta_2 = 0$ nessun predittore è linearmente associato alla variabile diopendente (i predittori non spiegano la varianza della variabile dipendente)
+- $H_1$: almeno uno dei due coefficienti è diverso da 0
+
+```{r}
+mod10 = lm(burnout ~ supporto_sociale + carico_lavoro, data = data)
+summary(mod10)
+coefs10 = data.frame(summary(mod10)$coefficients)
+```
+
+**Risposta:** il modello nel suo complesso è significativo ($F(`r summary(mod10)$fstatistic[2]`, `r summary(mod10)$fstatistic[3]`) = `r round(summary(mod10)$fstatistic[1], 2)`$, $p `r scrivi_p(anova(lm(burnout ~ 1, data = data), mod10)$"Pr(>F)"[2])`$) e spiega il `r round(summary(mod10)$adj.r.squared * 100)`% della variabilità del burnout. Entrambi i coefficienti angolari sono significativi:
+
+- supporto sociale: $b_1 = `r round(coefs10$Estimate[2], 2)`$, $t(`r mod10$df.residual`) = `r round(coefs10$t.value[2], 2)`$, $p `r scrivi_p(coefs10$Pr...t..[2])`$. A parità di carico di lavoro, a ogni punto in più di supporto sociale corrisponde una diminuzione attesa del burnout di `r round(abs(coefs10$Estimate[2]), 2)` punti;
+
+- carico di lavoro: $b_2 = `r round(coefs10$Estimate[3], 2)`$, $t(`r mod10$df.residual`) = `r round(coefs10$t.value[3], 2)`$, $p `r scrivi_p(coefs10$Pr...t..[3])`$. A parità di supporto sociale, a ogni punto in più di carico di lavoro corrisponde un aumento atteso del burnout di `r round(coefs10$Estimate[3], 2)` punti.
+
+Si rifiutano quindi entrambe le $H_0$ sui coefficienti angolari: supporto sociale e carico di lavoro permettono di predire il livello di burnout, con effetti in direzione opposta. Rispetto al modello con il solo supporto sociale (esercizio 9), aggiungere il carico di lavoro fa passare l'$R^2$ da `r round(summary(mod9)$r.squared, 2)` a `r round(summary(mod10)$adj.r.squared, 2)`. Nel modello dell'esercizio 10 si fa riferimento al valore di R quadro aggiustato, ovvero del valore di R quadro corretto per il numero di prediottori inseriti nel modello. Come nell'esercizio 9, l'intercetta non è interpretabile, perché i punteggi delle due scale non possono valere 0.
+
+# Esercizio 11
+
+*Il supporto sociale percepito e il tipo di contratto permettono di predire il livello di burnout? Considerare un modello in cui l'effetto del supporto sociale sia lo stesso per i due tipi di contratto. Formulare le ipotesi sui coefficienti del modello, condurre l'analisi e commentare il risultato. Scrivere le equazioni delle rette per i due tipi di contratto sulla base dei parametri stimati e rappresentarle nel grafico di dispersione.*
+
+## Soluzione
+
+`contratto` è una variabile categoriale dicotomica, `supporto_sociale` e `burnout` sono quantitative.
+
+### Statistiche descrittive e grafici
+
+```{r}
+data$contratto = factor(data$contratto)
+levels(data$contratto)
+table(data$contratto)
+round(prop.table(table(data$contratto)) * 100, 2)
+mean(data$burnout[data$contratto == "determinato"])
+mean(data$burnout[data$contratto == "indeterminato"])
+sd(data$burnout[data$contratto == "determinato"])
+sd(data$burnout[data$contratto == "indeterminato"])
+```
+
+```{r}
+boxplot(data$burnout ~ data$contratto,
+        xlab = "Contratto",
+        ylab = "Burnout",
+        main = "Burnout per tipo di contratto")
+plot(data$burnout ~ data$supporto_sociale,
+     col = ifelse(data$contratto == "determinato", "firebrick", "darkgreen"),
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout")
+legend("topright", legend = levels(data$contratto),
+       col = c("firebrick", "darkgreen"), pch = 19)
+```
+
+Chi ha un contratto a tempo determinato ha in media un burnout più alto. Nel diagramma di dispersione, per entrambi i tipi di contratto il burnout diminuisce all'aumentare del supporto sociale.
+
+### Analisi inferenziale
+
+Si stima il modello parallelo $y^* = b_0 + b_1 x_1 + b_2 x_2$, con $x_1$ = supporto sociale e $x_2$ = contratto. La categoria di riferimento è `determinato` (primo livello in ordine alfabetico), per cui $x_2 = 0$ per i contratti a tempo determinato e $x_2 = 1$ per quelli a tempo indeterminato.
+
+**Ipotesi** sui coefficienti:
+
+- $H_0: \beta_0 = 0$, $\quad H_1: \beta_0 \neq 0$ (burnout atteso per chi ha un contratto a tempo determinato e supporto sociale pari a 0)
+- $H_0: \beta_1 = 0$, $\quad H_1: \beta_1 \neq 0$ (a parità di contratto, il supporto sociale non permette / permette di predire il burnout)
+- $H_0: \beta_2 = 0$, $\quad H_1: \beta_2 \neq 0$ (a parità di supporto sociale, il burnout atteso non è / è diverso tra contratto a tempo indeterminato e determinato)
+
+```{r}
+mod11 = lm(burnout ~ supporto_sociale + contratto, data = data)
+summary(mod11)
+mod11$coefficients
+```
+
+Equazioni delle rette:
+
+- contratto determinato ($x_2 = 0$): $y^* = b_0 + b_1 x_1 =$ `r round(mod11$coefficients[1], 2)` + (`r round(mod11$coefficients[2], 2)`) $x_1$
+- contratto indeterminato ($x_2 = 1$): $y^* = (b_0 + b_2) + b_1 x_1 =$ `r round(mod11$coefficients[1] + mod11$coefficients[3], 2)` + (`r round(mod11$coefficients[2], 2)`) $x_1$
+
+```{r}
+plot(data$burnout ~ data$supporto_sociale,
+     col = ifelse(data$contratto == "determinato", "firebrick", "darkgreen"),
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout")
+# contratto determinato (x2 = 0)
+abline(mod11$coefficients[1], mod11$coefficients[2],
+       col = "firebrick", lwd = 2)
+# contratto indeterminato (x2 = 1): l'intercetta diventa b0 + b2
+abline(mod11$coefficients[1] + mod11$coefficients[3], mod11$coefficients[2],
+       col = "darkgreen", lwd = 2)
+legend("topright", legend = levels(data$contratto),
+       col = c("firebrick", "darkgreen"), lwd = 2)
+```
+
+**Risposta:** sia il supporto sociale ($b_1 =$ `r round(mod11$coefficients[2], 2)`, $p$ `r scrivi_p(summary(mod11)$coefficients[2, 4])`) sia il tipo di contratto ($b_2 =$ `r round(mod11$coefficients[3], 2)`, $p$ `r scrivi_p(summary(mod11)$coefficients[3, 4])`) permettono di predire il burnout: si rifiutano entrambe le $H_0$. A parità di contratto, a ogni punto in più di supporto sociale corrisponde una diminuzione attesa del burnout di `r round(abs(mod11$coefficients[2]), 2)` punti. A parità di supporto sociale, chi ha un contratto a tempo indeterminato ha un burnout atteso inferiore di `r round(abs(mod11$coefficients[3]), 2)` punti rispetto a chi ha un contratto a tempo determinato. Graficamente le due rette sono parallele (stessa pendenza $b_1$) e la retta del contratto a tempo indeterminato è più in basso di $|b_2|$ punti. Il modello spiega il `r round(summary(mod11)$adj.r.squared * 100)`% della variabilità del burnout.
+
+# Esercizio 12
+
+*L'effetto del supporto sociale percepito sul livello di burnout cambia in base alla modalità di lavoro? Formulare le ipotesi sui coefficienti del modello, condurre l'analisi e commentare il risultato. Scrivere le equazioni delle rette per le due modalità di lavoro sulla base dei parametri stimati e rappresentarle nel grafico di dispersione.*
+
+## Soluzione
+
+Nell'esercizio 6 l'ordine dei livelli di `modalita` è stato cambiato (`remoto`, `presenza`). Qui si sceglie `presenza` come categoria di riferimento, così il modello descrive come cambia la retta passando da chi lavora in presenza a chi lavora da remoto:
+
+:::{.callout-note}
+## NOTA BENE 
+
+Questo passaggio di cambio del livello di riferimento **non è espressamente richiesto dall'esercizio**. è stato fatto solo per facilitare la lettura dei risultati, ma non è obbligatorio farlo. Naturalmente, se non si è cambiato il livello di riferimento, i risultati sono da leggere al contrario.
+:::
+
+```{r}
+data$modalita = factor(data$modalita, levels = c("presenza", "remoto"))
+levels(data$modalita)
+```
+
+### Statistiche descrittive e grafici
+
+La distribuzione di `modalita` e il burnout nei due gruppi sono già stati descritti negli esercizi 1 e 6. Si rappresenta la relazione tra supporto sociale e burnout separatamente per le due modalità:
+
+```{r}
+table(data$modalita)
+mean(data$supporto_sociale[data$modalita == "presenza"])
+mean(data$supporto_sociale[data$modalita == "remoto"])
+cor(data$supporto_sociale[data$modalita == "presenza"],
+    data$burnout[data$modalita == "presenza"])
+cor(data$supporto_sociale[data$modalita == "remoto"],
+    data$burnout[data$modalita == "remoto"])
+```
+
+```{r}
+plot(data$burnout ~ data$supporto_sociale,
+     col = ifelse(data$modalita == "presenza", "firebrick", "royalblue"),
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout")
+legend("topright", legend = levels(data$modalita),
+       col = c("firebrick", "royalblue"), pch = 19)
+```
+
+La relazione negativa tra supporto sociale e burnout sembra più forte per chi lavora da remoto (correlazione più alta in valore assoluto e nuvola di punti più inclinata).
+
+### Analisi inferenziale
+
+Si stima il modello con interazione $y^* = b_0 + b_1 x_1 + b_2 x_2 + b_3 x_1 x_2$, con $x_1$ = supporto sociale e $x_2$ = modalità ($x_2 = 0$ per presenza, $x_2 = 1$ per remoto).
+
+**Ipotesi** sui coefficienti:
+
+- $H_0: \beta_0 = 0$, $\quad H_1: \beta_0 \neq 0$ (burnout atteso per chi lavora in presenza con supporto sociale pari a 0)
+- $H_0: \beta_1 = 0$, $\quad H_1: \beta_1 \neq 0$ (effetto del supporto sociale per chi lavora in presenza)
+- $H_0: \beta_2 = 0$, $\quad H_1: \beta_2 \neq 0$ (differenza tra le intercette di remoto e presenza)
+- $H_0: \beta_3 = 0$, $\quad H_1: \beta_3 \neq 0$ (interazione: l'effetto del supporto sociale non cambia / cambia in base alla modalità di lavoro). È l'ipotesi che risponde alla domanda di ricerca
+
+```{r}
+mod12 = lm(burnout ~ supporto_sociale + modalita + supporto_sociale*modalita,
+           data = data)
+summary(mod12)
+mod12$coefficients
+```
+
+Equazioni delle rette:
+
+- presenza ($x_2 = 0$): $y^* = b_0 + b_1 x_1 =$ `r round(mod12$coefficients[1], 2)` + (`r round(mod12$coefficients[2], 2)`) $x_1$
+- remoto ($x_2 = 1$): $y^* = (b_0 + b_2) + (b_1 + b_3) x_1 =$ `r round(mod12$coefficients[1] + mod12$coefficients[3], 2)` + (`r round(mod12$coefficients[2] + mod12$coefficients[4], 2)`) $x_1$
+
+```{r}
+plot(data$burnout ~ data$supporto_sociale,
+     col = ifelse(data$modalita == "presenza", "firebrick", "royalblue"),
+     pch = 19,
+     xlab = "Supporto sociale",
+     ylab = "Burnout")
+# presenza (x2 = 0)
+abline(mod12$coefficients[1], mod12$coefficients[2],
+       lwd = 2, col = "firebrick")
+# remoto (x2 = 1): cambiano sia l'intercetta (b0 + b2) sia la pendenza (b1 + b3)
+abline(mod12$coefficients[1] + mod12$coefficients[3],
+       mod12$coefficients[2] + mod12$coefficients[4],
+       lwd = 2, col = "royalblue")
+legend("topright", legend = levels(data$modalita),
+       col = c("firebrick", "royalblue"), lwd = 2)
+```
+
+**Risposta:** il coefficiente di interazione è $b_3 = `r round(mod12$coefficients[4], 2)`$, con $t(`r mod12$df.residual`) = `r round(summary(mod12)$coefficients[4, 3], 2)`$ e $p `r scrivi_p(summary(mod12)$coefficients[4, 4])`$. Poiché $p < \alpha = 0.05$, si rifiuta $H_0$: l'effetto del supporto sociale sul burnout cambia in base alla modalità di lavoro. Per chi lavora in presenza, a ogni punto in più di supporto sociale corrisponde una variazione attesa del burnout di `r round(mod12$coefficients[2], 2)` punti; per chi lavora da remoto la variazione è di `r round(mod12$coefficients[2] + mod12$coefficients[4], 2)` punti. Il supporto sociale "protegge" quindi dal burnout soprattutto chi lavora da remoto, e graficamente le due rette non sono parallele. I coefficienti $b_0$ e $b_2$ si riferiscono a un supporto sociale pari a 0, un valore fuori dalla scala (10–50): la differenza tra le intercette non va quindi interpretata come differenza di burnout tra le due modalità.
+
+# Esercizio 13
+
+*Il ruolo permette di predire il livello di burnout? Formulare le ipotesi, condurre l'analisi appropriata e commentare il risultato.*
+
+## Soluzione
+
+`ruolo` è una variabile categoriale con tre livelli, che hanno un ordine (junior, intermedio, senior), `burnout` è quantitativa.
+
+### Statistiche descrittive e grafici
+
+```{r}
+data$ruolo = factor(data$ruolo, levels = c("junior", "intermedio", "senior"))
+freq_ruolo = table(data$ruolo)
+freq_ruolo
+round(prop.table(freq_ruolo) * 100, 2)
+names(freq_ruolo)[freq_ruolo == max(freq_ruolo)]
+mean(data$burnout[data$ruolo == "junior"])
+mean(data$burnout[data$ruolo == "intermedio"])
+mean(data$burnout[data$ruolo == "senior"])
+sd(data$burnout[data$ruolo == "junior"])
+sd(data$burnout[data$ruolo == "intermedio"])
+sd(data$burnout[data$ruolo == "senior"])
+```
+
+```{r}
+barplot(freq_ruolo,
+        xlab = "Ruolo",
+        ylab = "Frequenza assoluta",
+        main = "Distribuzione dei ruoli")
+boxplot(data$burnout ~ data$ruolo,
+        xlab = "Ruolo",
+        ylab = "Burnout",
+        main = "Burnout per ruolo")
+```
+
+Il burnout medio diminuisce passando da junior a intermedio a senior.
+
+### Analisi inferenziale
+
+Si stima il modello di regressione con un predittore categoriale a tre livelli. La categoria di riferimento è `junior`: il modello stima l'intercetta (media degli junior) e due coefficienti, che indicano la differenza tra la media degli intermedi e quella degli junior ($b_1$) e tra la media dei senior e quella degli junior ($b_2$).
+
+**Ipotesi** sul modello (test $F$, quello che risponde alla domanda di ricerca):
+
+- $H_0: \mu_{\text{junior}} = \mu_{\text{intermedio}} = \mu_{\text{senior}}$ $\quad (\beta_1 = \beta_2 = 0)$: il ruolo non permette di predire il burnout
+- $H_1$: almeno una media è diversa dalle altre (almeno uno tra $\beta_1$ e $\beta_2$ è diverso da 0)
+
+**Ipotesi** sui coefficienti:
+
+- $H_0: \beta_1 = 0$, $\quad H_1: \beta_1 \neq 0$ (il burnout medio degli intermedi è / non è diverso da quello degli junior)
+- $H_0: \beta_2 = 0$, $\quad H_1: \beta_2 \neq 0$ (il burnout medio dei senior è / non è diverso da quello degli junior)
+
+```{r}
+mod13 = lm(burnout ~ ruolo, data = data)
+summary(mod13)
+anova(mod13)
+```
+
+Si verifica il significato dei coefficienti confrontandoli con le medie dei gruppi:
+
+```{r}
+mean(data$burnout[data$ruolo == "junior"])
+mean(data$burnout[data$ruolo == "intermedio"])
+mean(data$burnout[data$ruolo == "senior"])
+coef(mod13)
+# media degli intermedi
+coef(mod13)[1] + coef(mod13)[2]
+# media dei senior
+coef(mod13)[1] + coef(mod13)[3]
+```
+
+**Risposta:** il test $F$ è significativo ($F(`r anova(mod13)$Df[1]`, `r anova(mod13)$Df[2]`) = `r round(anova(mod13)$"F value"[1], 2)`$, $p `r scrivi_p(anova(mod13)$"Pr(>F)"[1])`)$: si rifiuta $H_0$, il ruolo permette di predire il livello di burnout. Rispetto agli junior (burnout medio `r round(coef(mod13)[1], 2)`), gli intermedi hanno in media un burnout inferiore di `r round(abs(coef(mod13)[2]), 2)` punti ($p$ `r scrivi_p(summary(mod13)$coefficients[2, 4])`) e i senior di `r round(abs(coef(mod13)[3]), 2)` punti ($p$ `r scrivi_p(summary(mod13)$coefficients[3, 4])`). Il ruolo spiega il `r round(summary(mod13)$adj.r.squared * 100)`% della variabilità del burnout.
